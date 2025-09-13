@@ -15,7 +15,7 @@
     "build": "npm run clean && tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "lint:check": "eslint --ext .js,.ts src",
+    "lint:check": "eslint --ext .js,.ts src . --max-warnings 0",
     "lint:fix": "eslint --ext .js,.ts src --fix",
     "prettier:check": "prettier --check \"src/**/*.{ts,js,json,css}\"",
     "prettier:fix": "prettier --write \"src/**/*.{ts,js,json,css}\"",
