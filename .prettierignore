@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# Coverage
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# Database
+prisma/migrations/
+
+# Generated files
+*.generated.*
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
