@@ -15,24 +15,19 @@
     "build": "npm run clean && tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-
     "lint:check": "eslint --ext .js,.ts src",
     "lint:fix": "eslint --ext .js,.ts src --fix",
     "prettier:check": "prettier --check \"src/**/*.{ts,js,json,css}\"",
     "prettier:fix": "prettier --write \"src/**/*.{ts,js,json,css}\"",
-
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db": "run-p db:generate db:push",
-
     "security:audit": "npm audit",
     "security:fix": "npm audit fix",
     "security": "run-p security:*",
-
     "logs:clear": "rimraf logs/*.log",
-    
     "check-lint-prettier": "run-p lint:check prettier:check",
     "check-all": "run-p typecheck lint:check prettier:check security:audit",
     "format-all": "run-p lint:fix prettier:fix"
@@ -95,7 +90,8 @@
   "lint-staged": {
     "src/**/*.{ts,js}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "tsc --noEmit --skipLibCheck"
     ]
   }
 }
