@@ -152,7 +152,7 @@ export default [
         'error',
         {
           selector: 'variableLike',
-          format: ['camelCase'],
+          format: ['camelCase','UPPER_CASE'],
           leadingUnderscore: 'allow',
         },
         {
