@@ -10,7 +10,7 @@ app.use(express.json());
 // Root route
 app.get('/', (req: Request, res: Response) => {
   res.send({
-    message: 'Aloskill server running 🚀 with Express.js and TypeScript! with rocket emoji !!!!',
+    message: 'Aloskill server running 🚀 with Express.js and TypeScript',
   });
 });
 

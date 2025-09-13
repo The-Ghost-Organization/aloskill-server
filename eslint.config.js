@@ -22,6 +22,7 @@ export default [
       '**/public/**',
       '**/uploads/**',
       '**/.vscode/**',
+      '**/.history/**',
     ],
   },
 
