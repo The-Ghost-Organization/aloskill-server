@@ -1,4 +1,4 @@
-// eslint.config.js - Working configuration without rule conflicts
+// eslint.config.js - Fixed configuration for clean imports
 import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -41,7 +41,6 @@ export default [
       },
     },
     rules: {
-      // Basic JavaScript rules
       'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
       'prefer-const': 'error',
@@ -52,7 +51,7 @@ export default [
   },
 
   // =============================================================================
-  // TYPESCRIPT CONFIGURATION - Base recommended rules only
+  // TYPESCRIPT CONFIGURATION - Base recommended rules
   // =============================================================================
   ...tseslint.configs.recommended.map(config => ({
     ...config,
@@ -68,21 +67,19 @@ export default [
     languageOptions: {
       ...config.languageOptions,
       parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
+        project: './tsconfig.json',
+        tsconfigRootDir: process.cwd(),
       },
     },
   })),
 
   // =============================================================================
-  // CUSTOM TYPESCRIPT RULES - Only verified working rules
+  // CUSTOM TYPESCRIPT RULES
   // =============================================================================
   {
     files: ['**/*.{ts,tsx}'],
     rules: {
-      // =======================================================================
-      // CORE TYPESCRIPT RULES - These definitely exist
-      // =======================================================================
+      // Core TypeScript rules
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -94,7 +91,7 @@ export default [
         },
       ],
 
-      // Function and type declarations
+      // Function declarations
       '@typescript-eslint/explicit-function-return-type': [
         'error',
         {
@@ -111,12 +108,12 @@ export default [
       '@typescript-eslint/prefer-as-const': 'error',
       '@typescript-eslint/no-inferrable-types': 'error',
 
-      // Code quality
+      // Modern JS features
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-unnecessary-condition': 'warn',
 
-      // Import/export
+      // Import/export - FIXED for clean imports
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
@@ -137,22 +134,18 @@ export default [
       '@typescript-eslint/prefer-string-starts-ends-with': 'error',
       '@typescript-eslint/prefer-for-of': 'error',
 
-      // =======================================================================
-      // JAVASCRIPT RULES TO DISABLE (replaced by TypeScript versions)
-      // =======================================================================
+      // Disable JS rules replaced by TS
       'no-unused-vars': 'off',
       'no-redeclare': 'off',
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': 'error',
 
-      // =======================================================================
-      // NAMING CONVENTIONS - Simplified version
-      // =======================================================================
+      // Naming conventions
       '@typescript-eslint/naming-convention': [
         'error',
         {
           selector: 'variableLike',
-          format: ['camelCase','UPPER_CASE'],
+          format: ['camelCase', 'UPPER_CASE'],
           leadingUnderscore: 'allow',
         },
         {
@@ -165,6 +158,17 @@ export default [
           leadingUnderscore: 'allow',
         },
       ],
+    },
+  },
+
+  // =============================================================================
+  // IMPORT RULES - FIXED for extensionless imports
+  // =============================================================================
+  {
+    files: ['**/*.{js,ts}'],
+    rules: {
+      // REMOVED: Fixed the duplicate import rule error
+      'no-duplicate-imports': 'error',
     },
   },
 
@@ -184,7 +188,7 @@ export default [
       'no-iterator': 'error',
       'no-with': 'error',
 
-      // Code Quality & Consistency
+      // Code Quality
       'prefer-const': 'error',
       'no-var': 'error',
       'object-shorthand': 'error',
@@ -193,10 +197,9 @@ export default [
       'prefer-rest-params': 'error',
       'prefer-spread': 'error',
 
-      // Formatting (basic rules that don't conflict)
+      // Formatting
       'comma-dangle': ['error', 'always-multiline'],
       semi: ['error', 'always'],
-      quotes: ['error', 'single', { avoidEscape: true }],
       'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
       'no-trailing-spaces': 'error',
       'eol-last': 'error',
@@ -221,27 +224,6 @@ export default [
   },
 
   // =============================================================================
-  // IMPORT RULES (Optional - only if eslint-plugin-import is installed)
-  // =============================================================================
-  {
-    files: ['**/*.{js,ts}'],
-    rules: {
-      // More flexible duplicate import handling
-      'no-duplicate-imports': 'off',
-      '@/no-duplicate-imports': 'error', // TypeScript version
-
-      // Or allow type imports to be separate
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        {
-          prefer: 'type-imports',
-          fixStyle: 'separate-type-imports',
-        },
-      ],
-    },
-  },
-
-  // =============================================================================
   // TEST FILES - Relaxed rules
   // =============================================================================
   {
@@ -258,7 +240,6 @@ export default [
       },
     },
     rules: {
-      // Relax rules for test files
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
@@ -293,33 +274,3 @@ export default [
     },
   },
 ];
-
-// =============================================================================
-// INSTALLATION GUIDE
-// =============================================================================
-/*
-STEP 1: Install correct dependencies
-npm install -D eslint@^9.35.0 typescript-eslint@^8.0.0 globals@^15.0.0 @eslint/js@^9.0.0
-
-STEP 2: If you get plugin errors, install additional plugins one by one:
-npm install -D eslint-plugin-import@^2.30.0
-
-STEP 3: Test the configuration:
-npx eslint --print-config src/app.ts
-npx eslint src/
-
-STEP 4: Add to package.json:
-{
-  "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:check": "eslint . --max-warnings 0"
-  }
-}
-
-TROUBLESHOOTING:
-- If you still get rule errors, remove the problematic rule from the config
-- Make sure your tsconfig.json is in the project root
-- Ensure Node.js version is 18+ 
-- Check that all TypeScript files have .ts extension
-*/
