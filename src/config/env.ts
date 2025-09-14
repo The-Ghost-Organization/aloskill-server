@@ -3,19 +3,28 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const config = {
-  NODE_ENV: process.env.NODE_ENV ?? 'development',
-  PORT: parseInt(process.env.PORT ?? '5000'),
-  DATABASE_URL: process.env.DATABASE_URL,
-  JWT_SECRET: process.env.JWT_SECRET,
-  JWT_EXPIRE: process.env.JWT_EXPIRE ?? '7d',
-  FRONTEND_URL: process.env.FRONTEND_URL ?? 'http://localhost:3000',
-  BCRYPT_SALT_ROUNDS: parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '12'),
-};
+  PORT: 5000,
+  nodeEnv: process.env.NODE_ENV ?? 'development',
 
-// Validate required environment variables
-// const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET'];
-// requiredEnvVars.forEach(envVar => {
-//   if (process.env[envVar]) {
-//     throw new Error(`Missing required environment variable: ${envVar}`);
-//   }
-// });
+  // JWT Configuration
+  jwtSecret: process.env.JWT_SECRET,
+  refreshSecret: process.env.REFRESH_SECRET,
+  accessTokenExpiry: '15m',
+  refreshTokenExpiry: '7d',
+
+  // Database
+  databaseUrl: process.env.DATABASE_URL,
+  //   redisUrl: process.env.REDIS_URL!,
+
+  // Frontend
+  frontendUrl: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+
+  // Security
+  bcryptRounds: 12,
+  maxLoginAttempts: 5,
+  lockoutDuration: 15 * 60 * 1000, // 15 minutes
+
+  // Cookies
+  cookieSecret: process.env.COOKIE_SECRET,
+  secure: process.env.NODE_ENV === 'production',
+};

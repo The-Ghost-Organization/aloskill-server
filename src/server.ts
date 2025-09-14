@@ -1,34 +1,36 @@
 // src/server.ts
-import app from './app.js';
-import { connectDatabase } from './config/database.js';
-import { config } from './config/env.js';
+import dotenv from 'dotenv';
+import express from 'express';
 
-const startServer = async (): Promise<void> => {
-  try {
-    // Connect to database
-    await connectDatabase();
-    console.log('✅ Database connected successfully');
+// Load .env variables
+dotenv.config();
 
-    // Start server
-    const server = app.listen(config.PORT, () => {
-      console.log(`🚀 Server running on port ${config.PORT}`);
-    });
+const app = express();
 
-    // Graceful shutdown
-    process.on('SIGTERM', () => {
-      console.log('SIGTERM received, shutting down gracefully');
-      server.close(() => {
-        console.log('Process terminated');
-      });
-    });
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
+// Middleware (example)
+app.use(express.json());
+
+// ✅ Safe PORT getter
+function getEnvPort(): number {
+  const port = process.env.PORT;
+  if (!port) {
+    return 8000;
+  } // default
+  const parsed = Number(port);
+  if (isNaN(parsed)) {
+    throw new Error('❌ Invalid PORT value in .env file');
   }
-};
+  return parsed;
+}
 
-startServer()
-  .then(() => {
-    console.log('server started');
-  })
-  .catch(err => console.error('this is an error', err));
+const PORT = getEnvPort();
+
+// Sample route
+app.get('/', (_req, res) => {
+  res.send('🚀 Aloskill backend running...');
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server is running at http://localhost:${PORT}`);
+});
