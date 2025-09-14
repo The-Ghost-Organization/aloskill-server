@@ -1,10 +1,36 @@
+// src/server.ts
 import dotenv from 'dotenv';
-import app from './app.js';
-import { config } from './config/env';
+import express from 'express';
+
+// Load .env variables
 dotenv.config();
 
-const port = config.port;
+const app = express();
 
-app.listen(port, () => {
-  console.log(`✅ Server is running at http://localhost:${port}`);
+// Middleware (example)
+app.use(express.json());
+
+// ✅ Safe PORT getter
+function getEnvPort(): number {
+  const port = process.env.PORT;
+  if (!port) {
+    return 8000;
+  } // default
+  const parsed = Number(port);
+  if (isNaN(parsed)) {
+    throw new Error('❌ Invalid PORT value in .env file');
+  }
+  return parsed;
+}
+
+const PORT = getEnvPort();
+
+// Sample route
+app.get('/', (_req, res) => {
+  res.send('🚀 Aloskill backend running...');
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server is running at http://localhost:${PORT}`);
 });

@@ -1,17 +1,16 @@
+import express from 'express';
 import cors from 'cors';
-import express, { type Application, type Request, type Response } from 'express';
+import dotenv from 'dotenv';
 
-const app: Application = express();
+dotenv.config();
 
-// Middleware
+const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Root route
-app.get('/', (req: Request, res: Response) => {
-  res.send({
-    message: 'Aloskill server running 🚀 with Express.js and TypeScript',
-  });
+app.get('/', (req, res) => {
+  res.send('🚀 Aloskill backend running...');
 });
 
 export default app;

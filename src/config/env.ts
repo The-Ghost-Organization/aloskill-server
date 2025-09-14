@@ -1,5 +1,5 @@
 export const config = {
-  port: process.env.PORT ?? 8000,
+  PORT: 5000,
   nodeEnv: process.env.NODE_ENV ?? 'development',
 
   // JWT Configuration

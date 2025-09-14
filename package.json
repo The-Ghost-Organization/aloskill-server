@@ -2,7 +2,8 @@
   "name": "aloskill-backend",
   "version": "1.0.0",
   "description": "Aloskill Learning Management System",
-  "main": "src/server.ts",
+  "type": "module",
+  "main": "dist/server.js",
   "author": "Sumaiya Ahmed",
   "engines": {
     "node": ">=18.0.0",
@@ -10,7 +11,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc",
     "start": "node dist/server.js",
@@ -84,6 +85,7 @@
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.43.0"
   },
