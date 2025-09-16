@@ -32,5 +32,6 @@ app.get('/', (_req, res) => {
 
 // Start server
 app.listen(PORT, () => {
+  console.log('ninja log request received');
   console.log(`✅ Server is running at http://localhost:${PORT}`);
 });
