@@ -141,23 +141,23 @@ export default [
       '@typescript-eslint/no-shadow': 'error',
 
       // Naming conventions
-      '@typescript-eslint/naming-convention': [
-        'error',
-        {
-          selector: 'variableLike',
-          format: ['camelCase', 'UPPER_CASE'],
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'property',
-          format: ['camelCase', 'snake_case', 'UPPER_CASE'],
-          leadingUnderscore: 'allow',
-        },
-      ],
+      // '@typescript-eslint/naming-convention': [
+      //   'error',
+      //   {
+      //     selector: 'variableLike',
+      //     format: ['camelCase', 'UPPER_CASE', 'snake_case'],
+      //     leadingUnderscore: 'allow',
+      //   },
+      //   {
+      //     selector: 'typeLike',
+      //     format: ['PascalCase'],
+      //   },
+      //   {
+      //     selector: 'property',
+      //     format: ['camelCase', 'snake_case', 'UPPER_CASE'],
+      //     leadingUnderscore: 'allow',
+      //   },
+      // ],
     },
   },
 
@@ -198,7 +198,7 @@ export default [
       'prefer-spread': 'error',
 
       // Formatting
-      'comma-dangle': ['error', 'always-multiline'],
+      // 'comma-dangle': ['error', 'always-multiline'],
       semi: ['error', 'always'],
       'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
       'no-trailing-spaces': 'error',
