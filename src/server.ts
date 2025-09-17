@@ -1,37 +1,66 @@
-// src/server.ts
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import express from 'express';
-
-// Load .env variables
-dotenv.config();
+import { config } from './config/env.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import {
+  authLimiter,
+  generalLimiter,
+  securityMiddlewares,
+  speedLimiter,
+} from './middleware/security.js';
+import { sanitizeInput } from './middleware/validation.js';
+import { authRoutes } from './modules/auth/routes.js';
+import { logger } from './utils/logger.js';
 
 const app = express();
+const port = config.PORT;
 
-// Middleware (example)
-app.use(express.json());
+// Basic middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ✅ Safe PORT getter
-function getEnvPort(): number {
-  const port = process.env.PORT;
-  if (!port) {
-    return 8000;
-  } // default
-  const parsed = Number(port);
-  if (isNaN(parsed)) {
-    throw new Error('❌ Invalid PORT value in .env file');
-  }
-  return parsed;
-}
+// Security middleware
+app.use(securityMiddlewares);
+app.use(sanitizeInput);
 
-const PORT = getEnvPort();
+// Rate limiting (apply to specific routes)
+app.use('/api/', generalLimiter);
+app.use('/api/', speedLimiter);
+app.use('/api/auth/', authLimiter);
 
-// Sample route
-app.get('/', (_req, res) => {
-  res.send('🚀 Aloskill backend running...');
+// Health check endpoint (no rate limiting)
+app.get('/health', (req, res) => {
+  logger.info('Health checking.....');
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log('ninja log request received');
-  console.log(`✅ Server is running at http://localhost:${PORT}`);
+// All routes
+app.use('/api/auth', authRoutes);
+
+// 404 handler
+app.use(notFoundHandler);
+
+// Error handler (must be last)
+app.use(errorHandler);
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully...');
+  process.exit(0);
 });
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received. Shutting down gracefully...');
+  process.exit(0);
+});
+
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+  console.log(`📚 Environment: ${config.NODE_ENV}`);
+});
+
+export default app;
