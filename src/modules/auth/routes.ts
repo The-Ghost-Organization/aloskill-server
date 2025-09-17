@@ -34,6 +34,7 @@ router.post(
   validate(loginSchema),
   asyncHandler(async (req, res): Promise<void> => {
     // Your login logic here
+    await req.body;
     res.json({ message: 'Login successful' });
   })
 );
@@ -43,6 +44,7 @@ router.post(
   validate(registerSchema),
   asyncHandler(async (req, res): Promise<void> => {
     // Your registration logic here
+    await req.body;
     res.status(201).json({ message: 'Registration successful' });
   })
 );

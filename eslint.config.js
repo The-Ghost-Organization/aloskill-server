@@ -167,8 +167,7 @@ export default [
   {
     files: ['**/*.{js,ts}'],
     rules: {
-      // REMOVED: Fixed the duplicate import rule error
-      'no-duplicate-imports': 'error',
+      'no-duplicate-imports': 'error'
     },
   },
 

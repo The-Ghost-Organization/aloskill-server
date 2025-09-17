@@ -1,66 +1,47 @@
-import compression from 'compression';
-import cors from 'cors';
-import express, { type Application } from 'express';
-import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
+import express from 'express';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import {
+  authLimiter,
+  generalLimiter,
+  securityMiddlewares,
+  speedLimiter,
+} from './middleware/security.js';
+import { sanitizeInputStrict } from './middleware/validation.js';
+import { authRoutes } from './modules/auth/routes.js';
+import { logger } from './utils/logger.js';
 
-//internal imports
-import { config } from './config/env.js';
+const app = express();
 
-const app: Application = express();
-
-// Security middleware
-/*
- Need to add external resourse url in this helmet middleware if used in Frontend like this
- styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
- fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-*/
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        scriptSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:', 'https:'],
-        fontSrc: ["'self'"],
-        connectSrc: ["'self'"],
-        frameSrc: ["'none'"],
-        objectSrc: ["'none'"],
-      },
-    },
-  })
-);
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use(limiter);
-
-// CORS configuration
-app.use(
-  cors({
-    origin: config.FRONTEND_URL,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
-
-// Body parsing middleware
+// Basic middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Compression and logging
-app.use(compression());
+// Security middleware
+app.use(securityMiddlewares);
+app.use(sanitizeInputStrict);
 
-app.get('/', (req, res) => {
-  res.send('🚀 Aloskill backend running...');
+// Rate limiting (apply to specific routes)
+app.use('/api/v1/', generalLimiter);
+app.use('/api/v1/', speedLimiter);
+app.use('/api/v1/auth/', authLimiter);
+
+// All routes
+app.use('/api/v1/auth', authRoutes);
+
+// Health check endpoint (no rate limiting)
+app.get('/health', (req, res) => {
+  logger.info('Health checking.....');
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
 });
+
+// 404 handler
+app.use(notFoundHandler);
+
+// Error handler (must be last)
+app.use(errorHandler);
 
 export default app;

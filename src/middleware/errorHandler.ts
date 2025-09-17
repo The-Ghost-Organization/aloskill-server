@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { ZodError } from 'zod';
-import { AppError } from '../utils/appError.js';
+import { AppError, NotFoundError } from '../utils/appError.js';
 import ResponseHandler from '../utils/response.js';
 
 const { JsonWebTokenError, TokenExpiredError } = jwt;
@@ -59,6 +59,5 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
 // 404 handler
 export const notFoundHandler: RequestHandler = (req, res, next) => {
-  console.log("not found triggered");
-  next();
+  next(new NotFoundError('Route not found'));
 };
