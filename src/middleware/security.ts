@@ -22,7 +22,7 @@ export const generalLimiter = rateLimit({
 // Stricter limits for authentication endpoints
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 25,
+  max: 5,
   message: {
     error: 'Too many login attempts',
     message: 'Please try again in 15 minutes.',
