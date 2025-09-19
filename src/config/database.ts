@@ -1,7 +1,9 @@
-import { type Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient, type Prisma } from '@prisma/client';
 
 // Type-safe Prisma client based on log configuration
-type LoggedPrismaClient = PrismaClient;
+type LoggedPrismaClient = PrismaClient<{
+  log: ('query' | 'info' | 'warn' | 'error')[];
+}>;
 
 // Database connection states
 type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'reconnecting' | 'error';
@@ -170,7 +172,7 @@ const createPrismaClient = async (config: DatabaseConfig): Promise<LoggedPrismaC
     log: config.log,
     errorFormat: config.errorFormat,
     datasources: config.datasources,
-  });
+  }) as LoggedPrismaClient;
 
   // Setup event listeners
   setupEventListeners(client, config);
