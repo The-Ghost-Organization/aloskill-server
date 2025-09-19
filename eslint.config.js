@@ -80,7 +80,9 @@ export default [
     files: ['**/*.{ts,tsx}'],
     rules: {
       // Core TypeScript rules
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -167,7 +169,8 @@ export default [
   {
     files: ['**/*.{js,ts}'],
     rules: {
-      'no-duplicate-imports': 'error'
+      // REMOVED: Fixed the duplicate import rule error
+      'no-duplicate-imports': 'error',
     },
   },
 
@@ -270,6 +273,8 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
 ];

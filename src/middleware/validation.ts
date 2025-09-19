@@ -1,9 +1,9 @@
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import xss from 'xss';
 import { ZodError, type ZodObject } from 'zod';
+import { AppError } from './errorHandler.js';
 
 // Zod validation middleware
-
 export const validate = (schema: ZodObject): RequestHandler => {
   return async (req, res, next) => {
     try {
@@ -15,10 +15,7 @@ export const validate = (schema: ZodObject): RequestHandler => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        return res.status(400).json({
-          error: 'Validation failed',
-          details: '',
-        });
+        return next(error);
       }
       next(error);
     }
@@ -26,7 +23,6 @@ export const validate = (schema: ZodObject): RequestHandler => {
 };
 
 // XSS sanitization middleware
-// Type guard to check if a value is a plain object (not array, null, or other objects)
 const isPlainObject = (value: unknown): value is Record<string, unknown> => {
   return (
     typeof value === 'object' &&
@@ -37,7 +33,7 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> => {
 };
 
 // Alternative: More strict version that only sanitizes strings
-export const sanitizeInputStrict = (req: Request, res: Response, next: NextFunction): void => {
+export const sanitizeInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const sanitizeStringsInObject = (obj: Record<string, unknown>): void => {
       for (const [key, value] of Object.entries(obj)) {
@@ -71,8 +67,7 @@ export const sanitizeInputStrict = (req: Request, res: Response, next: NextFunct
     }
 
     next();
-  } catch (error) {
-    console.error('Error in sanitizeInputStrict middleware:', error);
-    next(error);
+  } catch (_error) {
+    return next(new AppError('Invalid input', 400));
   }
 };

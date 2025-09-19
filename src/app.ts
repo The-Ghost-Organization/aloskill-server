@@ -6,27 +6,11 @@ import {
   securityMiddlewares,
   speedLimiter,
 } from './middleware/security.js';
-import { sanitizeInputStrict } from './middleware/validation.js';
+import { sanitizeInput } from './middleware/validation.js';
 import { authRoutes } from './modules/auth/routes.js';
 import { logger } from './utils/logger.js';
 
 const app = express();
-
-// Basic middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Security middleware
-app.use(securityMiddlewares);
-app.use(sanitizeInputStrict);
-
-// Rate limiting (apply to specific routes)
-app.use('/api/v1/', generalLimiter);
-app.use('/api/v1/', speedLimiter);
-app.use('/api/v1/auth/', authLimiter);
-
-// All routes
-app.use('/api/v1/auth', authRoutes);
 
 // Health check endpoint (no rate limiting)
 app.get('/health', (req, res) => {
@@ -37,6 +21,22 @@ app.get('/health', (req, res) => {
     uptime: process.uptime(),
   });
 });
+
+// Basic middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Security middleware
+app.use(securityMiddlewares);
+app.use(sanitizeInput);
+
+// Rate limiting (apply to specific routes)
+app.use('/api/v1/', generalLimiter);
+app.use('/api/v1/', speedLimiter);
+app.use('/api/v1/auth/', authLimiter);
+
+// All routes
+app.use('/api/v1/auth', authRoutes);
 
 // 404 handler
 app.use(notFoundHandler);

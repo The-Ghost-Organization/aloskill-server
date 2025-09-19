@@ -1,13 +1,13 @@
+import cors from 'cors';
+import type { Request, RequestHandler } from 'express';
 import rateLimit from 'express-rate-limit';
 import slowDown from 'express-slow-down';
 import helmet from 'helmet';
-import cors from 'cors';
-import type { Request, RequestHandler } from 'express';
 
 // Rate limiting configuration
 export const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per window per IP
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: {
     error: 'Too many requests',
     message: 'Please try again later.',
@@ -21,8 +21,8 @@ export const generalLimiter = rateLimit({
 
 // Stricter limits for authentication endpoints
 export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Only 5 login attempts per window
+  windowMs: 15 * 60 * 1000,
+  max: 25,
   message: {
     error: 'Too many login attempts',
     message: 'Please try again in 15 minutes.',
@@ -33,8 +33,8 @@ export const authLimiter = rateLimit({
 // Request slowing down (gradual response delay)
 export const speedLimiter = slowDown({
   windowMs: 15 * 60 * 1000,
-  delayAfter: 50, // After 50 requests in 15 minutes...
-  delayMs: () => 100, // Begin adding 100ms delay per request
+  delayAfter: 50,
+  delayMs: () => 100,
 });
 
 // Advanced CORS configuration

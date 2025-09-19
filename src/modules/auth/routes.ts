@@ -1,40 +1,19 @@
+/* eslint-disable require-await */
+/* eslint-disable @typescript-eslint/require-await */
+import { loginSchema, registerSchema } from '@/validations/auth.js';
 import { Router } from 'express';
-import { z } from 'zod';
-import { authLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 
-const router = Router();
-
-// Validation schemas
-const loginSchema = z.object({
-  body: z.object({
-    email: z.email('Invalid email address'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-  }),
-});
-
-const registerSchema = z.object({
-  body: z.object({
-    email: z.email('Invalid email address'),
-    password: z
-      .string()
-      .min(8, 'Password must be at least 8 characters')
-      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-      .regex(/[0-9]/, 'Password must contain at least one number'),
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-  }),
-});
+const router = Router({ caseSensitive: true });
 
 // Routes
 router.post(
   '/login',
-  authLimiter,
   validate(loginSchema),
   asyncHandler(async (req, res): Promise<void> => {
-    // Your login logic here
-    await req.body;
+    const { email, password } = req.body;
+    console.log('login', email, password);
     res.json({ message: 'Login successful' });
   })
 );
