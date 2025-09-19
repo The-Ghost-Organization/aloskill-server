@@ -26,36 +26,53 @@ export const validate = (schema: ZodObject): RequestHandler => {
 };
 
 // XSS sanitization middleware
-type Primitive = string | number | boolean | null | undefined;
+// Type guard to check if a value is a plain object (not array, null, or other objects)
+const isPlainObject = (value: unknown): value is Record<string, unknown> => {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !Array.isArray(value) &&
+    value.constructor === Object
+  );
+};
 
-type InputData = Primitive | InputData[] | { [key: string]: InputData };
-
-export const sanitizeInput = (req: Request, res: Response, next: NextFunction): void => {
-  const sanitize = <T extends InputData>(obj: T): T => {
-    if (typeof obj === 'string') {
-      return xss(obj) as T;
-    }
-
-    if (Array.isArray(obj)) {
-      return obj.map(sanitize) as T;
-    }
-
-    if (typeof obj === 'object' && obj !== null) {
-      const sanitized: Record<string, InputData> = {};
+// Alternative: More strict version that only sanitizes strings
+export const sanitizeInputStrict = (req: Request, res: Response, next: NextFunction): void => {
+  try {
+    const sanitizeStringsInObject = (obj: Record<string, unknown>): void => {
       for (const [key, value] of Object.entries(obj)) {
-        sanitized[key] = sanitize(value);
+        if (typeof value === 'string') {
+          obj[key] = xss(value);
+        } else if (isPlainObject(value)) {
+          sanitizeStringsInObject(value);
+        } else if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            if (typeof item === 'string') {
+              value[index] = xss(item);
+            } else if (isPlainObject(item)) {
+              sanitizeStringsInObject(item);
+            }
+          });
+        }
       }
-      return sanitized as T;
+    };
+
+    // Sanitize only if the property is a plain object
+    if (isPlainObject(req.body)) {
+      sanitizeStringsInObject(req.body);
     }
 
-    return obj;
-  };
+    if (isPlainObject(req.query)) {
+      sanitizeStringsInObject(req.query);
+    }
 
-  if (req.body) {
-    req.body = sanitize(req.body as InputData);
+    if (isPlainObject(req.params)) {
+      sanitizeStringsInObject(req.params);
+    }
+
+    next();
+  } catch (error) {
+    console.error('Error in sanitizeInputStrict middleware:', error);
+    next(error);
   }
-  req.query = sanitize(req.query);
-  req.params = sanitize(req.params);
-
-  next();
 };

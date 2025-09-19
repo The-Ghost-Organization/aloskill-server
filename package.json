@@ -34,7 +34,6 @@
     "format-all": "run-p lint:fix prettier:fix"
   },
   "dependencies": {
-    "@prisma/client": "^6.16.1",
     "bcryptjs": "^3.0.2",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
@@ -56,6 +55,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
+    "@prisma/client": "^6.16.2",
     "@types/bcryptjs": "^3.0.0",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.9",
@@ -81,7 +81,7 @@
     "lint-staged": "^16.1.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
-    "prisma": "^6.16.1",
+    "prisma": "^6.16.2",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
