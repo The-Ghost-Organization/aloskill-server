@@ -1,8 +1,7 @@
-import { type ApiResponse, HttpStatus } from '@/types/response.js';
+import { type ApiResponse, HttpStatus } from '@/types/shared.js';
 import type { Response } from 'express';
 
 class ResponseHandler {
-
   private static send = <T>(
     res: Response,
     statusCode: HttpStatus,
@@ -91,7 +90,6 @@ class ResponseHandler {
     return this.send(res, HttpStatus.SERVICE_UNAVAILABLE, message);
   };
 
-
   static paginated = <T>(
     res: Response,
     data: T[],
@@ -109,7 +107,6 @@ class ResponseHandler {
       totalPages,
     });
   };
-
 
   static withMeta = <T>(
     res: Response,
