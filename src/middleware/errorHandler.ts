@@ -1,5 +1,5 @@
 import { config } from '@/config/env.js';
-import { Prisma } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { ZodError } from 'zod';
@@ -26,7 +26,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     });
   }
 
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+  if (err instanceof PrismaClientKnownRequestError) {
     return ResponseHandler.badRequest(res, 'Database operation failed');
   }
 
@@ -59,6 +59,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
 // 404 handler
 export const notFoundHandler: RequestHandler = (req, res, next) => {
-  console.log("not found triggered");
+  console.log('not found triggered');
   next();
 };
