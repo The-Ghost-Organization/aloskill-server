@@ -1,12 +1,12 @@
-import jwt from 'jsonwebtoken';
-import { config } from '../config/env.js';
-import type { JwtPayload, TokenOptions, TokenPair, TokenType } from '@/types/jwt.js';
 import {
   JwtError,
   JwtExpiredError,
   JwtInvalidError,
   JwtMissingError,
 } from '@/middleware/errorHandler.js';
+import type { JwtPayload, TokenOptions, TokenPair, TokenType } from '@/types/jwt.js';
+import jwt from 'jsonwebtoken';
+import { config } from '../config/env.js';
 
 class JwtService {
   private static readonly SECRETS: Record<TokenType, string | undefined> = {
@@ -22,6 +22,10 @@ class JwtService {
     options: TokenOptions
   ): string {
     const { expiresIn, type } = options;
+
+    if (!expiresIn) {
+      throw new Error('ExpiresIn is required');
+    }
 
     const secret = this.SECRETS[type];
     if (!secret) {
@@ -72,14 +76,14 @@ class JwtService {
   /**
    * Generate access and refresh token pair
    */
-  static generateTokenPair(user: { id: string; email: string; role: string }): TokenPair {
+  static generateTokenPair(user: { email: string; role: string }): TokenPair {
     const accessToken = this.generateToken(
-      { userId: user.id, email: user.email, role: user.role },
+      { email: user.email, role: user.role },
       { expiresIn: config.ACCESS_TOKEN_EXPIRY, type: 'ACCESS' }
     );
 
     const refreshToken = this.generateToken(
-      { userId: user.id, email: user.email, role: user.role },
+      { email: user.email, role: user.role },
       { expiresIn: config.REFRESH_TOKEN_EXPIRY, type: 'REFRESH' }
     );
 
