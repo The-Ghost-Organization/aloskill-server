@@ -3,7 +3,6 @@ export type TokenType = 'ACCESS' | 'REFRESH';
 
 // Token payload interface
 export interface JwtPayload {
-  userId: string;
   email: string;
   role: string;
   type: TokenType;
