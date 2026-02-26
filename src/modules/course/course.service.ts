@@ -1831,9 +1831,8 @@ const createFileToBunny = async (req: Request) => {
   if (!folder) {
     return null;
   }
-  const REGION = 'SG';
+  const REGION = 'sg';
   const BASE_HOSTNAME = 'storage.bunnycdn.com';
-  // const HOSTNAME = `${BASE_HOSTNAME}`;
   const HOSTNAME = `${REGION}.${BASE_HOSTNAME}`;
 
   const uniqueId = Math.random().toString(36).substring(2, 8);

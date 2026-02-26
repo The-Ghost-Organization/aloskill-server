@@ -130,7 +130,7 @@ router.delete(
 
 router.delete(
   '/delete-file',
-  requireInstructor,
+  requireStudent,
   validate(GetAndDeleteFileSchema),
   courseController.deleteFile
 );
