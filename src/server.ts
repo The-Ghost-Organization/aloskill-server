@@ -7,9 +7,7 @@ import type { Express } from 'express';
 import { type Server } from 'http';
 import app from './app.js';
 import {
-  checkDatabaseHealth,
   connectDatabase,
-  disconnectDatabase,
   isDatabaseConnected,
 } from './config/database.js';
 import { config } from './config/env.js';
@@ -60,14 +58,6 @@ const initializeDatabase = async (): Promise<void> => {
   try {
     await connectDatabase();
     console.log('  ✅ Database connection established');
-
-    // Verify database health
-    console.log('  🏥 Checking database health...');
-    const isHealthy = await checkDatabaseHealth();
-    if (!isHealthy) {
-      throw new Error('Database health check failed after connection');
-    }
-    console.log('  ✅ Database health check passed');
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(`  ❌ Database error: ${errorMessage}`);
@@ -127,13 +117,6 @@ const startHttpServer = async (): Promise<void> => {
  */
 const performHealthCheck = async (): Promise<boolean> => {
   try {
-    // Check database health
-    const dbHealthy = isDatabaseConnected() && (await checkDatabaseHealth());
-    if (!dbHealthy) {
-      console.warn('⚠️ Database health check failed');
-      return false;
-    }
-
     // Check if HTTP server is listening
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (!server || !server.listening) {
@@ -207,16 +190,6 @@ const closeHttpServer = async (): Promise<void> => {
 };
 
 /**
- * Close database connections
- */
-const closeDatabaseConnections = async (): Promise<void> => {
-  if (isDatabaseConnected()) {
-    await disconnectDatabase();
-    console.log('🗄️ Database connections closed');
-  }
-};
-
-/**
  * Perform graceful shutdown
  */
 const performGracefulShutdown = async (): Promise<void> => {
@@ -225,7 +198,7 @@ const performGracefulShutdown = async (): Promise<void> => {
   const shutdownSteps = [
     { name: 'Stop health monitoring', action: stopHealthMonitoring },
     { name: 'Close HTTP server', action: closeHttpServer },
-    { name: 'Close database connections', action: closeDatabaseConnections },
+    // { name: 'Close database connections', action: closeDatabaseConnections },
   ];
 
   for (const step of shutdownSteps) {

@@ -609,7 +609,7 @@ const registerInstructor = async (req: Request) => {
     }
     const hashedPassword = await hash(data.password as string);
     data.password = hashedPassword;
-    const { email, password, phoneNumber, skills, socialAccount, ...restData } = data;
+    const { email, password, profileImage, phoneNumber, skills, socialAccount, ...restData } = data;
     const encryptedPhoneNumber = encryptPhoneNumber(phoneNumber as string);
     restData.encryptedPhone = encryptedPhoneNumber;
     restData.phoneLastFour = phoneNumber.slice(-4);
@@ -619,6 +619,7 @@ const registerInstructor = async (req: Request) => {
         data: {
           email,
           password,
+          avatarUrl: profileImage,
           emailVerificationTokenHash: crypto.randomBytes(64).toString('hex'),
           emailVerificationExpires: new Date(Date.now() + 6 * 60 * 60 * 1000),
           instructorProfile: {
@@ -663,6 +664,7 @@ const registerInstructor = async (req: Request) => {
   const {
     email: _email,
     password: _password,
+    profileImage,
     phoneNumber,
     skills,
     socialAccount,
@@ -678,6 +680,7 @@ const registerInstructor = async (req: Request) => {
         email: data.email,
       },
       data: {
+        avatarUrl: profileImage,
         instructorProfile: {
           create: {
             ...restData,

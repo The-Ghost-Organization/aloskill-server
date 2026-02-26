@@ -1138,10 +1138,12 @@ export type CourseCreateNestedOneWithoutReviewsInput = {
   connect?: Prisma.CourseWhereUniqueInput
 }
 
-export type CourseUpdateOneRequiredWithoutReviewsNestedInput = {
+export type CourseUpdateOneWithoutReviewsNestedInput = {
   create?: Prisma.XOR<Prisma.CourseCreateWithoutReviewsInput, Prisma.CourseUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.CourseCreateOrConnectWithoutReviewsInput
   upsert?: Prisma.CourseUpsertWithoutReviewsInput
+  disconnect?: Prisma.CourseWhereInput | boolean
+  delete?: Prisma.CourseWhereInput | boolean
   connect?: Prisma.CourseWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CourseUpdateToOneWithWhereWithoutReviewsInput, Prisma.CourseUpdateWithoutReviewsInput>, Prisma.CourseUncheckedUpdateWithoutReviewsInput>
 }
@@ -1152,10 +1154,12 @@ export type CourseCreateNestedOneWithoutWishlistedByInput = {
   connect?: Prisma.CourseWhereUniqueInput
 }
 
-export type CourseUpdateOneRequiredWithoutWishlistedByNestedInput = {
+export type CourseUpdateOneWithoutWishlistedByNestedInput = {
   create?: Prisma.XOR<Prisma.CourseCreateWithoutWishlistedByInput, Prisma.CourseUncheckedCreateWithoutWishlistedByInput>
   connectOrCreate?: Prisma.CourseCreateOrConnectWithoutWishlistedByInput
   upsert?: Prisma.CourseUpsertWithoutWishlistedByInput
+  disconnect?: Prisma.CourseWhereInput | boolean
+  delete?: Prisma.CourseWhereInput | boolean
   connect?: Prisma.CourseWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CourseUpdateToOneWithWhereWithoutWishlistedByInput, Prisma.CourseUpdateWithoutWishlistedByInput>, Prisma.CourseUncheckedUpdateWithoutWishlistedByInput>
 }
@@ -1166,10 +1170,12 @@ export type CourseCreateNestedOneWithoutOrderItemInput = {
   connect?: Prisma.CourseWhereUniqueInput
 }
 
-export type CourseUpdateOneRequiredWithoutOrderItemNestedInput = {
+export type CourseUpdateOneWithoutOrderItemNestedInput = {
   create?: Prisma.XOR<Prisma.CourseCreateWithoutOrderItemInput, Prisma.CourseUncheckedCreateWithoutOrderItemInput>
   connectOrCreate?: Prisma.CourseCreateOrConnectWithoutOrderItemInput
   upsert?: Prisma.CourseUpsertWithoutOrderItemInput
+  disconnect?: Prisma.CourseWhereInput | boolean
+  delete?: Prisma.CourseWhereInput | boolean
   connect?: Prisma.CourseWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CourseUpdateToOneWithWhereWithoutOrderItemInput, Prisma.CourseUpdateWithoutOrderItemInput>, Prisma.CourseUncheckedUpdateWithoutOrderItemInput>
 }

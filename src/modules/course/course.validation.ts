@@ -7,10 +7,7 @@ const quizQuestionSchema = z
       .trim()
       .min(10, 'Question text must be at least 10 characters long')
       .max(200, 'Question text cannot exceed 200 characters')
-      .regex(
-        /^[\w\s\p{P}&\-?+]+$/u,
-        'Question title contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-      ),
+      .regex(/^[^<>]*$/, 'Question title must not contain any opening or closing HTML tags'),
     position: z.number('Position must be an integer').int().positive(),
     type: z.enum(['MULTIPLE_CHOICE', 'TRUE_FALSE', 'SINGLE_CHOICE'], 'Question type is required'),
     points: z
@@ -27,10 +24,7 @@ const quizQuestionSchema = z
             .trim()
             .min(1, 'Option text must be at least 1 characters long')
             .max(50, 'Option text cannot exceed 50 characters')
-            .regex(
-              /^[\w\s\p{P}&\-]+$/u,
-              'Option Text contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-            ),
+            .regex(/^[^<>]*$/, 'Option Text must not contain any opening or closing HTML tags'),
           position: z.number('Position must be an integer').int().positive(),
           isCorrect: z.boolean('isCorrect must be a boolean'),
         })
@@ -80,18 +74,19 @@ const courseQuizSchema = z.object({
     .string()
     .min(20, 'Quiz title must be at least 20 characters long')
     .max(500, 'Quiz title cannot exceed 500 characters')
-    .regex(
-      /^[\w\s\p{P}&\-]+$/u,
-      'Quiz title contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-    ),
+    .regex(/^[^<>]*$/, 'Quiz title must not contain any opening or closing HTML tags'),
   description: z
     .string()
     .min(20, 'Quiz description must be at least 20 characters long')
-    .regex(
-      /^[\w\s\p{P}&\-]+$/u,
-      'Quiz description contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-    ),
-  duration: z.number('Duration must be a number and must be positive').int().positive().min(1).max(60).nullable().optional(),
+    .regex(/^[^<>]*$/, 'Quiz description must not contain any opening or closing HTML tags.'),
+  duration: z
+    .number('Duration must be a number and must be positive')
+    .int()
+    .positive()
+    .min(1)
+    .max(60)
+    .nullable()
+    .optional(),
   passingScore: z.number('Passing score must be a number').int().positive().min(1).max(100),
   attemptsAllowed: z.number('attemptsAllowed must be a number').int().positive().min(1).max(10),
   questions: z.array(quizQuestionSchema).nonempty('At least one question is required'),
@@ -103,10 +98,7 @@ const courseLessonSchema = z.object({
     .trim()
     .min(5, 'LessonTitle must be at least 5 characters long')
     .max(150, 'LessonTitle cannot exceed 150 characters')
-    .regex(
-      /^[\w\s\p{P}&\-]+$/u,
-      'LessonTitle contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-    ),
+    .regex(/^[^<>]*$/, 'LessonTitle must not contain any opening or closing HTML tags.'),
   position: z.number('Position must be an integer').int().positive(),
   notes: z.preprocess(
     val => (val === '' ? undefined : val),
@@ -115,10 +107,7 @@ const courseLessonSchema = z.object({
       .trim()
       .min(20, 'Notes must be at least 20 characters long')
       .max(1000, 'Notes cannot exceed 1000 characters')
-      .regex(
-        /^[\w\s\p{P}&\-]+$/u,
-        'Notes contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-      )
+      .regex(/^[^<>]*$/, 'Notes must not contain any opening or closing HTML tags.')
       .optional()
   ),
   description: z.preprocess(
@@ -127,10 +116,7 @@ const courseLessonSchema = z.object({
       .string()
       .trim()
       .min(20, 'Description must be at least 20 characters long')
-      .regex(
-        /^[\w\s\p{P}&\-]+$/u,
-        'Description contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-      )
+      .regex(/^[^<>]*$/, 'Description must not contain any opening or closing HTML tags.')
       .optional()
   ),
   type: z.enum(['VIDEO', 'ARTICLE', 'QUIZ'], 'Type is required'),
@@ -154,7 +140,13 @@ const courseLessonSchema = z.object({
       })
     )
     .optional(),
-  duration: z.number('Lesson Duration must be a number and must be positive').int().positive().min(1).nullable().optional(),
+  duration: z
+    .number('Lesson Duration must be a number and must be positive')
+    .int()
+    .positive()
+    .min(1)
+    .nullable()
+    .optional(),
   quiz: courseQuizSchema.optional(),
 });
 
@@ -164,10 +156,7 @@ const courseModuleSchema = z.object({
     .trim()
     .min(5, 'Title must be at least 5 characters long')
     .max(150, 'Title cannot exceed 150 characters')
-    .regex(
-      /^[\w\s\p{P}&\-]+$/u,
-      'Title contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
-    ),
+    .regex(/^[^<>]*$/, 'Title must not contain any opening or closing HTML tags.'),
   position: z.number('Position must be an integer').int().positive(),
   lessons: z.array(courseLessonSchema).nonempty('At least one lesson is required'),
 });
@@ -183,8 +172,8 @@ export const CreateCourseSchema = z.object({
         .min(5, 'Title must be at least 5 characters long')
         .max(100, 'Title cannot exceed 100 characters')
         .regex(
-          /^[\w\s\p{P}&\-]+$/u,
-          'Title contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'
+          /^[^<>]*$/,
+          'Title contains invalid characters. Title must not contain any opening or closing HTML tags'
         ),
       slug: z
         .string()
@@ -223,8 +212,8 @@ export const CreateCourseSchema = z.object({
           if (val === undefined || val === '') {
             return true;
           }
-          return /^[\w\s\p{P}&\-]+$/u.test(val);
-        }, 'Welcome Message contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'),
+          return /^[^<>]*$/.test(val);
+        }, 'Welcome Message must not contain any opening or closing HTML tags'),
       congratulationsMessage: z
         .string()
         .max(1000, 'Congratulations Message cannot exceed 1000 characters')
@@ -233,8 +222,8 @@ export const CreateCourseSchema = z.object({
           if (val === undefined || val === '') {
             return true;
           }
-          return /^[\w\s\p{P}&\-]+$/u.test(val);
-        }, 'Congratulations Message contains invalid characters. Only letters, numbers, spaces, and common punctuation are allowed.'),
+          return /^[^<>]*$/.test(val);
+        }, 'Congratulations Message must not contain any opening or closing HTML tags.'),
       originalPrice: z.coerce.number().min(0).max(9999.99).optional(),
       discountPrice: z.coerce.number().min(0).max(9999.99).optional(),
       discountEndDate: z.coerce.date().optional().nullable(),
@@ -308,6 +297,12 @@ export const CreateCourseSchema = z.object({
 export const GetAndDeleteVideoSchema = z.object({
   body: z.object({
     videoUrl: z.string(),
+  }),
+});
+
+export const GetAndDeleteFileSchema = z.object({
+  body: z.object({
+    fileUrl: z.string(),
   }),
 });
 

@@ -131,6 +131,14 @@ enum PaymentMethod {
   OTHER
 }
 
+enum MobileBanking {
+    BKASH
+    ROCKET
+    NAGAD
+    UPAY
+    QCASH
+}
+
 enum OrderStatus {
   PENDING
   PAID
@@ -175,6 +183,22 @@ enum SocialPlatform {
   INSTAGRAM
   LINKEDIN
   YOUTUBE
+}
+
+enum BookFormat {
+  HARDCOVER
+  E_BOOK
+}
+
+enum ViewEntityType {
+  COURSE
+  BOOK
+  PROFILE
+}
+
+enum BookFileType {
+  PREVIEW
+  EBOOK
 }
 
 // === MODELS===//
@@ -239,10 +263,13 @@ model User {
   notifications    Notification[]
   wishlists        Wishlist[]
   orders           Order[]
+  books            Book[]
   LessonDiscussion LessonDiscussion[]
   LessonComment    LessonComment[]
   QuizResult       QuizResult[]
   AuditLog         AuditLog[]
+  paymentMethod    PayoutMethod[]
+  payouts          Payout[]
 
   @@index([id])
   @@index([email])
@@ -424,7 +451,7 @@ model InstructorProfile {
   courseType             CourseType
 
   //== Content & Teaching Skills
-  teachingExperience   Decimal?         @default(0) @db.Decimal(5, 2)
+  teachingExperience   Decimal?     @default(0) @db.Decimal(5, 2)
   prevTeachingApproach TeachingApproach
   language             TeachingLanguage
   demoVideo            String?
@@ -452,7 +479,6 @@ model InstructorProfile {
   // Relations
   ownedCourses      Course[]           @relation("CourseOwner")
   courseInstructors CourseInstructor[]
-  payouts           Payout[]
 
   @@index([userId])
   @@index([status])
@@ -494,16 +520,16 @@ model Course {
   congratulationsMessage String?
 
   // == Pricing == //
-  originalPrice    Decimal   @db.Decimal(6, 2)
+  originalPrice    Decimal   @db.Decimal(15, 2)
   discountPercent  Int?      @default(0)
-  discountPrice    Decimal?  @db.Decimal(6, 2)
+  discountPrice    Decimal?  @db.Decimal(15, 2)
   discountEndDate  DateTime?
   isDiscountActive Boolean   @default(false)
   currency         String?   @default("BDT")
 
   enrollmentCount    Int     @default(0)
   reviewCount        Int     @default(0)
-  totalRevenueAmount Decimal @default(0) @db.Decimal(12, 2)
+  totalRevenueAmount Decimal @default(0) @db.Decimal(15, 2)
   moduleCount        Int     @default(0)
 
   status       CourseStatus @default(DRAFT)
@@ -683,8 +709,8 @@ model Enrollment {
   course   Course @relation(fields: [courseId], references: [id], onDelete: Restrict)
   courseId String
 
-  pricePaid           Decimal?         @db.Decimal(6, 2)
-  originalPriceAtTime Decimal          @db.Decimal(6, 2)
+  pricePaid           Decimal?         @db.Decimal(15, 2)
+  originalPriceAtTime Decimal          @db.Decimal(15, 2)
   discountAtTime      Int              @default(0)
   currency            String           @default("BDT")
   status              EnrollmentStatus @default(ACTIVE)
@@ -721,6 +747,7 @@ model LessonProgress {
 
   completed     Boolean   @default(false)
   progressValue Int       @default(0)
+  lastPosition  Decimal   @db.Decimal(10,2)
   lastViewedAt  DateTime?
   attempts      Int?      @default(0)
   completedAt   DateTime?
@@ -740,8 +767,10 @@ model Review {
   id        String    @id @default(uuid())
   user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId    String
-  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId  String
+  course    Course?    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String?
+  bookId    String?
+  book      Book?     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   rating    Int       @default(0)
   title     String?
   body      String?
@@ -749,13 +778,90 @@ model Review {
   deletedAt DateTime?
   createdAt DateTime  @default(now())
 
-  @@unique([userId, courseId])
   @@index([courseId])
+  @@index([userId])
+  @@index([bookId])
   @@index([rating])
   @@index([createdAt])
   @@index([courseId, rating, createdAt])
+  @@index([bookId, rating, createdAt])
 
   @@map("reviews")
+}
+
+model Book {
+  id              String   @id @default(uuid())
+  title           String
+  author          String
+  translator      String?
+  editor          String?
+  publisher       String
+  description     String   @db.Text
+
+  regularPrice    Decimal  @db.Decimal(10, 2)
+  salePrice       Decimal  @db.Decimal(10, 2)
+  stock           Int      @default(0)
+
+  isbn            String?  @unique
+  edition         String?
+  pages           Int?
+  language        String
+  formats         BookFormat[]
+  totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
+  viewCount       Int       @default(0)
+
+  // tags are not listing yet for showing related book or course
+
+  metaKeywords    String?
+  metaDescription String?
+
+  coverImage      String
+  files           BookFile[]
+
+  ownerId         String
+  owner           User    @relation(fields: [ownerId], references: [id])
+
+  categoryId      String?
+  category        BookCategory?    @relation(fields: [categoryId], references: [id])
+
+  orderItem       OrderItem[]
+  reviews         Review[]
+  PaymentTransaction PaymentTransaction[]
+  wishlistedBy       Wishlist[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("books")
+  @@index([isbn])
+  @@index([isbn, ownerId])
+}
+
+model BookFile {
+  id         String   @id @default(uuid())
+  name       String
+  url        String
+  fileType   BookFileType
+
+  bookId     String
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@map("book_files")
+}
+
+model ViewLog {
+  id          String   @id @default(uuid())
+  entityId    String   // ID of the Course, Book, or InstructorProfile
+  entityType  ViewEntityType
+  viewerId    String?
+  viewedAt    DateTime @default(now())
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  @@index([entityId, entityType])
+  @@map("view_logs")
 }
 
 //=== WISH LIST ===//
@@ -764,8 +870,11 @@ model Wishlist {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId String
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String?
+
+  book      Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String?
 
   createdAt DateTime @default(now())
 
@@ -779,7 +888,7 @@ model Order {
   id                  String               @id @default(uuid())
   user                User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId              String
-  totalAmount         Decimal              @db.Decimal(10, 2)
+  totalAmount         Decimal              @db.Decimal(15, 2)
   currency            String               @default("BDT")
   status              OrderStatus          @default(PENDING)
   provider            PaymentProviders?
@@ -802,15 +911,16 @@ model OrderItem {
   // Relations
   order    Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId  String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Restrict)
-  courseId String
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  courseId String?
+  book     Book?  @relation(fields: [bookId], references: [id], onDelete: Restrict)
+  bookId   String?
 
-  price     Decimal         @db.Decimal(10, 2)
+  price     Decimal         @db.Decimal(15, 2)
   currency  String?         @default("BDT")
   status    OrderItemStatus @default(PENDING)
   createdAt DateTime        @default(now())
 
-  @@unique([orderId, courseId])
   @@index([orderId])
   @@index([courseId])
 
@@ -825,6 +935,8 @@ model PaymentTransaction {
   userId   String
   course   Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
   courseId String?
+  book     Book?   @relation(fields: [bookId], references: [id], onDelete: SetNull)
+  bookId   String?
   order    Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
   orderId  String?
 
@@ -832,7 +944,7 @@ model PaymentTransaction {
   providerFee           Decimal?       @db.Decimal(6, 2)
   providerTransactionId String?        @unique
 
-  amount            Decimal           @db.Decimal(10, 2)
+  amount            Decimal           @db.Decimal(15, 2)
   currency          String            @default("BDT")
   provider          PaymentProviders
   providerPaymentId String?           @unique
@@ -851,7 +963,7 @@ model PaymentTransaction {
 model Payout {
   id           String            @id @default(uuid())
   // Relations
-  instructor   InstructorProfile @relation(fields: [instructorId], references: [id], onDelete: Restrict)
+  instructor   User @relation(fields: [instructorId], references: [id], onDelete: Restrict)
   instructorId String
 
   amount           Decimal       @db.Decimal(10, 2)
@@ -884,6 +996,32 @@ model Payout {
   @@map("payouts")
 }
 
+model PayoutMethod {
+  id           String            @id @default(uuid())
+  instructorId String
+  instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  type           PaymentMethod
+  bankName       String?
+  mobileBankingName     MobileBanking?
+  accHolderName  String
+  accountNumber  String
+  branchName     String?
+  routingNumber  String?
+
+  isDefault    Boolean           @default(false)
+  createdAt    DateTime          @default(now())
+
+  @@map("payout_methods")
+}
+
+model BankName {
+  id    String @id @default(uuid())
+  name  String @unique
+
+  @@map("bank_names")
+}
+
 /// Categories & tags
 model Category {
   id       String  @id @default(uuid())
@@ -901,6 +1039,24 @@ model Category {
   @@index([parentId])
 
   @@map("categories")
+}
+
+model BookCategory {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  slug     String  @unique
+  parentId String?
+
+  parent   BookCategory?  @relation("BookCategoryHierarchy", fields: [parentId], references: [id])
+  children BookCategory[] @relation("BookCategoryHierarchy")
+
+  book Book[]
+
+  @@index([slug])
+  @@index([name])
+  @@index([parentId])
+
+  @@map("book_categories")
 }
 
 model Tag {

@@ -14,14 +14,16 @@ const envSchema = z.object({
   DATABASE_URL: z
     .url({ message: 'Invalid HTTP(S) URL' })
     .default(process.env.DATABASE_URL as string),
+  IPN_VALIDATION_URL: z
+    .url({ message: 'Invalid HTTP(S) URL of IPN' })
+    .default(process.env.IPN_VALIDATION_URL as string),
   FRONTEND_URL: z
     .url({
       message: 'Invalid HTTP(S) URL',
-      protocol: /^https?$/i,
-      hostname: /^([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/,
+      // protocol: /^http?$/i,
+      // hostname: /^([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/,
     })
-    // .default(process.env.FRONTEND_URL as string),
-    .default('http://localhost:3000'),
+    .default(process.env.FRONTEND_URL as string),
   COOKIE_SECRET: z
     .string()
     .min(32, 'Cookie secret must be at least 32 characters')

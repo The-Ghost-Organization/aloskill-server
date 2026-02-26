@@ -38,6 +38,7 @@ export const InstructorProfileSchema = z.object({
       .regex(/[0-9]/, 'Password must contain at least one number')
       .optional()
       .nullable(),
+    profileImage: z.url("Profile Image url is required for instructor"),
     displayName: z
       .string()
       .min(6, 'Display name must be at least 6 characters long.')

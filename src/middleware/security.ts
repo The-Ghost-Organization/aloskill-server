@@ -48,7 +48,7 @@ export const speedLimiter = slowDown({
 });
 
 export const corsOptions = {
-  origin: [config.FRONTEND_URL, 'http://localhost:3000/'],
+  origin: [config.FRONTEND_URL, 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   exposedHeaders: ['RateLimit-Limit', 'RateLimit-Remaining', 'RateLimit-Reset', 'Set-Cookie'],

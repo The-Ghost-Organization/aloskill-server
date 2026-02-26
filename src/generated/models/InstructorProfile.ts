@@ -497,7 +497,6 @@ export type InstructorProfileWhereInput = {
   socialAccount?: Prisma.SocialLinkListRelationFilter
   ownedCourses?: Prisma.CourseListRelationFilter
   courseInstructors?: Prisma.CourseInstructorListRelationFilter
-  payouts?: Prisma.PayoutListRelationFilter
 }
 
 export type InstructorProfileOrderByWithRelationInput = {
@@ -542,7 +541,6 @@ export type InstructorProfileOrderByWithRelationInput = {
   socialAccount?: Prisma.SocialLinkOrderByRelationAggregateInput
   ownedCourses?: Prisma.CourseOrderByRelationAggregateInput
   courseInstructors?: Prisma.CourseInstructorOrderByRelationAggregateInput
-  payouts?: Prisma.PayoutOrderByRelationAggregateInput
 }
 
 export type InstructorProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -590,7 +588,6 @@ export type InstructorProfileWhereUniqueInput = Prisma.AtLeast<{
   socialAccount?: Prisma.SocialLinkListRelationFilter
   ownedCourses?: Prisma.CourseListRelationFilter
   courseInstructors?: Prisma.CourseInstructorListRelationFilter
-  payouts?: Prisma.PayoutListRelationFilter
 }, "id" | "userId">
 
 export type InstructorProfileOrderByWithAggregationInput = {
@@ -720,7 +717,6 @@ export type InstructorProfileCreateInput = {
   socialAccount?: Prisma.SocialLinkCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUncheckedCreateInput = {
@@ -764,7 +760,6 @@ export type InstructorProfileUncheckedCreateInput = {
   socialAccount?: Prisma.SocialLinkUncheckedCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUpdateInput = {
@@ -808,7 +803,6 @@ export type InstructorProfileUpdateInput = {
   socialAccount?: Prisma.SocialLinkUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileUncheckedUpdateInput = {
@@ -852,7 +846,6 @@ export type InstructorProfileUncheckedUpdateInput = {
   socialAccount?: Prisma.SocialLinkUncheckedUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUncheckedUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileCreateManyInput = {
@@ -1250,20 +1243,6 @@ export type InstructorProfileUpdateOneRequiredWithoutCourseInstructorsNestedInpu
   update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorProfileUpdateToOneWithWhereWithoutCourseInstructorsInput, Prisma.InstructorProfileUpdateWithoutCourseInstructorsInput>, Prisma.InstructorProfileUncheckedUpdateWithoutCourseInstructorsInput>
 }
 
-export type InstructorProfileCreateNestedOneWithoutPayoutsInput = {
-  create?: Prisma.XOR<Prisma.InstructorProfileCreateWithoutPayoutsInput, Prisma.InstructorProfileUncheckedCreateWithoutPayoutsInput>
-  connectOrCreate?: Prisma.InstructorProfileCreateOrConnectWithoutPayoutsInput
-  connect?: Prisma.InstructorProfileWhereUniqueInput
-}
-
-export type InstructorProfileUpdateOneRequiredWithoutPayoutsNestedInput = {
-  create?: Prisma.XOR<Prisma.InstructorProfileCreateWithoutPayoutsInput, Prisma.InstructorProfileUncheckedCreateWithoutPayoutsInput>
-  connectOrCreate?: Prisma.InstructorProfileCreateOrConnectWithoutPayoutsInput
-  upsert?: Prisma.InstructorProfileUpsertWithoutPayoutsInput
-  connect?: Prisma.InstructorProfileWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorProfileUpdateToOneWithWhereWithoutPayoutsInput, Prisma.InstructorProfileUpdateWithoutPayoutsInput>, Prisma.InstructorProfileUncheckedUpdateWithoutPayoutsInput>
-}
-
 export type InstructorProfileCreateWithoutUserInput = {
   id?: string
   displayName: string
@@ -1304,7 +1283,6 @@ export type InstructorProfileCreateWithoutUserInput = {
   socialAccount?: Prisma.SocialLinkCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUncheckedCreateWithoutUserInput = {
@@ -1347,7 +1325,6 @@ export type InstructorProfileUncheckedCreateWithoutUserInput = {
   socialAccount?: Prisma.SocialLinkUncheckedCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileCreateOrConnectWithoutUserInput = {
@@ -1406,7 +1383,6 @@ export type InstructorProfileUpdateWithoutUserInput = {
   socialAccount?: Prisma.SocialLinkUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileUncheckedUpdateWithoutUserInput = {
@@ -1449,7 +1425,6 @@ export type InstructorProfileUncheckedUpdateWithoutUserInput = {
   socialAccount?: Prisma.SocialLinkUncheckedUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUncheckedUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileCreateWithoutSkillsInput = {
@@ -1492,7 +1467,6 @@ export type InstructorProfileCreateWithoutSkillsInput = {
   socialAccount?: Prisma.SocialLinkCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUncheckedCreateWithoutSkillsInput = {
@@ -1535,7 +1509,6 @@ export type InstructorProfileUncheckedCreateWithoutSkillsInput = {
   socialAccount?: Prisma.SocialLinkUncheckedCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileCreateOrConnectWithoutSkillsInput = {
@@ -1594,7 +1567,6 @@ export type InstructorProfileUpdateWithoutSkillsInput = {
   socialAccount?: Prisma.SocialLinkUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileUncheckedUpdateWithoutSkillsInput = {
@@ -1637,7 +1609,6 @@ export type InstructorProfileUncheckedUpdateWithoutSkillsInput = {
   socialAccount?: Prisma.SocialLinkUncheckedUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUncheckedUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileCreateWithoutSocialAccountInput = {
@@ -1680,7 +1651,6 @@ export type InstructorProfileCreateWithoutSocialAccountInput = {
   skills?: Prisma.InstructorSkillCreateNestedManyWithoutInstructorInput
   ownedCourses?: Prisma.CourseCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUncheckedCreateWithoutSocialAccountInput = {
@@ -1723,7 +1693,6 @@ export type InstructorProfileUncheckedCreateWithoutSocialAccountInput = {
   skills?: Prisma.InstructorSkillUncheckedCreateNestedManyWithoutInstructorInput
   ownedCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCreatedByInput
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileCreateOrConnectWithoutSocialAccountInput = {
@@ -1782,7 +1751,6 @@ export type InstructorProfileUpdateWithoutSocialAccountInput = {
   skills?: Prisma.InstructorSkillUpdateManyWithoutInstructorNestedInput
   ownedCourses?: Prisma.CourseUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileUncheckedUpdateWithoutSocialAccountInput = {
@@ -1825,7 +1793,6 @@ export type InstructorProfileUncheckedUpdateWithoutSocialAccountInput = {
   skills?: Prisma.InstructorSkillUncheckedUpdateManyWithoutInstructorNestedInput
   ownedCourses?: Prisma.CourseUncheckedUpdateManyWithoutCreatedByNestedInput
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileCreateWithoutOwnedCoursesInput = {
@@ -1868,7 +1835,6 @@ export type InstructorProfileCreateWithoutOwnedCoursesInput = {
   skills?: Prisma.InstructorSkillCreateNestedManyWithoutInstructorInput
   socialAccount?: Prisma.SocialLinkCreateNestedManyWithoutUserInput
   courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUncheckedCreateWithoutOwnedCoursesInput = {
@@ -1911,7 +1877,6 @@ export type InstructorProfileUncheckedCreateWithoutOwnedCoursesInput = {
   skills?: Prisma.InstructorSkillUncheckedCreateNestedManyWithoutInstructorInput
   socialAccount?: Prisma.SocialLinkUncheckedCreateNestedManyWithoutUserInput
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutInstructorInput
-  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileCreateOrConnectWithoutOwnedCoursesInput = {
@@ -1970,7 +1935,6 @@ export type InstructorProfileUpdateWithoutOwnedCoursesInput = {
   skills?: Prisma.InstructorSkillUpdateManyWithoutInstructorNestedInput
   socialAccount?: Prisma.SocialLinkUpdateManyWithoutUserNestedInput
   courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileUncheckedUpdateWithoutOwnedCoursesInput = {
@@ -2013,7 +1977,6 @@ export type InstructorProfileUncheckedUpdateWithoutOwnedCoursesInput = {
   skills?: Prisma.InstructorSkillUncheckedUpdateManyWithoutInstructorNestedInput
   socialAccount?: Prisma.SocialLinkUncheckedUpdateManyWithoutUserNestedInput
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutInstructorNestedInput
-  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileCreateWithoutCourseInstructorsInput = {
@@ -2056,7 +2019,6 @@ export type InstructorProfileCreateWithoutCourseInstructorsInput = {
   skills?: Prisma.InstructorSkillCreateNestedManyWithoutInstructorInput
   socialAccount?: Prisma.SocialLinkCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseCreateNestedManyWithoutCreatedByInput
-  payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileUncheckedCreateWithoutCourseInstructorsInput = {
@@ -2099,7 +2061,6 @@ export type InstructorProfileUncheckedCreateWithoutCourseInstructorsInput = {
   skills?: Prisma.InstructorSkillUncheckedCreateNestedManyWithoutInstructorInput
   socialAccount?: Prisma.SocialLinkUncheckedCreateNestedManyWithoutUserInput
   ownedCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCreatedByInput
-  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorProfileCreateOrConnectWithoutCourseInstructorsInput = {
@@ -2158,7 +2119,6 @@ export type InstructorProfileUpdateWithoutCourseInstructorsInput = {
   skills?: Prisma.InstructorSkillUpdateManyWithoutInstructorNestedInput
   socialAccount?: Prisma.SocialLinkUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUpdateManyWithoutCreatedByNestedInput
-  payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorProfileUncheckedUpdateWithoutCourseInstructorsInput = {
@@ -2201,195 +2161,6 @@ export type InstructorProfileUncheckedUpdateWithoutCourseInstructorsInput = {
   skills?: Prisma.InstructorSkillUncheckedUpdateManyWithoutInstructorNestedInput
   socialAccount?: Prisma.SocialLinkUncheckedUpdateManyWithoutUserNestedInput
   ownedCourses?: Prisma.CourseUncheckedUpdateManyWithoutCreatedByNestedInput
-  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
-}
-
-export type InstructorProfileCreateWithoutPayoutsInput = {
-  id?: string
-  displayName: string
-  DOB: Date | string
-  gender: $Enums.Gender
-  nationality: string
-  encryptedPhone: string
-  phoneLastFour: string
-  address: string
-  city: string
-  qualifications: string
-  experience?: number
-  expertise?: string | null
-  currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
-  courseLevel: $Enums.CourseLevel
-  courseType: $Enums.CourseType
-  teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  prevTeachingApproach: $Enums.TeachingApproach
-  language: $Enums.TeachingLanguage
-  demoVideo?: string | null
-  bio: string
-  website?: string | null
-  paymentId?: string | null
-  status?: $Enums.ApplicationStatus
-  rejectionReason?: string | null
-  ratingAverage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  ratingCount?: number
-  totalStudents?: number
-  totalCourses?: number
-  totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalRefunds?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  deletedAt?: Date | string | null
-  deletionReason?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutInstructorProfileInput
-  skills?: Prisma.InstructorSkillCreateNestedManyWithoutInstructorInput
-  socialAccount?: Prisma.SocialLinkCreateNestedManyWithoutUserInput
-  ownedCourses?: Prisma.CourseCreateNestedManyWithoutCreatedByInput
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutInstructorInput
-}
-
-export type InstructorProfileUncheckedCreateWithoutPayoutsInput = {
-  id?: string
-  userId: string
-  displayName: string
-  DOB: Date | string
-  gender: $Enums.Gender
-  nationality: string
-  encryptedPhone: string
-  phoneLastFour: string
-  address: string
-  city: string
-  qualifications: string
-  experience?: number
-  expertise?: string | null
-  currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
-  courseLevel: $Enums.CourseLevel
-  courseType: $Enums.CourseType
-  teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  prevTeachingApproach: $Enums.TeachingApproach
-  language: $Enums.TeachingLanguage
-  demoVideo?: string | null
-  bio: string
-  website?: string | null
-  paymentId?: string | null
-  status?: $Enums.ApplicationStatus
-  rejectionReason?: string | null
-  ratingAverage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  ratingCount?: number
-  totalStudents?: number
-  totalCourses?: number
-  totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalRefunds?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  deletedAt?: Date | string | null
-  deletionReason?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  skills?: Prisma.InstructorSkillUncheckedCreateNestedManyWithoutInstructorInput
-  socialAccount?: Prisma.SocialLinkUncheckedCreateNestedManyWithoutUserInput
-  ownedCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCreatedByInput
-  courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutInstructorInput
-}
-
-export type InstructorProfileCreateOrConnectWithoutPayoutsInput = {
-  where: Prisma.InstructorProfileWhereUniqueInput
-  create: Prisma.XOR<Prisma.InstructorProfileCreateWithoutPayoutsInput, Prisma.InstructorProfileUncheckedCreateWithoutPayoutsInput>
-}
-
-export type InstructorProfileUpsertWithoutPayoutsInput = {
-  update: Prisma.XOR<Prisma.InstructorProfileUpdateWithoutPayoutsInput, Prisma.InstructorProfileUncheckedUpdateWithoutPayoutsInput>
-  create: Prisma.XOR<Prisma.InstructorProfileCreateWithoutPayoutsInput, Prisma.InstructorProfileUncheckedCreateWithoutPayoutsInput>
-  where?: Prisma.InstructorProfileWhereInput
-}
-
-export type InstructorProfileUpdateToOneWithWhereWithoutPayoutsInput = {
-  where?: Prisma.InstructorProfileWhereInput
-  data: Prisma.XOR<Prisma.InstructorProfileUpdateWithoutPayoutsInput, Prisma.InstructorProfileUncheckedUpdateWithoutPayoutsInput>
-}
-
-export type InstructorProfileUpdateWithoutPayoutsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
-  nationality?: Prisma.StringFieldUpdateOperationsInput | string
-  encryptedPhone?: Prisma.StringFieldUpdateOperationsInput | string
-  phoneLastFour?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  city?: Prisma.StringFieldUpdateOperationsInput | string
-  qualifications?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.IntFieldUpdateOperationsInput | number
-  expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
-  courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
-  courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
-  teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  prevTeachingApproach?: Prisma.EnumTeachingApproachFieldUpdateOperationsInput | $Enums.TeachingApproach
-  language?: Prisma.EnumTeachingLanguageFieldUpdateOperationsInput | $Enums.TeachingLanguage
-  demoVideo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratingAverage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  ratingCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStudents?: Prisma.IntFieldUpdateOperationsInput | number
-  totalCourses?: Prisma.IntFieldUpdateOperationsInput | number
-  totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalRefunds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutInstructorProfileNestedInput
-  skills?: Prisma.InstructorSkillUpdateManyWithoutInstructorNestedInput
-  socialAccount?: Prisma.SocialLinkUpdateManyWithoutUserNestedInput
-  ownedCourses?: Prisma.CourseUpdateManyWithoutCreatedByNestedInput
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutInstructorNestedInput
-}
-
-export type InstructorProfileUncheckedUpdateWithoutPayoutsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
-  nationality?: Prisma.StringFieldUpdateOperationsInput | string
-  encryptedPhone?: Prisma.StringFieldUpdateOperationsInput | string
-  phoneLastFour?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  city?: Prisma.StringFieldUpdateOperationsInput | string
-  qualifications?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.IntFieldUpdateOperationsInput | number
-  expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
-  courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
-  courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
-  teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  prevTeachingApproach?: Prisma.EnumTeachingApproachFieldUpdateOperationsInput | $Enums.TeachingApproach
-  language?: Prisma.EnumTeachingLanguageFieldUpdateOperationsInput | $Enums.TeachingLanguage
-  demoVideo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratingAverage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  ratingCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStudents?: Prisma.IntFieldUpdateOperationsInput | number
-  totalCourses?: Prisma.IntFieldUpdateOperationsInput | number
-  totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalRefunds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  deletionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  skills?: Prisma.InstructorSkillUncheckedUpdateManyWithoutInstructorNestedInput
-  socialAccount?: Prisma.SocialLinkUncheckedUpdateManyWithoutUserNestedInput
-  ownedCourses?: Prisma.CourseUncheckedUpdateManyWithoutCreatedByNestedInput
-  courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 
@@ -2402,7 +2173,6 @@ export type InstructorProfileCountOutputType = {
   socialAccount: number
   ownedCourses: number
   courseInstructors: number
-  payouts: number
 }
 
 export type InstructorProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2410,7 +2180,6 @@ export type InstructorProfileCountOutputTypeSelect<ExtArgs extends runtime.Types
   socialAccount?: boolean | InstructorProfileCountOutputTypeCountSocialAccountArgs
   ownedCourses?: boolean | InstructorProfileCountOutputTypeCountOwnedCoursesArgs
   courseInstructors?: boolean | InstructorProfileCountOutputTypeCountCourseInstructorsArgs
-  payouts?: boolean | InstructorProfileCountOutputTypeCountPayoutsArgs
 }
 
 /**
@@ -2449,13 +2218,6 @@ export type InstructorProfileCountOutputTypeCountOwnedCoursesArgs<ExtArgs extend
  */
 export type InstructorProfileCountOutputTypeCountCourseInstructorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CourseInstructorWhereInput
-}
-
-/**
- * InstructorProfileCountOutputType without action
- */
-export type InstructorProfileCountOutputTypeCountPayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PayoutWhereInput
 }
 
 
@@ -2501,7 +2263,6 @@ export type InstructorProfileSelect<ExtArgs extends runtime.Types.Extensions.Int
   socialAccount?: boolean | Prisma.InstructorProfile$socialAccountArgs<ExtArgs>
   ownedCourses?: boolean | Prisma.InstructorProfile$ownedCoursesArgs<ExtArgs>
   courseInstructors?: boolean | Prisma.InstructorProfile$courseInstructorsArgs<ExtArgs>
-  payouts?: boolean | Prisma.InstructorProfile$payoutsArgs<ExtArgs>
   _count?: boolean | Prisma.InstructorProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["instructorProfile"]>
 
@@ -2631,7 +2392,6 @@ export type InstructorProfileInclude<ExtArgs extends runtime.Types.Extensions.In
   socialAccount?: boolean | Prisma.InstructorProfile$socialAccountArgs<ExtArgs>
   ownedCourses?: boolean | Prisma.InstructorProfile$ownedCoursesArgs<ExtArgs>
   courseInstructors?: boolean | Prisma.InstructorProfile$courseInstructorsArgs<ExtArgs>
-  payouts?: boolean | Prisma.InstructorProfile$payoutsArgs<ExtArgs>
   _count?: boolean | Prisma.InstructorProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InstructorProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2649,7 +2409,6 @@ export type $InstructorProfilePayload<ExtArgs extends runtime.Types.Extensions.I
     socialAccount: Prisma.$SocialLinkPayload<ExtArgs>[]
     ownedCourses: Prisma.$CoursePayload<ExtArgs>[]
     courseInstructors: Prisma.$CourseInstructorPayload<ExtArgs>[]
-    payouts: Prisma.$PayoutPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3087,7 +2846,6 @@ export interface Prisma__InstructorProfileClient<T, Null = never, ExtArgs extend
   socialAccount<T extends Prisma.InstructorProfile$socialAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstructorProfile$socialAccountArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SocialLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedCourses<T extends Prisma.InstructorProfile$ownedCoursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstructorProfile$ownedCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   courseInstructors<T extends Prisma.InstructorProfile$courseInstructorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstructorProfile$courseInstructorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseInstructorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  payouts<T extends Prisma.InstructorProfile$payoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstructorProfile$payoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3642,30 +3400,6 @@ export type InstructorProfile$courseInstructorsArgs<ExtArgs extends runtime.Type
   take?: number
   skip?: number
   distinct?: Prisma.CourseInstructorScalarFieldEnum | Prisma.CourseInstructorScalarFieldEnum[]
-}
-
-/**
- * InstructorProfile.payouts
- */
-export type InstructorProfile$payoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Payout
-   */
-  select?: Prisma.PayoutSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Payout
-   */
-  omit?: Prisma.PayoutOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PayoutInclude<ExtArgs> | null
-  where?: Prisma.PayoutWhereInput
-  orderBy?: Prisma.PayoutOrderByWithRelationInput | Prisma.PayoutOrderByWithRelationInput[]
-  cursor?: Prisma.PayoutWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PayoutScalarFieldEnum | Prisma.PayoutScalarFieldEnum[]
 }
 
 /**

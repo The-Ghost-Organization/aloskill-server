@@ -320,7 +320,7 @@ export type PayoutWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
-  instructor?: Prisma.XOR<Prisma.InstructorProfileScalarRelationFilter, Prisma.InstructorProfileWhereInput>
+  instructor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type PayoutOrderByWithRelationInput = {
@@ -341,7 +341,7 @@ export type PayoutOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  instructor?: Prisma.InstructorProfileOrderByWithRelationInput
+  instructor?: Prisma.UserOrderByWithRelationInput
 }
 
 export type PayoutWhereUniqueInput = Prisma.AtLeast<{
@@ -365,7 +365,7 @@ export type PayoutWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
-  instructor?: Prisma.XOR<Prisma.InstructorProfileScalarRelationFilter, Prisma.InstructorProfileWhereInput>
+  instructor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "providerPayoutId">
 
 export type PayoutOrderByWithAggregationInput = {
@@ -433,7 +433,7 @@ export type PayoutCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  instructor: Prisma.InstructorProfileCreateNestedOneWithoutPayoutsInput
+  instructor: Prisma.UserCreateNestedOneWithoutPayoutsInput
 }
 
 export type PayoutUncheckedCreateInput = {
@@ -473,7 +473,7 @@ export type PayoutUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  instructor?: Prisma.InstructorProfileUpdateOneRequiredWithoutPayoutsNestedInput
+  instructor?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
 }
 
 export type PayoutUncheckedUpdateInput = {
@@ -866,7 +866,7 @@ export type PayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  instructor?: boolean | Prisma.InstructorProfileDefaultArgs<ExtArgs>
+  instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -887,7 +887,7 @@ export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  instructor?: boolean | Prisma.InstructorProfileDefaultArgs<ExtArgs>
+  instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -908,7 +908,7 @@ export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  instructor?: boolean | Prisma.InstructorProfileDefaultArgs<ExtArgs>
+  instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectScalar = {
@@ -933,19 +933,19 @@ export type PayoutSelectScalar = {
 
 export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "instructorId" | "amount" | "fee" | "currency" | "payoutDate" | "providerPayoutId" | "status" | "approvedBy" | "approvedAt" | "rejectionReason" | "failureReason" | "retryCount" | "nextRetryAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["payout"]>
 export type PayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  instructor?: boolean | Prisma.InstructorProfileDefaultArgs<ExtArgs>
+  instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  instructor?: boolean | Prisma.InstructorProfileDefaultArgs<ExtArgs>
+  instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  instructor?: boolean | Prisma.InstructorProfileDefaultArgs<ExtArgs>
+  instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $PayoutPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payout"
   objects: {
-    instructor: Prisma.$InstructorProfilePayload<ExtArgs>
+    instructor: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1359,7 +1359,7 @@ readonly fields: PayoutFieldRefs;
  */
 export interface Prisma__PayoutClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  instructor<T extends Prisma.InstructorProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstructorProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__InstructorProfileClient<runtime.Types.Result.GetResult<Prisma.$InstructorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  instructor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

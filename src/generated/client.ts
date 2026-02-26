@@ -140,6 +140,21 @@ export type LessonProgress = Prisma.LessonProgressModel
  */
 export type Review = Prisma.ReviewModel
 /**
+ * Model Book
+ * 
+ */
+export type Book = Prisma.BookModel
+/**
+ * Model BookFile
+ * 
+ */
+export type BookFile = Prisma.BookFileModel
+/**
+ * Model ViewLog
+ * 
+ */
+export type ViewLog = Prisma.ViewLogModel
+/**
  * Model Wishlist
  * 
  */
@@ -165,10 +180,25 @@ export type PaymentTransaction = Prisma.PaymentTransactionModel
  */
 export type Payout = Prisma.PayoutModel
 /**
+ * Model PayoutMethod
+ * 
+ */
+export type PayoutMethod = Prisma.PayoutMethodModel
+/**
+ * Model BankName
+ * 
+ */
+export type BankName = Prisma.BankNameModel
+/**
  * Model Category
  * Categories & tags
  */
 export type Category = Prisma.CategoryModel
+/**
+ * Model BookCategory
+ * 
+ */
+export type BookCategory = Prisma.BookCategoryModel
 /**
  * Model Tag
  * 

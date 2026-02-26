@@ -17,6 +17,11 @@ const getAllCoursesForInstructor = catchAsync(async (req, res): Promise<void> =>
   ResponseHandler.ok(res, 'All Courses Fetched Successfully!', result);
 });
 
+const getAllCoursesForStudent = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getAllCoursesForStudent(req);
+  ResponseHandler.ok(res, 'All Courses Fetched Successfully for student!', result);
+});
+
 const getAllCoursesForPublic = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getAllCoursesForPublic(req);
   ResponseHandler.ok(res, 'All Courses Fetched Successfully for Public view!', result);
@@ -40,6 +45,16 @@ const getSingleCourseForPaidView = catchAsync(async (req, res): Promise<void> =>
 const getSingleCourseForInstructorEdit = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getSingleCourseForInstructorEdit(req);
   ResponseHandler.ok(res, 'Course fetched successfully for instructor edit!', result);
+});
+
+const getInstructorDashboardData = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getInstructorDashboardData(req);
+  ResponseHandler.ok(res, 'Dashboard Data fetched successfully!', result);
+});
+
+const updateLessonProgress = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.updateLessonProgress(req);
+  ResponseHandler.ok(res, 'Course Updated successfully', result);
 });
 
 const getCartCourses = catchAsync(async (req, res): Promise<void> => {
@@ -146,15 +161,27 @@ const deleteVideo = catchAsync(async (req, res): Promise<void> => {
   }
 });
 
+const deleteFile = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.deleteFile(req);
+  if (result) {
+    ResponseHandler.ok(res, 'File deleted successfully');
+  } else {
+    ResponseHandler.badRequest(res, 'Something went wrong while deleting File!');
+  }
+});
+
 export const courseController = {
   getBunnySignature,
   createCourse,
   updateCourse,
   getAllCoursesForInstructor,
+  getAllCoursesForStudent,
   getAllCoursesForPublic,
+  getInstructorDashboardData,
   getCategories,
   checkCourseSlugAvailability,
   getCourseInstructors,
+  updateLessonProgress,
   getCourseTags,
   createFileToBunny,
   getSingleCourseForInstructorView,
@@ -163,6 +190,7 @@ export const courseController = {
   getSingleCourseForInstructorEdit,
   getCartCourses,
   deleteVideo,
+  deleteFile,
   getVideo,
   getSecureVideoToken,
 };

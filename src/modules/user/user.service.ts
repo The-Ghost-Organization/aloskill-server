@@ -125,6 +125,7 @@ const getAllUsers = async () => {
 
 const getSingleInstructor = async (req: Request) => {
   const { id } = req.params;
+  const { userId } = req.query;
   if (!id || typeof id !== 'string') {
     throw new Error('A valid User ID string must be provided');
   }
@@ -163,9 +164,25 @@ const getSingleInstructor = async (req: Request) => {
             thumbnailUrl: true,
             originalPrice: true,
             discountPrice: true,
-            discountEndDate: true,
-            ratingAverage: true,
-            enrollmentCount: true,
+            status: true,
+            createdAt: true,
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            createdBy: {
+              select: {
+                displayName: true,
+                user: { select: { avatarUrl: true } },
+              },
+            },
+            _count: {
+              select: {
+                enrollments: true,
+                reviews: true,
+              },
+            },
             modules: {
               select: {
                 lessons: {
@@ -180,13 +197,14 @@ const getSingleInstructor = async (req: Request) => {
                 },
               },
             },
-            reviews: {
+            enrollments: {
+              where: {
+                user: {
+                  id: userId as string,
+                },
+              },
               select: {
                 userId: true,
-                rating: true,
-                title: true,
-                courseId: true,
-                createdAt: true,
               },
             },
           },
@@ -223,32 +241,33 @@ const getSingleInstructor = async (req: Request) => {
     socialAccounts: instructor.socialAccount,
 
     // Courses
-    ownedCourses: instructor.ownedCourses.map(course => {
-      let totalLessonCount = 0;
-      let totalDurationInMinutes = 0;
+    // ownedCourses: instructor.ownedCourses.map(course => {
+    //   let totalLessonCount = 0;
+    //   let totalDurationInMinutes = 0;
 
-      course.modules.forEach(module => {
-        totalLessonCount += module._count.lessons;
-        // Sum Lesson Durations
-        module.lessons.forEach(lesson => {
-          totalDurationInMinutes += lesson.duration ?? 0;
-        });
-      });
+    //   course.modules.forEach(module => {
+    //     totalLessonCount += module._count.lessons;
+    //     // Sum Lesson Durations
+    //     module.lessons.forEach(lesson => {
+    //       totalDurationInMinutes += lesson.duration ?? 0;
+    //     });
+    //   });
 
-      return {
-        id: course.id,
-        title: course.title,
-        thumbnailUrl: course.thumbnailUrl,
-        originalPrice: course.originalPrice,
-        discountPrice: course.discountPrice ?? null,
-        discountEndDate: course.discountEndDate,
-        ratingAverage: course.ratingAverage ?? null,
-        enrollmentCount: course.enrollmentCount,
-        totalLessonCount,
-        totalCourseDuration: totalDurationInMinutes,
-        reviews: course.reviews,
-      };
-    }),
+    //   return {
+    //     id: course.id,
+    //     title: course.title,
+    //     thumbnailUrl: course.thumbnailUrl,
+    //     originalPrice: course.originalPrice,
+    //     discountPrice: course.discountPrice ?? null,
+    //     discountEndDate: course.discountEndDate,
+    //     ratingAverage: course.ratingAverage ?? null,
+    //     enrollmentCount: course.enrollmentCount,
+    //     totalLessonCount,
+    //     totalCourseDuration: totalDurationInMinutes,
+    //     reviews: course.reviews,
+    //   };
+    // }),
+    ownedCourses: instructor.ownedCourses,
   };
 };
 
@@ -292,7 +311,7 @@ const getAllInstructors = async () => {
   return [
     ...instructors.map(instructor => ({
       id: instructor.userId,
-      avaterUrl: instructor.user.avatarUrl,
+      avatarUrl: instructor.user.avatarUrl,
       role: instructor.user.assignedRole.map(role => role.role),
       skills: instructor.skills.map(s => s.skill),
       displayName: instructor.displayName,

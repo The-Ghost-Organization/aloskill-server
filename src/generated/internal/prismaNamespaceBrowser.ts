@@ -71,12 +71,18 @@ export const ModelName = {
   Enrollment: 'Enrollment',
   LessonProgress: 'LessonProgress',
   Review: 'Review',
+  Book: 'Book',
+  BookFile: 'BookFile',
+  ViewLog: 'ViewLog',
   Wishlist: 'Wishlist',
   Order: 'Order',
   OrderItem: 'OrderItem',
   PaymentTransaction: 'PaymentTransaction',
   Payout: 'Payout',
+  PayoutMethod: 'PayoutMethod',
+  BankName: 'BankName',
   Category: 'Category',
+  BookCategory: 'BookCategory',
   Tag: 'Tag',
   CourseTag: 'CourseTag',
   Certificate: 'Certificate',
@@ -442,6 +448,7 @@ export const LessonProgressScalarFieldEnum = {
   courseId: 'courseId',
   completed: 'completed',
   progressValue: 'progressValue',
+  lastPosition: 'lastPosition',
   lastViewedAt: 'lastViewedAt',
   attempts: 'attempts',
   completedAt: 'completedAt',
@@ -455,6 +462,7 @@ export const ReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
+  bookId: 'bookId',
   rating: 'rating',
   title: 'title',
   body: 'body',
@@ -466,10 +474,66 @@ export const ReviewScalarFieldEnum = {
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
+export const BookScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  author: 'author',
+  translator: 'translator',
+  editor: 'editor',
+  publisher: 'publisher',
+  description: 'description',
+  regularPrice: 'regularPrice',
+  salePrice: 'salePrice',
+  stock: 'stock',
+  isbn: 'isbn',
+  edition: 'edition',
+  pages: 'pages',
+  language: 'language',
+  formats: 'formats',
+  totalEarning: 'totalEarning',
+  viewCount: 'viewCount',
+  metaKeywords: 'metaKeywords',
+  metaDescription: 'metaDescription',
+  coverImage: 'coverImage',
+  ownerId: 'ownerId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookScalarFieldEnum = (typeof BookScalarFieldEnum)[keyof typeof BookScalarFieldEnum]
+
+
+export const BookFileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  fileType: 'fileType',
+  bookId: 'bookId',
+  createdAt: 'createdAt'
+} as const
+
+export type BookFileScalarFieldEnum = (typeof BookFileScalarFieldEnum)[keyof typeof BookFileScalarFieldEnum]
+
+
+export const ViewLogScalarFieldEnum = {
+  id: 'id',
+  entityId: 'entityId',
+  entityType: 'entityType',
+  viewerId: 'viewerId',
+  viewedAt: 'viewedAt',
+  ipAddress: 'ipAddress',
+  createdAt: 'createdAt'
+} as const
+
+export type ViewLogScalarFieldEnum = (typeof ViewLogScalarFieldEnum)[keyof typeof ViewLogScalarFieldEnum]
+
+
 export const WishlistScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
+  bookId: 'bookId',
   createdAt: 'createdAt'
 } as const
 
@@ -495,6 +559,7 @@ export const OrderItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
   courseId: 'courseId',
+  bookId: 'bookId',
   price: 'price',
   currency: 'currency',
   status: 'status',
@@ -508,6 +573,7 @@ export const PaymentTransactionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
+  bookId: 'bookId',
   orderId: 'orderId',
   paymentMethod: 'paymentMethod',
   providerFee: 'providerFee',
@@ -549,6 +615,31 @@ export const PayoutScalarFieldEnum = {
 export type PayoutScalarFieldEnum = (typeof PayoutScalarFieldEnum)[keyof typeof PayoutScalarFieldEnum]
 
 
+export const PayoutMethodScalarFieldEnum = {
+  id: 'id',
+  instructorId: 'instructorId',
+  type: 'type',
+  bankName: 'bankName',
+  mobileBankingName: 'mobileBankingName',
+  accHolderName: 'accHolderName',
+  accountNumber: 'accountNumber',
+  branchName: 'branchName',
+  routingNumber: 'routingNumber',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt'
+} as const
+
+export type PayoutMethodScalarFieldEnum = (typeof PayoutMethodScalarFieldEnum)[keyof typeof PayoutMethodScalarFieldEnum]
+
+
+export const BankNameScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+} as const
+
+export type BankNameScalarFieldEnum = (typeof BankNameScalarFieldEnum)[keyof typeof BankNameScalarFieldEnum]
+
+
 export const CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -557,6 +648,16 @@ export const CategoryScalarFieldEnum = {
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const BookCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  parentId: 'parentId'
+} as const
+
+export type BookCategoryScalarFieldEnum = (typeof BookCategoryScalarFieldEnum)[keyof typeof BookCategoryScalarFieldEnum]
 
 
 export const TagScalarFieldEnum = {

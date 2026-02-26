@@ -181,6 +181,17 @@ export const PaymentMethod = {
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
 
 
+export const MobileBanking = {
+  BKASH: 'BKASH',
+  ROCKET: 'ROCKET',
+  NAGAD: 'NAGAD',
+  UPAY: 'UPAY',
+  QCASH: 'QCASH'
+} as const
+
+export type MobileBanking = (typeof MobileBanking)[keyof typeof MobileBanking]
+
+
 export const OrderStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',
@@ -246,3 +257,28 @@ export const SocialPlatform = {
 } as const
 
 export type SocialPlatform = (typeof SocialPlatform)[keyof typeof SocialPlatform]
+
+
+export const BookFormat = {
+  HARDCOVER: 'HARDCOVER',
+  E_BOOK: 'E_BOOK'
+} as const
+
+export type BookFormat = (typeof BookFormat)[keyof typeof BookFormat]
+
+
+export const ViewEntityType = {
+  COURSE: 'COURSE',
+  BOOK: 'BOOK',
+  PROFILE: 'PROFILE'
+} as const
+
+export type ViewEntityType = (typeof ViewEntityType)[keyof typeof ViewEntityType]
+
+
+export const BookFileType = {
+  PREVIEW: 'PREVIEW',
+  EBOOK: 'EBOOK'
+} as const
+
+export type BookFileType = (typeof BookFileType)[keyof typeof BookFileType]

@@ -38,6 +38,7 @@ export type OrderItemMinAggregateOutputType = {
   id: string | null
   orderId: string | null
   courseId: string | null
+  bookId: string | null
   price: runtime.Decimal | null
   currency: string | null
   status: $Enums.OrderItemStatus | null
@@ -48,6 +49,7 @@ export type OrderItemMaxAggregateOutputType = {
   id: string | null
   orderId: string | null
   courseId: string | null
+  bookId: string | null
   price: runtime.Decimal | null
   currency: string | null
   status: $Enums.OrderItemStatus | null
@@ -58,6 +60,7 @@ export type OrderItemCountAggregateOutputType = {
   id: number
   orderId: number
   courseId: number
+  bookId: number
   price: number
   currency: number
   status: number
@@ -78,6 +81,7 @@ export type OrderItemMinAggregateInputType = {
   id?: true
   orderId?: true
   courseId?: true
+  bookId?: true
   price?: true
   currency?: true
   status?: true
@@ -88,6 +92,7 @@ export type OrderItemMaxAggregateInputType = {
   id?: true
   orderId?: true
   courseId?: true
+  bookId?: true
   price?: true
   currency?: true
   status?: true
@@ -98,6 +103,7 @@ export type OrderItemCountAggregateInputType = {
   id?: true
   orderId?: true
   courseId?: true
+  bookId?: true
   price?: true
   currency?: true
   status?: true
@@ -194,7 +200,8 @@ export type OrderItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type OrderItemGroupByOutputType = {
   id: string
   orderId: string
-  courseId: string
+  courseId: string | null
+  bookId: string | null
   price: runtime.Decimal
   currency: string | null
   status: $Enums.OrderItemStatus
@@ -227,47 +234,53 @@ export type OrderItemWhereInput = {
   NOT?: Prisma.OrderItemWhereInput | Prisma.OrderItemWhereInput[]
   id?: Prisma.StringFilter<"OrderItem"> | string
   orderId?: Prisma.StringFilter<"OrderItem"> | string
-  courseId?: Prisma.StringFilter<"OrderItem"> | string
+  courseId?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  bookId?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   price?: Prisma.DecimalFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusFilter<"OrderItem"> | $Enums.OrderItemStatus
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
-  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
+  book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
 }
 
 export type OrderItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  courseId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookId?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
   course?: Prisma.CourseOrderByWithRelationInput
+  book?: Prisma.BookOrderByWithRelationInput
 }
 
 export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  orderId_courseId?: Prisma.OrderItemOrderIdCourseIdCompoundUniqueInput
   AND?: Prisma.OrderItemWhereInput | Prisma.OrderItemWhereInput[]
   OR?: Prisma.OrderItemWhereInput[]
   NOT?: Prisma.OrderItemWhereInput | Prisma.OrderItemWhereInput[]
   orderId?: Prisma.StringFilter<"OrderItem"> | string
-  courseId?: Prisma.StringFilter<"OrderItem"> | string
+  courseId?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  bookId?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   price?: Prisma.DecimalFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusFilter<"OrderItem"> | $Enums.OrderItemStatus
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
-  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
-}, "id" | "orderId_courseId">
+  course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
+  book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
+}, "id">
 
 export type OrderItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  courseId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookId?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -285,7 +298,8 @@ export type OrderItemScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OrderItemScalarWhereWithAggregatesInput | Prisma.OrderItemScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"OrderItem"> | string
   orderId?: Prisma.StringWithAggregatesFilter<"OrderItem"> | string
-  courseId?: Prisma.StringWithAggregatesFilter<"OrderItem"> | string
+  courseId?: Prisma.StringNullableWithAggregatesFilter<"OrderItem"> | string | null
+  bookId?: Prisma.StringNullableWithAggregatesFilter<"OrderItem"> | string | null
   price?: Prisma.DecimalWithAggregatesFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableWithAggregatesFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusWithAggregatesFilter<"OrderItem"> | $Enums.OrderItemStatus
@@ -299,13 +313,15 @@ export type OrderItemCreateInput = {
   status?: $Enums.OrderItemStatus
   createdAt?: Date | string
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
-  course: Prisma.CourseCreateNestedOneWithoutOrderItemInput
+  course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
+  book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
 }
 
 export type OrderItemUncheckedCreateInput = {
   id?: string
   orderId: string
-  courseId: string
+  courseId?: string | null
+  bookId?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
@@ -319,13 +335,15 @@ export type OrderItemUpdateInput = {
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
-  course?: Prisma.CourseUpdateOneRequiredWithoutOrderItemNestedInput
+  course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
+  book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
-  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
@@ -335,7 +353,8 @@ export type OrderItemUncheckedUpdateInput = {
 export type OrderItemCreateManyInput = {
   id?: string
   orderId: string
-  courseId: string
+  courseId?: string | null
+  bookId?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
@@ -353,7 +372,8 @@ export type OrderItemUpdateManyMutationInput = {
 export type OrderItemUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
-  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
@@ -370,15 +390,11 @@ export type OrderItemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type OrderItemOrderIdCourseIdCompoundUniqueInput = {
-  orderId: string
-  courseId: string
-}
-
 export type OrderItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  bookId?: Prisma.SortOrder
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -393,6 +409,7 @@ export type OrderItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  bookId?: Prisma.SortOrder
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -403,6 +420,7 @@ export type OrderItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  bookId?: Prisma.SortOrder
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -452,6 +470,48 @@ export type OrderItemUncheckedUpdateManyWithoutCourseNestedInput = {
   connect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
   update?: Prisma.OrderItemUpdateWithWhereUniqueWithoutCourseInput | Prisma.OrderItemUpdateWithWhereUniqueWithoutCourseInput[]
   updateMany?: Prisma.OrderItemUpdateManyWithWhereWithoutCourseInput | Prisma.OrderItemUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.OrderItemScalarWhereInput | Prisma.OrderItemScalarWhereInput[]
+}
+
+export type OrderItemCreateNestedManyWithoutBookInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutBookInput, Prisma.OrderItemUncheckedCreateWithoutBookInput> | Prisma.OrderItemCreateWithoutBookInput[] | Prisma.OrderItemUncheckedCreateWithoutBookInput[]
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutBookInput | Prisma.OrderItemCreateOrConnectWithoutBookInput[]
+  createMany?: Prisma.OrderItemCreateManyBookInputEnvelope
+  connect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+}
+
+export type OrderItemUncheckedCreateNestedManyWithoutBookInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutBookInput, Prisma.OrderItemUncheckedCreateWithoutBookInput> | Prisma.OrderItemCreateWithoutBookInput[] | Prisma.OrderItemUncheckedCreateWithoutBookInput[]
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutBookInput | Prisma.OrderItemCreateOrConnectWithoutBookInput[]
+  createMany?: Prisma.OrderItemCreateManyBookInputEnvelope
+  connect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+}
+
+export type OrderItemUpdateManyWithoutBookNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutBookInput, Prisma.OrderItemUncheckedCreateWithoutBookInput> | Prisma.OrderItemCreateWithoutBookInput[] | Prisma.OrderItemUncheckedCreateWithoutBookInput[]
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutBookInput | Prisma.OrderItemCreateOrConnectWithoutBookInput[]
+  upsert?: Prisma.OrderItemUpsertWithWhereUniqueWithoutBookInput | Prisma.OrderItemUpsertWithWhereUniqueWithoutBookInput[]
+  createMany?: Prisma.OrderItemCreateManyBookInputEnvelope
+  set?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  disconnect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  delete?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  connect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  update?: Prisma.OrderItemUpdateWithWhereUniqueWithoutBookInput | Prisma.OrderItemUpdateWithWhereUniqueWithoutBookInput[]
+  updateMany?: Prisma.OrderItemUpdateManyWithWhereWithoutBookInput | Prisma.OrderItemUpdateManyWithWhereWithoutBookInput[]
+  deleteMany?: Prisma.OrderItemScalarWhereInput | Prisma.OrderItemScalarWhereInput[]
+}
+
+export type OrderItemUncheckedUpdateManyWithoutBookNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutBookInput, Prisma.OrderItemUncheckedCreateWithoutBookInput> | Prisma.OrderItemCreateWithoutBookInput[] | Prisma.OrderItemUncheckedCreateWithoutBookInput[]
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutBookInput | Prisma.OrderItemCreateOrConnectWithoutBookInput[]
+  upsert?: Prisma.OrderItemUpsertWithWhereUniqueWithoutBookInput | Prisma.OrderItemUpsertWithWhereUniqueWithoutBookInput[]
+  createMany?: Prisma.OrderItemCreateManyBookInputEnvelope
+  set?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  disconnect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  delete?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  connect?: Prisma.OrderItemWhereUniqueInput | Prisma.OrderItemWhereUniqueInput[]
+  update?: Prisma.OrderItemUpdateWithWhereUniqueWithoutBookInput | Prisma.OrderItemUpdateWithWhereUniqueWithoutBookInput[]
+  updateMany?: Prisma.OrderItemUpdateManyWithWhereWithoutBookInput | Prisma.OrderItemUpdateManyWithWhereWithoutBookInput[]
   deleteMany?: Prisma.OrderItemScalarWhereInput | Prisma.OrderItemScalarWhereInput[]
 }
 
@@ -508,11 +568,13 @@ export type OrderItemCreateWithoutCourseInput = {
   status?: $Enums.OrderItemStatus
   createdAt?: Date | string
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
+  book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
 }
 
 export type OrderItemUncheckedCreateWithoutCourseInput = {
   id?: string
   orderId: string
+  bookId?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
@@ -551,11 +613,58 @@ export type OrderItemScalarWhereInput = {
   NOT?: Prisma.OrderItemScalarWhereInput | Prisma.OrderItemScalarWhereInput[]
   id?: Prisma.StringFilter<"OrderItem"> | string
   orderId?: Prisma.StringFilter<"OrderItem"> | string
-  courseId?: Prisma.StringFilter<"OrderItem"> | string
+  courseId?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  bookId?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   price?: Prisma.DecimalFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusFilter<"OrderItem"> | $Enums.OrderItemStatus
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
+}
+
+export type OrderItemCreateWithoutBookInput = {
+  id?: string
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string | null
+  status?: $Enums.OrderItemStatus
+  createdAt?: Date | string
+  order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
+  course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
+}
+
+export type OrderItemUncheckedCreateWithoutBookInput = {
+  id?: string
+  orderId: string
+  courseId?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string | null
+  status?: $Enums.OrderItemStatus
+  createdAt?: Date | string
+}
+
+export type OrderItemCreateOrConnectWithoutBookInput = {
+  where: Prisma.OrderItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderItemCreateWithoutBookInput, Prisma.OrderItemUncheckedCreateWithoutBookInput>
+}
+
+export type OrderItemCreateManyBookInputEnvelope = {
+  data: Prisma.OrderItemCreateManyBookInput | Prisma.OrderItemCreateManyBookInput[]
+  skipDuplicates?: boolean
+}
+
+export type OrderItemUpsertWithWhereUniqueWithoutBookInput = {
+  where: Prisma.OrderItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.OrderItemUpdateWithoutBookInput, Prisma.OrderItemUncheckedUpdateWithoutBookInput>
+  create: Prisma.XOR<Prisma.OrderItemCreateWithoutBookInput, Prisma.OrderItemUncheckedCreateWithoutBookInput>
+}
+
+export type OrderItemUpdateWithWhereUniqueWithoutBookInput = {
+  where: Prisma.OrderItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.OrderItemUpdateWithoutBookInput, Prisma.OrderItemUncheckedUpdateWithoutBookInput>
+}
+
+export type OrderItemUpdateManyWithWhereWithoutBookInput = {
+  where: Prisma.OrderItemScalarWhereInput
+  data: Prisma.XOR<Prisma.OrderItemUpdateManyMutationInput, Prisma.OrderItemUncheckedUpdateManyWithoutBookInput>
 }
 
 export type OrderItemCreateWithoutOrderInput = {
@@ -564,12 +673,14 @@ export type OrderItemCreateWithoutOrderInput = {
   currency?: string | null
   status?: $Enums.OrderItemStatus
   createdAt?: Date | string
-  course: Prisma.CourseCreateNestedOneWithoutOrderItemInput
+  course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
+  book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
 }
 
 export type OrderItemUncheckedCreateWithoutOrderInput = {
   id?: string
-  courseId: string
+  courseId?: string | null
+  bookId?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
@@ -605,6 +716,7 @@ export type OrderItemUpdateManyWithWhereWithoutOrderInput = {
 export type OrderItemCreateManyCourseInput = {
   id?: string
   orderId: string
+  bookId?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
@@ -618,11 +730,13 @@ export type OrderItemUpdateWithoutCourseInput = {
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
+  book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
@@ -632,6 +746,47 @@ export type OrderItemUncheckedUpdateWithoutCourseInput = {
 export type OrderItemUncheckedUpdateManyWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OrderItemCreateManyBookInput = {
+  id?: string
+  orderId: string
+  courseId?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string | null
+  status?: $Enums.OrderItemStatus
+  createdAt?: Date | string
+}
+
+export type OrderItemUpdateWithoutBookInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
+  course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
+}
+
+export type OrderItemUncheckedUpdateWithoutBookInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type OrderItemUncheckedUpdateManyWithoutBookInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
@@ -640,7 +795,8 @@ export type OrderItemUncheckedUpdateManyWithoutCourseInput = {
 
 export type OrderItemCreateManyOrderInput = {
   id?: string
-  courseId: string
+  courseId?: string | null
+  bookId?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
@@ -653,12 +809,14 @@ export type OrderItemUpdateWithoutOrderInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  course?: Prisma.CourseUpdateOneRequiredWithoutOrderItemNestedInput
+  course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
+  book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
@@ -667,7 +825,8 @@ export type OrderItemUncheckedUpdateWithoutOrderInput = {
 
 export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
@@ -680,72 +839,84 @@ export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   orderId?: boolean
   courseId?: boolean
+  bookId?: boolean
   price?: boolean
   currency?: boolean
   status?: boolean
   createdAt?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
+  book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
 
 export type OrderItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderId?: boolean
   courseId?: boolean
+  bookId?: boolean
   price?: boolean
   currency?: boolean
   status?: boolean
   createdAt?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
+  book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
 
 export type OrderItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderId?: boolean
   courseId?: boolean
+  bookId?: boolean
   price?: boolean
   currency?: boolean
   status?: boolean
   createdAt?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
+  book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
 
 export type OrderItemSelectScalar = {
   id?: boolean
   orderId?: boolean
   courseId?: boolean
+  bookId?: boolean
   price?: boolean
   currency?: boolean
   status?: boolean
   createdAt?: boolean
 }
 
-export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "courseId" | "price" | "currency" | "status" | "createdAt", ExtArgs["result"]["orderItem"]>
+export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "courseId" | "bookId" | "price" | "currency" | "status" | "createdAt", ExtArgs["result"]["orderItem"]>
 export type OrderItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
+  book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
 }
 export type OrderItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
+  book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
 }
 export type OrderItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
-  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
+  book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
 }
 
 export type $OrderItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OrderItem"
   objects: {
     order: Prisma.$OrderPayload<ExtArgs>
-    course: Prisma.$CoursePayload<ExtArgs>
+    course: Prisma.$CoursePayload<ExtArgs> | null
+    book: Prisma.$BookPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     orderId: string
-    courseId: string
+    courseId: string | null
+    bookId: string | null
     price: runtime.Decimal
     currency: string | null
     status: $Enums.OrderItemStatus
@@ -1145,7 +1316,8 @@ readonly fields: OrderItemFieldRefs;
 export interface Prisma__OrderItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  course<T extends Prisma.OrderItem$courseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderItem$courseArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  book<T extends Prisma.OrderItem$bookArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderItem$bookArgs<ExtArgs>>): Prisma.Prisma__BookClient<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1178,6 +1350,7 @@ export interface OrderItemFieldRefs {
   readonly id: Prisma.FieldRef<"OrderItem", 'String'>
   readonly orderId: Prisma.FieldRef<"OrderItem", 'String'>
   readonly courseId: Prisma.FieldRef<"OrderItem", 'String'>
+  readonly bookId: Prisma.FieldRef<"OrderItem", 'String'>
   readonly price: Prisma.FieldRef<"OrderItem", 'Decimal'>
   readonly currency: Prisma.FieldRef<"OrderItem", 'String'>
   readonly status: Prisma.FieldRef<"OrderItem", 'OrderItemStatus'>
@@ -1575,6 +1748,44 @@ export type OrderItemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many OrderItems to delete.
    */
   limit?: number
+}
+
+/**
+ * OrderItem.course
+ */
+export type OrderItem$courseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Course
+   */
+  select?: Prisma.CourseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Course
+   */
+  omit?: Prisma.CourseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CourseInclude<ExtArgs> | null
+  where?: Prisma.CourseWhereInput
+}
+
+/**
+ * OrderItem.book
+ */
+export type OrderItem$bookArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Book
+   */
+  select?: Prisma.BookSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Book
+   */
+  omit?: Prisma.BookOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookInclude<ExtArgs> | null
+  where?: Prisma.BookWhereInput
 }
 
 /**
