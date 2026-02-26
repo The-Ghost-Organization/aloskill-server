@@ -80,11 +80,7 @@ router.get(
   courseController.getCourseInstructors
 );
 
-router.get(
-  '/instructorDashboard',
-  requireInstructor,
-  courseController.getInstructorDashboardData
-);
+router.get('/instructorDashboard', requireInstructor, courseController.getInstructorDashboardData);
 
 router.get('/tags', instructorQueryLimiter, requireInstructor, courseController.getCourseTags);
 
@@ -130,7 +126,7 @@ router.delete(
 
 router.delete(
   '/delete-file',
-  requireInstructor,
+  requireStudent,
   validate(GetAndDeleteFileSchema),
   courseController.deleteFile
 );
