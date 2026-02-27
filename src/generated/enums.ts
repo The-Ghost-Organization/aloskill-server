@@ -282,3 +282,12 @@ export const BookFileType = {
 } as const
 
 export type BookFileType = (typeof BookFileType)[keyof typeof BookFileType]
+
+
+export const BookStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  DRAFT: 'DRAFT'
+} as const
+
+export type BookStatus = (typeof BookStatus)[keyof typeof BookStatus]
