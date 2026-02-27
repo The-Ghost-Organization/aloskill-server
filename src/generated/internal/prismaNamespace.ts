@@ -3973,6 +3973,7 @@ export const BookScalarFieldEnum = {
   formats: 'formats',
   totalEarning: 'totalEarning',
   viewCount: 'viewCount',
+  status: 'status',
   metaKeywords: 'metaKeywords',
   metaDescription: 'metaDescription',
   coverImage: 'coverImage',
@@ -4642,6 +4643,20 @@ export type ListEnumBookFormatFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'BookFormat'
  */
 export type EnumBookFormatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookFormat'>
+    
+
+
+/**
+ * Reference to a field of type 'BookStatus'
+ */
+export type EnumBookStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BookStatus[]'
+ */
+export type ListEnumBookStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookStatus[]'>
     
 
 

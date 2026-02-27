@@ -201,6 +201,12 @@ enum BookFileType {
   EBOOK
 }
 
+enum BookStatus {
+  PENDING
+  APPROVED
+  DRAFT
+}
+
 // === MODELS===//
 model User {
   id        String    @id @default(uuid())
@@ -809,6 +815,7 @@ model Book {
   formats         BookFormat[]
   totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
   viewCount       Int       @default(0)
+  status          BookStatus  @default(PENDING)
 
   // tags are not listing yet for showing related book or course
 

@@ -3,8 +3,8 @@
 import { Decimal } from '@prisma/client/runtime/client';
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
-import type { UploadBookPayload } from './book.validation.js';
 import { BookFormat } from '../../generated/enums.js';
+import type { UploadBookPayload } from './book.validation.js';
 
 const uploadBook = async (req: Request) => {
   const data = req.body as UploadBookPayload["body"];
@@ -17,8 +17,6 @@ const uploadBook = async (req: Request) => {
         where: { email: user.email },
         include: { assignedRole: true }
       });
-
-      console.log("owner : ",owner);
 
       if (!owner) {throw new Error("Unauthorized: Owner not found.");};
       const isAuthorized = owner.assignedRole.some(r =>
@@ -82,9 +80,38 @@ const uploadBook = async (req: Request) => {
     });
   }, "Upload Book");
 
-  return upload;
+  return upload.id;
+};
+
+const getAllBooksDataforAdmin = async (req: Request) => {
+  const user = req.user;
+  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");};
+
+  const booksData = await executeDbOperation(async (prisma) => {
+    return await prisma.$transaction(async tx=>{
+      const userProfile = await tx.user.findUnique({
+        where: { email: user.email },
+        include: { assignedRole: true }
+      });
+
+      if (!userProfile) {
+        throw new Error("Unauthorized: User profile not found.");
+      };
+      const isAuthorized = userProfile.assignedRole.some(r =>
+        r.role === "ADMIN"
+      );
+
+      if (!isAuthorized) {
+        throw new Error("Security Violation: Only Admins can see this data.");
+      };
+
+      const totalCourse = await tx.course.count();
+      const totalBooks = await tx.book.count({where: {status: "ACTIVE"}});
+    });
+  }, "Get All Books Data for Admin");
 };
 
 export const bookService = {
-  uploadBook
+  uploadBook,
+  getAllBooksDataforAdmin
 };

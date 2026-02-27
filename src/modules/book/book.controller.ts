@@ -4,7 +4,7 @@ import { bookService } from './book.service.js';
 
 const uploadBook = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.uploadBook(req);
-  ResponseHandler.ok(res, 'Book Uploaded Successfully!', result.id);
+  ResponseHandler.ok(res, 'Book Uploaded Successfully!', result);
 });
 
 

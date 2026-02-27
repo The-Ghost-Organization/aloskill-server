@@ -492,6 +492,7 @@ export const BookScalarFieldEnum = {
   formats: 'formats',
   totalEarning: 'totalEarning',
   viewCount: 'viewCount',
+  status: 'status',
   metaKeywords: 'metaKeywords',
   metaDescription: 'metaDescription',
   coverImage: 'coverImage',

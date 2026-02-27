@@ -61,6 +61,7 @@ export type BookMinAggregateOutputType = {
   language: string | null
   totalEarning: runtime.Decimal | null
   viewCount: number | null
+  status: $Enums.BookStatus | null
   metaKeywords: string | null
   metaDescription: string | null
   coverImage: string | null
@@ -87,6 +88,7 @@ export type BookMaxAggregateOutputType = {
   language: string | null
   totalEarning: runtime.Decimal | null
   viewCount: number | null
+  status: $Enums.BookStatus | null
   metaKeywords: string | null
   metaDescription: string | null
   coverImage: string | null
@@ -114,6 +116,7 @@ export type BookCountAggregateOutputType = {
   formats: number
   totalEarning: number
   viewCount: number
+  status: number
   metaKeywords: number
   metaDescription: number
   coverImage: number
@@ -160,6 +163,7 @@ export type BookMinAggregateInputType = {
   language?: true
   totalEarning?: true
   viewCount?: true
+  status?: true
   metaKeywords?: true
   metaDescription?: true
   coverImage?: true
@@ -186,6 +190,7 @@ export type BookMaxAggregateInputType = {
   language?: true
   totalEarning?: true
   viewCount?: true
+  status?: true
   metaKeywords?: true
   metaDescription?: true
   coverImage?: true
@@ -213,6 +218,7 @@ export type BookCountAggregateInputType = {
   formats?: true
   totalEarning?: true
   viewCount?: true
+  status?: true
   metaKeywords?: true
   metaDescription?: true
   coverImage?: true
@@ -327,6 +333,7 @@ export type BookGroupByOutputType = {
   formats: $Enums.BookFormat[]
   totalEarning: runtime.Decimal
   viewCount: number
+  status: $Enums.BookStatus
   metaKeywords: string | null
   metaDescription: string | null
   coverImage: string
@@ -377,6 +384,7 @@ export type BookWhereInput = {
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusFilter<"Book"> | $Enums.BookStatus
   metaKeywords?: Prisma.StringNullableFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Book"> | string | null
   coverImage?: Prisma.StringFilter<"Book"> | string
@@ -411,6 +419,7 @@ export type BookOrderByWithRelationInput = {
   formats?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -448,6 +457,7 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusFilter<"Book"> | $Enums.BookStatus
   metaKeywords?: Prisma.StringNullableFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Book"> | string | null
   coverImage?: Prisma.StringFilter<"Book"> | string
@@ -482,6 +492,7 @@ export type BookOrderByWithAggregationInput = {
   formats?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -517,6 +528,7 @@ export type BookScalarWhereWithAggregatesInput = {
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntWithAggregatesFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusWithAggregatesFilter<"Book"> | $Enums.BookStatus
   metaKeywords?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   coverImage?: Prisma.StringWithAggregatesFilter<"Book"> | string
@@ -544,6 +556,7 @@ export type BookCreateInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -576,6 +589,7 @@ export type BookUncheckedCreateInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -608,6 +622,7 @@ export type BookUpdateInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -640,6 +655,7 @@ export type BookUncheckedUpdateInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -672,6 +688,7 @@ export type BookCreateManyInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -699,6 +716,7 @@ export type BookUpdateManyMutationInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -724,6 +742,7 @@ export type BookUncheckedUpdateManyInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -774,6 +793,7 @@ export type BookCountOrderByAggregateInput = {
   formats?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -809,6 +829,7 @@ export type BookMaxOrderByAggregateInput = {
   language?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -835,6 +856,7 @@ export type BookMinOrderByAggregateInput = {
   language?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -923,6 +945,10 @@ export type BookCreateformatsInput = {
 export type BookUpdateformatsInput = {
   set?: $Enums.BookFormat[]
   push?: $Enums.BookFormat | $Enums.BookFormat[]
+}
+
+export type EnumBookStatusFieldUpdateOperationsInput = {
+  set?: $Enums.BookStatus
 }
 
 export type BookCreateNestedOneWithoutFilesInput = {
@@ -1047,6 +1073,7 @@ export type BookCreateWithoutOwnerInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1078,6 +1105,7 @@ export type BookUncheckedCreateWithoutOwnerInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1138,6 +1166,7 @@ export type BookScalarWhereInput = {
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusFilter<"Book"> | $Enums.BookStatus
   metaKeywords?: Prisma.StringNullableFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Book"> | string | null
   coverImage?: Prisma.StringFilter<"Book"> | string
@@ -1165,6 +1194,7 @@ export type BookCreateWithoutReviewsInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1196,6 +1226,7 @@ export type BookUncheckedCreateWithoutReviewsInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1243,6 +1274,7 @@ export type BookUpdateWithoutReviewsInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1274,6 +1306,7 @@ export type BookUncheckedUpdateWithoutReviewsInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1305,6 +1338,7 @@ export type BookCreateWithoutFilesInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1336,6 +1370,7 @@ export type BookUncheckedCreateWithoutFilesInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1383,6 +1418,7 @@ export type BookUpdateWithoutFilesInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1414,6 +1450,7 @@ export type BookUncheckedUpdateWithoutFilesInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1445,6 +1482,7 @@ export type BookCreateWithoutWishlistedByInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1476,6 +1514,7 @@ export type BookUncheckedCreateWithoutWishlistedByInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1523,6 +1562,7 @@ export type BookUpdateWithoutWishlistedByInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1554,6 +1594,7 @@ export type BookUncheckedUpdateWithoutWishlistedByInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1585,6 +1626,7 @@ export type BookCreateWithoutOrderItemInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1616,6 +1658,7 @@ export type BookUncheckedCreateWithoutOrderItemInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1663,6 +1706,7 @@ export type BookUpdateWithoutOrderItemInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1694,6 +1738,7 @@ export type BookUncheckedUpdateWithoutOrderItemInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1725,6 +1770,7 @@ export type BookCreateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1756,6 +1802,7 @@ export type BookUncheckedCreateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1803,6 +1850,7 @@ export type BookUpdateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1834,6 +1882,7 @@ export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1865,6 +1914,7 @@ export type BookCreateWithoutCategoryInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1896,6 +1946,7 @@ export type BookUncheckedCreateWithoutCategoryInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1953,6 +2004,7 @@ export type BookCreateManyOwnerInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1979,6 +2031,7 @@ export type BookUpdateWithoutOwnerInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2010,6 +2063,7 @@ export type BookUncheckedUpdateWithoutOwnerInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2041,6 +2095,7 @@ export type BookUncheckedUpdateManyWithoutOwnerInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2067,6 +2122,7 @@ export type BookCreateManyCategoryInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -2093,6 +2149,7 @@ export type BookUpdateWithoutCategoryInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2124,6 +2181,7 @@ export type BookUncheckedUpdateWithoutCategoryInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2155,6 +2213,7 @@ export type BookUncheckedUpdateManyWithoutCategoryInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2248,6 +2307,7 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2283,6 +2343,7 @@ export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2312,6 +2373,7 @@ export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2341,6 +2403,7 @@ export type BookSelectScalar = {
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2350,7 +2413,7 @@ export type BookSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "translator" | "editor" | "publisher" | "description" | "regularPrice" | "salePrice" | "stock" | "isbn" | "edition" | "pages" | "language" | "formats" | "totalEarning" | "viewCount" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["book"]>
+export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "translator" | "editor" | "publisher" | "description" | "regularPrice" | "salePrice" | "stock" | "isbn" | "edition" | "pages" | "language" | "formats" | "totalEarning" | "viewCount" | "status" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["book"]>
 export type BookInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   files?: boolean | Prisma.Book$filesArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2399,6 +2462,7 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     formats: $Enums.BookFormat[]
     totalEarning: runtime.Decimal
     viewCount: number
+    status: $Enums.BookStatus
     metaKeywords: string | null
     metaDescription: string | null
     coverImage: string
@@ -2853,6 +2917,7 @@ export interface BookFieldRefs {
   readonly formats: Prisma.FieldRef<"Book", 'BookFormat[]'>
   readonly totalEarning: Prisma.FieldRef<"Book", 'Decimal'>
   readonly viewCount: Prisma.FieldRef<"Book", 'Int'>
+  readonly status: Prisma.FieldRef<"Book", 'BookStatus'>
   readonly metaKeywords: Prisma.FieldRef<"Book", 'String'>
   readonly metaDescription: Prisma.FieldRef<"Book", 'String'>
   readonly coverImage: Prisma.FieldRef<"Book", 'String'>
