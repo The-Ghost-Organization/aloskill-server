@@ -3,7 +3,7 @@
 import { Decimal } from '@prisma/client/runtime/client';
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
-import { BookFormat } from '../../generated/enums.js';
+import { BookFormat, BookStatus, OrderStatus } from '../../generated/enums.js';
 import type { UploadBookPayload } from './book.validation.js';
 
 const uploadBook = async (req: Request) => {
@@ -51,6 +51,7 @@ const uploadBook = async (req: Request) => {
           metaDescription: data.metaDescription,
           ownerId: owner.id,
           categoryId: category.id,
+          status: data.status === "DRAFT" ? BookStatus.DRAFT : BookStatus.PENDING,
           formats: data.formats.map(f=> f === "Hardcover"? BookFormat.HARDCOVER : BookFormat.E_BOOK),
           files: {
             create: data.files.map(file => ({
@@ -88,7 +89,7 @@ const getAllBooksDataforAdmin = async (req: Request) => {
   if(!user.email) {throw new Error("Unauthorized: User not authenticated.");};
 
   const booksData = await executeDbOperation(async (prisma) => {
-    return await prisma.$transaction(async tx=>{
+    return await prisma.$transaction(async tx =>{
       const userProfile = await tx.user.findUnique({
         where: { email: user.email },
         include: { assignedRole: true }
@@ -105,10 +106,61 @@ const getAllBooksDataforAdmin = async (req: Request) => {
         throw new Error("Security Violation: Only Admins can see this data.");
       };
 
-      const totalCourse = await tx.course.count();
-      const totalBooks = await tx.book.count({where: {status: "ACTIVE"}});
+      const stats = await tx.orderItem.aggregate({
+        where: {
+          bookId: { not: null },
+          order: {
+            status: OrderStatus.PAID
+          }
+        },
+        _count: {
+          id: true,
+        },
+        _sum: {
+          price: true,
+        }
+      });
+      const bookBreakdown = await tx.book.findMany({
+        select: {
+          title: true,
+          author: true,
+          totalEarning: true,
+          formats: true,
+          regularPrice: true,
+          salePrice: true,
+          stock: true,
+          status: true,
+          orderItem: {
+            where: {
+              order: { status: OrderStatus.PAID }
+            },
+            select: {
+              id: true,
+              price: true
+            },
+          }
+        }
+      });
+      const stockData = await tx.book.aggregate({
+        _sum: {
+          stock: true,
+        },
+        _count: {
+          id: true,
+        }
+      });
+
+      return {
+        totalBooks: stockData._count.id,
+        totalSold: stats._count.id,
+        totalStock: stockData._sum.stock ?? 0,
+        totalRevenue: stats._sum.price ?? 0,
+        bookBreakdown
+      };
     });
   }, "Get All Books Data for Admin");
+
+  return booksData;
 };
 
 export const bookService = {
