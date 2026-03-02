@@ -7,7 +7,13 @@ const uploadBook = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book Uploaded Successfully!', result);
 });
 
+const getAllBooksDataforAdmin = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getAllBooksDataforAdmin(req);
+  ResponseHandler.ok(res, 'Books Data Retrieved Successfully!', result);
+});
+
 
 export const bookController = {
-  uploadBook
+  uploadBook,
+  getAllBooksDataforAdmin
 };

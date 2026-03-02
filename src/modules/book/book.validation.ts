@@ -46,6 +46,7 @@ export const CreateBookSchema = z.object({
       .positive("Pages must not contain any negative numbers")
       .optional(),
     language: z.string().min(1, "Language is required"),
+    status: z.enum(["APPROVED", "PENDING", "DRAFT"]).default("PENDING"),
 
     category: z.string().min(1, "Category is required"),
     formats: z.array(z.string()).min(1, "Select at least one format"),

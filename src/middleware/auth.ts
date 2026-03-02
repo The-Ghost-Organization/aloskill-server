@@ -103,7 +103,7 @@ export const verifyAccessToken = (req: Request, res: Response, next: NextFunctio
 export const requireAuth = authenticate();
 
 export const requireAdmin = authenticate({
-  roles: ['admin', 'superadmin'],
+  roles: ['ADMIN', 'SUPERADMIN'],
   strategy: 'any',
 });
 
