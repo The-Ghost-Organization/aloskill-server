@@ -674,7 +674,7 @@ const getAllCoursesForStudent = async (req: Request) => {
         thumbnailUrl: true,
         LessonProgress: {
           where: {
-            userId: userExist.id
+            userId: userExist.id,
           },
           select: {
             completed: true,
@@ -698,12 +698,12 @@ const getAllCoursesForStudent = async (req: Request) => {
           select: {
             enrollments: true,
             reviews: true,
-            LessonProgress:{
+            LessonProgress: {
               where: {
-                userId: userExist.id
-              }
+                userId: userExist.id,
+              },
             },
-            courseInstructors: true
+            courseInstructors: true,
           },
         },
         modules: {
@@ -1550,23 +1550,25 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
   return formatCourseData(getCourseDetails);
 };
 
-const getInstructorDashboardData = async(req: Request)=>{
+const getInstructorDashboardData = async (req: Request) => {
   const userId = req.query.userId as string;
-  if(!userId){
-    throw new Error("User not Found for Dashboard Data");
-  };
+  if (!userId) {
+    throw new Error('User not Found for Dashboard Data');
+  }
 
-  const instructorData = await executeDbOperation(async (prisma) => {
+  const instructorData = await executeDbOperation(async prisma => {
     const primaryInstructor = await prisma.instructorProfile.findUnique({
       where: { userId },
-      select: { id: true, displayName: true, ratingAverage: true }
+      select: { id: true, displayName: true, ratingAverage: true },
     });
 
-    if (!primaryInstructor) {throw new Error("Instructor profile not found");}
+    if (!primaryInstructor) {
+      throw new Error('Instructor profile not found');
+    }
 
     const ownedCourses = await prisma.course.findMany({
       where: { createdById: primaryInstructor.id },
-      select: { id: true }
+      select: { id: true },
     });
 
     const ownedCourseIds = ownedCourses.map(c => c.id);
@@ -1575,8 +1577,8 @@ const getInstructorDashboardData = async(req: Request)=>{
       by: ['instructorId'],
       where: {
         courseId: { in: ownedCourseIds },
-        instructorId: { not: primaryInstructor.id }
-      }
+        instructorId: { not: primaryInstructor.id },
+      },
     });
 
     const totalOtherInstructors = otherInstructors.length;
@@ -1594,9 +1596,9 @@ const getInstructorDashboardData = async(req: Request)=>{
             { userId },
             {
               entityType: { in: ['course', 'enrollment', 'payout'] },
-              entityId: { in: ownedCourseIds }
-            }
-          ]
+              entityId: { in: ownedCourseIds },
+            },
+          ],
         },
         orderBy: { timestamp: 'desc' },
         take: 10,
@@ -1605,7 +1607,7 @@ const getInstructorDashboardData = async(req: Request)=>{
             select: {
               avatarUrl: true,
               instructorProfile: { select: { displayName: true } },
-              studentProfile: { select: { displayName: true } }
+              studentProfile: { select: { displayName: true } },
             },
           },
         },
@@ -1616,8 +1618,8 @@ const getInstructorDashboardData = async(req: Request)=>{
         orderBy: { createdAt: 'desc' },
         take: 4,
         include: {
-          user: { select: { avatarUrl: true, studentProfile: { select: { displayName: true } } } }
-        }
+          user: { select: { avatarUrl: true, studentProfile: { select: { displayName: true } } } },
+        },
       }),
 
       prisma.course.findMany({
@@ -1629,8 +1631,8 @@ const getInstructorDashboardData = async(req: Request)=>{
           status: true,
         },
         orderBy: { enrollmentCount: 'desc' },
-        take: 5
-      })
+        take: 5,
+      }),
     ]);
 
     const totalStudentsCount = await prisma.enrollment.count({
@@ -1649,16 +1651,16 @@ const getInstructorDashboardData = async(req: Request)=>{
         totalOtherInstructors,
       },
       recentActivity,
-      reviews : reviews.map(review => ({
+      reviews: reviews.map(review => ({
         rating: review.rating,
         body: review.body,
         createdAt: review.createdAt,
         userDisplayName: review.user.studentProfile?.displayName,
         avatarUrl: review.user.avatarUrl,
       })),
-      courseOverview
+      courseOverview,
     };
-  }, "Fetch Instructor Dashboard Data");
+  }, 'Fetch Instructor Dashboard Data');
 
   return instructorData;
 };
@@ -1855,7 +1857,8 @@ const createFileToBunny = async (req: Request) => {
     const errorText = await uploadfile.text();
     throw new Error(`Bunny Storage API Error: ${errorText}`);
   }
-  return `https://sg.storage.bunnycdn.com/${storageZone}/${safePath}/${fileName}`;
+  // return `https://sg.storage.bunnycdn.com/${storageZone}/${safePath}/${fileName}`;
+  return `https://aloskill-pull-zone-5.b-cdn.net/${safePath}/${fileName}`;
 };
 
 const getVideo = async (req: Request) => {
@@ -1920,18 +1923,24 @@ const deleteVideo = async (req: Request) => {
 };
 
 const deleteFile = async (req: Request) => {
+  const storageZone = config.BUNNY_STORAGE_ZONE_USERNAME;
   const { fileUrl } = req.body as { fileUrl: string };
   if (!fileUrl) {
     throw new Error('File path not provided');
   }
-
-  const response = await fetch(fileUrl, {
-    method: 'DELETE',
-    headers: {
-      AccessKey: config.BUNNY_STORAGE_ZONE_PASSWORD,
-      accept: 'application/json',
-    },
-  });
+  const fileArray = fileUrl.split('/');
+  fileArray.splice(0, 3);
+  console.log('filee', fileArray);
+  const response = await fetch(
+    `https://sg.storage.bunnycdn.com/${storageZone}/${fileArray.join('/')}`,
+    {
+      method: 'DELETE',
+      headers: {
+        AccessKey: config.BUNNY_STORAGE_ZONE_PASSWORD,
+        accept: 'application/json',
+      },
+    }
+  );
 
   if (!response.ok) {
     return false;
