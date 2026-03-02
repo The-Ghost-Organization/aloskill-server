@@ -7,29 +7,35 @@ import { BookFormat } from '../../generated/enums.js';
 import type { UploadBookPayload } from './book.validation.js';
 
 const uploadBook = async (req: Request) => {
-  const data = req.body as UploadBookPayload["body"];
+  const data = req.body as UploadBookPayload['body'];
   const user = req.user;
-  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");};
+  if (!user.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
 
-  const upload = await executeDbOperation(async (prisma)=>{
-    return await prisma.$transaction(async (tx)=>{
+  const upload = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
       const owner = await tx.user.findUnique({
         where: { email: user.email },
-        include: { assignedRole: true }
+        include: { assignedRole: true },
       });
 
-      if (!owner) {throw new Error("Unauthorized: Owner not found.");};
-      const isAuthorized = owner.assignedRole.some(r =>
-        r.role === "ADMIN" || r.role === "INSTRUCTOR"
+      if (!owner) {
+        throw new Error('Unauthorized: Owner not found.');
+      }
+      const isAuthorized = owner.assignedRole.some(
+        r => r.role === 'ADMIN' || r.role === 'INSTRUCTOR'
       );
 
       if (!isAuthorized) {
-        throw new Error("Security Violation: Only Admins or Instructors can upload books.");
-      };
+        throw new Error('Security Violation: Only Admins or Instructors can upload books.');
+      }
       const category = await tx.bookCategory.findUnique({
-        where: { name: data.category }
+        where: { name: data.category },
       });
-      if (!category) {throw new Error("Invalid Category ID.");};
+      if (!category) {
+        throw new Error('Invalid Category ID.');
+      }
 
       const newBook = await tx.book.create({
         data: {
@@ -51,67 +57,69 @@ const uploadBook = async (req: Request) => {
           metaDescription: data.metaDescription,
           ownerId: owner.id,
           categoryId: category.id,
-          formats: data.formats.map(f=> f === "Hardcover"? BookFormat.HARDCOVER : BookFormat.E_BOOK),
+          formats: data.formats.map(f =>
+            f === 'Hardcover' ? BookFormat.HARDCOVER : BookFormat.E_BOOK
+          ),
           files: {
             create: data.files.map(file => ({
               name: file.name,
               url: file.url,
-              fileType: file.fileType
-            }))
-          }
+              fileType: file.fileType,
+            })),
+          },
         },
         include: {
-          files: true
-        }
+          files: true,
+        },
       });
 
       await tx.auditLog.create({
         data: {
           userId: owner.id,
-          action: "BOOK_CREATED",
-          entityType: "BOOK",
+          action: 'BOOK_CREATED',
+          entityType: 'BOOK',
           entityId: newBook.id,
           changesAfter: JSON.parse(JSON.stringify(newBook)),
-          ipAddress: "captured-from-request",
-        }
+          ipAddress: 'captured-from-request',
+        },
       });
 
       return newBook;
     });
-  }, "Upload Book");
+  }, 'Upload Book');
 
   return upload.id;
 };
 
 const getAllBooksDataforAdmin = async (req: Request) => {
   const user = req.user;
-  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");};
+  if (!user.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
 
-  const booksData = await executeDbOperation(async (prisma) => {
-    return await prisma.$transaction(async tx=>{
+  const booksData = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
       const userProfile = await tx.user.findUnique({
         where: { email: user.email },
-        include: { assignedRole: true }
+        include: { assignedRole: true },
       });
 
       if (!userProfile) {
-        throw new Error("Unauthorized: User profile not found.");
-      };
-      const isAuthorized = userProfile.assignedRole.some(r =>
-        r.role === "ADMIN"
-      );
+        throw new Error('Unauthorized: User profile not found.');
+      }
+      const isAuthorized = userProfile.assignedRole.some(r => r.role === 'ADMIN');
 
       if (!isAuthorized) {
-        throw new Error("Security Violation: Only Admins can see this data.");
-      };
+        throw new Error('Security Violation: Only Admins can see this data.');
+      }
 
       const totalCourse = await tx.course.count();
-      const totalBooks = await tx.book.count({where: {status: "ACTIVE"}});
+      const totalBooks = await tx.book.count({ where: { status: 'APPROVED' } });
     });
-  }, "Get All Books Data for Admin");
+  }, 'Get All Books Data for Admin');
 };
 
 export const bookService = {
   uploadBook,
-  getAllBooksDataforAdmin
+  getAllBooksDataforAdmin,
 };
