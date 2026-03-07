@@ -122,6 +122,7 @@ const getAllBooksDataforAdmin = async (req: Request) => {
       });
       const bookBreakdown = await tx.book.findMany({
         select: {
+          id: true,
           title: true,
           author: true,
           totalEarning: true,
@@ -139,7 +140,8 @@ const getAllBooksDataforAdmin = async (req: Request) => {
               price: true
             },
           }
-        }
+        },
+        orderBy: {createdAt: "asc"}
       });
       const stockData = await tx.book.aggregate({
         _sum: {
@@ -163,7 +165,59 @@ const getAllBooksDataforAdmin = async (req: Request) => {
   return booksData;
 };
 
+const approveBook = async (req: Request) => {
+  const { modifiedBookId } = req.query;
+  if (typeof modifiedBookId !== "string") {
+    throw new Error("Invalid book ID.");
+  }
+  const user = req.user;
+  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");}
+
+  const approvedBook = await executeDbOperation(async (prisma) => {
+    return await prisma.$transaction(async tx => {
+      const userProfile = await tx.user.findUnique({
+        where: { email: user.email },
+        include: { assignedRole: true }
+      });
+      if (!userProfile) {throw new Error("Unauthorized: User profile not found.");}
+      const isAuthorized = userProfile.assignedRole.some(r =>
+        r.role === "ADMIN"
+      );
+      if (!isAuthorized) {
+        throw new Error("Security Violation: Only Admins can approve books.");
+      }
+      const book = await tx.book.findUnique({
+        where: { id: modifiedBookId },
+      });
+      if (!book) {throw new Error("Book not found.");}
+      if (book.status !== BookStatus.PENDING) {
+        throw new Error("Only books in PENDING status can be approved.");
+      }
+      const updatedBook = await tx.book.update({
+        where: { id: modifiedBookId },
+        data: { status: BookStatus.APPROVED }
+      });
+
+      await tx.auditLog.create({
+        data: {
+          userId: userProfile.id,
+          action: "BOOK_APPROVED",
+          entityType: "BOOK",
+          entityId: updatedBook.id,
+          changesAfter: JSON.parse(JSON.stringify(updatedBook)),
+          ipAddress: "captured-from-request",
+        }
+      });
+
+      return updatedBook;
+    });
+  }, "Approve Book");
+
+  return approvedBook.id;
+};
+
 export const bookService = {
   uploadBook,
-  getAllBooksDataforAdmin
+  getAllBooksDataforAdmin,
+  approveBook
 };
