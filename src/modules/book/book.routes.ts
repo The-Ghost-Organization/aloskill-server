@@ -22,4 +22,10 @@ router.get(
   bookController.getAllBooksDataforAdmin
 );
 
+router.patch(
+  '/admin/books/approve',
+  requireAdmin,
+  bookController.approvedBook
+);
+
 export const BookRoutes = router;
