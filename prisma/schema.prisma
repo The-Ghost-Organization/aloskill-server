@@ -452,7 +452,7 @@ model InstructorProfile {
   currentOrg     String?
 
   //== Course Info
-  proposedCourseCategory CourseCategory
+  proposedCourseCategory String
   courseLevel            CourseLevel
   courseType             CourseType
 

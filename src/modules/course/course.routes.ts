@@ -80,11 +80,7 @@ router.get(
   courseController.getCourseInstructors
 );
 
-router.get(
-  '/instructorDashboard',
-  requireInstructor,
-  courseController.getInstructorDashboardData
-);
+router.get('/instructorDashboard', requireInstructor, courseController.getInstructorDashboardData);
 
 router.get('/tags', instructorQueryLimiter, requireInstructor, courseController.getCourseTags);
 

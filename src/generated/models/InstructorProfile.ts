@@ -63,7 +63,7 @@ export type InstructorProfileMinAggregateOutputType = {
   experience: number | null
   expertise: string | null
   currentOrg: string | null
-  proposedCourseCategory: $Enums.CourseCategory | null
+  proposedCourseCategory: string | null
   courseLevel: $Enums.CourseLevel | null
   courseType: $Enums.CourseType | null
   teachingExperience: runtime.Decimal | null
@@ -102,7 +102,7 @@ export type InstructorProfileMaxAggregateOutputType = {
   experience: number | null
   expertise: string | null
   currentOrg: string | null
-  proposedCourseCategory: $Enums.CourseCategory | null
+  proposedCourseCategory: string | null
   courseLevel: $Enums.CourseLevel | null
   courseType: $Enums.CourseType | null
   teachingExperience: runtime.Decimal | null
@@ -408,7 +408,7 @@ export type InstructorProfileGroupByOutputType = {
   experience: number
   expertise: string | null
   currentOrg: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience: runtime.Decimal | null
@@ -470,7 +470,7 @@ export type InstructorProfileWhereInput = {
   experience?: Prisma.IntFilter<"InstructorProfile"> | number
   expertise?: Prisma.StringNullableFilter<"InstructorProfile"> | string | null
   currentOrg?: Prisma.StringNullableFilter<"InstructorProfile"> | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFilter<"InstructorProfile"> | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFilter<"InstructorProfile"> | string
   courseLevel?: Prisma.EnumCourseLevelFilter<"InstructorProfile"> | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFilter<"InstructorProfile"> | $Enums.CourseType
   teachingExperience?: Prisma.DecimalNullableFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -561,7 +561,7 @@ export type InstructorProfileWhereUniqueInput = Prisma.AtLeast<{
   experience?: Prisma.IntFilter<"InstructorProfile"> | number
   expertise?: Prisma.StringNullableFilter<"InstructorProfile"> | string | null
   currentOrg?: Prisma.StringNullableFilter<"InstructorProfile"> | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFilter<"InstructorProfile"> | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFilter<"InstructorProfile"> | string
   courseLevel?: Prisma.EnumCourseLevelFilter<"InstructorProfile"> | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFilter<"InstructorProfile"> | $Enums.CourseType
   teachingExperience?: Prisma.DecimalNullableFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -652,7 +652,7 @@ export type InstructorProfileScalarWhereWithAggregatesInput = {
   experience?: Prisma.IntWithAggregatesFilter<"InstructorProfile"> | number
   expertise?: Prisma.StringNullableWithAggregatesFilter<"InstructorProfile"> | string | null
   currentOrg?: Prisma.StringNullableWithAggregatesFilter<"InstructorProfile"> | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryWithAggregatesFilter<"InstructorProfile"> | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringWithAggregatesFilter<"InstructorProfile"> | string
   courseLevel?: Prisma.EnumCourseLevelWithAggregatesFilter<"InstructorProfile"> | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeWithAggregatesFilter<"InstructorProfile"> | $Enums.CourseType
   teachingExperience?: Prisma.DecimalNullableWithAggregatesFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -690,7 +690,7 @@ export type InstructorProfileCreateInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -734,7 +734,7 @@ export type InstructorProfileUncheckedCreateInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -776,7 +776,7 @@ export type InstructorProfileUpdateInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -820,7 +820,7 @@ export type InstructorProfileUncheckedUpdateInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -863,7 +863,7 @@ export type InstructorProfileCreateManyInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -901,7 +901,7 @@ export type InstructorProfileUpdateManyMutationInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -940,7 +940,7 @@ export type InstructorProfileUncheckedUpdateManyInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1145,10 +1145,6 @@ export type InstructorProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorProfileUpdateToOneWithWhereWithoutUserInput, Prisma.InstructorProfileUpdateWithoutUserInput>, Prisma.InstructorProfileUncheckedUpdateWithoutUserInput>
 }
 
-export type EnumCourseCategoryFieldUpdateOperationsInput = {
-  set?: $Enums.CourseCategory
-}
-
 export type EnumCourseLevelFieldUpdateOperationsInput = {
   set?: $Enums.CourseLevel
 }
@@ -1257,7 +1253,7 @@ export type InstructorProfileCreateWithoutUserInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1299,7 +1295,7 @@ export type InstructorProfileUncheckedCreateWithoutUserInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1357,7 +1353,7 @@ export type InstructorProfileUpdateWithoutUserInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1399,7 +1395,7 @@ export type InstructorProfileUncheckedUpdateWithoutUserInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1441,7 +1437,7 @@ export type InstructorProfileCreateWithoutSkillsInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1484,7 +1480,7 @@ export type InstructorProfileUncheckedCreateWithoutSkillsInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1541,7 +1537,7 @@ export type InstructorProfileUpdateWithoutSkillsInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1584,7 +1580,7 @@ export type InstructorProfileUncheckedUpdateWithoutSkillsInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1625,7 +1621,7 @@ export type InstructorProfileCreateWithoutSocialAccountInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1668,7 +1664,7 @@ export type InstructorProfileUncheckedCreateWithoutSocialAccountInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1725,7 +1721,7 @@ export type InstructorProfileUpdateWithoutSocialAccountInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1768,7 +1764,7 @@ export type InstructorProfileUncheckedUpdateWithoutSocialAccountInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1809,7 +1805,7 @@ export type InstructorProfileCreateWithoutOwnedCoursesInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1852,7 +1848,7 @@ export type InstructorProfileUncheckedCreateWithoutOwnedCoursesInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1909,7 +1905,7 @@ export type InstructorProfileUpdateWithoutOwnedCoursesInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1952,7 +1948,7 @@ export type InstructorProfileUncheckedUpdateWithoutOwnedCoursesInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1993,7 +1989,7 @@ export type InstructorProfileCreateWithoutCourseInstructorsInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2036,7 +2032,7 @@ export type InstructorProfileUncheckedCreateWithoutCourseInstructorsInput = {
   experience?: number
   expertise?: string | null
   currentOrg?: string | null
-  proposedCourseCategory: $Enums.CourseCategory
+  proposedCourseCategory: string
   courseLevel: $Enums.CourseLevel
   courseType: $Enums.CourseType
   teachingExperience?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2093,7 +2089,7 @@ export type InstructorProfileUpdateWithoutCourseInstructorsInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2136,7 +2132,7 @@ export type InstructorProfileUncheckedUpdateWithoutCourseInstructorsInput = {
   experience?: Prisma.IntFieldUpdateOperationsInput | number
   expertise?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currentOrg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  proposedCourseCategory?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  proposedCourseCategory?: Prisma.StringFieldUpdateOperationsInput | string
   courseLevel?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   courseType?: Prisma.EnumCourseTypeFieldUpdateOperationsInput | $Enums.CourseType
   teachingExperience?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2425,7 +2421,7 @@ export type $InstructorProfilePayload<ExtArgs extends runtime.Types.Extensions.I
     experience: number
     expertise: string | null
     currentOrg: string | null
-    proposedCourseCategory: $Enums.CourseCategory
+    proposedCourseCategory: string
     courseLevel: $Enums.CourseLevel
     courseType: $Enums.CourseType
     teachingExperience: runtime.Decimal | null
@@ -2889,7 +2885,7 @@ export interface InstructorProfileFieldRefs {
   readonly experience: Prisma.FieldRef<"InstructorProfile", 'Int'>
   readonly expertise: Prisma.FieldRef<"InstructorProfile", 'String'>
   readonly currentOrg: Prisma.FieldRef<"InstructorProfile", 'String'>
-  readonly proposedCourseCategory: Prisma.FieldRef<"InstructorProfile", 'CourseCategory'>
+  readonly proposedCourseCategory: Prisma.FieldRef<"InstructorProfile", 'String'>
   readonly courseLevel: Prisma.FieldRef<"InstructorProfile", 'CourseLevel'>
   readonly courseType: Prisma.FieldRef<"InstructorProfile", 'CourseType'>
   readonly teachingExperience: Prisma.FieldRef<"InstructorProfile", 'Decimal'>

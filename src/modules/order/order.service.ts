@@ -153,7 +153,7 @@ const createPayment = async (req: Request) => {
 
       shipping_method: 'NO',
 
-      product_name: createOrder.orderData.orderItems.map(item => item.course.title).join(', '),
+      product_name: createOrder.orderData.orderItems.map(item => item.course?.title).join(', '),
       product_category: 'Online Course',
       product_profile: 'non-physical-goods',
     });
@@ -279,7 +279,7 @@ const validateIPN = async (req: Request) => {
           await tx.enrollment.create({
             data: {
               userId: order.userId,
-              courseId: item.courseId,
+              courseId: item.courseId as string,
               pricePaid: amount,
               originalPriceAtTime: item.price,
               status: EnrollmentStatus.ACTIVE,
@@ -287,7 +287,7 @@ const validateIPN = async (req: Request) => {
           });
 
           const course = await tx.course.update({
-            where: { id: item.courseId },
+            where: { id: item.courseId as string },
             data: {
               enrollmentCount: { increment: 1 },
               totalRevenueAmount: { increment: store_amount },

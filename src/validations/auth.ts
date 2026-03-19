@@ -38,7 +38,7 @@ export const InstructorProfileSchema = z.object({
       .regex(/[0-9]/, 'Password must contain at least one number')
       .optional()
       .nullable(),
-    profileImage: z.url("Profile Image url is required for instructor"),
+    profileImage: z.url('Profile Image url is required for instructor'),
     displayName: z
       .string()
       .min(6, 'Display name must be at least 6 characters long.')
@@ -101,7 +101,12 @@ export const InstructorProfileSchema = z.object({
       .optional()
       .nullable(),
     // == Course Info
-    proposedCourseCategory: z.enum(['BUSINESS', 'MARKETING', 'ENTREPRENEURSHIP', 'ICT']),
+    proposedCourseCategory: z
+      .string()
+      .regex(
+        /^[^<>]/,
+        'Proposed course category accept all characters except angle brackets (< >).'
+      ),
     courseLevel: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT']),
     courseType: z.enum(['LIVE', 'PRE_RECORDED', 'HYBRID', 'SELF_STUDY']),
     // == Content & Teaching Skills
