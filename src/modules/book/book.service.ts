@@ -165,6 +165,45 @@ const getAllBooksDataforAdmin = async (req: Request) => {
   return booksData;
 };
 
+const getSingleBookDataForAdminEdit= async(req: Request)=>{
+  const { bookId } = req.query;
+  if (typeof bookId !== "string") {
+    throw new Error("Invalid book ID.");
+  }
+  const user = req.user;
+  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");};
+
+  const bookData = await executeDbOperation(async (prisma) => {
+    return await prisma.$transaction(async tx =>{
+      const userProfile = await tx.user.findUnique({
+        where: { email: user.email },
+        include: { assignedRole: true }
+      });
+      if (!userProfile) {
+        throw new Error("Unauthorized: User profile not found.");
+      };
+      const isAuthorized = userProfile.assignedRole.some(r =>
+        r.role === "ADMIN" || r.role === "INSTRUCTOR"
+      );
+      if (!isAuthorized) {
+        throw new Error("Security Violation: Only Admins and Instructors can see this data.");
+      };
+
+      const book = await tx.book.findUnique({
+        where: { id: bookId },
+        include: {
+          files: true,
+          category: true
+        }
+      });
+      if (!book) {throw new Error("Book not found.");}
+      return book;
+    });
+  }, "Get Single Book Data for Admin Edit");
+
+  return bookData;
+};
+
 const approveBook = async (req: Request) => {
   const { modifiedBookId } = req.query;
   if (typeof modifiedBookId !== "string") {
@@ -219,5 +258,6 @@ const approveBook = async (req: Request) => {
 export const bookService = {
   uploadBook,
   getAllBooksDataforAdmin,
+  getSingleBookDataForAdminEdit,
   approveBook
 };
