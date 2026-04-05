@@ -2,51 +2,8 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
-import { ApplicationStatus, UserStatus } from '../../generated/client.js';
-
-// const getSingleUser = async (req: Request) => {
-//   const data = req.params;
-//   if (!data.email) {
-//     throw new Error('Email Not provided');
-//   }
-
-//   const user = await executeDbOperation(async prisma => {
-//     return await prisma.user.findUnique({
-//       where: { email: data.email },
-//       select: {
-//         email: true,
-//         status: true,
-//         instructorProfile: {
-//           select: {
-//             displayName: true,
-//           },
-//         },
-//       },
-//     });
-//   });
-
-//   if (!user) {
-//     return {
-//       canProceed: true,
-//     };
-//   }
-
-//   if (user.status !== UserStatus.ACTIVE) {
-//     return {
-//       canProceed: false,
-//     };
-//   }
-
-//   if (user.instructorProfile) {
-//     return {
-//       canProceed: false,
-//     };
-//   }
-
-//   return {
-//     canProceed: true,
-//   };
-// };
+import { ApplicationStatus, EnrollmentStatus, OrderStatus, UserStatus } from '../../generated/client.js';
+import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
 
 const getSingleUser = async (req: Request) => {
   const { email } = req.params;
@@ -321,9 +278,77 @@ const getAllInstructors = async () => {
   ];
 };
 
+// For Admin Use Only
+
+const getAllStudentsForAdmin = async () => {
+  const students = await executeDbOperation(async prisma => {
+    return await prisma.user.findMany({
+      where: {
+        deletedAt: null,
+        assignedRole: {
+          some: {
+            role: "STUDENT"
+          }
+        }
+      },
+      select: {
+        studentProfile: {
+          where: {
+            deletedAt: null,
+          },
+          select: {
+            displayName: true,
+            encryptedPhone: true,
+          }
+        },
+        email: true,
+        createdAt: true,
+        avatarUrl: true,
+        status: true,
+        _count: {
+          select: {
+            enrollments: {
+              where: {
+                status: EnrollmentStatus.ACTIVE
+              }
+            },
+          },
+        },
+        orders: {
+          where: {
+            status: OrderStatus.PAID
+          },
+          select: {
+            totalAmount: true,
+            orderItems: {
+              select: {
+                bookId: true
+              }
+            }
+          }
+        },
+        lessonProgresses: {
+          select: {
+            completed: true,
+          }
+        },
+      },
+    });
+  }, 'Get all Students');
+
+  return students.map(student=> ({
+    ...student,
+    studentProfile: {
+      ...student.studentProfile,
+      encryptedPhone: decryptPhoneNumber(student.studentProfile?.encryptedPhone as string)
+    }
+  }));
+};
+
 export const userService = {
   getSingleUser,
   getAllUsers,
   getAllInstructors,
   getSingleInstructor,
+  getAllStudentsForAdmin,
 };

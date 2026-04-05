@@ -3,6 +3,7 @@ import { validate } from '../../middleware/validation.js';
 import express from 'express';
 import { userController } from './user.controller.js';
 import { getSingleInstructorSchema, getSingleUserSchema } from './user.validation.js';
+import { requireAdmin } from '../../middleware/auth.js';
 
 const router = express.Router({ caseSensitive: true });
 
@@ -15,5 +16,8 @@ router.get(
   userController.getSingleInstructor
 );
 router.get('/instructors/all', userController.getAllInstructors);
+
+// Admin Routes
+router.get('/admin/students', requireAdmin, userController.getAllStudentsForAdmin);
 
 export const UserRoutes = router;
