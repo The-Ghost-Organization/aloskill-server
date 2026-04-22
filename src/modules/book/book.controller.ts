@@ -12,6 +12,11 @@ const getAllBooksDataforAdmin = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Books Data Retrieved Successfully!', result);
 });
 
+const getSingleBookDataForAdminEdit = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getSingleBookDataForAdminEdit(req);
+  ResponseHandler.ok(res, 'Book Data Retrieved Successfully!', result);
+});
+
 const approvedBook = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.approveBook(req);
   ResponseHandler.ok(res, 'Book Approved Successfully!', result);
@@ -21,5 +26,6 @@ const approvedBook = catchAsync(async (req, res): Promise<void> => {
 export const bookController = {
   uploadBook,
   getAllBooksDataforAdmin,
+  getSingleBookDataForAdminEdit,
   approvedBook
 };

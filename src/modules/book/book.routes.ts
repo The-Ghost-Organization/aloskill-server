@@ -17,9 +17,15 @@ router.post(
 );
 
 router.get(
-  '/admin/books-data',
+  '/admin/all-books-data',
   requireAdmin,
   bookController.getAllBooksDataforAdmin
+);
+
+router.get(
+  '/admin/books/edit',
+  requireAdmin,
+  bookController.getSingleBookDataForAdminEdit
 );
 
 router.patch(

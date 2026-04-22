@@ -1930,7 +1930,6 @@ const deleteFile = async (req: Request) => {
   }
   const fileArray = fileUrl.split('/');
   fileArray.splice(0, 3);
-  console.log('filee', fileArray);
   const response = await fetch(
     `https://sg.storage.bunnycdn.com/${storageZone}/${fileArray.join('/')}`,
     {
