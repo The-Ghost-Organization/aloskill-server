@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { requireAuth, requireInstructor, requireStudent } from '../../middleware/auth.js';
+import { requireAdmin, requireAuth, requireInstructor, requireStudent } from '../../middleware/auth.js';
 import { generalLimiter, instructorQueryLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { courseController } from './course.controller.js';
@@ -46,6 +46,8 @@ router.get(
 router.get('/student/allCourses', requireStudent, courseController.getAllCoursesForStudent);
 
 router.get('/public/allCourses', courseController.getAllCoursesForPublic);
+
+router.get('/admin/student-view', requireAdmin, courseController.getAllCoursesForAdminDashboardStudentView);
 
 router.get(
   '/course/:courseId',

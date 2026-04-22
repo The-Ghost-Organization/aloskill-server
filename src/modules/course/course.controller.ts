@@ -27,6 +27,11 @@ const getAllCoursesForPublic = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'All Courses Fetched Successfully for Public view!', result);
 });
 
+const getAllCoursesForAdminDashboardStudentView = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getAllCoursesForAdminDashboardStudentView(req);
+  ResponseHandler.ok(res, 'All Courses Fetched Successfully for Admin Dashboard Student View!', result);
+});
+
 const getSingleCourseForInstructorView = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getSingleCourseForInstructorView(req);
   ResponseHandler.ok(res, 'Course fetched successfully for instructor view!', result);
@@ -177,6 +182,7 @@ export const courseController = {
   getAllCoursesForInstructor,
   getAllCoursesForStudent,
   getAllCoursesForPublic,
+  getAllCoursesForAdminDashboardStudentView,
   getInstructorDashboardData,
   getCategories,
   checkCourseSlugAvailability,

@@ -16,7 +16,7 @@ const uploadBook = async (req: Request) => {
   const upload = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
       const owner = await tx.user.findUnique({
-        where: { email: user.email },
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
         include: { assignedRole: true },
       });
 
@@ -101,7 +101,7 @@ const getAllBooksDataforAdmin = async (req: Request) => {
   const booksData = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
       const userProfile = await tx.user.findUnique({
-        where: { email: user.email },
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
         include: { assignedRole: true },
       });
 
@@ -186,7 +186,7 @@ const getSingleBookDataForAdminEdit = async (req: Request) => {
   const bookData = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
       const userProfile = await tx.user.findUnique({
-        where: { email: user.email },
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
         include: { assignedRole: true },
       });
       if (!userProfile) {
@@ -229,7 +229,7 @@ const approveBook = async (req: Request) => {
   const approvedBook = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
       const userProfile = await tx.user.findUnique({
-        where: { email: user.email },
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
         include: { assignedRole: true },
       });
       if (!userProfile) {
