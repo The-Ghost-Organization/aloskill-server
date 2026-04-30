@@ -3735,7 +3735,6 @@ export const InstructorProfileScalarFieldEnum = {
   experience: 'experience',
   expertise: 'expertise',
   currentOrg: 'currentOrg',
-  proposedCourseCategory: 'proposedCourseCategory',
   courseLevel: 'courseLevel',
   courseType: 'courseType',
   teachingExperience: 'teachingExperience',
@@ -3756,7 +3755,8 @@ export const InstructorProfileScalarFieldEnum = {
   deletedAt: 'deletedAt',
   deletionReason: 'deletionReason',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  proposedCourseCategory: 'proposedCourseCategory'
 } as const
 
 export type InstructorProfileScalarFieldEnum = (typeof InstructorProfileScalarFieldEnum)[keyof typeof InstructorProfileScalarFieldEnum]
@@ -3929,11 +3929,11 @@ export const LessonProgressScalarFieldEnum = {
   courseId: 'courseId',
   completed: 'completed',
   progressValue: 'progressValue',
-  lastPosition: 'lastPosition',
   lastViewedAt: 'lastViewedAt',
   attempts: 'attempts',
   completedAt: 'completedAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  lastPosition: 'lastPosition'
 } as const
 
 export type LessonProgressScalarFieldEnum = (typeof LessonProgressScalarFieldEnum)[keyof typeof LessonProgressScalarFieldEnum]
@@ -3943,13 +3943,13 @@ export const ReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
-  bookId: 'bookId',
   rating: 'rating',
   title: 'title',
   body: 'body',
   flagged: 'flagged',
   deletedAt: 'deletedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  bookId: 'bookId'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
@@ -3973,14 +3973,14 @@ export const BookScalarFieldEnum = {
   formats: 'formats',
   totalEarning: 'totalEarning',
   viewCount: 'viewCount',
-  status: 'status',
   metaKeywords: 'metaKeywords',
   metaDescription: 'metaDescription',
   coverImage: 'coverImage',
   ownerId: 'ownerId',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status'
 } as const
 
 export type BookScalarFieldEnum = (typeof BookScalarFieldEnum)[keyof typeof BookScalarFieldEnum]
@@ -4015,8 +4015,8 @@ export const WishlistScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
-  bookId: 'bookId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  bookId: 'bookId'
 } as const
 
 export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typeof WishlistScalarFieldEnum]
@@ -4041,11 +4041,11 @@ export const OrderItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
   courseId: 'courseId',
-  bookId: 'bookId',
   price: 'price',
   currency: 'currency',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  bookId: 'bookId'
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
@@ -4055,7 +4055,6 @@ export const PaymentTransactionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
-  bookId: 'bookId',
   orderId: 'orderId',
   paymentMethod: 'paymentMethod',
   providerFee: 'providerFee',
@@ -4068,7 +4067,8 @@ export const PaymentTransactionScalarFieldEnum = {
   type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  bookId: 'bookId'
 } as const
 
 export type PaymentTransactionScalarFieldEnum = (typeof PaymentTransactionScalarFieldEnum)[keyof typeof PaymentTransactionScalarFieldEnum]

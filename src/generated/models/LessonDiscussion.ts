@@ -198,9 +198,9 @@ export type LessonDiscussionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"LessonDiscussion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LessonDiscussion"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"LessonDiscussion"> | Date | string | null
-  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
-  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   comments?: Prisma.LessonCommentListRelationFilter
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
 }
 
 export type LessonDiscussionOrderByWithRelationInput = {
@@ -211,9 +211,9 @@ export type LessonDiscussionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  lesson?: Prisma.LessonOrderByWithRelationInput
-  createdBy?: Prisma.UserOrderByWithRelationInput
   comments?: Prisma.LessonCommentOrderByRelationAggregateInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
+  lesson?: Prisma.LessonOrderByWithRelationInput
 }
 
 export type LessonDiscussionWhereUniqueInput = Prisma.AtLeast<{
@@ -227,9 +227,9 @@ export type LessonDiscussionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"LessonDiscussion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LessonDiscussion"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"LessonDiscussion"> | Date | string | null
-  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
-  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   comments?: Prisma.LessonCommentListRelationFilter
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
 }, "id">
 
 export type LessonDiscussionOrderByWithAggregationInput = {
@@ -264,9 +264,9 @@ export type LessonDiscussionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  lesson: Prisma.LessonCreateNestedOneWithoutDiscussionsInput
-  createdBy: Prisma.UserCreateNestedOneWithoutLessonDiscussionInput
   comments?: Prisma.LessonCommentCreateNestedManyWithoutDiscussionInput
+  createdBy: Prisma.UserCreateNestedOneWithoutLessonDiscussionInput
+  lesson: Prisma.LessonCreateNestedOneWithoutDiscussionsInput
 }
 
 export type LessonDiscussionUncheckedCreateInput = {
@@ -286,9 +286,9 @@ export type LessonDiscussionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lesson?: Prisma.LessonUpdateOneRequiredWithoutDiscussionsNestedInput
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutLessonDiscussionNestedInput
   comments?: Prisma.LessonCommentUpdateManyWithoutDiscussionNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutLessonDiscussionNestedInput
+  lesson?: Prisma.LessonUpdateOneRequiredWithoutDiscussionsNestedInput
 }
 
 export type LessonDiscussionUncheckedUpdateInput = {
@@ -479,8 +479,8 @@ export type LessonDiscussionCreateWithoutCreatedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  lesson: Prisma.LessonCreateNestedOneWithoutDiscussionsInput
   comments?: Prisma.LessonCommentCreateNestedManyWithoutDiscussionInput
+  lesson: Prisma.LessonCreateNestedOneWithoutDiscussionsInput
 }
 
 export type LessonDiscussionUncheckedCreateWithoutCreatedByInput = {
@@ -538,8 +538,8 @@ export type LessonDiscussionCreateWithoutLessonInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy: Prisma.UserCreateNestedOneWithoutLessonDiscussionInput
   comments?: Prisma.LessonCommentCreateNestedManyWithoutDiscussionInput
+  createdBy: Prisma.UserCreateNestedOneWithoutLessonDiscussionInput
 }
 
 export type LessonDiscussionUncheckedCreateWithoutLessonInput = {
@@ -584,8 +584,8 @@ export type LessonDiscussionCreateWithoutCommentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  lesson: Prisma.LessonCreateNestedOneWithoutDiscussionsInput
   createdBy: Prisma.UserCreateNestedOneWithoutLessonDiscussionInput
+  lesson: Prisma.LessonCreateNestedOneWithoutDiscussionsInput
 }
 
 export type LessonDiscussionUncheckedCreateWithoutCommentsInput = {
@@ -620,8 +620,8 @@ export type LessonDiscussionUpdateWithoutCommentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lesson?: Prisma.LessonUpdateOneRequiredWithoutDiscussionsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutLessonDiscussionNestedInput
+  lesson?: Prisma.LessonUpdateOneRequiredWithoutDiscussionsNestedInput
 }
 
 export type LessonDiscussionUncheckedUpdateWithoutCommentsInput = {
@@ -649,8 +649,8 @@ export type LessonDiscussionUpdateWithoutCreatedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lesson?: Prisma.LessonUpdateOneRequiredWithoutDiscussionsNestedInput
   comments?: Prisma.LessonCommentUpdateManyWithoutDiscussionNestedInput
+  lesson?: Prisma.LessonUpdateOneRequiredWithoutDiscussionsNestedInput
 }
 
 export type LessonDiscussionUncheckedUpdateWithoutCreatedByInput = {
@@ -687,8 +687,8 @@ export type LessonDiscussionUpdateWithoutLessonInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutLessonDiscussionNestedInput
   comments?: Prisma.LessonCommentUpdateManyWithoutDiscussionNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutLessonDiscussionNestedInput
 }
 
 export type LessonDiscussionUncheckedUpdateWithoutLessonInput = {
@@ -749,9 +749,9 @@ export type LessonDiscussionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   comments?: boolean | Prisma.LessonDiscussion$commentsArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.LessonDiscussionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lessonDiscussion"]>
 
@@ -763,8 +763,8 @@ export type LessonDiscussionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lessonDiscussion"]>
 
 export type LessonDiscussionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -775,8 +775,8 @@ export type LessonDiscussionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lessonDiscussion"]>
 
 export type LessonDiscussionSelectScalar = {
@@ -791,26 +791,26 @@ export type LessonDiscussionSelectScalar = {
 
 export type LessonDiscussionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "lessonId" | "createdById" | "title" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["lessonDiscussion"]>
 export type LessonDiscussionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
-  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   comments?: boolean | Prisma.LessonDiscussion$commentsArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.LessonDiscussionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LessonDiscussionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
 }
 export type LessonDiscussionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
 }
 
 export type $LessonDiscussionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LessonDiscussion"
   objects: {
-    lesson: Prisma.$LessonPayload<ExtArgs>
-    createdBy: Prisma.$UserPayload<ExtArgs>
     comments: Prisma.$LessonCommentPayload<ExtArgs>[]
+    createdBy: Prisma.$UserPayload<ExtArgs>
+    lesson: Prisma.$LessonPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1214,9 +1214,9 @@ readonly fields: LessonDiscussionFieldRefs;
  */
 export interface Prisma__LessonDiscussionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  lesson<T extends Prisma.LessonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDefaultArgs<ExtArgs>>): Prisma.Prisma__LessonClient<runtime.Types.Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   comments<T extends Prisma.LessonDiscussion$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDiscussion$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  lesson<T extends Prisma.LessonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDefaultArgs<ExtArgs>>): Prisma.Prisma__LessonClient<runtime.Types.Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

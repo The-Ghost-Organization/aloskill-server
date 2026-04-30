@@ -436,24 +436,24 @@ export type UserWhereInput = {
   orderCount?: Prisma.IntFilter<"User"> | number
   progressesCount?: Prisma.IntFilter<"User"> | number
   wishlistsCount?: Prisma.IntFilter<"User"> | number
-  assignedRole?: Prisma.UserRoleAssignmentListRelationFilter
-  studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
-  instructorProfile?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
-  sessions?: Prisma.UserSessionListRelationFilter
+  AuditLog?: Prisma.AuditLogListRelationFilter
+  books?: Prisma.BookListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
-  reviews?: Prisma.ReviewListRelationFilter
-  payments?: Prisma.PaymentTransactionListRelationFilter
+  instructorProfile?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
+  LessonComment?: Prisma.LessonCommentListRelationFilter
+  LessonDiscussion?: Prisma.LessonDiscussionListRelationFilter
   lessonProgresses?: Prisma.LessonProgressListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
-  wishlists?: Prisma.WishlistListRelationFilter
   orders?: Prisma.OrderListRelationFilter
-  books?: Prisma.BookListRelationFilter
-  LessonDiscussion?: Prisma.LessonDiscussionListRelationFilter
-  LessonComment?: Prisma.LessonCommentListRelationFilter
-  QuizResult?: Prisma.QuizResultListRelationFilter
-  AuditLog?: Prisma.AuditLogListRelationFilter
+  payments?: Prisma.PaymentTransactionListRelationFilter
   paymentMethod?: Prisma.PayoutMethodListRelationFilter
   payouts?: Prisma.PayoutListRelationFilter
+  QuizResult?: Prisma.QuizResultListRelationFilter
+  reviews?: Prisma.ReviewListRelationFilter
+  studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
+  assignedRole?: Prisma.UserRoleAssignmentListRelationFilter
+  sessions?: Prisma.UserSessionListRelationFilter
+  wishlists?: Prisma.WishlistListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -486,24 +486,24 @@ export type UserOrderByWithRelationInput = {
   orderCount?: Prisma.SortOrder
   progressesCount?: Prisma.SortOrder
   wishlistsCount?: Prisma.SortOrder
-  assignedRole?: Prisma.UserRoleAssignmentOrderByRelationAggregateInput
-  studentProfile?: Prisma.StudentProfileOrderByWithRelationInput
-  instructorProfile?: Prisma.InstructorProfileOrderByWithRelationInput
-  sessions?: Prisma.UserSessionOrderByRelationAggregateInput
+  AuditLog?: Prisma.AuditLogOrderByRelationAggregateInput
+  books?: Prisma.BookOrderByRelationAggregateInput
   enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
-  reviews?: Prisma.ReviewOrderByRelationAggregateInput
-  payments?: Prisma.PaymentTransactionOrderByRelationAggregateInput
+  instructorProfile?: Prisma.InstructorProfileOrderByWithRelationInput
+  LessonComment?: Prisma.LessonCommentOrderByRelationAggregateInput
+  LessonDiscussion?: Prisma.LessonDiscussionOrderByRelationAggregateInput
   lessonProgresses?: Prisma.LessonProgressOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
-  wishlists?: Prisma.WishlistOrderByRelationAggregateInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
-  books?: Prisma.BookOrderByRelationAggregateInput
-  LessonDiscussion?: Prisma.LessonDiscussionOrderByRelationAggregateInput
-  LessonComment?: Prisma.LessonCommentOrderByRelationAggregateInput
-  QuizResult?: Prisma.QuizResultOrderByRelationAggregateInput
-  AuditLog?: Prisma.AuditLogOrderByRelationAggregateInput
+  payments?: Prisma.PaymentTransactionOrderByRelationAggregateInput
   paymentMethod?: Prisma.PayoutMethodOrderByRelationAggregateInput
   payouts?: Prisma.PayoutOrderByRelationAggregateInput
+  QuizResult?: Prisma.QuizResultOrderByRelationAggregateInput
+  reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  studentProfile?: Prisma.StudentProfileOrderByWithRelationInput
+  assignedRole?: Prisma.UserRoleAssignmentOrderByRelationAggregateInput
+  sessions?: Prisma.UserSessionOrderByRelationAggregateInput
+  wishlists?: Prisma.WishlistOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -539,24 +539,24 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   orderCount?: Prisma.IntFilter<"User"> | number
   progressesCount?: Prisma.IntFilter<"User"> | number
   wishlistsCount?: Prisma.IntFilter<"User"> | number
-  assignedRole?: Prisma.UserRoleAssignmentListRelationFilter
-  studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
-  instructorProfile?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
-  sessions?: Prisma.UserSessionListRelationFilter
+  AuditLog?: Prisma.AuditLogListRelationFilter
+  books?: Prisma.BookListRelationFilter
   enrollments?: Prisma.EnrollmentListRelationFilter
-  reviews?: Prisma.ReviewListRelationFilter
-  payments?: Prisma.PaymentTransactionListRelationFilter
+  instructorProfile?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
+  LessonComment?: Prisma.LessonCommentListRelationFilter
+  LessonDiscussion?: Prisma.LessonDiscussionListRelationFilter
   lessonProgresses?: Prisma.LessonProgressListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
-  wishlists?: Prisma.WishlistListRelationFilter
   orders?: Prisma.OrderListRelationFilter
-  books?: Prisma.BookListRelationFilter
-  LessonDiscussion?: Prisma.LessonDiscussionListRelationFilter
-  LessonComment?: Prisma.LessonCommentListRelationFilter
-  QuizResult?: Prisma.QuizResultListRelationFilter
-  AuditLog?: Prisma.AuditLogListRelationFilter
+  payments?: Prisma.PaymentTransactionListRelationFilter
   paymentMethod?: Prisma.PayoutMethodListRelationFilter
   payouts?: Prisma.PayoutListRelationFilter
+  QuizResult?: Prisma.QuizResultListRelationFilter
+  reviews?: Prisma.ReviewListRelationFilter
+  studentProfile?: Prisma.XOR<Prisma.StudentProfileNullableScalarRelationFilter, Prisma.StudentProfileWhereInput> | null
+  assignedRole?: Prisma.UserRoleAssignmentListRelationFilter
+  sessions?: Prisma.UserSessionListRelationFilter
+  wishlists?: Prisma.WishlistListRelationFilter
 }, "id" | "email" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
@@ -661,24 +661,24 @@ export type UserCreateInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -711,24 +711,24 @@ export type UserUncheckedCreateInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -761,24 +761,24 @@ export type UserUpdateInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -811,24 +811,24 @@ export type UserUncheckedUpdateInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1364,23 +1364,23 @@ export type UserCreateWithoutSessionsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1413,23 +1413,23 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1478,23 +1478,23 @@ export type UserUpdateWithoutSessionsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1527,23 +1527,23 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedRoleInput = {
@@ -1576,23 +1576,23 @@ export type UserCreateWithoutAssignedRoleInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedRoleInput = {
@@ -1625,23 +1625,23 @@ export type UserUncheckedCreateWithoutAssignedRoleInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedRoleInput = {
@@ -1690,23 +1690,23 @@ export type UserUpdateWithoutAssignedRoleInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedRoleInput = {
@@ -1739,23 +1739,23 @@ export type UserUncheckedUpdateWithoutAssignedRoleInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStudentProfileInput = {
@@ -1788,23 +1788,23 @@ export type UserCreateWithoutStudentProfileInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -1837,23 +1837,23 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -1902,23 +1902,23 @@ export type UserUpdateWithoutStudentProfileInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -1951,23 +1951,23 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInstructorProfileInput = {
@@ -2000,23 +2000,23 @@ export type UserCreateWithoutInstructorProfileInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInstructorProfileInput = {
@@ -2049,23 +2049,23 @@ export type UserUncheckedCreateWithoutInstructorProfileInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInstructorProfileInput = {
@@ -2114,23 +2114,23 @@ export type UserUpdateWithoutInstructorProfileInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInstructorProfileInput = {
@@ -2163,23 +2163,23 @@ export type UserUncheckedUpdateWithoutInstructorProfileInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLessonDiscussionInput = {
@@ -2212,23 +2212,23 @@ export type UserCreateWithoutLessonDiscussionInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLessonDiscussionInput = {
@@ -2261,23 +2261,23 @@ export type UserUncheckedCreateWithoutLessonDiscussionInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLessonDiscussionInput = {
@@ -2326,23 +2326,23 @@ export type UserUpdateWithoutLessonDiscussionInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLessonDiscussionInput = {
@@ -2375,23 +2375,23 @@ export type UserUncheckedUpdateWithoutLessonDiscussionInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLessonCommentInput = {
@@ -2424,23 +2424,23 @@ export type UserCreateWithoutLessonCommentInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLessonCommentInput = {
@@ -2473,23 +2473,23 @@ export type UserUncheckedCreateWithoutLessonCommentInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLessonCommentInput = {
@@ -2538,23 +2538,23 @@ export type UserUpdateWithoutLessonCommentInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLessonCommentInput = {
@@ -2587,23 +2587,23 @@ export type UserUncheckedUpdateWithoutLessonCommentInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutEnrollmentsInput = {
@@ -2636,23 +2636,23 @@ export type UserCreateWithoutEnrollmentsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEnrollmentsInput = {
@@ -2685,23 +2685,23 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEnrollmentsInput = {
@@ -2750,23 +2750,23 @@ export type UserUpdateWithoutEnrollmentsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEnrollmentsInput = {
@@ -2799,23 +2799,23 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLessonProgressesInput = {
@@ -2848,23 +2848,23 @@ export type UserCreateWithoutLessonProgressesInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
-  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
   AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLessonProgressesInput = {
@@ -2897,23 +2897,23 @@ export type UserUncheckedCreateWithoutLessonProgressesInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
   AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLessonProgressesInput = {
@@ -2962,23 +2962,23 @@ export type UserUpdateWithoutLessonProgressesInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
   AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLessonProgressesInput = {
@@ -3011,23 +3011,23 @@ export type UserUncheckedUpdateWithoutLessonProgressesInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
   AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -3060,23 +3060,23 @@ export type UserCreateWithoutReviewsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -3109,23 +3109,23 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -3174,23 +3174,23 @@ export type UserUpdateWithoutReviewsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -3223,23 +3223,23 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBooksInput = {
@@ -3272,23 +3272,23 @@ export type UserCreateWithoutBooksInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBooksInput = {
@@ -3321,23 +3321,23 @@ export type UserUncheckedCreateWithoutBooksInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBooksInput = {
@@ -3386,23 +3386,23 @@ export type UserUpdateWithoutBooksInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBooksInput = {
@@ -3435,23 +3435,23 @@ export type UserUncheckedUpdateWithoutBooksInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWishlistsInput = {
@@ -3484,23 +3484,23 @@ export type UserCreateWithoutWishlistsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWishlistsInput = {
@@ -3533,23 +3533,23 @@ export type UserUncheckedCreateWithoutWishlistsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWishlistsInput = {
@@ -3598,23 +3598,23 @@ export type UserUpdateWithoutWishlistsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWishlistsInput = {
@@ -3647,23 +3647,23 @@ export type UserUncheckedUpdateWithoutWishlistsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -3696,23 +3696,23 @@ export type UserCreateWithoutOrdersInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -3745,23 +3745,23 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -3810,23 +3810,23 @@ export type UserUpdateWithoutOrdersInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -3859,23 +3859,23 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -3908,23 +3908,23 @@ export type UserCreateWithoutPaymentsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -3957,23 +3957,23 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -4022,23 +4022,23 @@ export type UserUpdateWithoutPaymentsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -4071,23 +4071,23 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPayoutsInput = {
@@ -4120,23 +4120,23 @@ export type UserCreateWithoutPayoutsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPayoutsInput = {
@@ -4169,23 +4169,23 @@ export type UserUncheckedCreateWithoutPayoutsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPayoutsInput = {
@@ -4234,23 +4234,23 @@ export type UserUpdateWithoutPayoutsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPayoutsInput = {
@@ -4283,23 +4283,23 @@ export type UserUncheckedUpdateWithoutPayoutsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentMethodInput = {
@@ -4332,23 +4332,23 @@ export type UserCreateWithoutPaymentMethodInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentMethodInput = {
@@ -4381,23 +4381,23 @@ export type UserUncheckedCreateWithoutPaymentMethodInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentMethodInput = {
@@ -4446,23 +4446,23 @@ export type UserUpdateWithoutPaymentMethodInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentMethodInput = {
@@ -4495,23 +4495,23 @@ export type UserUncheckedUpdateWithoutPaymentMethodInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -4544,23 +4544,23 @@ export type UserCreateWithoutNotificationsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
-  lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
-  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
   AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
+  lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -4593,23 +4593,23 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
-  lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
   AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
+  lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -4658,23 +4658,23 @@ export type UserUpdateWithoutNotificationsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
-  lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
   AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
+  lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -4707,23 +4707,23 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
-  lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
   AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
+  lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutQuizResultInput = {
@@ -4756,23 +4756,23 @@ export type UserCreateWithoutQuizResultInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  AuditLog?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutQuizResultInput = {
@@ -4805,23 +4805,23 @@ export type UserUncheckedCreateWithoutQuizResultInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  AuditLog?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutQuizResultInput = {
@@ -4870,23 +4870,23 @@ export type UserUpdateWithoutQuizResultInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  AuditLog?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutQuizResultInput = {
@@ -4919,23 +4919,23 @@ export type UserUncheckedUpdateWithoutQuizResultInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  AuditLog?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogInput = {
@@ -4968,23 +4968,23 @@ export type UserCreateWithoutAuditLogInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
-  books?: Prisma.BookCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogInput = {
@@ -5017,23 +5017,23 @@ export type UserUncheckedCreateWithoutAuditLogInput = {
   orderCount?: number
   progressesCount?: number
   wishlistsCount?: number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
-  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
   enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutUserInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedCreateNestedOneWithoutUserInput
+  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
   lessonProgresses?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
-  books?: Prisma.BookUncheckedCreateNestedManyWithoutOwnerInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutCreatedByInput
-  LessonComment?: Prisma.LessonCommentUncheckedCreateNestedManyWithoutAuthorInput
-  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutUserInput
   paymentMethod?: Prisma.PayoutMethodUncheckedCreateNestedManyWithoutInstructorInput
   payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutInstructorInput
+  QuizResult?: Prisma.QuizResultUncheckedCreateNestedManyWithoutUserInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  studentProfile?: Prisma.StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  wishlists?: Prisma.WishlistUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogInput = {
@@ -5082,23 +5082,23 @@ export type UserUpdateWithoutAuditLogInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogInput = {
@@ -5131,23 +5131,23 @@ export type UserUncheckedUpdateWithoutAuditLogInput = {
   orderCount?: Prisma.IntFieldUpdateOperationsInput | number
   progressesCount?: Prisma.IntFieldUpdateOperationsInput | number
   wishlistsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
-  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
   enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
+  instructorProfile?: Prisma.InstructorProfileUncheckedUpdateOneWithoutUserNestedInput
+  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
   lessonProgresses?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
-  books?: Prisma.BookUncheckedUpdateManyWithoutOwnerNestedInput
-  LessonDiscussion?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutCreatedByNestedInput
-  LessonComment?: Prisma.LessonCommentUncheckedUpdateManyWithoutAuthorNestedInput
-  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutUserNestedInput
   paymentMethod?: Prisma.PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput
   payouts?: Prisma.PayoutUncheckedUpdateManyWithoutInstructorNestedInput
+  QuizResult?: Prisma.QuizResultUncheckedUpdateManyWithoutUserNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  studentProfile?: Prisma.StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignedRole?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  wishlists?: Prisma.WishlistUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -5156,41 +5156,41 @@ export type UserUncheckedUpdateWithoutAuditLogInput = {
  */
 
 export type UserCountOutputType = {
-  assignedRole: number
-  sessions: number
+  AuditLog: number
+  books: number
   enrollments: number
-  reviews: number
-  payments: number
+  LessonComment: number
+  LessonDiscussion: number
   lessonProgresses: number
   notifications: number
-  wishlists: number
   orders: number
-  books: number
-  LessonDiscussion: number
-  LessonComment: number
-  QuizResult: number
-  AuditLog: number
+  payments: number
   paymentMethod: number
   payouts: number
+  QuizResult: number
+  reviews: number
+  assignedRole: number
+  sessions: number
+  wishlists: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  assignedRole?: boolean | UserCountOutputTypeCountAssignedRoleArgs
-  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  AuditLog?: boolean | UserCountOutputTypeCountAuditLogArgs
+  books?: boolean | UserCountOutputTypeCountBooksArgs
   enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
-  reviews?: boolean | UserCountOutputTypeCountReviewsArgs
-  payments?: boolean | UserCountOutputTypeCountPaymentsArgs
+  LessonComment?: boolean | UserCountOutputTypeCountLessonCommentArgs
+  LessonDiscussion?: boolean | UserCountOutputTypeCountLessonDiscussionArgs
   lessonProgresses?: boolean | UserCountOutputTypeCountLessonProgressesArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
-  wishlists?: boolean | UserCountOutputTypeCountWishlistsArgs
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
-  books?: boolean | UserCountOutputTypeCountBooksArgs
-  LessonDiscussion?: boolean | UserCountOutputTypeCountLessonDiscussionArgs
-  LessonComment?: boolean | UserCountOutputTypeCountLessonCommentArgs
-  QuizResult?: boolean | UserCountOutputTypeCountQuizResultArgs
-  AuditLog?: boolean | UserCountOutputTypeCountAuditLogArgs
+  payments?: boolean | UserCountOutputTypeCountPaymentsArgs
   paymentMethod?: boolean | UserCountOutputTypeCountPaymentMethodArgs
   payouts?: boolean | UserCountOutputTypeCountPayoutsArgs
+  QuizResult?: boolean | UserCountOutputTypeCountQuizResultArgs
+  reviews?: boolean | UserCountOutputTypeCountReviewsArgs
+  assignedRole?: boolean | UserCountOutputTypeCountAssignedRoleArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  wishlists?: boolean | UserCountOutputTypeCountWishlistsArgs
 }
 
 /**
@@ -5206,15 +5206,15 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountAssignedRoleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserRoleAssignmentWhereInput
+export type UserCountOutputTypeCountAuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserSessionWhereInput
+export type UserCountOutputTypeCountBooksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookWhereInput
 }
 
 /**
@@ -5227,15 +5227,15 @@ export type UserCountOutputTypeCountEnrollmentsArgs<ExtArgs extends runtime.Type
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ReviewWhereInput
+export type UserCountOutputTypeCountLessonCommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LessonCommentWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PaymentTransactionWhereInput
+export type UserCountOutputTypeCountLessonDiscussionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LessonDiscussionWhereInput
 }
 
 /**
@@ -5255,13 +5255,6 @@ export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountWishlistsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WishlistWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OrderWhereInput
 }
@@ -5269,36 +5262,8 @@ export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Ext
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountBooksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BookWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountLessonDiscussionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LessonDiscussionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountLessonCommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LessonCommentWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountQuizResultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.QuizResultWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountAuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AuditLogWhereInput
+export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentTransactionWhereInput
 }
 
 /**
@@ -5313,6 +5278,41 @@ export type UserCountOutputTypeCountPaymentMethodArgs<ExtArgs extends runtime.Ty
  */
 export type UserCountOutputTypeCountPayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PayoutWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountQuizResultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QuizResultWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedRoleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserRoleAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserSessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWishlistsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WishlistWhereInput
 }
 
 
@@ -5346,24 +5346,24 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   orderCount?: boolean
   progressesCount?: boolean
   wishlistsCount?: boolean
-  assignedRole?: boolean | Prisma.User$assignedRoleArgs<ExtArgs>
-  studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
-  instructorProfile?: boolean | Prisma.User$instructorProfileArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  AuditLog?: boolean | Prisma.User$AuditLogArgs<ExtArgs>
+  books?: boolean | Prisma.User$booksArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
-  reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
-  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
+  instructorProfile?: boolean | Prisma.User$instructorProfileArgs<ExtArgs>
+  LessonComment?: boolean | Prisma.User$LessonCommentArgs<ExtArgs>
+  LessonDiscussion?: boolean | Prisma.User$LessonDiscussionArgs<ExtArgs>
   lessonProgresses?: boolean | Prisma.User$lessonProgressesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
-  wishlists?: boolean | Prisma.User$wishlistsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
-  books?: boolean | Prisma.User$booksArgs<ExtArgs>
-  LessonDiscussion?: boolean | Prisma.User$LessonDiscussionArgs<ExtArgs>
-  LessonComment?: boolean | Prisma.User$LessonCommentArgs<ExtArgs>
-  QuizResult?: boolean | Prisma.User$QuizResultArgs<ExtArgs>
-  AuditLog?: boolean | Prisma.User$AuditLogArgs<ExtArgs>
+  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.User$paymentMethodArgs<ExtArgs>
   payouts?: boolean | Prisma.User$payoutsArgs<ExtArgs>
+  QuizResult?: boolean | Prisma.User$QuizResultArgs<ExtArgs>
+  reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
+  assignedRole?: boolean | Prisma.User$assignedRoleArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  wishlists?: boolean | Prisma.User$wishlistsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -5465,24 +5465,24 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "avatarUrl" | "locale" | "deletedAt" | "createdAt" | "updatedAt" | "isEmailVerified" | "status" | "emailVerificationTokenHash" | "emailVerificationExpires" | "passwordResetTokenHash" | "passwordResetExpires" | "googleId" | "loginAttempts" | "failedLoginAt" | "lockUntil" | "lastLogin" | "lastLoginIP" | "lastActivityAt" | "passwordChangedAt" | "enrollmentCount" | "reviewCount" | "paymentCount" | "notificationCount" | "orderCount" | "progressesCount" | "wishlistsCount", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  assignedRole?: boolean | Prisma.User$assignedRoleArgs<ExtArgs>
-  studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
-  instructorProfile?: boolean | Prisma.User$instructorProfileArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  AuditLog?: boolean | Prisma.User$AuditLogArgs<ExtArgs>
+  books?: boolean | Prisma.User$booksArgs<ExtArgs>
   enrollments?: boolean | Prisma.User$enrollmentsArgs<ExtArgs>
-  reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
-  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
+  instructorProfile?: boolean | Prisma.User$instructorProfileArgs<ExtArgs>
+  LessonComment?: boolean | Prisma.User$LessonCommentArgs<ExtArgs>
+  LessonDiscussion?: boolean | Prisma.User$LessonDiscussionArgs<ExtArgs>
   lessonProgresses?: boolean | Prisma.User$lessonProgressesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
-  wishlists?: boolean | Prisma.User$wishlistsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
-  books?: boolean | Prisma.User$booksArgs<ExtArgs>
-  LessonDiscussion?: boolean | Prisma.User$LessonDiscussionArgs<ExtArgs>
-  LessonComment?: boolean | Prisma.User$LessonCommentArgs<ExtArgs>
-  QuizResult?: boolean | Prisma.User$QuizResultArgs<ExtArgs>
-  AuditLog?: boolean | Prisma.User$AuditLogArgs<ExtArgs>
+  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.User$paymentMethodArgs<ExtArgs>
   payouts?: boolean | Prisma.User$payoutsArgs<ExtArgs>
+  QuizResult?: boolean | Prisma.User$QuizResultArgs<ExtArgs>
+  reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
+  assignedRole?: boolean | Prisma.User$assignedRoleArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  wishlists?: boolean | Prisma.User$wishlistsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -5491,24 +5491,24 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    assignedRole: Prisma.$UserRoleAssignmentPayload<ExtArgs>[]
-    studentProfile: Prisma.$StudentProfilePayload<ExtArgs> | null
-    instructorProfile: Prisma.$InstructorProfilePayload<ExtArgs> | null
-    sessions: Prisma.$UserSessionPayload<ExtArgs>[]
+    AuditLog: Prisma.$AuditLogPayload<ExtArgs>[]
+    books: Prisma.$BookPayload<ExtArgs>[]
     enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
-    reviews: Prisma.$ReviewPayload<ExtArgs>[]
-    payments: Prisma.$PaymentTransactionPayload<ExtArgs>[]
+    instructorProfile: Prisma.$InstructorProfilePayload<ExtArgs> | null
+    LessonComment: Prisma.$LessonCommentPayload<ExtArgs>[]
+    LessonDiscussion: Prisma.$LessonDiscussionPayload<ExtArgs>[]
     lessonProgresses: Prisma.$LessonProgressPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
-    wishlists: Prisma.$WishlistPayload<ExtArgs>[]
     orders: Prisma.$OrderPayload<ExtArgs>[]
-    books: Prisma.$BookPayload<ExtArgs>[]
-    LessonDiscussion: Prisma.$LessonDiscussionPayload<ExtArgs>[]
-    LessonComment: Prisma.$LessonCommentPayload<ExtArgs>[]
-    QuizResult: Prisma.$QuizResultPayload<ExtArgs>[]
-    AuditLog: Prisma.$AuditLogPayload<ExtArgs>[]
+    payments: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     paymentMethod: Prisma.$PayoutMethodPayload<ExtArgs>[]
     payouts: Prisma.$PayoutPayload<ExtArgs>[]
+    QuizResult: Prisma.$QuizResultPayload<ExtArgs>[]
+    reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    studentProfile: Prisma.$StudentProfilePayload<ExtArgs> | null
+    assignedRole: Prisma.$UserRoleAssignmentPayload<ExtArgs>[]
+    sessions: Prisma.$UserSessionPayload<ExtArgs>[]
+    wishlists: Prisma.$WishlistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5934,24 +5934,24 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  assignedRole<T extends Prisma.User$assignedRoleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedRoleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRoleAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  studentProfile<T extends Prisma.User$studentProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studentProfileArgs<ExtArgs>>): Prisma.Prisma__StudentProfileClient<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  instructorProfile<T extends Prisma.User$instructorProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$instructorProfileArgs<ExtArgs>>): Prisma.Prisma__InstructorProfileClient<runtime.Types.Result.GetResult<Prisma.$InstructorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  AuditLog<T extends Prisma.User$AuditLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AuditLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  books<T extends Prisma.User$booksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$booksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   enrollments<T extends Prisma.User$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  instructorProfile<T extends Prisma.User$instructorProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$instructorProfileArgs<ExtArgs>>): Prisma.Prisma__InstructorProfileClient<runtime.Types.Result.GetResult<Prisma.$InstructorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  LessonComment<T extends Prisma.User$LessonCommentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LessonCommentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  LessonDiscussion<T extends Prisma.User$LessonDiscussionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LessonDiscussionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonDiscussionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lessonProgresses<T extends Prisma.User$lessonProgressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lessonProgressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  wishlists<T extends Prisma.User$wishlistsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wishlistsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  books<T extends Prisma.User$booksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$booksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  LessonDiscussion<T extends Prisma.User$LessonDiscussionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LessonDiscussionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonDiscussionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  LessonComment<T extends Prisma.User$LessonCommentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$LessonCommentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  QuizResult<T extends Prisma.User$QuizResultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$QuizResultArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuizResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  AuditLog<T extends Prisma.User$AuditLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$AuditLogArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentMethod<T extends Prisma.User$paymentMethodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentMethodArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payouts<T extends Prisma.User$payoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$payoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  QuizResult<T extends Prisma.User$QuizResultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$QuizResultArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuizResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  studentProfile<T extends Prisma.User$studentProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studentProfileArgs<ExtArgs>>): Prisma.Prisma__StudentProfileClient<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  assignedRole<T extends Prisma.User$assignedRoleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedRoleArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRoleAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  wishlists<T extends Prisma.User$wishlistsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wishlistsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6398,89 +6398,51 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.assignedRole
+ * User.AuditLog
  */
-export type User$assignedRoleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$AuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserRoleAssignment
+   * Select specific fields to fetch from the AuditLog
    */
-  select?: Prisma.UserRoleAssignmentSelect<ExtArgs> | null
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserRoleAssignment
+   * Omit specific fields from the AuditLog
    */
-  omit?: Prisma.UserRoleAssignmentOmit<ExtArgs> | null
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserRoleAssignmentInclude<ExtArgs> | null
-  where?: Prisma.UserRoleAssignmentWhereInput
-  orderBy?: Prisma.UserRoleAssignmentOrderByWithRelationInput | Prisma.UserRoleAssignmentOrderByWithRelationInput[]
-  cursor?: Prisma.UserRoleAssignmentWhereUniqueInput
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.UserRoleAssignmentScalarFieldEnum | Prisma.UserRoleAssignmentScalarFieldEnum[]
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
 }
 
 /**
- * User.studentProfile
+ * User.books
  */
-export type User$studentProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$booksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the StudentProfile
+   * Select specific fields to fetch from the Book
    */
-  select?: Prisma.StudentProfileSelect<ExtArgs> | null
+  select?: Prisma.BookSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the StudentProfile
+   * Omit specific fields from the Book
    */
-  omit?: Prisma.StudentProfileOmit<ExtArgs> | null
+  omit?: Prisma.BookOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.StudentProfileInclude<ExtArgs> | null
-  where?: Prisma.StudentProfileWhereInput
-}
-
-/**
- * User.instructorProfile
- */
-export type User$instructorProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the InstructorProfile
-   */
-  select?: Prisma.InstructorProfileSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the InstructorProfile
-   */
-  omit?: Prisma.InstructorProfileOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InstructorProfileInclude<ExtArgs> | null
-  where?: Prisma.InstructorProfileWhereInput
-}
-
-/**
- * User.sessions
- */
-export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserSession
-   */
-  select?: Prisma.UserSessionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserSession
-   */
-  omit?: Prisma.UserSessionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserSessionInclude<ExtArgs> | null
-  where?: Prisma.UserSessionWhereInput
-  orderBy?: Prisma.UserSessionOrderByWithRelationInput | Prisma.UserSessionOrderByWithRelationInput[]
-  cursor?: Prisma.UserSessionWhereUniqueInput
+  include?: Prisma.BookInclude<ExtArgs> | null
+  where?: Prisma.BookWhereInput
+  orderBy?: Prisma.BookOrderByWithRelationInput | Prisma.BookOrderByWithRelationInput[]
+  cursor?: Prisma.BookWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.UserSessionScalarFieldEnum | Prisma.UserSessionScalarFieldEnum[]
+  distinct?: Prisma.BookScalarFieldEnum | Prisma.BookScalarFieldEnum[]
 }
 
 /**
@@ -6508,51 +6470,70 @@ export type User$enrollmentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * User.reviews
+ * User.instructorProfile
  */
-export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$instructorProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Review
+   * Select specific fields to fetch from the InstructorProfile
    */
-  select?: Prisma.ReviewSelect<ExtArgs> | null
+  select?: Prisma.InstructorProfileSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Review
+   * Omit specific fields from the InstructorProfile
    */
-  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  omit?: Prisma.InstructorProfileOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ReviewInclude<ExtArgs> | null
-  where?: Prisma.ReviewWhereInput
-  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
-  cursor?: Prisma.ReviewWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+  include?: Prisma.InstructorProfileInclude<ExtArgs> | null
+  where?: Prisma.InstructorProfileWhereInput
 }
 
 /**
- * User.payments
+ * User.LessonComment
  */
-export type User$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$LessonCommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the PaymentTransaction
+   * Select specific fields to fetch from the LessonComment
    */
-  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
+  select?: Prisma.LessonCommentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the PaymentTransaction
+   * Omit specific fields from the LessonComment
    */
-  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
+  omit?: Prisma.LessonCommentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
-  where?: Prisma.PaymentTransactionWhereInput
-  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentTransactionWhereUniqueInput
+  include?: Prisma.LessonCommentInclude<ExtArgs> | null
+  where?: Prisma.LessonCommentWhereInput
+  orderBy?: Prisma.LessonCommentOrderByWithRelationInput | Prisma.LessonCommentOrderByWithRelationInput[]
+  cursor?: Prisma.LessonCommentWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
+  distinct?: Prisma.LessonCommentScalarFieldEnum | Prisma.LessonCommentScalarFieldEnum[]
+}
+
+/**
+ * User.LessonDiscussion
+ */
+export type User$LessonDiscussionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LessonDiscussion
+   */
+  select?: Prisma.LessonDiscussionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LessonDiscussion
+   */
+  omit?: Prisma.LessonDiscussionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LessonDiscussionInclude<ExtArgs> | null
+  where?: Prisma.LessonDiscussionWhereInput
+  orderBy?: Prisma.LessonDiscussionOrderByWithRelationInput | Prisma.LessonDiscussionOrderByWithRelationInput[]
+  cursor?: Prisma.LessonDiscussionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LessonDiscussionScalarFieldEnum | Prisma.LessonDiscussionScalarFieldEnum[]
 }
 
 /**
@@ -6604,30 +6585,6 @@ export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * User.wishlists
- */
-export type User$wishlistsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Wishlist
-   */
-  select?: Prisma.WishlistSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Wishlist
-   */
-  omit?: Prisma.WishlistOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WishlistInclude<ExtArgs> | null
-  where?: Prisma.WishlistWhereInput
-  orderBy?: Prisma.WishlistOrderByWithRelationInput | Prisma.WishlistOrderByWithRelationInput[]
-  cursor?: Prisma.WishlistWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WishlistScalarFieldEnum | Prisma.WishlistScalarFieldEnum[]
-}
-
-/**
  * User.orders
  */
 export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6652,123 +6609,27 @@ export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
- * User.books
+ * User.payments
  */
-export type User$booksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Book
+   * Select specific fields to fetch from the PaymentTransaction
    */
-  select?: Prisma.BookSelect<ExtArgs> | null
+  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Book
+   * Omit specific fields from the PaymentTransaction
    */
-  omit?: Prisma.BookOmit<ExtArgs> | null
+  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.BookInclude<ExtArgs> | null
-  where?: Prisma.BookWhereInput
-  orderBy?: Prisma.BookOrderByWithRelationInput | Prisma.BookOrderByWithRelationInput[]
-  cursor?: Prisma.BookWhereUniqueInput
+  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
+  where?: Prisma.PaymentTransactionWhereInput
+  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentTransactionWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.BookScalarFieldEnum | Prisma.BookScalarFieldEnum[]
-}
-
-/**
- * User.LessonDiscussion
- */
-export type User$LessonDiscussionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the LessonDiscussion
-   */
-  select?: Prisma.LessonDiscussionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the LessonDiscussion
-   */
-  omit?: Prisma.LessonDiscussionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.LessonDiscussionInclude<ExtArgs> | null
-  where?: Prisma.LessonDiscussionWhereInput
-  orderBy?: Prisma.LessonDiscussionOrderByWithRelationInput | Prisma.LessonDiscussionOrderByWithRelationInput[]
-  cursor?: Prisma.LessonDiscussionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.LessonDiscussionScalarFieldEnum | Prisma.LessonDiscussionScalarFieldEnum[]
-}
-
-/**
- * User.LessonComment
- */
-export type User$LessonCommentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the LessonComment
-   */
-  select?: Prisma.LessonCommentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the LessonComment
-   */
-  omit?: Prisma.LessonCommentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.LessonCommentInclude<ExtArgs> | null
-  where?: Prisma.LessonCommentWhereInput
-  orderBy?: Prisma.LessonCommentOrderByWithRelationInput | Prisma.LessonCommentOrderByWithRelationInput[]
-  cursor?: Prisma.LessonCommentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.LessonCommentScalarFieldEnum | Prisma.LessonCommentScalarFieldEnum[]
-}
-
-/**
- * User.QuizResult
- */
-export type User$QuizResultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the QuizResult
-   */
-  select?: Prisma.QuizResultSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the QuizResult
-   */
-  omit?: Prisma.QuizResultOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.QuizResultInclude<ExtArgs> | null
-  where?: Prisma.QuizResultWhereInput
-  orderBy?: Prisma.QuizResultOrderByWithRelationInput | Prisma.QuizResultOrderByWithRelationInput[]
-  cursor?: Prisma.QuizResultWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.QuizResultScalarFieldEnum | Prisma.QuizResultScalarFieldEnum[]
-}
-
-/**
- * User.AuditLog
- */
-export type User$AuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the AuditLog
-   */
-  select?: Prisma.AuditLogSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the AuditLog
-   */
-  omit?: Prisma.AuditLogOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AuditLogInclude<ExtArgs> | null
-  where?: Prisma.AuditLogWhereInput
-  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
-  cursor?: Prisma.AuditLogWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
 }
 
 /**
@@ -6817,6 +6678,145 @@ export type User$payoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.PayoutScalarFieldEnum | Prisma.PayoutScalarFieldEnum[]
+}
+
+/**
+ * User.QuizResult
+ */
+export type User$QuizResultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QuizResult
+   */
+  select?: Prisma.QuizResultSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QuizResult
+   */
+  omit?: Prisma.QuizResultOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuizResultInclude<ExtArgs> | null
+  where?: Prisma.QuizResultWhereInput
+  orderBy?: Prisma.QuizResultOrderByWithRelationInput | Prisma.QuizResultOrderByWithRelationInput[]
+  cursor?: Prisma.QuizResultWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QuizResultScalarFieldEnum | Prisma.QuizResultScalarFieldEnum[]
+}
+
+/**
+ * User.reviews
+ */
+export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * User.studentProfile
+ */
+export type User$studentProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentProfile
+   */
+  select?: Prisma.StudentProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentProfile
+   */
+  omit?: Prisma.StudentProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentProfileInclude<ExtArgs> | null
+  where?: Prisma.StudentProfileWhereInput
+}
+
+/**
+ * User.assignedRole
+ */
+export type User$assignedRoleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserRoleAssignment
+   */
+  select?: Prisma.UserRoleAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserRoleAssignment
+   */
+  omit?: Prisma.UserRoleAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserRoleAssignmentInclude<ExtArgs> | null
+  where?: Prisma.UserRoleAssignmentWhereInput
+  orderBy?: Prisma.UserRoleAssignmentOrderByWithRelationInput | Prisma.UserRoleAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.UserRoleAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserRoleAssignmentScalarFieldEnum | Prisma.UserRoleAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSession
+   */
+  select?: Prisma.UserSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSession
+   */
+  omit?: Prisma.UserSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSessionInclude<ExtArgs> | null
+  where?: Prisma.UserSessionWhereInput
+  orderBy?: Prisma.UserSessionOrderByWithRelationInput | Prisma.UserSessionOrderByWithRelationInput[]
+  cursor?: Prisma.UserSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserSessionScalarFieldEnum | Prisma.UserSessionScalarFieldEnum[]
+}
+
+/**
+ * User.wishlists
+ */
+export type User$wishlistsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Wishlist
+   */
+  select?: Prisma.WishlistSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Wishlist
+   */
+  omit?: Prisma.WishlistOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WishlistInclude<ExtArgs> | null
+  where?: Prisma.WishlistWhereInput
+  orderBy?: Prisma.WishlistOrderByWithRelationInput | Prisma.WishlistOrderByWithRelationInput[]
+  cursor?: Prisma.WishlistWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WishlistScalarFieldEnum | Prisma.WishlistScalarFieldEnum[]
 }
 
 /**

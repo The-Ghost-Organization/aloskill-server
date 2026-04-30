@@ -222,8 +222,8 @@ export type LessonCommentWhereInput = {
   isEdited?: Prisma.BoolFilter<"LessonComment"> | boolean
   isDeleted?: Prisma.BoolFilter<"LessonComment"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"LessonComment"> | Date | string | null
-  discussion?: Prisma.XOR<Prisma.LessonDiscussionScalarRelationFilter, Prisma.LessonDiscussionWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  discussion?: Prisma.XOR<Prisma.LessonDiscussionScalarRelationFilter, Prisma.LessonDiscussionWhereInput>
   parentComment?: Prisma.XOR<Prisma.LessonCommentNullableScalarRelationFilter, Prisma.LessonCommentWhereInput> | null
   replies?: Prisma.LessonCommentListRelationFilter
 }
@@ -239,8 +239,8 @@ export type LessonCommentOrderByWithRelationInput = {
   isEdited?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  discussion?: Prisma.LessonDiscussionOrderByWithRelationInput
   author?: Prisma.UserOrderByWithRelationInput
+  discussion?: Prisma.LessonDiscussionOrderByWithRelationInput
   parentComment?: Prisma.LessonCommentOrderByWithRelationInput
   replies?: Prisma.LessonCommentOrderByRelationAggregateInput
 }
@@ -259,8 +259,8 @@ export type LessonCommentWhereUniqueInput = Prisma.AtLeast<{
   isEdited?: Prisma.BoolFilter<"LessonComment"> | boolean
   isDeleted?: Prisma.BoolFilter<"LessonComment"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"LessonComment"> | Date | string | null
-  discussion?: Prisma.XOR<Prisma.LessonDiscussionScalarRelationFilter, Prisma.LessonDiscussionWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  discussion?: Prisma.XOR<Prisma.LessonDiscussionScalarRelationFilter, Prisma.LessonDiscussionWhereInput>
   parentComment?: Prisma.XOR<Prisma.LessonCommentNullableScalarRelationFilter, Prisma.LessonCommentWhereInput> | null
   replies?: Prisma.LessonCommentListRelationFilter
 }, "id">
@@ -305,8 +305,8 @@ export type LessonCommentCreateInput = {
   isEdited?: boolean
   isDeleted?: boolean
   deletedAt?: Date | string | null
-  discussion: Prisma.LessonDiscussionCreateNestedOneWithoutCommentsInput
   author: Prisma.UserCreateNestedOneWithoutLessonCommentInput
+  discussion: Prisma.LessonDiscussionCreateNestedOneWithoutCommentsInput
   parentComment?: Prisma.LessonCommentCreateNestedOneWithoutRepliesInput
   replies?: Prisma.LessonCommentCreateNestedManyWithoutParentCommentInput
 }
@@ -333,8 +333,8 @@ export type LessonCommentUpdateInput = {
   isEdited?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  discussion?: Prisma.LessonDiscussionUpdateOneRequiredWithoutCommentsNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutLessonCommentNestedInput
+  discussion?: Prisma.LessonDiscussionUpdateOneRequiredWithoutCommentsNestedInput
   parentComment?: Prisma.LessonCommentUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.LessonCommentUpdateManyWithoutParentCommentNestedInput
 }
@@ -713,8 +713,8 @@ export type LessonCommentCreateWithoutRepliesInput = {
   isEdited?: boolean
   isDeleted?: boolean
   deletedAt?: Date | string | null
-  discussion: Prisma.LessonDiscussionCreateNestedOneWithoutCommentsInput
   author: Prisma.UserCreateNestedOneWithoutLessonCommentInput
+  discussion: Prisma.LessonDiscussionCreateNestedOneWithoutCommentsInput
   parentComment?: Prisma.LessonCommentCreateNestedOneWithoutRepliesInput
 }
 
@@ -744,8 +744,8 @@ export type LessonCommentCreateWithoutParentCommentInput = {
   isEdited?: boolean
   isDeleted?: boolean
   deletedAt?: Date | string | null
-  discussion: Prisma.LessonDiscussionCreateNestedOneWithoutCommentsInput
   author: Prisma.UserCreateNestedOneWithoutLessonCommentInput
+  discussion: Prisma.LessonDiscussionCreateNestedOneWithoutCommentsInput
   replies?: Prisma.LessonCommentCreateNestedManyWithoutParentCommentInput
 }
 
@@ -791,8 +791,8 @@ export type LessonCommentUpdateWithoutRepliesInput = {
   isEdited?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  discussion?: Prisma.LessonDiscussionUpdateOneRequiredWithoutCommentsNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutLessonCommentNestedInput
+  discussion?: Prisma.LessonDiscussionUpdateOneRequiredWithoutCommentsNestedInput
   parentComment?: Prisma.LessonCommentUpdateOneWithoutRepliesNestedInput
 }
 
@@ -945,8 +945,8 @@ export type LessonCommentUpdateWithoutParentCommentInput = {
   isEdited?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  discussion?: Prisma.LessonDiscussionUpdateOneRequiredWithoutCommentsNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutLessonCommentNestedInput
+  discussion?: Prisma.LessonDiscussionUpdateOneRequiredWithoutCommentsNestedInput
   replies?: Prisma.LessonCommentUpdateManyWithoutParentCommentNestedInput
 }
 
@@ -1017,8 +1017,8 @@ export type LessonCommentSelect<ExtArgs extends runtime.Types.Extensions.Interna
   isEdited?: boolean
   isDeleted?: boolean
   deletedAt?: boolean
-  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   parentComment?: boolean | Prisma.LessonComment$parentCommentArgs<ExtArgs>
   replies?: boolean | Prisma.LessonComment$repliesArgs<ExtArgs>
   _count?: boolean | Prisma.LessonCommentCountOutputTypeDefaultArgs<ExtArgs>
@@ -1035,8 +1035,8 @@ export type LessonCommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   isEdited?: boolean
   isDeleted?: boolean
   deletedAt?: boolean
-  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   parentComment?: boolean | Prisma.LessonComment$parentCommentArgs<ExtArgs>
 }, ExtArgs["result"]["lessonComment"]>
 
@@ -1051,8 +1051,8 @@ export type LessonCommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   isEdited?: boolean
   isDeleted?: boolean
   deletedAt?: boolean
-  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   parentComment?: boolean | Prisma.LessonComment$parentCommentArgs<ExtArgs>
 }, ExtArgs["result"]["lessonComment"]>
 
@@ -1071,28 +1071,28 @@ export type LessonCommentSelectScalar = {
 
 export type LessonCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "discussionId" | "authorId" | "parentCommentId" | "content" | "createdAt" | "updatedAt" | "isEdited" | "isDeleted" | "deletedAt", ExtArgs["result"]["lessonComment"]>
 export type LessonCommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   parentComment?: boolean | Prisma.LessonComment$parentCommentArgs<ExtArgs>
   replies?: boolean | Prisma.LessonComment$repliesArgs<ExtArgs>
   _count?: boolean | Prisma.LessonCommentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LessonCommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   parentComment?: boolean | Prisma.LessonComment$parentCommentArgs<ExtArgs>
 }
 export type LessonCommentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  discussion?: boolean | Prisma.LessonDiscussionDefaultArgs<ExtArgs>
   parentComment?: boolean | Prisma.LessonComment$parentCommentArgs<ExtArgs>
 }
 
 export type $LessonCommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LessonComment"
   objects: {
-    discussion: Prisma.$LessonDiscussionPayload<ExtArgs>
     author: Prisma.$UserPayload<ExtArgs>
+    discussion: Prisma.$LessonDiscussionPayload<ExtArgs>
     parentComment: Prisma.$LessonCommentPayload<ExtArgs> | null
     replies: Prisma.$LessonCommentPayload<ExtArgs>[]
   }
@@ -1501,8 +1501,8 @@ readonly fields: LessonCommentFieldRefs;
  */
 export interface Prisma__LessonCommentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  discussion<T extends Prisma.LessonDiscussionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDiscussionDefaultArgs<ExtArgs>>): Prisma.Prisma__LessonDiscussionClient<runtime.Types.Result.GetResult<Prisma.$LessonDiscussionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  discussion<T extends Prisma.LessonDiscussionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDiscussionDefaultArgs<ExtArgs>>): Prisma.Prisma__LessonDiscussionClient<runtime.Types.Result.GetResult<Prisma.$LessonDiscussionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   parentComment<T extends Prisma.LessonComment$parentCommentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonComment$parentCommentArgs<ExtArgs>>): Prisma.Prisma__LessonCommentClient<runtime.Types.Result.GetResult<Prisma.$LessonCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   replies<T extends Prisma.LessonComment$repliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonComment$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**

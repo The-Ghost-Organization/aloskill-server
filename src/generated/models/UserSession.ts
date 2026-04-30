@@ -354,8 +354,8 @@ export type UserSessionWhereInput = {
   suspiciousSince?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type UserSessionOrderByWithRelationInput = {
@@ -386,8 +386,8 @@ export type UserSessionOrderByWithRelationInput = {
   suspiciousSince?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type UserSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -422,8 +422,8 @@ export type UserSessionWhereUniqueInput = Prisma.AtLeast<{
   suspiciousSince?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "sessionToken" | "userId_deviceId">
 
 export type UserSessionOrderByWithAggregationInput = {
@@ -519,8 +519,8 @@ export type UserSessionCreateInput = {
   suspiciousSince?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutSessionsInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutSessionInput
+  user: Prisma.UserCreateNestedOneWithoutSessionsInput
 }
 
 export type UserSessionUncheckedCreateInput = {
@@ -581,8 +581,8 @@ export type UserSessionUpdateInput = {
   suspiciousSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutSessionNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
 }
 
 export type UserSessionUncheckedUpdateInput = {
@@ -1307,8 +1307,8 @@ export type UserSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   suspiciousSince?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.UserSession$refreshTokensArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UserSessionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSession"]>
 
@@ -1406,8 +1406,8 @@ export type UserSessionSelectScalar = {
 
 export type UserSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "deviceId" | "deviceFingerprint" | "sessionToken" | "userAgent" | "ipAddress" | "deviceType" | "browser" | "browserVersion" | "os" | "osVersion" | "platform" | "country" | "city" | "region" | "timezone" | "geoLocation" | "isActive" | "expiresAt" | "lastActivity" | "isCompromised" | "compromisedAt" | "suspicious" | "suspiciousSince" | "createdAt" | "updatedAt", ExtArgs["result"]["userSession"]>
 export type UserSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.UserSession$refreshTokensArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UserSessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserSessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1420,8 +1420,8 @@ export type UserSessionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type $UserSessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UserSession"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1845,8 +1845,8 @@ readonly fields: UserSessionFieldRefs;
  */
 export interface Prisma__UserSessionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   refreshTokens<T extends Prisma.UserSession$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserSession$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

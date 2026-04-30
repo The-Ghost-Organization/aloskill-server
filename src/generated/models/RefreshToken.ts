@@ -214,9 +214,9 @@ export type RefreshTokenWhereInput = {
   replacedByTokenId?: Prisma.StringNullableFilter<"RefreshToken"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
-  session?: Prisma.XOR<Prisma.UserSessionNullableScalarRelationFilter, Prisma.UserSessionWhereInput> | null
   replacedBy?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
   replacesToken?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
+  session?: Prisma.XOR<Prisma.UserSessionNullableScalarRelationFilter, Prisma.UserSessionWhereInput> | null
 }
 
 export type RefreshTokenOrderByWithRelationInput = {
@@ -229,9 +229,9 @@ export type RefreshTokenOrderByWithRelationInput = {
   replacedByTokenId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  session?: Prisma.UserSessionOrderByWithRelationInput
   replacedBy?: Prisma.RefreshTokenOrderByWithRelationInput
   replacesToken?: Prisma.RefreshTokenOrderByWithRelationInput
+  session?: Prisma.UserSessionOrderByWithRelationInput
 }
 
 export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
@@ -247,9 +247,9 @@ export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
   revokedAt?: Prisma.DateTimeNullableFilter<"RefreshToken"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RefreshToken"> | Date | string
-  session?: Prisma.XOR<Prisma.UserSessionNullableScalarRelationFilter, Prisma.UserSessionWhereInput> | null
   replacedBy?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
   replacesToken?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
+  session?: Prisma.XOR<Prisma.UserSessionNullableScalarRelationFilter, Prisma.UserSessionWhereInput> | null
 }, "id" | "token" | "replacedByTokenId">
 
 export type RefreshTokenOrderByWithAggregationInput = {
@@ -290,9 +290,9 @@ export type RefreshTokenCreateInput = {
   revokedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  session?: Prisma.UserSessionCreateNestedOneWithoutRefreshTokensInput
   replacedBy?: Prisma.RefreshTokenCreateNestedOneWithoutReplacesTokenInput
   replacesToken?: Prisma.RefreshTokenCreateNestedOneWithoutReplacedByInput
+  session?: Prisma.UserSessionCreateNestedOneWithoutRefreshTokensInput
 }
 
 export type RefreshTokenUncheckedCreateInput = {
@@ -316,9 +316,9 @@ export type RefreshTokenUpdateInput = {
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session?: Prisma.UserSessionUpdateOneWithoutRefreshTokensNestedInput
   replacedBy?: Prisma.RefreshTokenUpdateOneWithoutReplacesTokenNestedInput
   replacesToken?: Prisma.RefreshTokenUpdateOneWithoutReplacedByNestedInput
+  session?: Prisma.UserSessionUpdateOneWithoutRefreshTokensNestedInput
 }
 
 export type RefreshTokenUncheckedUpdateInput = {
@@ -582,8 +582,8 @@ export type RefreshTokenCreateWithoutReplacesTokenInput = {
   revokedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  session?: Prisma.UserSessionCreateNestedOneWithoutRefreshTokensInput
   replacedBy?: Prisma.RefreshTokenCreateNestedOneWithoutReplacesTokenInput
+  session?: Prisma.UserSessionCreateNestedOneWithoutRefreshTokensInput
 }
 
 export type RefreshTokenUncheckedCreateWithoutReplacesTokenInput = {
@@ -611,8 +611,8 @@ export type RefreshTokenCreateWithoutReplacedByInput = {
   revokedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  session?: Prisma.UserSessionCreateNestedOneWithoutRefreshTokensInput
   replacesToken?: Prisma.RefreshTokenCreateNestedOneWithoutReplacedByInput
+  session?: Prisma.UserSessionCreateNestedOneWithoutRefreshTokensInput
 }
 
 export type RefreshTokenUncheckedCreateWithoutReplacedByInput = {
@@ -651,8 +651,8 @@ export type RefreshTokenUpdateWithoutReplacesTokenInput = {
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session?: Prisma.UserSessionUpdateOneWithoutRefreshTokensNestedInput
   replacedBy?: Prisma.RefreshTokenUpdateOneWithoutReplacesTokenNestedInput
+  session?: Prisma.UserSessionUpdateOneWithoutRefreshTokensNestedInput
 }
 
 export type RefreshTokenUncheckedUpdateWithoutReplacesTokenInput = {
@@ -686,8 +686,8 @@ export type RefreshTokenUpdateWithoutReplacedByInput = {
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session?: Prisma.UserSessionUpdateOneWithoutRefreshTokensNestedInput
   replacesToken?: Prisma.RefreshTokenUpdateOneWithoutReplacedByNestedInput
+  session?: Prisma.UserSessionUpdateOneWithoutRefreshTokensNestedInput
 }
 
 export type RefreshTokenUncheckedUpdateWithoutReplacedByInput = {
@@ -760,9 +760,9 @@ export type RefreshTokenSelect<ExtArgs extends runtime.Types.Extensions.Internal
   replacedByTokenId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
   replacedBy?: boolean | Prisma.RefreshToken$replacedByArgs<ExtArgs>
   replacesToken?: boolean | Prisma.RefreshToken$replacesTokenArgs<ExtArgs>
+  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
 }, ExtArgs["result"]["refreshToken"]>
 
 export type RefreshTokenSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -775,8 +775,8 @@ export type RefreshTokenSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   replacedByTokenId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
   replacedBy?: boolean | Prisma.RefreshToken$replacedByArgs<ExtArgs>
+  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
 }, ExtArgs["result"]["refreshToken"]>
 
 export type RefreshTokenSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -789,8 +789,8 @@ export type RefreshTokenSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   replacedByTokenId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
   replacedBy?: boolean | Prisma.RefreshToken$replacedByArgs<ExtArgs>
+  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
 }, ExtArgs["result"]["refreshToken"]>
 
 export type RefreshTokenSelectScalar = {
@@ -807,25 +807,25 @@ export type RefreshTokenSelectScalar = {
 
 export type RefreshTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "token" | "sessionId" | "expiresAt" | "revoked" | "revokedAt" | "replacedByTokenId" | "createdAt" | "updatedAt", ExtArgs["result"]["refreshToken"]>
 export type RefreshTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
   replacedBy?: boolean | Prisma.RefreshToken$replacedByArgs<ExtArgs>
   replacesToken?: boolean | Prisma.RefreshToken$replacesTokenArgs<ExtArgs>
+  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
 }
 export type RefreshTokenIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
   replacedBy?: boolean | Prisma.RefreshToken$replacedByArgs<ExtArgs>
+  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
 }
 export type RefreshTokenIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
   replacedBy?: boolean | Prisma.RefreshToken$replacedByArgs<ExtArgs>
+  session?: boolean | Prisma.RefreshToken$sessionArgs<ExtArgs>
 }
 
 export type $RefreshTokenPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "RefreshToken"
   objects: {
-    session: Prisma.$UserSessionPayload<ExtArgs> | null
     replacedBy: Prisma.$RefreshTokenPayload<ExtArgs> | null
     replacesToken: Prisma.$RefreshTokenPayload<ExtArgs> | null
+    session: Prisma.$UserSessionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1231,9 +1231,9 @@ readonly fields: RefreshTokenFieldRefs;
  */
 export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  session<T extends Prisma.RefreshToken$sessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RefreshToken$sessionArgs<ExtArgs>>): Prisma.Prisma__UserSessionClient<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   replacedBy<T extends Prisma.RefreshToken$replacedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RefreshToken$replacedByArgs<ExtArgs>>): Prisma.Prisma__RefreshTokenClient<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   replacesToken<T extends Prisma.RefreshToken$replacesTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RefreshToken$replacesTokenArgs<ExtArgs>>): Prisma.Prisma__RefreshTokenClient<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  session<T extends Prisma.RefreshToken$sessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RefreshToken$sessionArgs<ExtArgs>>): Prisma.Prisma__UserSessionClient<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1668,25 +1668,6 @@ export type RefreshTokenDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
- * RefreshToken.session
- */
-export type RefreshToken$sessionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the UserSession
-   */
-  select?: Prisma.UserSessionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the UserSession
-   */
-  omit?: Prisma.UserSessionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserSessionInclude<ExtArgs> | null
-  where?: Prisma.UserSessionWhereInput
-}
-
-/**
  * RefreshToken.replacedBy
  */
 export type RefreshToken$replacedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1722,6 +1703,25 @@ export type RefreshToken$replacesTokenArgs<ExtArgs extends runtime.Types.Extensi
    */
   include?: Prisma.RefreshTokenInclude<ExtArgs> | null
   where?: Prisma.RefreshTokenWhereInput
+}
+
+/**
+ * RefreshToken.session
+ */
+export type RefreshToken$sessionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSession
+   */
+  select?: Prisma.UserSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSession
+   */
+  omit?: Prisma.UserSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSessionInclude<ExtArgs> | null
+  where?: Prisma.UserSessionWhereInput
 }
 
 /**

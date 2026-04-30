@@ -28,14 +28,14 @@ export type AggregateLessonProgress = {
 
 export type LessonProgressAvgAggregateOutputType = {
   progressValue: number | null
-  lastPosition: runtime.Decimal | null
   attempts: number | null
+  lastPosition: runtime.Decimal | null
 }
 
 export type LessonProgressSumAggregateOutputType = {
   progressValue: number | null
-  lastPosition: runtime.Decimal | null
   attempts: number | null
+  lastPosition: runtime.Decimal | null
 }
 
 export type LessonProgressMinAggregateOutputType = {
@@ -45,11 +45,11 @@ export type LessonProgressMinAggregateOutputType = {
   courseId: string | null
   completed: boolean | null
   progressValue: number | null
-  lastPosition: runtime.Decimal | null
   lastViewedAt: Date | null
   attempts: number | null
   completedAt: Date | null
   updatedAt: Date | null
+  lastPosition: runtime.Decimal | null
 }
 
 export type LessonProgressMaxAggregateOutputType = {
@@ -59,11 +59,11 @@ export type LessonProgressMaxAggregateOutputType = {
   courseId: string | null
   completed: boolean | null
   progressValue: number | null
-  lastPosition: runtime.Decimal | null
   lastViewedAt: Date | null
   attempts: number | null
   completedAt: Date | null
   updatedAt: Date | null
+  lastPosition: runtime.Decimal | null
 }
 
 export type LessonProgressCountAggregateOutputType = {
@@ -73,25 +73,25 @@ export type LessonProgressCountAggregateOutputType = {
   courseId: number
   completed: number
   progressValue: number
-  lastPosition: number
   lastViewedAt: number
   attempts: number
   completedAt: number
   updatedAt: number
+  lastPosition: number
   _all: number
 }
 
 
 export type LessonProgressAvgAggregateInputType = {
   progressValue?: true
-  lastPosition?: true
   attempts?: true
+  lastPosition?: true
 }
 
 export type LessonProgressSumAggregateInputType = {
   progressValue?: true
-  lastPosition?: true
   attempts?: true
+  lastPosition?: true
 }
 
 export type LessonProgressMinAggregateInputType = {
@@ -101,11 +101,11 @@ export type LessonProgressMinAggregateInputType = {
   courseId?: true
   completed?: true
   progressValue?: true
-  lastPosition?: true
   lastViewedAt?: true
   attempts?: true
   completedAt?: true
   updatedAt?: true
+  lastPosition?: true
 }
 
 export type LessonProgressMaxAggregateInputType = {
@@ -115,11 +115,11 @@ export type LessonProgressMaxAggregateInputType = {
   courseId?: true
   completed?: true
   progressValue?: true
-  lastPosition?: true
   lastViewedAt?: true
   attempts?: true
   completedAt?: true
   updatedAt?: true
+  lastPosition?: true
 }
 
 export type LessonProgressCountAggregateInputType = {
@@ -129,11 +129,11 @@ export type LessonProgressCountAggregateInputType = {
   courseId?: true
   completed?: true
   progressValue?: true
-  lastPosition?: true
   lastViewedAt?: true
   attempts?: true
   completedAt?: true
   updatedAt?: true
+  lastPosition?: true
   _all?: true
 }
 
@@ -230,11 +230,11 @@ export type LessonProgressGroupByOutputType = {
   courseId: string
   completed: boolean
   progressValue: number
-  lastPosition: runtime.Decimal
   lastViewedAt: Date | null
   attempts: number | null
   completedAt: Date | null
   updatedAt: Date
+  lastPosition: runtime.Decimal
   _count: LessonProgressCountAggregateOutputType | null
   _avg: LessonProgressAvgAggregateOutputType | null
   _sum: LessonProgressSumAggregateOutputType | null
@@ -267,14 +267,14 @@ export type LessonProgressWhereInput = {
   courseId?: Prisma.StringFilter<"LessonProgress"> | string
   completed?: Prisma.BoolFilter<"LessonProgress"> | boolean
   progressValue?: Prisma.IntFilter<"LessonProgress"> | number
-  lastPosition?: Prisma.DecimalFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   attempts?: Prisma.IntNullableFilter<"LessonProgress"> | number | null
   completedAt?: Prisma.DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"LessonProgress"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
+  lastPosition?: Prisma.DecimalFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type LessonProgressOrderByWithRelationInput = {
@@ -284,14 +284,14 @@ export type LessonProgressOrderByWithRelationInput = {
   courseId?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   lastViewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   attempts?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
-  lesson?: Prisma.LessonOrderByWithRelationInput
+  lastPosition?: Prisma.SortOrder
   course?: Prisma.CourseOrderByWithRelationInput
+  lesson?: Prisma.LessonOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type LessonProgressWhereUniqueInput = Prisma.AtLeast<{
@@ -305,14 +305,14 @@ export type LessonProgressWhereUniqueInput = Prisma.AtLeast<{
   courseId?: Prisma.StringFilter<"LessonProgress"> | string
   completed?: Prisma.BoolFilter<"LessonProgress"> | boolean
   progressValue?: Prisma.IntFilter<"LessonProgress"> | number
-  lastPosition?: Prisma.DecimalFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   attempts?: Prisma.IntNullableFilter<"LessonProgress"> | number | null
   completedAt?: Prisma.DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"LessonProgress"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
+  lastPosition?: Prisma.DecimalFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  lesson?: Prisma.XOR<Prisma.LessonScalarRelationFilter, Prisma.LessonWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_lessonId">
 
 export type LessonProgressOrderByWithAggregationInput = {
@@ -322,11 +322,11 @@ export type LessonProgressOrderByWithAggregationInput = {
   courseId?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   lastViewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   attempts?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastPosition?: Prisma.SortOrder
   _count?: Prisma.LessonProgressCountOrderByAggregateInput
   _avg?: Prisma.LessonProgressAvgOrderByAggregateInput
   _max?: Prisma.LessonProgressMaxOrderByAggregateInput
@@ -344,25 +344,25 @@ export type LessonProgressScalarWhereWithAggregatesInput = {
   courseId?: Prisma.StringWithAggregatesFilter<"LessonProgress"> | string
   completed?: Prisma.BoolWithAggregatesFilter<"LessonProgress"> | boolean
   progressValue?: Prisma.IntWithAggregatesFilter<"LessonProgress"> | number
-  lastPosition?: Prisma.DecimalWithAggregatesFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LessonProgress"> | Date | string | null
   attempts?: Prisma.IntNullableWithAggregatesFilter<"LessonProgress"> | number | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LessonProgress"> | Date | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LessonProgress"> | Date | string
+  lastPosition?: Prisma.DecimalWithAggregatesFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateInput = {
   id?: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutLessonProgressesInput
-  lesson: Prisma.LessonCreateNestedOneWithoutProgressRecordsInput
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   course: Prisma.CourseCreateNestedOneWithoutLessonProgressInput
+  lesson: Prisma.LessonCreateNestedOneWithoutProgressRecordsInput
+  user: Prisma.UserCreateNestedOneWithoutLessonProgressesInput
 }
 
 export type LessonProgressUncheckedCreateInput = {
@@ -372,25 +372,25 @@ export type LessonProgressUncheckedCreateInput = {
   courseId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutLessonProgressesNestedInput
-  lesson?: Prisma.LessonUpdateOneRequiredWithoutProgressRecordsNestedInput
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   course?: Prisma.CourseUpdateOneRequiredWithoutLessonProgressNestedInput
+  lesson?: Prisma.LessonUpdateOneRequiredWithoutProgressRecordsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutLessonProgressesNestedInput
 }
 
 export type LessonProgressUncheckedUpdateInput = {
@@ -400,11 +400,11 @@ export type LessonProgressUncheckedUpdateInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateManyInput = {
@@ -414,22 +414,22 @@ export type LessonProgressCreateManyInput = {
   courseId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUncheckedUpdateManyInput = {
@@ -439,11 +439,11 @@ export type LessonProgressUncheckedUpdateManyInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressListRelationFilter = {
@@ -468,17 +468,17 @@ export type LessonProgressCountOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   lastViewedAt?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastPosition?: Prisma.SortOrder
 }
 
 export type LessonProgressAvgOrderByAggregateInput = {
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
+  lastPosition?: Prisma.SortOrder
 }
 
 export type LessonProgressMaxOrderByAggregateInput = {
@@ -488,11 +488,11 @@ export type LessonProgressMaxOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   lastViewedAt?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastPosition?: Prisma.SortOrder
 }
 
 export type LessonProgressMinOrderByAggregateInput = {
@@ -502,17 +502,17 @@ export type LessonProgressMinOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
   completed?: Prisma.SortOrder
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   lastViewedAt?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  lastPosition?: Prisma.SortOrder
 }
 
 export type LessonProgressSumOrderByAggregateInput = {
   progressValue?: Prisma.SortOrder
-  lastPosition?: Prisma.SortOrder
   attempts?: Prisma.SortOrder
+  lastPosition?: Prisma.SortOrder
 }
 
 export type LessonProgressCreateNestedManyWithoutUserInput = {
@@ -645,13 +645,13 @@ export type LessonProgressCreateWithoutUserInput = {
   id?: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
-  lesson: Prisma.LessonCreateNestedOneWithoutProgressRecordsInput
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   course: Prisma.CourseCreateNestedOneWithoutLessonProgressInput
+  lesson: Prisma.LessonCreateNestedOneWithoutProgressRecordsInput
 }
 
 export type LessonProgressUncheckedCreateWithoutUserInput = {
@@ -660,11 +660,11 @@ export type LessonProgressUncheckedCreateWithoutUserInput = {
   courseId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateOrConnectWithoutUserInput = {
@@ -703,24 +703,24 @@ export type LessonProgressScalarWhereInput = {
   courseId?: Prisma.StringFilter<"LessonProgress"> | string
   completed?: Prisma.BoolFilter<"LessonProgress"> | boolean
   progressValue?: Prisma.IntFilter<"LessonProgress"> | number
-  lastPosition?: Prisma.DecimalFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   attempts?: Prisma.IntNullableFilter<"LessonProgress"> | number | null
   completedAt?: Prisma.DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"LessonProgress"> | Date | string
+  lastPosition?: Prisma.DecimalFilter<"LessonProgress"> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateWithoutCourseInput = {
   id?: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutLessonProgressesInput
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lesson: Prisma.LessonCreateNestedOneWithoutProgressRecordsInput
+  user: Prisma.UserCreateNestedOneWithoutLessonProgressesInput
 }
 
 export type LessonProgressUncheckedCreateWithoutCourseInput = {
@@ -729,11 +729,11 @@ export type LessonProgressUncheckedCreateWithoutCourseInput = {
   lessonId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateOrConnectWithoutCourseInput = {
@@ -766,13 +766,13 @@ export type LessonProgressCreateWithoutLessonInput = {
   id?: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutLessonProgressesInput
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   course: Prisma.CourseCreateNestedOneWithoutLessonProgressInput
+  user: Prisma.UserCreateNestedOneWithoutLessonProgressesInput
 }
 
 export type LessonProgressUncheckedCreateWithoutLessonInput = {
@@ -781,11 +781,11 @@ export type LessonProgressUncheckedCreateWithoutLessonInput = {
   courseId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateOrConnectWithoutLessonInput = {
@@ -820,24 +820,24 @@ export type LessonProgressCreateManyUserInput = {
   courseId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lesson?: Prisma.LessonUpdateOneRequiredWithoutProgressRecordsNestedInput
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   course?: Prisma.CourseUpdateOneRequiredWithoutLessonProgressNestedInput
+  lesson?: Prisma.LessonUpdateOneRequiredWithoutProgressRecordsNestedInput
 }
 
 export type LessonProgressUncheckedUpdateWithoutUserInput = {
@@ -846,11 +846,11 @@ export type LessonProgressUncheckedUpdateWithoutUserInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUncheckedUpdateManyWithoutUserInput = {
@@ -859,11 +859,11 @@ export type LessonProgressUncheckedUpdateManyWithoutUserInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateManyCourseInput = {
@@ -872,24 +872,24 @@ export type LessonProgressCreateManyCourseInput = {
   lessonId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutLessonProgressesNestedInput
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lesson?: Prisma.LessonUpdateOneRequiredWithoutProgressRecordsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutLessonProgressesNestedInput
 }
 
 export type LessonProgressUncheckedUpdateWithoutCourseInput = {
@@ -898,11 +898,11 @@ export type LessonProgressUncheckedUpdateWithoutCourseInput = {
   lessonId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUncheckedUpdateManyWithoutCourseInput = {
@@ -911,11 +911,11 @@ export type LessonProgressUncheckedUpdateManyWithoutCourseInput = {
   lessonId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressCreateManyLessonInput = {
@@ -924,24 +924,24 @@ export type LessonProgressCreateManyLessonInput = {
   courseId: string
   completed?: boolean
   progressValue?: number
-  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Date | string | null
   attempts?: number | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
+  lastPosition: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUpdateWithoutLessonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutLessonProgressesNestedInput
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   course?: Prisma.CourseUpdateOneRequiredWithoutLessonProgressNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutLessonProgressesNestedInput
 }
 
 export type LessonProgressUncheckedUpdateWithoutLessonInput = {
@@ -950,11 +950,11 @@ export type LessonProgressUncheckedUpdateWithoutLessonInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type LessonProgressUncheckedUpdateManyWithoutLessonInput = {
@@ -963,11 +963,11 @@ export type LessonProgressUncheckedUpdateManyWithoutLessonInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   progressValue?: Prisma.IntFieldUpdateOperationsInput | number
-  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastViewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   attempts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastPosition?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 
@@ -979,14 +979,14 @@ export type LessonProgressSelect<ExtArgs extends runtime.Types.Extensions.Intern
   courseId?: boolean
   completed?: boolean
   progressValue?: boolean
-  lastPosition?: boolean
   lastViewedAt?: boolean
   attempts?: boolean
   completedAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  lastPosition?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lessonProgress"]>
 
 export type LessonProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -996,14 +996,14 @@ export type LessonProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   courseId?: boolean
   completed?: boolean
   progressValue?: boolean
-  lastPosition?: boolean
   lastViewedAt?: boolean
   attempts?: boolean
   completedAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  lastPosition?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lessonProgress"]>
 
 export type LessonProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1013,14 +1013,14 @@ export type LessonProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   courseId?: boolean
   completed?: boolean
   progressValue?: boolean
-  lastPosition?: boolean
   lastViewedAt?: boolean
   attempts?: boolean
   completedAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  lastPosition?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lessonProgress"]>
 
 export type LessonProgressSelectScalar = {
@@ -1030,36 +1030,36 @@ export type LessonProgressSelectScalar = {
   courseId?: boolean
   completed?: boolean
   progressValue?: boolean
-  lastPosition?: boolean
   lastViewedAt?: boolean
   attempts?: boolean
   completedAt?: boolean
   updatedAt?: boolean
+  lastPosition?: boolean
 }
 
-export type LessonProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "lessonId" | "courseId" | "completed" | "progressValue" | "lastPosition" | "lastViewedAt" | "attempts" | "completedAt" | "updatedAt", ExtArgs["result"]["lessonProgress"]>
+export type LessonProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "lessonId" | "courseId" | "completed" | "progressValue" | "lastViewedAt" | "attempts" | "completedAt" | "updatedAt" | "lastPosition", ExtArgs["result"]["lessonProgress"]>
 export type LessonProgressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type LessonProgressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type LessonProgressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  lesson?: boolean | Prisma.LessonDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $LessonProgressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LessonProgress"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
-    lesson: Prisma.$LessonPayload<ExtArgs>
     course: Prisma.$CoursePayload<ExtArgs>
+    lesson: Prisma.$LessonPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1068,11 +1068,11 @@ export type $LessonProgressPayload<ExtArgs extends runtime.Types.Extensions.Inte
     courseId: string
     completed: boolean
     progressValue: number
-    lastPosition: runtime.Decimal
     lastViewedAt: Date | null
     attempts: number | null
     completedAt: Date | null
     updatedAt: Date
+    lastPosition: runtime.Decimal
   }, ExtArgs["result"]["lessonProgress"]>
   composites: {}
 }
@@ -1467,9 +1467,9 @@ readonly fields: LessonProgressFieldRefs;
  */
 export interface Prisma__LessonProgressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  lesson<T extends Prisma.LessonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDefaultArgs<ExtArgs>>): Prisma.Prisma__LessonClient<runtime.Types.Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  lesson<T extends Prisma.LessonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LessonDefaultArgs<ExtArgs>>): Prisma.Prisma__LessonClient<runtime.Types.Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1505,11 +1505,11 @@ export interface LessonProgressFieldRefs {
   readonly courseId: Prisma.FieldRef<"LessonProgress", 'String'>
   readonly completed: Prisma.FieldRef<"LessonProgress", 'Boolean'>
   readonly progressValue: Prisma.FieldRef<"LessonProgress", 'Int'>
-  readonly lastPosition: Prisma.FieldRef<"LessonProgress", 'Decimal'>
   readonly lastViewedAt: Prisma.FieldRef<"LessonProgress", 'DateTime'>
   readonly attempts: Prisma.FieldRef<"LessonProgress", 'Int'>
   readonly completedAt: Prisma.FieldRef<"LessonProgress", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LessonProgress", 'DateTime'>
+  readonly lastPosition: Prisma.FieldRef<"LessonProgress", 'Decimal'>
 }
     
 
