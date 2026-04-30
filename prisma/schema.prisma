@@ -1,899 +1,16 @@
-generator client {
-  provider = "prisma-client"
-  output   = "../src/generated"
-}
-
+// generator client {
+//   provider = "prisma-client-js"
+// }
 datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id                         String               @id @default(uuid())
-  email                      String               @unique @db.VarChar(254)
-  password                   String?
-  avatarUrl                  String?
-  locale                     String?
-  deletedAt                  DateTime?
-  createdAt                  DateTime             @default(now())
-  updatedAt                  DateTime             @updatedAt
-  isEmailVerified            Boolean              @default(false)
-  status                     UserStatus           @default(PENDING_VERIFICATION)
-  emailVerificationTokenHash String?
-  emailVerificationExpires   DateTime?
-  passwordResetTokenHash     String?
-  passwordResetExpires       DateTime?
-  googleId                   String?              @unique
-  loginAttempts              Int                  @default(0)
-  failedLoginAt              DateTime?
-  lockUntil                  DateTime?
-  lastLogin                  DateTime?
-  lastLoginIP                String?
-  lastActivityAt             DateTime?
-  passwordChangedAt          DateTime             @default(now())
-  enrollmentCount            Int                  @default(0)
-  reviewCount                Int                  @default(0)
-  paymentCount               Int                  @default(0)
-  notificationCount          Int                  @default(0)
-  orderCount                 Int                  @default(0)
-  progressesCount            Int                  @default(0)
-  wishlistsCount             Int                  @default(0)
-  AuditLog                   AuditLog[]
-  books                      Book[]
-  enrollments                Enrollment[]
-  instructorProfile          InstructorProfile?
-  LessonComment              LessonComment[]
-  LessonDiscussion           LessonDiscussion[]
-  lessonProgresses           LessonProgress[]
-  notifications              Notification[]
-  orders                     Order[]
-  payments                   PaymentTransaction[]
-  paymentMethod              PayoutMethod[]
-  payouts                    Payout[]
-  QuizResult                 QuizResult[]
-  reviews                    Review[]
-  studentProfile             StudentProfile?
-  assignedRole               UserRoleAssignment[]
-  sessions                   UserSession[]
-  wishlists                  Wishlist[]
-
-  @@index([id])
-  @@index([email])
-  @@index([status])
-  @@index([createdAt])
-  @@index([emailVerificationTokenHash])
-  @@index([passwordResetTokenHash])
-  @@index([id, deletedAt, status])
-  @@map("users")
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+  // previewFeatures = ["fullTextSearchPostgres", "driverAdapters"]
 }
 
-model UserSession {
-  id                String         @id @default(uuid())
-  userId            String
-  deviceId          String
-  deviceFingerprint String?
-  sessionToken      String         @unique
-  userAgent         String?
-  ipAddress         String?
-  deviceType        DeviceType
-  browser           String?
-  browserVersion    String?
-  os                String?
-  osVersion         String?
-  platform          String?
-  country           String?        @db.Char(2)
-  city              String?
-  region            String?
-  timezone          String?
-  geoLocation       Json?
-  isActive          Boolean        @default(true)
-  expiresAt         DateTime
-  lastActivity      DateTime       @default(now())
-  isCompromised     Boolean        @default(false)
-  compromisedAt     DateTime?
-  suspicious        Boolean        @default(false)
-  suspiciousSince   DateTime?
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-  refreshTokens     RefreshToken[]
-  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, deviceId])
-  @@index([deviceId])
-  @@index([isActive])
-  @@index([expiresAt])
-  @@index([isCompromised])
-  @@index([createdAt])
-  @@map("user_sessions")
-}
-
-model RefreshToken {
-  id                String        @id @default(uuid())
-  token             String        @unique
-  sessionId         String?
-  expiresAt         DateTime
-  revoked           Boolean       @default(false)
-  revokedAt         DateTime?
-  replacedByTokenId String?       @unique
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  replacedBy        RefreshToken? @relation("RefreshTokenRotation", fields: [replacedByTokenId], references: [id])
-  replacesToken     RefreshToken? @relation("RefreshTokenRotation")
-  session           UserSession?  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-
-  @@index([sessionId])
-  @@index([expiresAt])
-  @@index([revoked])
-  @@index([revokedAt])
-  @@index([replacedByTokenId])
-  @@map("refresh_tokens")
-}
-
-model UserRoleAssignment {
-  id          String   @id @default(uuid())
-  userId      String
-  role        UserRole
-  grantedById String?
-  grantedAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, role])
-  @@index([userId, role])
-  @@map("user_role_assignments")
-}
-
-model Permission {
-  id          String           @id @default(uuid())
-  name        String           @unique
-  description String?
-  roles       RolePermission[]
-
-  @@index([name])
-  @@map("permissions")
-}
-
-model RolePermission {
-  id           String     @id @default(uuid())
-  role         UserRole
-  permissionId String
-  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
-
-  @@unique([role, permissionId])
-  @@index([role])
-  @@index([permissionId])
-  @@map("role_permissions")
-}
-
-/// Profiles
-model StudentProfile {
-  id             String    @id @default(uuid())
-  userId         String    @unique
-  displayName    String
-  encryptedPhone String
-  phoneLastFour  String    @db.Char(4)
-  gender         Gender
-  bio            String?
-  createdAt      DateTime  @default(now())
-  deletedAt      DateTime?
-  updatedAt      DateTime  @updatedAt
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([displayName])
-  @@map("student_profiles")
-}
-
-model InstructorProfile {
-  id                     String             @id @default(uuid())
-  userId                 String             @unique
-  displayName            String
-  DOB                    DateTime
-  gender                 Gender
-  nationality            String
-  encryptedPhone         String
-  phoneLastFour          String             @db.Char(4)
-  address                String             @db.VarChar(255)
-  city                   String             @db.VarChar(20)
-  qualifications         String
-  experience             Int                @default(0) @db.SmallInt
-  expertise              String?
-  currentOrg             String?
-  courseLevel            CourseLevel
-  courseType             CourseType
-  teachingExperience     Decimal?           @default(0) @db.Decimal(5, 2)
-  prevTeachingApproach   TeachingApproach
-  language               TeachingLanguage
-  demoVideo              String?
-  bio                    String
-  website                String?
-  paymentId              String?
-  status                 ApplicationStatus  @default(PENDING)
-  rejectionReason        String?
-  ratingAverage          Decimal?           @default(0) @db.Decimal(2, 1)
-  ratingCount            Int                @default(0)
-  totalStudents          Int                @default(0)
-  totalCourses           Int                @default(0)
-  totalRevenueAmount     Decimal            @default(0) @db.Decimal(15, 2)
-  totalRefunds           Decimal            @default(0) @db.Decimal(15, 2)
-  deletedAt              DateTime?
-  deletionReason         String?
-  createdAt              DateTime           @default(now())
-  updatedAt              DateTime           @updatedAt
-  proposedCourseCategory String
-  courseInstructors      CourseInstructor[]
-  ownedCourses           Course[]           @relation("CourseOwner")
-  user                   User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skills                 InstructorSkill[]
-  socialAccount          SocialLink[]
-
-  @@index([userId])
-  @@index([status])
-  @@index([ratingAverage])
-  @@index([deletedAt])
-  @@index([userId, status, deletedAt])
-  @@index([displayName, status, deletedAt])
-  @@map("instructor_profiles")
-}
-
-model InstructorSkill {
-  id           String            @id @default(uuid())
-  instructorId String
-  skill        String
-  instructor   InstructorProfile @relation(fields: [instructorId], references: [id], onDelete: Cascade)
-
-  @@unique([instructorId, skill])
-  @@map("instructor_skills")
-}
-
-model SocialLink {
-  id        String            @id @default(uuid())
-  userId    String
-  platform  SocialPlatform
-  url       String
-  createdAt DateTime          @default(now())
-  user      InstructorProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("social_links")
-}
-
-/// Courses & content
-model Course {
-  id                     String               @id @default(uuid())
-  title                  String
-  slug                   String               @unique
-  description            String
-  welcomeMessage         String?
-  congratulationsMessage String?
-  originalPrice          Decimal              @db.Decimal(15, 2)
-  discountPercent        Int?                 @default(0)
-  discountPrice          Decimal?             @db.Decimal(15, 2)
-  discountEndDate        DateTime?
-  isDiscountActive       Boolean              @default(false)
-  currency               String?              @default("BDT")
-  enrollmentCount        Int                  @default(0)
-  reviewCount            Int                  @default(0)
-  totalRevenueAmount     Decimal              @default(0) @db.Decimal(15, 2)
-  moduleCount            Int                  @default(0)
-  status                 CourseStatus         @default(DRAFT)
-  language               Language             @default(BANGLA)
-  level                  CourseLevel          @default(BEGINNER)
-  thumbnailUrl           String?
-  trailerUrl             String?
-  categoryId             String?
-  createdById            String?
-  ratingAverage          Decimal?             @default(0) @db.Decimal(2, 1)
-  ratingCount            Int                  @default(0)
-  views                  Int                  @default(0)
-  deletedAt              DateTime?
-  createdAt              DateTime             @default(now())
-  updatedAt              DateTime             @updatedAt
-  courseInstructors      CourseInstructor[]
-  tags                   CourseTag[]
-  category               Category?            @relation(fields: [categoryId], references: [id])
-  createdBy              InstructorProfile?   @relation("CourseOwner", fields: [createdById], references: [id])
-  enrollments            Enrollment[]
-  LessonProgress         LessonProgress[]
-  modules                Module[]
-  OrderItem              OrderItem[]
-  PaymentTransaction     PaymentTransaction[]
-  reviews                Review[]
-  wishlistedBy           Wishlist[]
-
-  @@index([slug])
-  @@index([status])
-  @@index([originalPrice])
-  @@index([enrollmentCount])
-  @@index([discountEndDate])
-  @@index([ratingAverage])
-  @@index([categoryId])
-  @@index([createdById, status, deletedAt, createdAt])
-  @@map("courses")
-}
-
-model CourseInstructor {
-  id           String            @id @default(uuid())
-  courseId     String
-  instructorId String
-  role         InstructorRole?
-  assignedAt   DateTime          @default(now())
-  course       Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  instructor   InstructorProfile @relation(fields: [instructorId], references: [id], onDelete: Cascade)
-
-  @@unique([courseId, instructorId])
-  @@index([courseId])
-  @@index([instructorId])
-  @@map("course_instructors")
-}
-
-/// Module & Lesson
-model Module {
-  id        String    @id @default(uuid())
-  courseId  String
-  position  Int
-  title     String
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  lessons   Lesson[]
-  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@index([courseId])
-  @@index([courseId, position])
-  @@map("modules")
-}
-
-model Lesson {
-  id              String             @id @default(uuid())
-  moduleId        String
-  position        Int
-  title           String
-  description     String?
-  notes           String?
-  type            LessonType
-  contentUrl      String?
-  contentName     String?
-  duration        Int?
-  deletedAt       DateTime?
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
-  discussions     LessonDiscussion[]
-  files           LessonFile[]
-  progressRecords LessonProgress[]
-  module          Module             @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  quiz            Quiz?
-
-  @@index([moduleId])
-  @@index([moduleId, position])
-  @@map("lessons")
-}
-
-model LessonFile {
-  id        String   @id @default(uuid())
-  name      String
-  url       String
-  lessonId  String
-  createdAt DateTime @default(now())
-  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  @@map("lesson_files")
-}
-
-model LessonDiscussion {
-  id          String          @id @default(uuid())
-  lessonId    String
-  createdById String
-  title       String?
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  deletedAt   DateTime?
-  comments    LessonComment[]
-  createdBy   User            @relation(fields: [createdById], references: [id])
-  lesson      Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  @@index([lessonId])
-  @@index([createdById])
-  @@index([lessonId, createdAt])
-  @@map("lesson_discussions")
-}
-
-model LessonComment {
-  id              String           @id @default(uuid())
-  discussionId    String
-  authorId        String
-  parentCommentId String?
-  content         String
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  isEdited        Boolean          @default(false)
-  isDeleted       Boolean          @default(false)
-  deletedAt       DateTime?
-  author          User             @relation(fields: [authorId], references: [id])
-  discussion      LessonDiscussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
-  parentComment   LessonComment?   @relation("CommentReplies", fields: [parentCommentId], references: [id])
-  replies         LessonComment[]  @relation("CommentReplies")
-
-  @@index([discussionId])
-  @@index([authorId])
-  @@index([parentCommentId])
-  @@index([discussionId, createdAt])
-  @@map("lesson_comments")
-}
-
-/// Enrollment & progress
-model Enrollment {
-  id                  String           @id @default(uuid())
-  userId              String
-  courseId            String
-  pricePaid           Decimal?         @db.Decimal(15, 2)
-  originalPriceAtTime Decimal          @db.Decimal(15, 2)
-  discountAtTime      Int              @default(0)
-  currency            String           @default("BDT")
-  status              EnrollmentStatus @default(ACTIVE)
-  refundedAt          DateTime?
-  refundAmount        Decimal?
-  refundReason        String?
-  progress            Decimal?         @default(0) @db.Decimal(5, 2)
-  startedAt           DateTime         @default(now())
-  completedAt         DateTime?
-  deletedAt           DateTime?
-  updatedAt           DateTime         @updatedAt
-  certificate         Certificate?
-  course              Course           @relation(fields: [courseId], references: [id])
-  user                User             @relation(fields: [userId], references: [id])
-
-  @@unique([userId, courseId])
-  @@index([userId])
-  @@index([courseId])
-  @@index([status])
-  @@index([startedAt])
-  @@index([status, startedAt])
-  @@map("enrollments")
-}
-
-model LessonProgress {
-  id            String    @id @default(uuid())
-  userId        String
-  lessonId      String
-  courseId      String
-  completed     Boolean   @default(false)
-  progressValue Int       @default(0)
-  lastViewedAt  DateTime?
-  attempts      Int?      @default(0)
-  completedAt   DateTime?
-  updatedAt     DateTime  @updatedAt
-  lastPosition  Decimal   @db.Decimal(10, 2)
-  course        Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  lesson        Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, lessonId])
-  @@index([courseId])
-  @@index([completed])
-  @@index([userId, courseId])
-  @@index([userId, completed, updatedAt])
-  @@map("lesson_progresses")
-}
-
-/// Reviews & ratings
-model Review {
-  id        String    @id @default(uuid())
-  userId    String
-  courseId  String?
-  rating    Int       @default(0)
-  title     String?
-  body      String?
-  flagged   Boolean   @default(false)
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  bookId    String?
-  book      Book?     @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  course    Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [userId], references: [id])
-
-  @@index([courseId])
-  @@index([userId])
-  @@index([bookId])
-  @@index([rating])
-  @@index([createdAt])
-  @@index([courseId, rating, createdAt])
-  @@index([bookId, rating, createdAt])
-  @@map("reviews")
-}
-
-model Book {
-  id                 String               @id @default(uuid())
-  title              String
-  author             String
-  translator         String?
-  editor             String?
-  publisher          String
-  description        String
-  regularPrice       Decimal              @db.Decimal(10, 2)
-  salePrice          Decimal              @db.Decimal(10, 2)
-  stock              Int                  @default(0)
-  isbn               String?              @unique
-  edition            String?
-  pages              Int?
-  language           String
-  formats            BookFormat[]
-  totalEarning       Decimal              @default(0) @db.Decimal(15, 2)
-  viewCount          Int                  @default(0)
-  metaKeywords       String?
-  metaDescription    String?
-  coverImage         String
-  ownerId            String
-  categoryId         String?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  status             BookStatus           @default(PENDING)
-  files              BookFile[]
-  category           BookCategory?        @relation(fields: [categoryId], references: [id])
-  owner              User                 @relation(fields: [ownerId], references: [id])
-  orderItem          OrderItem[]
-  PaymentTransaction PaymentTransaction[]
-  reviews            Review[]
-  wishlistedBy       Wishlist[]
-
-  @@index([isbn])
-  @@index([isbn, ownerId])
-  @@map("books")
-}
-
-model BookFile {
-  id        String       @id @default(uuid())
-  name      String
-  url       String
-  fileType  BookFileType
-  bookId    String
-  createdAt DateTime     @default(now())
-  book      Book         @relation(fields: [bookId], references: [id], onDelete: Cascade)
-
-  @@map("book_files")
-}
-
-model ViewLog {
-  id         String         @id @default(uuid())
-  entityId   String
-  entityType ViewEntityType
-  viewerId   String?
-  viewedAt   DateTime       @default(now())
-  ipAddress  String?
-  createdAt  DateTime       @default(now())
-
-  @@index([entityId, entityType])
-  @@map("view_logs")
-}
-
-model Wishlist {
-  id        String   @id @default(uuid())
-  userId    String
-  courseId  String?
-  createdAt DateTime @default(now())
-  bookId    String?
-  book      Book?    @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  course    Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, courseId])
-  @@map("wishlists")
-}
-
-model Order {
-  id                  String               @id @default(uuid())
-  userId              String
-  totalAmount         Decimal              @db.Decimal(15, 2)
-  currency            String               @default("BDT")
-  status              OrderStatus          @default(PENDING)
-  provider            PaymentProviders?
-  providerOrderId     String?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  orderItems          OrderItem[]
-  user                User                 @relation(fields: [userId], references: [id])
-  paymentTransactions PaymentTransaction[]
-
-  @@index([userId, status])
-  @@index([status, createdAt])
-  @@index([userId, createdAt, status])
-  @@index([totalAmount])
-  @@map("orders")
-}
-
-model OrderItem {
-  id        String          @id @default(uuid())
-  orderId   String
-  courseId  String?
-  price     Decimal         @db.Decimal(15, 2)
-  currency  String?         @default("BDT")
-  status    OrderItemStatus @default(PENDING)
-  createdAt DateTime        @default(now())
-  bookId    String?
-  book      Book?           @relation(fields: [bookId], references: [id], onDelete: Restrict)
-  course    Course?         @relation(fields: [courseId], references: [id], onDelete: Restrict)
-  order     Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@index([orderId])
-  @@index([courseId])
-  @@map("order_items")
-}
-
-/// Payments & payouts
-model PaymentTransaction {
-  id                    String            @id @default(uuid())
-  userId                String
-  courseId              String?
-  orderId               String?
-  paymentMethod         PaymentMethod?
-  providerFee           Decimal?          @db.Decimal(6, 2)
-  providerTransactionId String?           @unique
-  amount                Decimal           @db.Decimal(15, 2)
-  currency              String            @default("BDT")
-  provider              PaymentProviders
-  providerPaymentId     String?           @unique
-  status                TransactionStatus
-  type                  TransactionType?
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
-  deletedAt             DateTime?
-  bookId                String?
-  book                  Book?             @relation(fields: [bookId], references: [id])
-  course                Course?           @relation(fields: [courseId], references: [id])
-  order                 Order?            @relation(fields: [orderId], references: [id])
-  user                  User              @relation(fields: [userId], references: [id])
-
-  @@index([courseId])
-  @@index([userId, status, createdAt])
-  @@map("payment_transactions")
-}
-
-model Payout {
-  id               String        @id @default(uuid())
-  instructorId     String
-  amount           Decimal       @db.Decimal(10, 2)
-  fee              Decimal?      @db.Decimal(10, 2)
-  currency         String        @default("BDT")
-  payoutDate       DateTime
-  providerPayoutId String?       @unique
-  status           PaymentStatus
-  approvedBy       String?
-  approvedAt       DateTime?
-  rejectionReason  String?
-  failureReason    String?
-  retryCount       Int           @default(0)
-  nextRetryAt      DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  deletedAt        DateTime?
-  instructor       User          @relation(fields: [instructorId], references: [id])
-
-  @@index([instructorId])
-  @@index([status])
-  @@index([payoutDate])
-  @@index([instructorId, status])
-  @@index([status, payoutDate])
-  @@map("payouts")
-}
-
-model PayoutMethod {
-  id                String         @id @default(uuid())
-  instructorId      String
-  type              PaymentMethod
-  bankName          String?
-  mobileBankingName MobileBanking?
-  accHolderName     String
-  accountNumber     String
-  branchName        String?
-  routingNumber     String?
-  isDefault         Boolean        @default(false)
-  createdAt         DateTime       @default(now())
-  instructor        User           @relation(fields: [instructorId], references: [id], onDelete: Cascade)
-
-  @@map("payout_methods")
-}
-
-model BankName {
-  id   String @id @default(uuid())
-  name String @unique
-
-  @@map("bank_names")
-}
-
-/// Categories & tags
-model Category {
-  id       String     @id @default(uuid())
-  name     String     @unique
-  slug     String     @unique
-  parentId String?
-  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryHierarchy")
-  courses  Course[]
-
-  @@index([slug])
-  @@index([name])
-  @@index([parentId])
-  @@map("categories")
-}
-
-model BookCategory {
-  id       String         @id @default(uuid())
-  name     String         @unique
-  slug     String         @unique
-  parentId String?
-  parent   BookCategory?  @relation("BookCategoryHierarchy", fields: [parentId], references: [id])
-  children BookCategory[] @relation("BookCategoryHierarchy")
-  book     Book[]
-
-  @@index([slug])
-  @@index([name])
-  @@index([parentId])
-  @@map("book_categories")
-}
-
-model Tag {
-  id      String      @id @default(uuid())
-  name    String      @unique
-  slug    String      @unique
-  courses CourseTag[]
-
-  @@index([slug])
-  @@index([name])
-  @@map("tags")
-}
-
-model CourseTag {
-  id       String @id @default(uuid())
-  courseId String
-  tagId    String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@unique([courseId, tagId])
-  @@index([courseId])
-  @@index([tagId])
-  @@map("course_tags")
-}
-
-/// Certificate
-model Certificate {
-  id              String     @id @default(uuid())
-  enrollmentId    String     @unique
-  certificateUrl  String
-  certificateHash String     @unique
-  issuedAt        DateTime   @default(now())
-  expiresAt       DateTime?
-  verified        Boolean    @default(false)
-  verifiedBy      String?
-  verifiedAt      DateTime?
-  revoked         Boolean    @default(false)
-  revokedReason   String?
-  revokedAt       DateTime?
-  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
-
-  @@index([issuedAt])
-  @@map("certificates")
-}
-
-/// Notifications & audit
-model Notification {
-  id         String           @id @default(uuid())
-  userId     String
-  type       NotificationType
-  title      String
-  message    String?
-  isRead     Boolean          @default(false)
-  isArchived Boolean          @default(false)
-  createdAt  DateTime         @default(now())
-  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId, isRead, isArchived])
-  @@index([userId, isArchived, createdAt])
-  @@index([createdAt])
-  @@map("notifications")
-}
-
-model Quiz {
-  id              String         @id @default(uuid())
-  lessonId        String         @unique
-  title           String
-  description     String?
-  duration        Int?
-  passingScore    Int            @default(0) @db.SmallInt
-  attemptsAllowed Int            @default(1) @db.SmallInt
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  questions       QuizQuestion[]
-  results         QuizResult[]
-  lesson          Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  @@index([lessonId])
-  @@map("quizzes")
-}
-
-model QuizQuestion {
-  id        String           @id @default(uuid())
-  quizId    String
-  text      String
-  type      QuestionType
-  points    Int              @default(1)
-  position  Int
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  options   QuestionOption[]
-  quiz      Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
-
-  @@index([quizId])
-  @@index([quizId, position])
-  @@map("quiz_questions")
-}
-
-model QuestionOption {
-  id               String       @id @default(uuid())
-  questionId       String
-  position         Int
-  text             String
-  isCorrect        Boolean      @default(false)
-  exactMatchAnswer String?
-  createdAt        DateTime     @default(now())
-  question         QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  @@index([questionId])
-  @@map("question_options")
-}
-
-model QuizResult {
-  id             String    @id @default(uuid())
-  quizId         String
-  userId         String
-  scoreAchieved  Decimal   @default(0) @db.Decimal(5, 2)
-  isPassed       Boolean   @default(false)
-  submissionData Json?
-  startedAt      DateTime  @default(now())
-  submittedAt    DateTime?
-  quiz           Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  user           User      @relation(fields: [userId], references: [id])
-
-  @@index([quizId, userId])
-  @@index([userId, isPassed])
-  @@index([submittedAt])
-  @@map("quiz_results")
-}
-
-model AuditLog {
-  id            String   @id @default(uuid())
-  userId        String
-  action        String
-  entityType    String
-  entityId      String
-  changesBefore Json?
-  changesAfter  Json?
-  ipAddress     String?
-  userAgent     String?
-  timestamp     DateTime @default(now())
-  user          User     @relation(fields: [userId], references: [id])
-
-  @@index([userId, timestamp])
-  @@index([entityType, entityId, timestamp])
-  @@index([action, timestamp])
-  @@map("audit_logs")
-}
-
-model PlatformSettings {
-  id               String   @id @default(uuid())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  platformName     String   @default("Aloskill")
-  logo             String?
-  favicon          String?
-  contactEmail     String?
-  supportPhone     String?
-  smtpHost         String?
-  smtpPort         Int?
-  smtpUser         String?
-  smtpPassword     String?
-  maintenanceMode  Boolean  @default(false)
-  registrationOpen Boolean  @default(true)
-
-  @@map("platform_settings")
-}
 
 /// Enums
 enum UserRole {
@@ -1015,11 +132,11 @@ enum PaymentMethod {
 }
 
 enum MobileBanking {
-  BKASH
-  ROCKET
-  NAGAD
-  UPAY
-  QCASH
+    BKASH
+    ROCKET
+    NAGAD
+    UPAY
+    QCASH
 }
 
 enum OrderStatus {
@@ -1088,4 +205,1085 @@ enum BookStatus {
   PENDING
   APPROVED
   DRAFT
+}
+
+// === MODELS===//
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique @db.VarChar(254)
+  password  String?
+  avatarUrl String?
+  locale    String?
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // === ACCOUNT STATUS=== //
+  isEmailVerified Boolean    @default(false)
+  status          UserStatus @default(PENDING_VERIFICATION)
+  suspendReason   String?
+  adminNote       String?
+
+  // === EMAIL VERIFICATION ===
+  emailVerificationTokenHash String?
+  emailVerificationExpires   DateTime?
+
+  // === PASSWORD RESET ===
+  passwordResetTokenHash String?
+  passwordResetExpires   DateTime?
+
+  // === SOCIAL LOGIN ===
+  googleId String? @unique
+
+  // === SECURITY TRACKING ===
+  loginAttempts     Int       @default(0)
+  failedLoginAt     DateTime?
+  lockUntil         DateTime?
+  lastLogin         DateTime?
+  lastLoginIP       String?
+  lastActivityAt    DateTime?
+  passwordChangedAt DateTime  @default(now())
+
+  // Role assignments (many)
+  assignedRole UserRoleAssignment[]
+
+  // Profiles
+  studentProfile    StudentProfile?
+  instructorProfile InstructorProfile?
+
+  // Counts
+  enrollmentCount   Int @default(0)
+  reviewCount       Int @default(0)
+  paymentCount      Int @default(0)
+  notificationCount Int @default(0)
+  orderCount        Int @default(0)
+  progressesCount   Int @default(0)
+  wishlistsCount    Int @default(0)
+
+  // Auth related
+  sessions UserSession[]
+
+  // Others Relations
+  enrollments      Enrollment[]
+  reviews          Review[]
+  payments         PaymentTransaction[]
+  lessonProgresses LessonProgress[]
+  notifications    Notification[]
+  wishlists        Wishlist[]
+  orders           Order[]
+  books            Book[]
+  LessonDiscussion LessonDiscussion[]
+  LessonComment    LessonComment[]
+  QuizResult       QuizResult[]
+  AuditLog         AuditLog[]
+  paymentMethod    PayoutMethod[]
+  payouts          Payout[]
+
+  @@index([id])
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@index([emailVerificationTokenHash])
+  @@index([passwordResetTokenHash])
+  @@index([id, deletedAt, status])
+  @@map("users")
+}
+
+model UserSession {
+  id String @id @default(uuid())
+
+  // User identification
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Device fingerprinting
+  deviceId          String
+  deviceFingerprint String?
+
+  // Session security
+  sessionToken String @unique
+
+  // Device information
+  userAgent      String?
+  ipAddress      String?
+  deviceType     DeviceType
+  browser        String?
+  browserVersion String?
+  os             String?
+  osVersion      String?
+  platform       String?
+
+  // Location data
+  country     String? @db.Char(2)
+  city        String?
+  region      String?
+  timezone    String?
+  geoLocation Json?
+
+  // Session lifecycle
+  isActive     Boolean  @default(true)
+  expiresAt    DateTime
+  lastActivity DateTime @default(now())
+
+  // Security flags
+  isCompromised   Boolean   @default(false)
+  compromisedAt   DateTime?
+  suspicious      Boolean   @default(false)
+  suspiciousSince DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 👇 Relation to RefreshToken
+  refreshTokens RefreshToken[]
+
+  // Indexes
+  @@unique([userId, deviceId])
+  @@index([deviceId])
+  @@index([isActive])
+  @@index([expiresAt])
+  @@index([isCompromised])
+  @@index([createdAt])
+  @@map("user_sessions")
+}
+
+model RefreshToken {
+  id        String       @id @default(uuid())
+  token     String       @unique
+  sessionId String?
+  session   UserSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  expiresAt DateTime
+  revoked   Boolean   @default(false)
+  revokedAt DateTime?
+
+  replacedByTokenId String?       @unique
+  replacedBy        RefreshToken? @relation("RefreshTokenRotation", fields: [replacedByTokenId], references: [id], onDelete: SetNull)
+  replacesToken     RefreshToken? @relation("RefreshTokenRotation")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([expiresAt])
+  @@index([revoked])
+  @@index([revokedAt])
+  @@index([replacedByTokenId])
+  @@map("refresh_tokens")
+}
+
+model UserRoleAssignment {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  role        UserRole
+  // metadata
+  grantedById String?
+  grantedAt   DateTime @default(now())
+
+  @@unique([userId, role])
+  @@index([userId, role])
+  @@map("user_role_assignments")
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  name        String           @unique // e.g., "course:create", "user:suspend", "payout:view"
+  description String?
+  roles       RolePermission[]
+
+  @@index([name])
+  @@map("permissions")
+}
+
+model RolePermission {
+  id   String   @id @default(uuid())
+  role UserRole
+
+  // The action (e.g., course:create)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  permissionId String
+
+  @@unique([role, permissionId])
+  @@index([role])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+/// Profiles
+model StudentProfile {
+  id             String    @id @default(uuid())
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String    @unique
+  displayName    String
+  encryptedPhone String
+  phoneLastFour  String    @db.Char(4)
+  gender         Gender
+  bio            String?
+  createdAt      DateTime  @default(now())
+  deletedAt      DateTime?
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([displayName])
+  @@map("student_profiles")
+}
+
+model InstructorProfile {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  //==Personnal Info
+  displayName String
+  DOB         DateTime
+  gender      Gender
+  nationality String
+
+  //== Contact Info
+  encryptedPhone String
+  phoneLastFour  String @db.Char(4)
+  address        String @db.VarChar(255)
+  city           String @db.VarChar(20)
+
+  //== Professional Info
+  qualifications String
+  experience     Int     @default(0) @db.SmallInt()
+  expertise      String?
+  currentOrg     String?
+
+  //== Course Info
+  proposedCourseCategory String
+  courseLevel            CourseLevel
+  courseType             CourseType
+
+  //== Content & Teaching Skills
+  teachingExperience   Decimal?     @default(0) @db.Decimal(5, 2)
+  prevTeachingApproach TeachingApproach
+  language             TeachingLanguage
+  demoVideo            String?
+
+  //== Others Info
+  bio                String
+  skills             InstructorSkill[]
+  website            String?
+  socialAccount      SocialLink[]
+  paymentId          String? // SSL Connect account id (or other payout id)
+  status             ApplicationStatus @default(PENDING)
+  suspendReason      String?
+  adminNote          String?
+  ratingAverage      Decimal?          @default(0) @db.Decimal(2, 1)
+  ratingCount        Int               @default(0)
+  totalStudents      Int               @default(0)
+  totalCourses       Int               @default(0)
+  totalRevenueAmount Decimal           @default(0) @db.Decimal(15, 2)
+  totalRefunds       Decimal           @default(0) @db.Decimal(15, 2)
+
+  deletedAt      DateTime?
+  deletionReason String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  ownedCourses      Course[]           @relation("CourseOwner")
+  courseInstructors CourseInstructor[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([ratingAverage])
+  @@index([deletedAt])
+  @@index([userId, status, deletedAt])
+  @@index([displayName, status, deletedAt])
+  @@map("instructor_profiles")
+}
+
+model InstructorSkill {
+  id           String            @id @default(uuid())
+  instructor   InstructorProfile @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  instructorId String
+  skill        String
+
+  @@unique([instructorId, skill])
+  @@map("instructor_skills")
+}
+
+model SocialLink {
+  id        String            @id @default(uuid())
+  userId    String
+  user      InstructorProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform  SocialPlatform
+  url       String
+  createdAt DateTime          @default(now())
+
+  @@map("social_links")
+}
+
+/// Courses & content
+model Course {
+  id          String @id @default(uuid())
+  title       String
+  slug        String @unique
+  description String
+  welcomeMessage         String?
+  congratulationsMessage String?
+
+  // == Pricing == //
+  originalPrice    Decimal   @db.Decimal(15, 2)
+  discountPercent  Int?      @default(0)
+  discountPrice    Decimal?  @db.Decimal(15, 2)
+  discountEndDate  DateTime?
+  isDiscountActive Boolean   @default(false)
+  currency         String?   @default("BDT")
+
+  enrollmentCount    Int     @default(0)
+  reviewCount        Int     @default(0)
+  totalRevenueAmount Decimal @default(0) @db.Decimal(15, 2)
+  moduleCount        Int     @default(0)
+
+  status       CourseStatus @default(DRAFT)
+  suspendReason   String?
+  adminNote       String?
+  language     Language     @default(BANGLA)
+  level        CourseLevel  @default(BEGINNER)
+  thumbnailUrl String?
+  trailerUrl   String?
+
+  categoryId  String?
+  category    Category?          @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdById String?
+  createdBy   InstructorProfile? @relation("CourseOwner", fields: [createdById], references: [id], onDelete: SetNull)
+
+  ratingAverage Decimal?  @default(0) @db.Decimal(2, 1)
+  ratingCount   Int       @default(0)
+  views         Int       @default(0)
+  deletedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  updatedContent          Json?
+
+  courseInstructors  CourseInstructor[]
+  LessonProgress     LessonProgress[]
+  PaymentTransaction PaymentTransaction[]
+  OrderItem          OrderItem[]
+  modules            Module[]
+  enrollments        Enrollment[]
+  reviews            Review[]
+  tags               CourseTag[]
+  wishlistedBy       Wishlist[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([originalPrice])
+  @@index([enrollmentCount])
+  @@index([discountEndDate])
+  @@index([ratingAverage])
+  @@index([categoryId])
+  @@index([createdById, status, deletedAt, createdAt])
+
+  @@map("courses")
+}
+
+model CourseInstructor {
+  id           String            @id @default(uuid())
+  course       Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId     String
+  instructor   InstructorProfile @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  instructorId String
+  role         InstructorRole?
+  assignedAt   DateTime          @default(now())
+
+  @@unique([courseId, instructorId])
+  @@index([courseId])
+  @@index([instructorId])
+
+  @@map("course_instructors")
+}
+
+/// Module & Lesson
+model Module {
+  id        String    @id @default(uuid())
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  position  Int
+  title     String
+  deletedAt DateTime?
+  lessons   Lesson[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([courseId])
+  @@index([courseId, position])
+
+  @@map("modules")
+}
+
+model Lesson {
+  id         String     @id @default(uuid())
+  module     Module     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  moduleId   String
+  position   Int
+  title      String
+  description String?
+  notes      String?
+  type       LessonType
+  contentUrl  String?
+  contentName String?
+  files      LessonFile[]
+  duration   Int?
+  deletedAt  DateTime?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  isNew      Boolean    @default(false)
+  isUpdated  Boolean    @default(false)
+  suspendReason   String?
+  adminNote       String?
+
+  progressRecords LessonProgress[]
+  discussions     LessonDiscussion[]
+  quiz            Quiz?
+
+  @@index([moduleId])
+  @@index([moduleId, position])
+
+  @@map("lessons")
+}
+
+model LessonFile {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("lesson_files")
+}
+
+model LessonDiscussion {
+  id       String @id @default(uuid())
+  // Relations
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId String
+
+  createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdById String
+
+  title     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  comments LessonComment[]
+
+  // 🧠 Indexes
+  @@index([lessonId])
+  @@index([createdById])
+  @@index([lessonId, createdAt])
+
+  @@map("lesson_discussions")
+}
+
+model LessonComment {
+  id String @id @default(uuid())
+
+  // Relations
+  discussion   LessonDiscussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  discussionId String
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  authorId String
+
+  parentComment   LessonComment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  parentCommentId String?
+  replies         LessonComment[] @relation("CommentReplies")
+
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isEdited  Boolean @default(false)
+  isDeleted Boolean @default(false)
+
+  deletedAt DateTime?
+
+  // 🧠 Indexes
+  @@index([discussionId])
+  @@index([authorId])
+  @@index([parentCommentId])
+  @@index([discussionId, createdAt])
+
+  @@map("lesson_comments")
+}
+
+/// Enrollment & progress
+model Enrollment {
+  id       String @id @default(uuid())
+  // Relations
+  user     User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId   String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  courseId String
+
+  pricePaid           Decimal?         @db.Decimal(15, 2)
+  originalPriceAtTime Decimal          @db.Decimal(15, 2)
+  discountAtTime      Int              @default(0)
+  currency            String           @default("BDT")
+  status              EnrollmentStatus @default(ACTIVE)
+  refundedAt          DateTime?
+  refundAmount        Decimal?
+  refundReason        String?
+  progress            Decimal?         @default(0) @db.Decimal(5, 2)
+  startedAt           DateTime         @default(now())
+  completedAt         DateTime?
+  deletedAt           DateTime?
+  updatedAt           DateTime         @updatedAt
+
+  certificate Certificate?
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+  @@index([status])
+  @@index([startedAt])
+  @@index([status, startedAt])
+
+  @@map("enrollments")
+}
+
+model LessonProgress {
+  id       String @id @default(uuid())
+  // Relations
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId String
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  completed     Boolean   @default(false)
+  progressValue Int       @default(0)
+  lastPosition  Decimal   @db.Decimal(10,2)
+  lastViewedAt  DateTime?
+  attempts      Int?      @default(0)
+  completedAt   DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, lessonId])
+  @@index([courseId])
+  @@index([completed])
+  @@index([userId, courseId])
+  @@index([userId, completed, updatedAt])
+
+  @@map("lesson_progresses")
+}
+
+/// Reviews & ratings
+model Review {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId    String
+  course    Course?    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String?
+  bookId    String?
+  book      Book?     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  rating    Int       @default(0)
+  title     String?
+  body      String?
+  flagged   Boolean   @default(false)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([courseId])
+  @@index([userId])
+  @@index([bookId])
+  @@index([rating])
+  @@index([createdAt])
+  @@index([courseId, rating, createdAt])
+  @@index([bookId, rating, createdAt])
+
+  @@map("reviews")
+}
+
+model Book {
+  id              String   @id @default(uuid())
+  title           String
+  author          String
+  translator      String?
+  editor          String?
+  publisher       String
+  description     String   @db.Text
+
+  regularPrice    Decimal  @db.Decimal(10, 2)
+  salePrice       Decimal  @db.Decimal(10, 2)
+  stock           Int      @default(0)
+
+  isbn            String?  @unique
+  edition         String?
+  pages           Int?
+  language        String
+  formats         BookFormat[]
+  totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
+  viewCount       Int       @default(0)
+  status          BookStatus  @default(PENDING)
+  suspendReason       String?
+  adminNote           String?
+
+  // tags are not listing yet for showing related book or course
+
+  metaKeywords    String?
+  metaDescription String?
+
+  coverImage      String
+  files           BookFile[]
+
+  ownerId         String
+  owner           User    @relation(fields: [ownerId], references: [id])
+
+  categoryId      String?
+  category        BookCategory?    @relation(fields: [categoryId], references: [id])
+
+  orderItem       OrderItem[]
+  reviews         Review[]
+  PaymentTransaction PaymentTransaction[]
+  wishlistedBy       Wishlist[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("books")
+  @@index([isbn])
+  @@index([isbn, ownerId])
+}
+
+model BookFile {
+  id         String   @id @default(uuid())
+  name       String
+  url        String
+  fileType   BookFileType
+
+  bookId     String
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@map("book_files")
+}
+
+model ViewLog {
+  id          String   @id @default(uuid())
+  entityId    String   // ID of the Course, Book, or InstructorProfile
+  entityType  ViewEntityType
+  viewerId    String?
+  viewedAt    DateTime @default(now())
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  @@index([entityId, entityType])
+  @@map("view_logs")
+}
+
+//=== WISH LIST ===//
+model Wishlist {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String?
+
+  book      Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+
+  @@map("wishlists")
+}
+
+//== ORDER ==//
+model Order {
+  id                  String               @id @default(uuid())
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId              String
+  totalAmount         Decimal              @db.Decimal(15, 2)
+  currency            String               @default("BDT")
+  status              OrderStatus          @default(PENDING)
+  provider            PaymentProviders?
+  providerOrderId     String?
+  paymentTransactions PaymentTransaction[]
+  orderItems          OrderItem[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  @@index([userId, status])
+  @@index([status, createdAt])
+  @@index([userId, createdAt, status])
+  @@index([totalAmount])
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  // Relations
+  order    Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId  String
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  courseId String?
+  book     Book?  @relation(fields: [bookId], references: [id], onDelete: Restrict)
+  bookId   String?
+
+  price     Decimal         @db.Decimal(15, 2)
+  currency  String?         @default("BDT")
+  status    OrderItemStatus @default(PENDING)
+  createdAt DateTime        @default(now())
+
+  @@index([orderId])
+  @@index([courseId])
+
+  @@map("order_items")
+}
+
+/// Payments & payouts
+model PaymentTransaction {
+  id       String  @id @default(uuid())
+  // Relations
+  user     User    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId   String
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  courseId String?
+  book     Book?   @relation(fields: [bookId], references: [id], onDelete: SetNull)
+  bookId   String?
+  order    Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId  String?
+
+  paymentMethod         PaymentMethod?
+  providerFee           Decimal?       @db.Decimal(6, 2)
+  providerTransactionId String?        @unique
+
+  amount            Decimal           @db.Decimal(15, 2)
+  currency          String            @default("BDT")
+  provider          PaymentProviders
+  providerPaymentId String?           @unique
+  status            TransactionStatus
+  type              TransactionType?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+
+  @@index([courseId])
+  @@index([userId, status, createdAt])
+
+  @@map("payment_transactions")
+}
+
+model Payout {
+  id           String            @id @default(uuid())
+  // Relations
+  instructor   User @relation(fields: [instructorId], references: [id], onDelete: Restrict)
+  instructorId String
+
+  amount           Decimal       @db.Decimal(10, 2)
+  fee              Decimal?      @db.Decimal(10, 2)
+  currency         String        @default("BDT")
+  payoutDate       DateTime
+  providerPayoutId String?       @unique
+  status           PaymentStatus
+
+  // Audit trail
+  approvedBy      String?
+  approvedAt      DateTime?
+  rejectionReason String?
+
+  // Retry tracking
+  failureReason String?
+  retryCount    Int       @default(0)
+  nextRetryAt   DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([instructorId])
+  @@index([status])
+  @@index([payoutDate])
+  @@index([instructorId, status])
+  @@index([status, payoutDate])
+
+  @@map("payouts")
+}
+
+model PayoutMethod {
+  id           String            @id @default(uuid())
+  instructorId String
+  instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  type           PaymentMethod
+  bankName       String?
+  mobileBankingName     MobileBanking?
+  accHolderName  String
+  accountNumber  String
+  branchName     String?
+  routingNumber  String?
+
+  isDefault    Boolean           @default(false)
+  createdAt    DateTime          @default(now())
+
+  @@map("payout_methods")
+}
+
+model BankName {
+  id    String @id @default(uuid())
+  name  String @unique
+
+  @@map("bank_names")
+}
+
+/// Categories & tags
+model Category {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  slug     String  @unique
+  parentId String?
+
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+
+  courses Course[]
+
+  @@index([slug])
+  @@index([name])
+  @@index([parentId])
+
+  @@map("categories")
+}
+
+model BookCategory {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  slug     String  @unique
+  parentId String?
+
+  parent   BookCategory?  @relation("BookCategoryHierarchy", fields: [parentId], references: [id])
+  children BookCategory[] @relation("BookCategoryHierarchy")
+
+  book Book[]
+
+  @@index([slug])
+  @@index([name])
+  @@index([parentId])
+
+  @@map("book_categories")
+}
+
+model Tag {
+  id      String      @id @default(uuid())
+  name    String      @unique
+  slug    String      @unique
+  courses CourseTag[]
+
+  @@index([slug])
+  @@index([name])
+
+  @@map("tags")
+}
+
+model CourseTag {
+  id       String @id @default(uuid())
+  // Relations
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId    String
+
+  @@unique([courseId, tagId])
+  @@index([courseId])
+  @@index([tagId])
+
+  @@map("course_tags")
+}
+
+/// Certificate
+model Certificate {
+  id              String     @id @default(uuid())
+  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId    String     @unique
+  certificateUrl  String
+  certificateHash String     @unique
+
+  issuedAt  DateTime  @default(now())
+  expiresAt DateTime?
+
+  verified   Boolean   @default(false)
+  verifiedBy String?
+  verifiedAt DateTime?
+
+  revoked       Boolean   @default(false)
+  revokedReason String?
+  revokedAt     DateTime?
+
+  @@index([issuedAt])
+
+  @@map("certificates")
+}
+
+/// Notifications & audit
+model Notification {
+  id         String           @id @default(uuid())
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  type       NotificationType
+  title      String
+  message    String?
+  isRead     Boolean          @default(false)
+  isArchived Boolean          @default(false)
+  createdAt  DateTime         @default(now())
+
+  @@index([userId, isRead, isArchived])
+  @@index([userId, isArchived, createdAt])
+  @@index([createdAt])
+
+  @@map("notifications")
+}
+
+// Quizzes
+model Quiz {
+  id          String  @id @default(uuid())
+  lesson      Lesson? @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId    String  @unique
+  title       String
+  description String?
+
+  // Quiz Rules
+  duration        Int?
+  passingScore    Int     @default(0) @db.SmallInt()
+  attemptsAllowed Int     @default(1) @db.SmallInt()
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Inverse Relations
+  questions QuizQuestion[]
+  results   QuizResult[]
+
+  @@index([lessonId])
+
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id     String @id @default(uuid())
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId String
+
+  text     String
+  type     QuestionType
+  points   Int          @default(1)
+  position Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //Relations
+  options QuestionOption[]
+
+  @@index([quizId])
+  @@index([quizId, position])
+
+  @@map("quiz_questions")
+}
+
+model QuestionOption {
+  id         String       @id @default(uuid())
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+
+  position         Int
+  text             String
+  isCorrect        Boolean  @default(false)
+  // Used only if QuestionType is SHORT_ANSWER (e.g., 'Paris' vs 'paris')
+  exactMatchAnswer String?
+  createdAt        DateTime @default(now())
+
+  @@index([questionId])
+
+  @@map("question_options")
+}
+
+model QuizResult {
+  id     String @id @default(uuid())
+  // Relations
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId String
+
+  scoreAchieved  Decimal @default(0) @db.Decimal(5, 2)
+  isPassed       Boolean @default(false)
+  submissionData Json?
+
+  startedAt   DateTime  @default(now())
+  submittedAt DateTime?
+
+  @@index([quizId, userId])
+  @@index([userId, isPassed])
+  @@index([submittedAt])
+
+  @@map("quiz_results")
+}
+
+model AuditLog {
+  id     String @id @default(uuid())
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  // What changed?
+  action     String // "enroll_created", "course_published"
+  entityType String // "course", "enrollment", "payout"
+  entityId   String // "course_123"
+
+  // Before & After
+  changesBefore Json?
+  changesAfter  Json? // { price: 80 }
+
+  // Context
+  ipAddress String?
+  userAgent String?
+
+  timestamp DateTime @default(now())
+
+  @@index([userId, timestamp])
+  @@index([entityType, entityId, timestamp])
+  @@index([action, timestamp])
+
+  @@map("audit_logs")
+}
+
+// === BASIC PLATFORM SETTINGS ===
+model PlatformSettings {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // === PLATFORM INFO ===
+  platformName String  @default("Aloskill")
+  logo         String?
+  favicon      String?
+  contactEmail String?
+  supportPhone String?
+
+  // === EMAIL SETTINGS (for verification/reset emails) ===
+  smtpHost     String?
+  smtpPort     Int?
+  smtpUser     String?
+  smtpPassword String?
+
+  // === BASIC SETTINGS ===
+  maintenanceMode  Boolean @default(false)
+  registrationOpen Boolean @default(true)
+
+  @@map("platform_settings")
 }
