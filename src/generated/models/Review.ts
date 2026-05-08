@@ -38,39 +38,39 @@ export type ReviewMinAggregateOutputType = {
   id: string | null
   userId: string | null
   courseId: string | null
+  bookId: string | null
   rating: number | null
   title: string | null
   body: string | null
   flagged: boolean | null
   deletedAt: Date | null
   createdAt: Date | null
-  bookId: string | null
 }
 
 export type ReviewMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   courseId: string | null
+  bookId: string | null
   rating: number | null
   title: string | null
   body: string | null
   flagged: boolean | null
   deletedAt: Date | null
   createdAt: Date | null
-  bookId: string | null
 }
 
 export type ReviewCountAggregateOutputType = {
   id: number
   userId: number
   courseId: number
+  bookId: number
   rating: number
   title: number
   body: number
   flagged: number
   deletedAt: number
   createdAt: number
-  bookId: number
   _all: number
 }
 
@@ -87,39 +87,39 @@ export type ReviewMinAggregateInputType = {
   id?: true
   userId?: true
   courseId?: true
+  bookId?: true
   rating?: true
   title?: true
   body?: true
   flagged?: true
   deletedAt?: true
   createdAt?: true
-  bookId?: true
 }
 
 export type ReviewMaxAggregateInputType = {
   id?: true
   userId?: true
   courseId?: true
+  bookId?: true
   rating?: true
   title?: true
   body?: true
   flagged?: true
   deletedAt?: true
   createdAt?: true
-  bookId?: true
 }
 
 export type ReviewCountAggregateInputType = {
   id?: true
   userId?: true
   courseId?: true
+  bookId?: true
   rating?: true
   title?: true
   body?: true
   flagged?: true
   deletedAt?: true
   createdAt?: true
-  bookId?: true
   _all?: true
 }
 
@@ -213,13 +213,13 @@ export type ReviewGroupByOutputType = {
   id: string
   userId: string
   courseId: string | null
+  bookId: string | null
   rating: number
   title: string | null
   body: string | null
   flagged: boolean
   deletedAt: Date | null
   createdAt: Date
-  bookId: string | null
   _count: ReviewCountAggregateOutputType | null
   _avg: ReviewAvgAggregateOutputType | null
   _sum: ReviewSumAggregateOutputType | null
@@ -249,32 +249,32 @@ export type ReviewWhereInput = {
   id?: Prisma.StringFilter<"Review"> | string
   userId?: Prisma.StringFilter<"Review"> | string
   courseId?: Prisma.StringNullableFilter<"Review"> | string | null
+  bookId?: Prisma.StringNullableFilter<"Review"> | string | null
   rating?: Prisma.IntFilter<"Review"> | number
   title?: Prisma.StringNullableFilter<"Review"> | string | null
   body?: Prisma.StringNullableFilter<"Review"> | string | null
   flagged?: Prisma.BoolFilter<"Review"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
-  bookId?: Prisma.StringNullableFilter<"Review"> | string | null
-  book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
-  course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
+  book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
 }
 
 export type ReviewOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   courseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookId?: Prisma.SortOrderInput | Prisma.SortOrder
   rating?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   body?: Prisma.SortOrderInput | Prisma.SortOrder
   flagged?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  bookId?: Prisma.SortOrderInput | Prisma.SortOrder
-  book?: Prisma.BookOrderByWithRelationInput
-  course?: Prisma.CourseOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  course?: Prisma.CourseOrderByWithRelationInput
+  book?: Prisma.BookOrderByWithRelationInput
 }
 
 export type ReviewWhereUniqueInput = Prisma.AtLeast<{
@@ -284,29 +284,29 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   userId?: Prisma.StringFilter<"Review"> | string
   courseId?: Prisma.StringNullableFilter<"Review"> | string | null
+  bookId?: Prisma.StringNullableFilter<"Review"> | string | null
   rating?: Prisma.IntFilter<"Review"> | number
   title?: Prisma.StringNullableFilter<"Review"> | string | null
   body?: Prisma.StringNullableFilter<"Review"> | string | null
   flagged?: Prisma.BoolFilter<"Review"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
-  bookId?: Prisma.StringNullableFilter<"Review"> | string | null
-  book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
-  course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
+  book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
 }, "id">
 
 export type ReviewOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   courseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bookId?: Prisma.SortOrderInput | Prisma.SortOrder
   rating?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   body?: Prisma.SortOrderInput | Prisma.SortOrder
   flagged?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  bookId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ReviewCountOrderByAggregateInput
   _avg?: Prisma.ReviewAvgOrderByAggregateInput
   _max?: Prisma.ReviewMaxOrderByAggregateInput
@@ -321,13 +321,13 @@ export type ReviewScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Review"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Review"> | string
   courseId?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
+  bookId?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   rating?: Prisma.IntWithAggregatesFilter<"Review"> | number
   title?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   body?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   flagged?: Prisma.BoolWithAggregatesFilter<"Review"> | boolean
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
-  bookId?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
 }
 
 export type ReviewCreateInput = {
@@ -338,22 +338,22 @@ export type ReviewCreateInput = {
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  book?: Prisma.BookCreateNestedOneWithoutReviewsInput
-  course?: Prisma.CourseCreateNestedOneWithoutReviewsInput
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
+  course?: Prisma.CourseCreateNestedOneWithoutReviewsInput
+  book?: Prisma.BookCreateNestedOneWithoutReviewsInput
 }
 
 export type ReviewUncheckedCreateInput = {
   id?: string
   userId: string
   courseId?: string | null
+  bookId?: string | null
   rating?: number
   title?: string | null
   body?: string | null
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  bookId?: string | null
 }
 
 export type ReviewUpdateInput = {
@@ -364,35 +364,35 @@ export type ReviewUpdateInput = {
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  book?: Prisma.BookUpdateOneWithoutReviewsNestedInput
-  course?: Prisma.CourseUpdateOneWithoutReviewsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
+  course?: Prisma.CourseUpdateOneWithoutReviewsNestedInput
+  book?: Prisma.BookUpdateOneWithoutReviewsNestedInput
 }
 
 export type ReviewUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReviewCreateManyInput = {
   id?: string
   userId: string
   courseId?: string | null
+  bookId?: string | null
   rating?: number
   title?: string | null
   body?: string | null
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  bookId?: string | null
 }
 
 export type ReviewUpdateManyMutationInput = {
@@ -409,13 +409,13 @@ export type ReviewUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReviewListRelationFilter = {
@@ -432,13 +432,13 @@ export type ReviewCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  bookId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   title?: Prisma.SortOrder
   body?: Prisma.SortOrder
   flagged?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  bookId?: Prisma.SortOrder
 }
 
 export type ReviewAvgOrderByAggregateInput = {
@@ -449,26 +449,26 @@ export type ReviewMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  bookId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   title?: Prisma.SortOrder
   body?: Prisma.SortOrder
   flagged?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  bookId?: Prisma.SortOrder
 }
 
 export type ReviewMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
+  bookId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   title?: Prisma.SortOrder
   body?: Prisma.SortOrder
   flagged?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  bookId?: Prisma.SortOrder
 }
 
 export type ReviewSumOrderByAggregateInput = {
@@ -609,20 +609,20 @@ export type ReviewCreateWithoutUserInput = {
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  book?: Prisma.BookCreateNestedOneWithoutReviewsInput
   course?: Prisma.CourseCreateNestedOneWithoutReviewsInput
+  book?: Prisma.BookCreateNestedOneWithoutReviewsInput
 }
 
 export type ReviewUncheckedCreateWithoutUserInput = {
   id?: string
   courseId?: string | null
+  bookId?: string | null
   rating?: number
   title?: string | null
   body?: string | null
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  bookId?: string | null
 }
 
 export type ReviewCreateOrConnectWithoutUserInput = {
@@ -658,13 +658,13 @@ export type ReviewScalarWhereInput = {
   id?: Prisma.StringFilter<"Review"> | string
   userId?: Prisma.StringFilter<"Review"> | string
   courseId?: Prisma.StringNullableFilter<"Review"> | string | null
+  bookId?: Prisma.StringNullableFilter<"Review"> | string | null
   rating?: Prisma.IntFilter<"Review"> | number
   title?: Prisma.StringNullableFilter<"Review"> | string | null
   body?: Prisma.StringNullableFilter<"Review"> | string | null
   flagged?: Prisma.BoolFilter<"Review"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
-  bookId?: Prisma.StringNullableFilter<"Review"> | string | null
 }
 
 export type ReviewCreateWithoutCourseInput = {
@@ -675,20 +675,20 @@ export type ReviewCreateWithoutCourseInput = {
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  book?: Prisma.BookCreateNestedOneWithoutReviewsInput
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
+  book?: Prisma.BookCreateNestedOneWithoutReviewsInput
 }
 
 export type ReviewUncheckedCreateWithoutCourseInput = {
   id?: string
   userId: string
+  bookId?: string | null
   rating?: number
   title?: string | null
   body?: string | null
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  bookId?: string | null
 }
 
 export type ReviewCreateOrConnectWithoutCourseInput = {
@@ -725,8 +725,8 @@ export type ReviewCreateWithoutBookInput = {
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  course?: Prisma.CourseCreateNestedOneWithoutReviewsInput
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
+  course?: Prisma.CourseCreateNestedOneWithoutReviewsInput
 }
 
 export type ReviewUncheckedCreateWithoutBookInput = {
@@ -770,13 +770,13 @@ export type ReviewUpdateManyWithWhereWithoutBookInput = {
 export type ReviewCreateManyUserInput = {
   id?: string
   courseId?: string | null
+  bookId?: string | null
   rating?: number
   title?: string | null
   body?: string | null
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  bookId?: string | null
 }
 
 export type ReviewUpdateWithoutUserInput = {
@@ -787,44 +787,44 @@ export type ReviewUpdateWithoutUserInput = {
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  book?: Prisma.BookUpdateOneWithoutReviewsNestedInput
   course?: Prisma.CourseUpdateOneWithoutReviewsNestedInput
+  book?: Prisma.BookUpdateOneWithoutReviewsNestedInput
 }
 
 export type ReviewUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReviewUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReviewCreateManyCourseInput = {
   id?: string
   userId: string
+  bookId?: string | null
   rating?: number
   title?: string | null
   body?: string | null
   flagged?: boolean
   deletedAt?: Date | string | null
   createdAt?: Date | string
-  bookId?: string | null
 }
 
 export type ReviewUpdateWithoutCourseInput = {
@@ -835,32 +835,32 @@ export type ReviewUpdateWithoutCourseInput = {
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  book?: Prisma.BookUpdateOneWithoutReviewsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
+  book?: Prisma.BookUpdateOneWithoutReviewsNestedInput
 }
 
 export type ReviewUncheckedUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReviewUncheckedUpdateManyWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReviewCreateManyBookInput = {
@@ -883,8 +883,8 @@ export type ReviewUpdateWithoutBookInput = {
   flagged?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  course?: Prisma.CourseUpdateOneWithoutReviewsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
+  course?: Prisma.CourseUpdateOneWithoutReviewsNestedInput
 }
 
 export type ReviewUncheckedUpdateWithoutBookInput = {
@@ -917,98 +917,98 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   userId?: boolean
   courseId?: boolean
+  bookId?: boolean
   rating?: boolean
   title?: boolean
   body?: boolean
   flagged?: boolean
   deletedAt?: boolean
   createdAt?: boolean
-  bookId?: boolean
-  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
-  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
+  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
 }, ExtArgs["result"]["review"]>
 
 export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   courseId?: boolean
+  bookId?: boolean
   rating?: boolean
   title?: boolean
   body?: boolean
   flagged?: boolean
   deletedAt?: boolean
   createdAt?: boolean
-  bookId?: boolean
-  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
-  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
+  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
 }, ExtArgs["result"]["review"]>
 
 export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   courseId?: boolean
+  bookId?: boolean
   rating?: boolean
   title?: boolean
   body?: boolean
   flagged?: boolean
   deletedAt?: boolean
   createdAt?: boolean
-  bookId?: boolean
-  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
-  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
+  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
 }, ExtArgs["result"]["review"]>
 
 export type ReviewSelectScalar = {
   id?: boolean
   userId?: boolean
   courseId?: boolean
+  bookId?: boolean
   rating?: boolean
   title?: boolean
   body?: boolean
   flagged?: boolean
   deletedAt?: boolean
   createdAt?: boolean
-  bookId?: boolean
 }
 
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "courseId" | "rating" | "title" | "body" | "flagged" | "deletedAt" | "createdAt" | "bookId", ExtArgs["result"]["review"]>
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "courseId" | "bookId" | "rating" | "title" | "body" | "flagged" | "deletedAt" | "createdAt", ExtArgs["result"]["review"]>
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
-  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
+  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
 }
 export type ReviewIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
-  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
+  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
 }
 export type ReviewIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
-  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.Review$courseArgs<ExtArgs>
+  book?: boolean | Prisma.Review$bookArgs<ExtArgs>
 }
 
 export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Review"
   objects: {
-    book: Prisma.$BookPayload<ExtArgs> | null
-    course: Prisma.$CoursePayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs>
+    course: Prisma.$CoursePayload<ExtArgs> | null
+    book: Prisma.$BookPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
     courseId: string | null
+    bookId: string | null
     rating: number
     title: string | null
     body: string | null
     flagged: boolean
     deletedAt: Date | null
     createdAt: Date
-    bookId: string | null
   }, ExtArgs["result"]["review"]>
   composites: {}
 }
@@ -1403,9 +1403,9 @@ readonly fields: ReviewFieldRefs;
  */
 export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  book<T extends Prisma.Review$bookArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$bookArgs<ExtArgs>>): Prisma.Prisma__BookClient<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  course<T extends Prisma.Review$courseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$courseArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  course<T extends Prisma.Review$courseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$courseArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  book<T extends Prisma.Review$bookArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$bookArgs<ExtArgs>>): Prisma.Prisma__BookClient<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1438,13 +1438,13 @@ export interface ReviewFieldRefs {
   readonly id: Prisma.FieldRef<"Review", 'String'>
   readonly userId: Prisma.FieldRef<"Review", 'String'>
   readonly courseId: Prisma.FieldRef<"Review", 'String'>
+  readonly bookId: Prisma.FieldRef<"Review", 'String'>
   readonly rating: Prisma.FieldRef<"Review", 'Int'>
   readonly title: Prisma.FieldRef<"Review", 'String'>
   readonly body: Prisma.FieldRef<"Review", 'String'>
   readonly flagged: Prisma.FieldRef<"Review", 'Boolean'>
   readonly deletedAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Review", 'DateTime'>
-  readonly bookId: Prisma.FieldRef<"Review", 'String'>
 }
     
 
@@ -1841,25 +1841,6 @@ export type ReviewDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Review.book
- */
-export type Review$bookArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Book
-   */
-  select?: Prisma.BookSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Book
-   */
-  omit?: Prisma.BookOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BookInclude<ExtArgs> | null
-  where?: Prisma.BookWhereInput
-}
-
-/**
  * Review.course
  */
 export type Review$courseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1876,6 +1857,25 @@ export type Review$courseArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.CourseInclude<ExtArgs> | null
   where?: Prisma.CourseWhereInput
+}
+
+/**
+ * Review.book
+ */
+export type Review$bookArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Book
+   */
+  select?: Prisma.BookSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Book
+   */
+  omit?: Prisma.BookOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookInclude<ExtArgs> | null
+  where?: Prisma.BookWhereInput
 }
 
 /**

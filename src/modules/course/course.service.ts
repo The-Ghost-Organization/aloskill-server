@@ -1904,9 +1904,10 @@ const createFileToBunny = async (req: Request) => {
     throw new Error(`Bunny Storage API Error: ${errorText}`);
   }
   // return `https://sg.storage.bunnycdn.com/${storageZone}/${safePath}/${fileName}`;
-  return `https://aloskill-pull-zone-5.b-cdn.net/${safePath}/${fileName}`;
+  return `https://aloskill-pull-zone-6.b-cdn.net/${safePath}/${fileName}`;
 };
 
+// currently not used in anyother api
 const getVideo = async (req: Request) => {
   const { videoUrl } = req.body as { videoUrl: string };
   if (!videoUrl) {

@@ -43,7 +43,7 @@ export type DeviceType = (typeof DeviceType)[keyof typeof DeviceType]
 export const CourseStatus = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED',
-  ARCHIVED: 'ARCHIVED'
+  PENDING: 'PENDING'
 } as const
 
 export type CourseStatus = (typeof CourseStatus)[keyof typeof CourseStatus]
