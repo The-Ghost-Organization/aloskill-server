@@ -38,7 +38,7 @@ enum DeviceType {
 enum CourseStatus {
   DRAFT
   PUBLISHED
-  ARCHIVED
+  PENDING
 }
 
 enum Gender {
@@ -826,8 +826,9 @@ model Book {
   totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
   viewCount       Int       @default(0)
   status          BookStatus  @default(PENDING)
-  suspendReason       String?
-  adminNote           String?
+  suspendReason   String?
+  adminNote       String?
+  updatedContent  Json?
 
   // tags are not listing yet for showing related book or course
 
@@ -850,6 +851,7 @@ model Book {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
 
   @@map("books")
   @@index([isbn])
