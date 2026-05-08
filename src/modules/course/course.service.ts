@@ -844,26 +844,28 @@ const getAllCoursesForPublic = async (req: Request) => {
 
 const getAllCoursesForAdminDashboardStudentView = async (req: Request) => {
   const user = req.user;
-  if(!user.email) {throw new Error('User email not found in request');};
+  if (!user.email) {
+    throw new Error('User email not found in request');
+  }
 
   const userProfile = await executeDbOperation(async prisma => {
     return await prisma.user.findUnique({
       where: { email: user.email, deletedAt: null, status: UserStatus.ACTIVE },
-      include: { assignedRole: true }
+      include: { assignedRole: true },
     });
   });
-  if (!userProfile) {throw new Error("Unauthorized: User profile not found.");}
-  const isAuthorized = userProfile.assignedRole.some(r =>
-    r.role === "ADMIN"
-  );
+  if (!userProfile) {
+    throw new Error('Unauthorized: User profile not found.');
+  }
+  const isAuthorized = userProfile.assignedRole.some(r => r.role === 'ADMIN');
   if (!isAuthorized) {
-    throw new Error("Security Violation: Only Admins can see this status");
-  };
+    throw new Error('Security Violation: Only Admins can see this status');
+  }
 
   const courses = await executeDbOperation(async prisma => {
     return await prisma.course.findMany({
       where: {
-        status: "PUBLISHED",
+        status: 'PUBLISHED',
       },
       select: {
         id: true,
@@ -873,18 +875,20 @@ const getAllCoursesForAdminDashboardStudentView = async (req: Request) => {
         category: {
           select: {
             name: true,
-          }
+          },
         },
         createdBy: {
           select: {
             displayName: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   });
 
-  if (courses.length === 0) {throw new Error("No courses found");}
+  if (courses.length === 0) {
+    throw new Error('No courses found');
+  }
   return courses;
 };
 

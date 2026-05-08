@@ -70,6 +70,8 @@ export type CourseMinAggregateOutputType = {
   totalRevenueAmount: runtime.Decimal | null
   moduleCount: number | null
   status: $Enums.CourseStatus | null
+  suspendReason: string | null
+  adminNote: string | null
   language: $Enums.Language | null
   level: $Enums.CourseLevel | null
   thumbnailUrl: string | null
@@ -102,6 +104,8 @@ export type CourseMaxAggregateOutputType = {
   totalRevenueAmount: runtime.Decimal | null
   moduleCount: number | null
   status: $Enums.CourseStatus | null
+  suspendReason: string | null
+  adminNote: string | null
   language: $Enums.Language | null
   level: $Enums.CourseLevel | null
   thumbnailUrl: string | null
@@ -134,6 +138,8 @@ export type CourseCountAggregateOutputType = {
   totalRevenueAmount: number
   moduleCount: number
   status: number
+  suspendReason: number
+  adminNote: number
   language: number
   level: number
   thumbnailUrl: number
@@ -146,6 +152,7 @@ export type CourseCountAggregateOutputType = {
   deletedAt: number
   createdAt: number
   updatedAt: number
+  updatedContent: number
   _all: number
 }
 
@@ -194,6 +201,8 @@ export type CourseMinAggregateInputType = {
   totalRevenueAmount?: true
   moduleCount?: true
   status?: true
+  suspendReason?: true
+  adminNote?: true
   language?: true
   level?: true
   thumbnailUrl?: true
@@ -226,6 +235,8 @@ export type CourseMaxAggregateInputType = {
   totalRevenueAmount?: true
   moduleCount?: true
   status?: true
+  suspendReason?: true
+  adminNote?: true
   language?: true
   level?: true
   thumbnailUrl?: true
@@ -258,6 +269,8 @@ export type CourseCountAggregateInputType = {
   totalRevenueAmount?: true
   moduleCount?: true
   status?: true
+  suspendReason?: true
+  adminNote?: true
   language?: true
   level?: true
   thumbnailUrl?: true
@@ -270,6 +283,7 @@ export type CourseCountAggregateInputType = {
   deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  updatedContent?: true
   _all?: true
 }
 
@@ -377,6 +391,8 @@ export type CourseGroupByOutputType = {
   totalRevenueAmount: runtime.Decimal
   moduleCount: number
   status: $Enums.CourseStatus
+  suspendReason: string | null
+  adminNote: string | null
   language: $Enums.Language
   level: $Enums.CourseLevel
   thumbnailUrl: string | null
@@ -389,6 +405,7 @@ export type CourseGroupByOutputType = {
   deletedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  updatedContent: runtime.JsonValue | null
   _count: CourseCountAggregateOutputType | null
   _avg: CourseAvgAggregateOutputType | null
   _sum: CourseSumAggregateOutputType | null
@@ -432,6 +449,8 @@ export type CourseWhereInput = {
   totalRevenueAmount?: Prisma.DecimalFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFilter<"Course"> | number
   status?: Prisma.EnumCourseStatusFilter<"Course"> | $Enums.CourseStatus
+  suspendReason?: Prisma.StringNullableFilter<"Course"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Course"> | string | null
   language?: Prisma.EnumLanguageFilter<"Course"> | $Enums.Language
   level?: Prisma.EnumCourseLevelFilter<"Course"> | $Enums.CourseLevel
   thumbnailUrl?: Prisma.StringNullableFilter<"Course"> | string | null
@@ -444,16 +463,17 @@ export type CourseWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Course"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Course"> | Date | string
-  courseInstructors?: Prisma.CourseInstructorListRelationFilter
-  tags?: Prisma.CourseTagListRelationFilter
+  updatedContent?: Prisma.JsonNullableFilter<"Course">
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
-  enrollments?: Prisma.EnrollmentListRelationFilter
+  courseInstructors?: Prisma.CourseInstructorListRelationFilter
   LessonProgress?: Prisma.LessonProgressListRelationFilter
-  modules?: Prisma.ModuleListRelationFilter
-  OrderItem?: Prisma.OrderItemListRelationFilter
   PaymentTransaction?: Prisma.PaymentTransactionListRelationFilter
+  OrderItem?: Prisma.OrderItemListRelationFilter
+  modules?: Prisma.ModuleListRelationFilter
+  enrollments?: Prisma.EnrollmentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  tags?: Prisma.CourseTagListRelationFilter
   wishlistedBy?: Prisma.WishlistListRelationFilter
 }
 
@@ -475,6 +495,8 @@ export type CourseOrderByWithRelationInput = {
   totalRevenueAmount?: Prisma.SortOrder
   moduleCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrder
   level?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -487,16 +509,17 @@ export type CourseOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  courseInstructors?: Prisma.CourseInstructorOrderByRelationAggregateInput
-  tags?: Prisma.CourseTagOrderByRelationAggregateInput
+  updatedContent?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
   createdBy?: Prisma.InstructorProfileOrderByWithRelationInput
-  enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
+  courseInstructors?: Prisma.CourseInstructorOrderByRelationAggregateInput
   LessonProgress?: Prisma.LessonProgressOrderByRelationAggregateInput
-  modules?: Prisma.ModuleOrderByRelationAggregateInput
-  OrderItem?: Prisma.OrderItemOrderByRelationAggregateInput
   PaymentTransaction?: Prisma.PaymentTransactionOrderByRelationAggregateInput
+  OrderItem?: Prisma.OrderItemOrderByRelationAggregateInput
+  modules?: Prisma.ModuleOrderByRelationAggregateInput
+  enrollments?: Prisma.EnrollmentOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  tags?: Prisma.CourseTagOrderByRelationAggregateInput
   wishlistedBy?: Prisma.WishlistOrderByRelationAggregateInput
 }
 
@@ -521,6 +544,8 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   totalRevenueAmount?: Prisma.DecimalFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFilter<"Course"> | number
   status?: Prisma.EnumCourseStatusFilter<"Course"> | $Enums.CourseStatus
+  suspendReason?: Prisma.StringNullableFilter<"Course"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Course"> | string | null
   language?: Prisma.EnumLanguageFilter<"Course"> | $Enums.Language
   level?: Prisma.EnumCourseLevelFilter<"Course"> | $Enums.CourseLevel
   thumbnailUrl?: Prisma.StringNullableFilter<"Course"> | string | null
@@ -533,16 +558,17 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Course"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Course"> | Date | string
-  courseInstructors?: Prisma.CourseInstructorListRelationFilter
-  tags?: Prisma.CourseTagListRelationFilter
+  updatedContent?: Prisma.JsonNullableFilter<"Course">
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
-  enrollments?: Prisma.EnrollmentListRelationFilter
+  courseInstructors?: Prisma.CourseInstructorListRelationFilter
   LessonProgress?: Prisma.LessonProgressListRelationFilter
-  modules?: Prisma.ModuleListRelationFilter
-  OrderItem?: Prisma.OrderItemListRelationFilter
   PaymentTransaction?: Prisma.PaymentTransactionListRelationFilter
+  OrderItem?: Prisma.OrderItemListRelationFilter
+  modules?: Prisma.ModuleListRelationFilter
+  enrollments?: Prisma.EnrollmentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  tags?: Prisma.CourseTagListRelationFilter
   wishlistedBy?: Prisma.WishlistListRelationFilter
 }, "id" | "slug">
 
@@ -564,6 +590,8 @@ export type CourseOrderByWithAggregationInput = {
   totalRevenueAmount?: Prisma.SortOrder
   moduleCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrder
   level?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -576,6 +604,7 @@ export type CourseOrderByWithAggregationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  updatedContent?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CourseCountOrderByAggregateInput
   _avg?: Prisma.CourseAvgOrderByAggregateInput
   _max?: Prisma.CourseMaxOrderByAggregateInput
@@ -604,6 +633,8 @@ export type CourseScalarWhereWithAggregatesInput = {
   totalRevenueAmount?: Prisma.DecimalWithAggregatesFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntWithAggregatesFilter<"Course"> | number
   status?: Prisma.EnumCourseStatusWithAggregatesFilter<"Course"> | $Enums.CourseStatus
+  suspendReason?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
+  adminNote?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
   language?: Prisma.EnumLanguageWithAggregatesFilter<"Course"> | $Enums.Language
   level?: Prisma.EnumCourseLevelWithAggregatesFilter<"Course"> | $Enums.CourseLevel
   thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
@@ -616,6 +647,7 @@ export type CourseScalarWhereWithAggregatesInput = {
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Course"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Course"> | Date | string
+  updatedContent?: Prisma.JsonNullableWithAggregatesFilter<"Course">
 }
 
 export type CourseCreateInput = {
@@ -636,6 +668,8 @@ export type CourseCreateInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -646,16 +680,17 @@ export type CourseCreateInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -677,6 +712,8 @@ export type CourseUncheckedCreateInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -689,14 +726,15 @@ export type CourseUncheckedCreateInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -718,6 +756,8 @@ export type CourseUpdateInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -728,16 +768,17 @@ export type CourseUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -759,6 +800,8 @@ export type CourseUncheckedUpdateInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -771,14 +814,15 @@ export type CourseUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -800,6 +844,8 @@ export type CourseCreateManyInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -812,6 +858,7 @@ export type CourseCreateManyInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type CourseUpdateManyMutationInput = {
@@ -832,6 +879,8 @@ export type CourseUpdateManyMutationInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -842,6 +891,7 @@ export type CourseUpdateManyMutationInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type CourseUncheckedUpdateManyInput = {
@@ -862,6 +912,8 @@ export type CourseUncheckedUpdateManyInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -874,6 +926,7 @@ export type CourseUncheckedUpdateManyInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type CourseListRelationFilter = {
@@ -904,6 +957,8 @@ export type CourseCountOrderByAggregateInput = {
   totalRevenueAmount?: Prisma.SortOrder
   moduleCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   language?: Prisma.SortOrder
   level?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
@@ -916,6 +971,7 @@ export type CourseCountOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  updatedContent?: Prisma.SortOrder
 }
 
 export type CourseAvgOrderByAggregateInput = {
@@ -949,6 +1005,8 @@ export type CourseMaxOrderByAggregateInput = {
   totalRevenueAmount?: Prisma.SortOrder
   moduleCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   language?: Prisma.SortOrder
   level?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
@@ -981,6 +1039,8 @@ export type CourseMinOrderByAggregateInput = {
   totalRevenueAmount?: Prisma.SortOrder
   moduleCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   language?: Prisma.SortOrder
   level?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
@@ -1270,6 +1330,8 @@ export type CourseCreateWithoutCreatedByInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1280,15 +1342,16 @@ export type CourseCreateWithoutCreatedByInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -1310,6 +1373,8 @@ export type CourseUncheckedCreateWithoutCreatedByInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1321,14 +1386,15 @@ export type CourseUncheckedCreateWithoutCreatedByInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -1379,6 +1445,8 @@ export type CourseScalarWhereInput = {
   totalRevenueAmount?: Prisma.DecimalFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFilter<"Course"> | number
   status?: Prisma.EnumCourseStatusFilter<"Course"> | $Enums.CourseStatus
+  suspendReason?: Prisma.StringNullableFilter<"Course"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Course"> | string | null
   language?: Prisma.EnumLanguageFilter<"Course"> | $Enums.Language
   level?: Prisma.EnumCourseLevelFilter<"Course"> | $Enums.CourseLevel
   thumbnailUrl?: Prisma.StringNullableFilter<"Course"> | string | null
@@ -1391,6 +1459,7 @@ export type CourseScalarWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Course"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Course"> | Date | string
+  updatedContent?: Prisma.JsonNullableFilter<"Course">
 }
 
 export type CourseCreateWithoutCourseInstructorsInput = {
@@ -1411,6 +1480,8 @@ export type CourseCreateWithoutCourseInstructorsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1421,15 +1492,16 @@ export type CourseCreateWithoutCourseInstructorsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -1451,6 +1523,8 @@ export type CourseUncheckedCreateWithoutCourseInstructorsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1463,13 +1537,14 @@ export type CourseUncheckedCreateWithoutCourseInstructorsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -1507,6 +1582,8 @@ export type CourseUpdateWithoutCourseInstructorsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1517,15 +1594,16 @@ export type CourseUpdateWithoutCourseInstructorsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -1547,6 +1625,8 @@ export type CourseUncheckedUpdateWithoutCourseInstructorsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1559,13 +1639,14 @@ export type CourseUncheckedUpdateWithoutCourseInstructorsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -1587,6 +1668,8 @@ export type CourseCreateWithoutModulesInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1597,15 +1680,16 @@ export type CourseCreateWithoutModulesInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -1627,6 +1711,8 @@ export type CourseUncheckedCreateWithoutModulesInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1639,13 +1725,14 @@ export type CourseUncheckedCreateWithoutModulesInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -1683,6 +1770,8 @@ export type CourseUpdateWithoutModulesInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1693,15 +1782,16 @@ export type CourseUpdateWithoutModulesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -1723,6 +1813,8 @@ export type CourseUncheckedUpdateWithoutModulesInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1735,13 +1827,14 @@ export type CourseUncheckedUpdateWithoutModulesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -1763,6 +1856,8 @@ export type CourseCreateWithoutEnrollmentsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1773,15 +1868,16 @@ export type CourseCreateWithoutEnrollmentsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -1803,6 +1899,8 @@ export type CourseUncheckedCreateWithoutEnrollmentsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1815,13 +1913,14 @@ export type CourseUncheckedCreateWithoutEnrollmentsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -1859,6 +1958,8 @@ export type CourseUpdateWithoutEnrollmentsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1869,15 +1970,16 @@ export type CourseUpdateWithoutEnrollmentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -1899,6 +2001,8 @@ export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1911,13 +2015,14 @@ export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -1939,6 +2044,8 @@ export type CourseCreateWithoutLessonProgressInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1949,15 +2056,16 @@ export type CourseCreateWithoutLessonProgressInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -1979,6 +2087,8 @@ export type CourseUncheckedCreateWithoutLessonProgressInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -1991,13 +2101,14 @@ export type CourseUncheckedCreateWithoutLessonProgressInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -2035,6 +2146,8 @@ export type CourseUpdateWithoutLessonProgressInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2045,15 +2158,16 @@ export type CourseUpdateWithoutLessonProgressInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -2075,6 +2189,8 @@ export type CourseUncheckedUpdateWithoutLessonProgressInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2087,13 +2203,14 @@ export type CourseUncheckedUpdateWithoutLessonProgressInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -2115,6 +2232,8 @@ export type CourseCreateWithoutReviewsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2125,15 +2244,16 @@ export type CourseCreateWithoutReviewsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -2155,6 +2275,8 @@ export type CourseUncheckedCreateWithoutReviewsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2167,13 +2289,14 @@ export type CourseUncheckedCreateWithoutReviewsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -2211,6 +2334,8 @@ export type CourseUpdateWithoutReviewsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2221,15 +2346,16 @@ export type CourseUpdateWithoutReviewsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -2251,6 +2377,8 @@ export type CourseUncheckedUpdateWithoutReviewsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2263,13 +2391,14 @@ export type CourseUncheckedUpdateWithoutReviewsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -2291,6 +2420,8 @@ export type CourseCreateWithoutWishlistedByInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2301,16 +2432,17 @@ export type CourseCreateWithoutWishlistedByInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutWishlistedByInput = {
@@ -2331,6 +2463,8 @@ export type CourseUncheckedCreateWithoutWishlistedByInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2343,14 +2477,15 @@ export type CourseUncheckedCreateWithoutWishlistedByInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutWishlistedByInput = {
@@ -2387,6 +2522,8 @@ export type CourseUpdateWithoutWishlistedByInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2397,16 +2534,17 @@ export type CourseUpdateWithoutWishlistedByInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutWishlistedByInput = {
@@ -2427,6 +2565,8 @@ export type CourseUncheckedUpdateWithoutWishlistedByInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2439,14 +2579,15 @@ export type CourseUncheckedUpdateWithoutWishlistedByInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutOrderItemInput = {
@@ -2467,6 +2608,8 @@ export type CourseCreateWithoutOrderItemInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2477,15 +2620,16 @@ export type CourseCreateWithoutOrderItemInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -2507,6 +2651,8 @@ export type CourseUncheckedCreateWithoutOrderItemInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2519,13 +2665,14 @@ export type CourseUncheckedCreateWithoutOrderItemInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -2563,6 +2710,8 @@ export type CourseUpdateWithoutOrderItemInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2573,15 +2722,16 @@ export type CourseUpdateWithoutOrderItemInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -2603,6 +2753,8 @@ export type CourseUncheckedUpdateWithoutOrderItemInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2615,13 +2767,14 @@ export type CourseUncheckedUpdateWithoutOrderItemInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -2643,6 +2796,8 @@ export type CourseCreateWithoutPaymentTransactionInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2653,15 +2808,16 @@ export type CourseCreateWithoutPaymentTransactionInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
   OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -2683,6 +2839,8 @@ export type CourseUncheckedCreateWithoutPaymentTransactionInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2695,13 +2853,14 @@ export type CourseUncheckedCreateWithoutPaymentTransactionInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
   OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -2739,6 +2898,8 @@ export type CourseUpdateWithoutPaymentTransactionInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2749,15 +2910,16 @@ export type CourseUpdateWithoutPaymentTransactionInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
   OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -2779,6 +2941,8 @@ export type CourseUncheckedUpdateWithoutPaymentTransactionInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2791,13 +2955,14 @@ export type CourseUncheckedUpdateWithoutPaymentTransactionInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
   OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -2819,6 +2984,8 @@ export type CourseCreateWithoutCategoryInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2829,15 +2996,16 @@ export type CourseCreateWithoutCategoryInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
 
@@ -2859,6 +3027,8 @@ export type CourseUncheckedCreateWithoutCategoryInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2870,14 +3040,15 @@ export type CourseUncheckedCreateWithoutCategoryInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
+  tags?: Prisma.CourseTagUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
 
@@ -2925,6 +3096,8 @@ export type CourseCreateWithoutTagsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2935,14 +3108,15 @@ export type CourseCreateWithoutTagsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryCreateNestedOneWithoutCoursesInput
   createdBy?: Prisma.InstructorProfileCreateNestedOneWithoutOwnedCoursesInput
-  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
+  courseInstructors?: Prisma.CourseInstructorCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistCreateNestedManyWithoutCourseInput
 }
@@ -2965,6 +3139,8 @@ export type CourseUncheckedCreateWithoutTagsInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -2977,12 +3153,13 @@ export type CourseUncheckedCreateWithoutTagsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedCreateNestedManyWithoutCourseInput
-  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   LessonProgress?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutCourseInput
-  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
-  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutCourseInput
+  OrderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutCourseInput
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutCourseInput
+  enrollments?: Prisma.EnrollmentUncheckedCreateNestedManyWithoutCourseInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCourseInput
   wishlistedBy?: Prisma.WishlistUncheckedCreateNestedManyWithoutCourseInput
 }
@@ -3021,6 +3198,8 @@ export type CourseUpdateWithoutTagsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3031,14 +3210,15 @@ export type CourseUpdateWithoutTagsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
@@ -3061,6 +3241,8 @@ export type CourseUncheckedUpdateWithoutTagsInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3073,12 +3255,13 @@ export type CourseUncheckedUpdateWithoutTagsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
@@ -3101,6 +3284,8 @@ export type CourseCreateManyCreatedByInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -3112,6 +3297,7 @@ export type CourseCreateManyCreatedByInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type CourseUpdateWithoutCreatedByInput = {
@@ -3132,6 +3318,8 @@ export type CourseUpdateWithoutCreatedByInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3142,15 +3330,16 @@ export type CourseUpdateWithoutCreatedByInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   category?: Prisma.CategoryUpdateOneWithoutCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -3172,6 +3361,8 @@ export type CourseUncheckedUpdateWithoutCreatedByInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3183,14 +3374,15 @@ export type CourseUncheckedUpdateWithoutCreatedByInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -3212,6 +3404,8 @@ export type CourseUncheckedUpdateManyWithoutCreatedByInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3223,6 +3417,7 @@ export type CourseUncheckedUpdateManyWithoutCreatedByInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type CourseCreateManyCategoryInput = {
@@ -3243,6 +3438,8 @@ export type CourseCreateManyCategoryInput = {
   totalRevenueAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: number
   status?: $Enums.CourseStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   language?: $Enums.Language
   level?: $Enums.CourseLevel
   thumbnailUrl?: string | null
@@ -3254,6 +3451,7 @@ export type CourseCreateManyCategoryInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type CourseUpdateWithoutCategoryInput = {
@@ -3274,6 +3472,8 @@ export type CourseUpdateWithoutCategoryInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3284,15 +3484,16 @@ export type CourseUpdateWithoutCategoryInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.InstructorProfileUpdateOneWithoutOwnedCoursesNestedInput
-  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
+  courseInstructors?: Prisma.CourseInstructorUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUpdateManyWithoutCourseNestedInput
 }
 
@@ -3314,6 +3515,8 @@ export type CourseUncheckedUpdateWithoutCategoryInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3325,14 +3528,15 @@ export type CourseUncheckedUpdateWithoutCategoryInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   courseInstructors?: Prisma.CourseInstructorUncheckedUpdateManyWithoutCourseNestedInput
-  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
-  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   LessonProgress?: Prisma.LessonProgressUncheckedUpdateManyWithoutCourseNestedInput
-  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
-  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutCourseNestedInput
+  OrderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutCourseNestedInput
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutCourseNestedInput
+  enrollments?: Prisma.EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  tags?: Prisma.CourseTagUncheckedUpdateManyWithoutCourseNestedInput
   wishlistedBy?: Prisma.WishlistUncheckedUpdateManyWithoutCourseNestedInput
 }
 
@@ -3354,6 +3558,8 @@ export type CourseUncheckedUpdateManyWithoutCategoryInput = {
   totalRevenueAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   moduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.EnumLanguageFieldUpdateOperationsInput | $Enums.Language
   level?: Prisma.EnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3365,6 +3571,7 @@ export type CourseUncheckedUpdateManyWithoutCategoryInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -3374,25 +3581,25 @@ export type CourseUncheckedUpdateManyWithoutCategoryInput = {
 
 export type CourseCountOutputType = {
   courseInstructors: number
-  tags: number
-  enrollments: number
   LessonProgress: number
-  modules: number
-  OrderItem: number
   PaymentTransaction: number
+  OrderItem: number
+  modules: number
+  enrollments: number
   reviews: number
+  tags: number
   wishlistedBy: number
 }
 
 export type CourseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   courseInstructors?: boolean | CourseCountOutputTypeCountCourseInstructorsArgs
-  tags?: boolean | CourseCountOutputTypeCountTagsArgs
-  enrollments?: boolean | CourseCountOutputTypeCountEnrollmentsArgs
   LessonProgress?: boolean | CourseCountOutputTypeCountLessonProgressArgs
-  modules?: boolean | CourseCountOutputTypeCountModulesArgs
-  OrderItem?: boolean | CourseCountOutputTypeCountOrderItemArgs
   PaymentTransaction?: boolean | CourseCountOutputTypeCountPaymentTransactionArgs
+  OrderItem?: boolean | CourseCountOutputTypeCountOrderItemArgs
+  modules?: boolean | CourseCountOutputTypeCountModulesArgs
+  enrollments?: boolean | CourseCountOutputTypeCountEnrollmentsArgs
   reviews?: boolean | CourseCountOutputTypeCountReviewsArgs
+  tags?: boolean | CourseCountOutputTypeCountTagsArgs
   wishlistedBy?: boolean | CourseCountOutputTypeCountWishlistedByArgs
 }
 
@@ -3416,36 +3623,8 @@ export type CourseCountOutputTypeCountCourseInstructorsArgs<ExtArgs extends runt
 /**
  * CourseCountOutputType without action
  */
-export type CourseCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CourseTagWhereInput
-}
-
-/**
- * CourseCountOutputType without action
- */
-export type CourseCountOutputTypeCountEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.EnrollmentWhereInput
-}
-
-/**
- * CourseCountOutputType without action
- */
 export type CourseCountOutputTypeCountLessonProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.LessonProgressWhereInput
-}
-
-/**
- * CourseCountOutputType without action
- */
-export type CourseCountOutputTypeCountModulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ModuleWhereInput
-}
-
-/**
- * CourseCountOutputType without action
- */
-export type CourseCountOutputTypeCountOrderItemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrderItemWhereInput
 }
 
 /**
@@ -3458,8 +3637,36 @@ export type CourseCountOutputTypeCountPaymentTransactionArgs<ExtArgs extends run
 /**
  * CourseCountOutputType without action
  */
+export type CourseCountOutputTypeCountOrderItemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderItemWhereInput
+}
+
+/**
+ * CourseCountOutputType without action
+ */
+export type CourseCountOutputTypeCountModulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ModuleWhereInput
+}
+
+/**
+ * CourseCountOutputType without action
+ */
+export type CourseCountOutputTypeCountEnrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EnrollmentWhereInput
+}
+
+/**
+ * CourseCountOutputType without action
+ */
 export type CourseCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * CourseCountOutputType without action
+ */
+export type CourseCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CourseTagWhereInput
 }
 
 /**
@@ -3488,6 +3695,8 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   totalRevenueAmount?: boolean
   moduleCount?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   language?: boolean
   level?: boolean
   thumbnailUrl?: boolean
@@ -3500,16 +3709,17 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  courseInstructors?: boolean | Prisma.Course$courseInstructorsArgs<ExtArgs>
-  tags?: boolean | Prisma.Course$tagsArgs<ExtArgs>
+  updatedContent?: boolean
   category?: boolean | Prisma.Course$categoryArgs<ExtArgs>
   createdBy?: boolean | Prisma.Course$createdByArgs<ExtArgs>
-  enrollments?: boolean | Prisma.Course$enrollmentsArgs<ExtArgs>
+  courseInstructors?: boolean | Prisma.Course$courseInstructorsArgs<ExtArgs>
   LessonProgress?: boolean | Prisma.Course$LessonProgressArgs<ExtArgs>
-  modules?: boolean | Prisma.Course$modulesArgs<ExtArgs>
-  OrderItem?: boolean | Prisma.Course$OrderItemArgs<ExtArgs>
   PaymentTransaction?: boolean | Prisma.Course$PaymentTransactionArgs<ExtArgs>
+  OrderItem?: boolean | Prisma.Course$OrderItemArgs<ExtArgs>
+  modules?: boolean | Prisma.Course$modulesArgs<ExtArgs>
+  enrollments?: boolean | Prisma.Course$enrollmentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Course$reviewsArgs<ExtArgs>
+  tags?: boolean | Prisma.Course$tagsArgs<ExtArgs>
   wishlistedBy?: boolean | Prisma.Course$wishlistedByArgs<ExtArgs>
   _count?: boolean | Prisma.CourseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["course"]>
@@ -3532,6 +3742,8 @@ export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   totalRevenueAmount?: boolean
   moduleCount?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   language?: boolean
   level?: boolean
   thumbnailUrl?: boolean
@@ -3544,6 +3756,7 @@ export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  updatedContent?: boolean
   category?: boolean | Prisma.Course$categoryArgs<ExtArgs>
   createdBy?: boolean | Prisma.Course$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["course"]>
@@ -3566,6 +3779,8 @@ export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   totalRevenueAmount?: boolean
   moduleCount?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   language?: boolean
   level?: boolean
   thumbnailUrl?: boolean
@@ -3578,6 +3793,7 @@ export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  updatedContent?: boolean
   category?: boolean | Prisma.Course$categoryArgs<ExtArgs>
   createdBy?: boolean | Prisma.Course$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["course"]>
@@ -3600,6 +3816,8 @@ export type CourseSelectScalar = {
   totalRevenueAmount?: boolean
   moduleCount?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   language?: boolean
   level?: boolean
   thumbnailUrl?: boolean
@@ -3612,20 +3830,21 @@ export type CourseSelectScalar = {
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  updatedContent?: boolean
 }
 
-export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "welcomeMessage" | "congratulationsMessage" | "originalPrice" | "discountPercent" | "discountPrice" | "discountEndDate" | "isDiscountActive" | "currency" | "enrollmentCount" | "reviewCount" | "totalRevenueAmount" | "moduleCount" | "status" | "language" | "level" | "thumbnailUrl" | "trailerUrl" | "categoryId" | "createdById" | "ratingAverage" | "ratingCount" | "views" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
+export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "welcomeMessage" | "congratulationsMessage" | "originalPrice" | "discountPercent" | "discountPrice" | "discountEndDate" | "isDiscountActive" | "currency" | "enrollmentCount" | "reviewCount" | "totalRevenueAmount" | "moduleCount" | "status" | "suspendReason" | "adminNote" | "language" | "level" | "thumbnailUrl" | "trailerUrl" | "categoryId" | "createdById" | "ratingAverage" | "ratingCount" | "views" | "deletedAt" | "createdAt" | "updatedAt" | "updatedContent", ExtArgs["result"]["course"]>
 export type CourseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  courseInstructors?: boolean | Prisma.Course$courseInstructorsArgs<ExtArgs>
-  tags?: boolean | Prisma.Course$tagsArgs<ExtArgs>
   category?: boolean | Prisma.Course$categoryArgs<ExtArgs>
   createdBy?: boolean | Prisma.Course$createdByArgs<ExtArgs>
-  enrollments?: boolean | Prisma.Course$enrollmentsArgs<ExtArgs>
+  courseInstructors?: boolean | Prisma.Course$courseInstructorsArgs<ExtArgs>
   LessonProgress?: boolean | Prisma.Course$LessonProgressArgs<ExtArgs>
-  modules?: boolean | Prisma.Course$modulesArgs<ExtArgs>
-  OrderItem?: boolean | Prisma.Course$OrderItemArgs<ExtArgs>
   PaymentTransaction?: boolean | Prisma.Course$PaymentTransactionArgs<ExtArgs>
+  OrderItem?: boolean | Prisma.Course$OrderItemArgs<ExtArgs>
+  modules?: boolean | Prisma.Course$modulesArgs<ExtArgs>
+  enrollments?: boolean | Prisma.Course$enrollmentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Course$reviewsArgs<ExtArgs>
+  tags?: boolean | Prisma.Course$tagsArgs<ExtArgs>
   wishlistedBy?: boolean | Prisma.Course$wishlistedByArgs<ExtArgs>
   _count?: boolean | Prisma.CourseCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -3641,16 +3860,16 @@ export type CourseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Course"
   objects: {
-    courseInstructors: Prisma.$CourseInstructorPayload<ExtArgs>[]
-    tags: Prisma.$CourseTagPayload<ExtArgs>[]
     category: Prisma.$CategoryPayload<ExtArgs> | null
     createdBy: Prisma.$InstructorProfilePayload<ExtArgs> | null
-    enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
+    courseInstructors: Prisma.$CourseInstructorPayload<ExtArgs>[]
     LessonProgress: Prisma.$LessonProgressPayload<ExtArgs>[]
-    modules: Prisma.$ModulePayload<ExtArgs>[]
-    OrderItem: Prisma.$OrderItemPayload<ExtArgs>[]
     PaymentTransaction: Prisma.$PaymentTransactionPayload<ExtArgs>[]
+    OrderItem: Prisma.$OrderItemPayload<ExtArgs>[]
+    modules: Prisma.$ModulePayload<ExtArgs>[]
+    enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    tags: Prisma.$CourseTagPayload<ExtArgs>[]
     wishlistedBy: Prisma.$WishlistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -3671,6 +3890,8 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     totalRevenueAmount: runtime.Decimal
     moduleCount: number
     status: $Enums.CourseStatus
+    suspendReason: string | null
+    adminNote: string | null
     language: $Enums.Language
     level: $Enums.CourseLevel
     thumbnailUrl: string | null
@@ -3683,6 +3904,7 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    updatedContent: runtime.JsonValue | null
   }, ExtArgs["result"]["course"]>
   composites: {}
 }
@@ -4077,16 +4299,16 @@ readonly fields: CourseFieldRefs;
  */
 export interface Prisma__CourseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  courseInstructors<T extends Prisma.Course$courseInstructorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$courseInstructorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseInstructorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  tags<T extends Prisma.Course$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   category<T extends Prisma.Course$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.Course$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$createdByArgs<ExtArgs>>): Prisma.Prisma__InstructorProfileClient<runtime.Types.Result.GetResult<Prisma.$InstructorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  enrollments<T extends Prisma.Course$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  courseInstructors<T extends Prisma.Course$courseInstructorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$courseInstructorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseInstructorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   LessonProgress<T extends Prisma.Course$LessonProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$LessonProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  modules<T extends Prisma.Course$modulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  OrderItem<T extends Prisma.Course$OrderItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$OrderItemArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   PaymentTransaction<T extends Prisma.Course$PaymentTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$PaymentTransactionArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  OrderItem<T extends Prisma.Course$OrderItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$OrderItemArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  modules<T extends Prisma.Course$modulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  enrollments<T extends Prisma.Course$enrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Course$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tags<T extends Prisma.Course$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wishlistedBy<T extends Prisma.Course$wishlistedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$wishlistedByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WishlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4134,6 +4356,8 @@ export interface CourseFieldRefs {
   readonly totalRevenueAmount: Prisma.FieldRef<"Course", 'Decimal'>
   readonly moduleCount: Prisma.FieldRef<"Course", 'Int'>
   readonly status: Prisma.FieldRef<"Course", 'CourseStatus'>
+  readonly suspendReason: Prisma.FieldRef<"Course", 'String'>
+  readonly adminNote: Prisma.FieldRef<"Course", 'String'>
   readonly language: Prisma.FieldRef<"Course", 'Language'>
   readonly level: Prisma.FieldRef<"Course", 'CourseLevel'>
   readonly thumbnailUrl: Prisma.FieldRef<"Course", 'String'>
@@ -4146,6 +4370,7 @@ export interface CourseFieldRefs {
   readonly deletedAt: Prisma.FieldRef<"Course", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Course", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Course", 'DateTime'>
+  readonly updatedContent: Prisma.FieldRef<"Course", 'Json'>
 }
     
 
@@ -4542,54 +4767,6 @@ export type CourseDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Course.courseInstructors
- */
-export type Course$courseInstructorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the CourseInstructor
-   */
-  select?: Prisma.CourseInstructorSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the CourseInstructor
-   */
-  omit?: Prisma.CourseInstructorOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CourseInstructorInclude<ExtArgs> | null
-  where?: Prisma.CourseInstructorWhereInput
-  orderBy?: Prisma.CourseInstructorOrderByWithRelationInput | Prisma.CourseInstructorOrderByWithRelationInput[]
-  cursor?: Prisma.CourseInstructorWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CourseInstructorScalarFieldEnum | Prisma.CourseInstructorScalarFieldEnum[]
-}
-
-/**
- * Course.tags
- */
-export type Course$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the CourseTag
-   */
-  select?: Prisma.CourseTagSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the CourseTag
-   */
-  omit?: Prisma.CourseTagOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CourseTagInclude<ExtArgs> | null
-  where?: Prisma.CourseTagWhereInput
-  orderBy?: Prisma.CourseTagOrderByWithRelationInput | Prisma.CourseTagOrderByWithRelationInput[]
-  cursor?: Prisma.CourseTagWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CourseTagScalarFieldEnum | Prisma.CourseTagScalarFieldEnum[]
-}
-
-/**
  * Course.category
  */
 export type Course$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4628,27 +4805,27 @@ export type Course$createdByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Course.enrollments
+ * Course.courseInstructors
  */
-export type Course$enrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Course$courseInstructorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Enrollment
+   * Select specific fields to fetch from the CourseInstructor
    */
-  select?: Prisma.EnrollmentSelect<ExtArgs> | null
+  select?: Prisma.CourseInstructorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Enrollment
+   * Omit specific fields from the CourseInstructor
    */
-  omit?: Prisma.EnrollmentOmit<ExtArgs> | null
+  omit?: Prisma.CourseInstructorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EnrollmentInclude<ExtArgs> | null
-  where?: Prisma.EnrollmentWhereInput
-  orderBy?: Prisma.EnrollmentOrderByWithRelationInput | Prisma.EnrollmentOrderByWithRelationInput[]
-  cursor?: Prisma.EnrollmentWhereUniqueInput
+  include?: Prisma.CourseInstructorInclude<ExtArgs> | null
+  where?: Prisma.CourseInstructorWhereInput
+  orderBy?: Prisma.CourseInstructorOrderByWithRelationInput | Prisma.CourseInstructorOrderByWithRelationInput[]
+  cursor?: Prisma.CourseInstructorWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.EnrollmentScalarFieldEnum | Prisma.EnrollmentScalarFieldEnum[]
+  distinct?: Prisma.CourseInstructorScalarFieldEnum | Prisma.CourseInstructorScalarFieldEnum[]
 }
 
 /**
@@ -4676,27 +4853,27 @@ export type Course$LessonProgressArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * Course.modules
+ * Course.PaymentTransaction
  */
-export type Course$modulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Course$PaymentTransactionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Module
+   * Select specific fields to fetch from the PaymentTransaction
    */
-  select?: Prisma.ModuleSelect<ExtArgs> | null
+  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Module
+   * Omit specific fields from the PaymentTransaction
    */
-  omit?: Prisma.ModuleOmit<ExtArgs> | null
+  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ModuleInclude<ExtArgs> | null
-  where?: Prisma.ModuleWhereInput
-  orderBy?: Prisma.ModuleOrderByWithRelationInput | Prisma.ModuleOrderByWithRelationInput[]
-  cursor?: Prisma.ModuleWhereUniqueInput
+  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
+  where?: Prisma.PaymentTransactionWhereInput
+  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentTransactionWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ModuleScalarFieldEnum | Prisma.ModuleScalarFieldEnum[]
+  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
 }
 
 /**
@@ -4724,27 +4901,51 @@ export type Course$OrderItemArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Course.PaymentTransaction
+ * Course.modules
  */
-export type Course$PaymentTransactionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Course$modulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the PaymentTransaction
+   * Select specific fields to fetch from the Module
    */
-  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
+  select?: Prisma.ModuleSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the PaymentTransaction
+   * Omit specific fields from the Module
    */
-  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
+  omit?: Prisma.ModuleOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
-  where?: Prisma.PaymentTransactionWhereInput
-  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentTransactionWhereUniqueInput
+  include?: Prisma.ModuleInclude<ExtArgs> | null
+  where?: Prisma.ModuleWhereInput
+  orderBy?: Prisma.ModuleOrderByWithRelationInput | Prisma.ModuleOrderByWithRelationInput[]
+  cursor?: Prisma.ModuleWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
+  distinct?: Prisma.ModuleScalarFieldEnum | Prisma.ModuleScalarFieldEnum[]
+}
+
+/**
+ * Course.enrollments
+ */
+export type Course$enrollmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Enrollment
+   */
+  select?: Prisma.EnrollmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Enrollment
+   */
+  omit?: Prisma.EnrollmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EnrollmentInclude<ExtArgs> | null
+  where?: Prisma.EnrollmentWhereInput
+  orderBy?: Prisma.EnrollmentOrderByWithRelationInput | Prisma.EnrollmentOrderByWithRelationInput[]
+  cursor?: Prisma.EnrollmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EnrollmentScalarFieldEnum | Prisma.EnrollmentScalarFieldEnum[]
 }
 
 /**
@@ -4769,6 +4970,30 @@ export type Course$reviewsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Course.tags
+ */
+export type Course$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CourseTag
+   */
+  select?: Prisma.CourseTagSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CourseTag
+   */
+  omit?: Prisma.CourseTagOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CourseTagInclude<ExtArgs> | null
+  where?: Prisma.CourseTagWhereInput
+  orderBy?: Prisma.CourseTagOrderByWithRelationInput | Prisma.CourseTagOrderByWithRelationInput[]
+  cursor?: Prisma.CourseTagWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CourseTagScalarFieldEnum | Prisma.CourseTagScalarFieldEnum[]
 }
 
 /**
