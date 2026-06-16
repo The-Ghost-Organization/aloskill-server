@@ -536,7 +536,7 @@ const registerStudent = async (req: Request) => {
         throw new Error('Email already sent, verify it and try to login');
       }
       if (existingUser.password) {
-        throw new Error('User already exists');
+        throw new Error('User already exists with email');
       }
       const updateUserWithPassword = await executeDbOperation(async prisma => {
         return prisma.user.update({
@@ -558,7 +558,7 @@ const registerStudent = async (req: Request) => {
 
     if (googleId) {
       if (existingUser.googleId) {
-        throw new Error('User already exists');
+        throw new Error('User already exists with google');
       }
       const updateUserWithGoogleID = await executeDbOperation(async prisma => {
         return await prisma.user.update({

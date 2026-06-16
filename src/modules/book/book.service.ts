@@ -92,6 +92,134 @@ const uploadBook = async (req: Request) => {
   return upload.id;
 };
 
+const updateBook = async (req: Request) => {
+  const { bookId } = req.query;
+  if (typeof bookId !== 'string') {
+    throw new Error('Invalid book ID.');
+  }
+  const data = req.body as UploadBookPayload['body'];
+  const user = req.user;
+  if (!user.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const updatedBook = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      const owner = await tx.user.findUnique({
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
+        include: { assignedRole: true },
+      });
+      if (!owner) {
+        throw new Error('Unauthorized: Owner not found.');
+      }
+      const isAuthorized = owner.assignedRole.some(
+        r => r.role === 'ADMIN' || r.role === 'INSTRUCTOR'
+      );
+      if (!isAuthorized) {
+        throw new Error('Security Violation: Only Admins or Instructors can update books.');
+      }
+      const category = await tx.bookCategory.findUnique({
+        where: { name: data.category },
+      });
+      if (!category) {
+        throw new Error('Invalid Category ID.');
+      }
+      const existingBook = await tx.book.findUnique({
+        where: { id: bookId, deletedAt: null },
+        include: { files: true },
+      });
+      if (!existingBook) {
+        throw new Error('Book not found.');
+      }
+      const updated = await tx.book.update({
+        where: { id: bookId },
+        data: {
+          title: data.title,
+          author: data.author,
+          publisher: data.publisher,
+          translator: data.translator,
+          editor: data.editor,
+          description: data.description,
+          regularPrice: new Decimal(data.regularPrice),
+          salePrice: new Decimal(data.salePrice),
+          stock: data.stock,
+          language: data.language,
+          coverImage: data.coverImageUrl,
+          isbn: data.isbn,
+          edition: data.edition,
+          pages: data.pages,
+          metaKeywords: data.metaKeywords,
+          metaDescription: data.metaDescription,
+          ownerId: owner.id,
+          categoryId: category.id,
+          status: data.status === 'DRAFT' ? BookStatus.DRAFT : BookStatus.PENDING,
+          formats: data.formats.map(f =>
+            f === 'Hardcover' ? BookFormat.HARDCOVER : BookFormat.E_BOOK
+          ),
+          files: {
+            create: data.files.map(file => ({
+              name: file.name,
+              url: file.url,
+              fileType: file.fileType,
+            })),
+          },
+        },
+        include: {
+          files: true,
+        },
+      });
+
+      await tx.auditLog.create({
+        data: {
+          userId: owner.id,
+          action: 'BOOK_UPDATED',
+          entityType: 'BOOK',
+          entityId: updated.id,
+          changesBefore: JSON.parse(JSON.stringify(existingBook)),
+          changesAfter: JSON.parse(JSON.stringify(updated)),
+          ipAddress: 'captured-from-request',
+        },
+      });
+
+      return updated;
+    });
+  }, 'Update Book');
+
+  return updatedBook.id;
+};
+
+const getAllBooksForPublicView = async () => {
+  const books = await executeDbOperation(async prisma => {
+    return await prisma.book.findMany({
+      where: { status: BookStatus.APPROVED, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        author: true,
+        coverImage: true,
+        regularPrice: true,
+        salePrice: true,
+        formats: true,
+        publisher: true,
+        createdAt: true,
+        stock: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }, 'Get All Books for Public View');
+
+  return books.map(book => ({
+    ...book,
+    stock: book.stock > 0 ? 'in-stock' : 'out-of-stock',
+  }));
+};
+
+// Admin Dashboard
+
 const getAllBooksDataforAdmin = async (req: Request) => {
   const user = req.user;
   if (!user.email) {
@@ -273,7 +401,9 @@ const approveBook = async (req: Request) => {
 
 export const bookService = {
   uploadBook,
+  updateBook,
   getAllBooksDataforAdmin,
   getSingleBookDataForAdminEdit,
   approveBook,
+  getAllBooksForPublicView,
 };

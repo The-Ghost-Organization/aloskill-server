@@ -6,10 +6,8 @@ import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
 import {
   ApplicationStatus,
-  CourseLevel,
   CourseStatus,
   EnrollmentStatus,
-  Language,
   QuestionType,
   UserStatus,
 } from '../../generated/client.js';
@@ -731,54 +729,13 @@ const getAllCoursesForStudent = async (req: Request) => {
 };
 
 const getAllCoursesForPublic = async (req: Request) => {
-  const { take, page, isHome, category, level, language, rating, priceMin, priceMax, userId } =
-    req.query;
-  console.log('user-id::', userId);
-  const categoryIds = await executeDbOperation(async prisma => {
-    if (!category) {
-      return [];
-    }
-
-    const parentCategory = await prisma.category.findFirst({
-      where: { name: category as string },
-      select: {
-        children: { select: { id: true } },
-      },
-    });
-
-    if (!parentCategory) {
-      return [];
-    }
-    return [...parentCategory.children.map(child => child.id)];
-  });
-
+  const { isHome } = req.query;
   const getCourses = await executeDbOperation(async prisma => {
     return await prisma.course.findMany({
       where: {
         status: CourseStatus.PUBLISHED,
         deletedAt: null,
-        ...(categoryIds.length > 0 && { categoryId: { in: categoryIds } }),
-        ...(language && {
-          language: language === 'bangla' ? Language.BANGLA : Language.ENGLISH,
-        }),
-        ...(level && {
-          level:
-            level === 'intermediate'
-              ? CourseLevel.INTERMEDIATE
-              : level === 'beginner'
-                ? CourseLevel.BEGINNER
-                : level === 'advanced'
-                  ? CourseLevel.ADVANCED
-                  : undefined,
-        }),
         ...(isHome && { ratingAverage: { gte: 2 } }),
-        ...(rating && { ratingAverage: { gte: Number(rating) } }),
-        ...((priceMin ?? priceMax) && {
-          originalPrice: {
-            ...(priceMin && { gte: Number(priceMin) }),
-            ...(priceMax && { lte: Number(priceMax) }),
-          },
-        }),
       },
       orderBy: [{ createdAt: 'desc' }],
       select: {
@@ -788,6 +745,9 @@ const getAllCoursesForPublic = async (req: Request) => {
         originalPrice: true,
         discountPrice: true,
         status: true,
+        language: true,
+        ratingAverage: true,
+        level: true,
         createdAt: true,
         category: {
           select: {
@@ -821,18 +781,11 @@ const getAllCoursesForPublic = async (req: Request) => {
           },
         },
         enrollments: {
-          where: {
-            user: {
-              id: userId as string,
-            },
-          },
           select: {
             userId: true,
           },
         },
       },
-      ...(page && { skip: (Number(page) - 1) * Number(take) }),
-      ...(take && { take: Number(take) }),
     });
   }, 'Get All Associated Courses for Public view');
 
