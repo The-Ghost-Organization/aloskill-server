@@ -1941,7 +1941,7 @@ const getSecureVideoToken = (req: Request) => {
   // const userIp = req.ip;
   const authenticationKey = config.BUNNY_STREAM_TOKEN_AUTH_KEY;
   const libraryId = config.BUNNY_STREAM_LIBRARY_ID;
-  const expires = Math.floor(new Date().getTime() / 1000) + 1200 + duration * 60;
+  const expires = Math.floor(new Date().getTime() / 1000) + duration * 60;
   const hashableBase = authenticationKey + filePath + expires;
 
   const signature = crypto.createHash('sha256').update(hashableBase).digest('hex');
