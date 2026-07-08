@@ -207,6 +207,11 @@ enum BookStatus {
   DRAFT
 }
 
+enum PurchaseFormat {
+  PHYSICAL
+  DIGITAL
+}
+
 // === MODELS===//
 model User {
   id        String    @id @default(uuid())
@@ -814,8 +819,11 @@ model Book {
   publisher       String
   description     String   @db.Text
 
-  regularPrice    Decimal  @db.Decimal(10, 2)
-  salePrice       Decimal  @db.Decimal(10, 2)
+  physicalRegularPrice Decimal?  @db.Decimal(10, 2)
+  physicalSalePrice    Decimal?  @db.Decimal(10, 2)
+  digitalRegularPrice  Decimal?  @db.Decimal(10, 2)
+  digitalSalePrice     Decimal?  @db.Decimal(10, 2)
+
   stock           Int      @default(0)
 
   isbn            String?  @unique
@@ -916,6 +924,10 @@ model Order {
   providerOrderId     String?
   paymentTransactions PaymentTransaction[]
   orderItems          OrderItem[]
+
+  shippingAddressId String?
+  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id], onDelete: SetNull)
+
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
 
@@ -937,6 +949,8 @@ model OrderItem {
   book     Book?  @relation(fields: [bookId], references: [id], onDelete: Restrict)
   bookId   String?
 
+  format    PurchaseFormat @default(DIGITAL)
+
   price     Decimal         @db.Decimal(15, 2)
   currency  String?         @default("BDT")
   status    OrderItemStatus @default(PENDING)
@@ -946,6 +960,17 @@ model OrderItem {
   @@index([courseId])
 
   @@map("order_items")
+}
+
+model ShippingAddress {
+  id           String  @id @default(uuid())
+  fullName     String
+  addressLine  String
+  city         String
+  postalCode   String
+  country      String
+  phone        String
+  orders       Order[]
 }
 
 /// Payments & payouts

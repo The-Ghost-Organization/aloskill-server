@@ -27,8 +27,10 @@ export type AggregateBook = {
 }
 
 export type BookAvgAggregateOutputType = {
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   pages: number | null
   totalEarning: runtime.Decimal | null
@@ -36,8 +38,10 @@ export type BookAvgAggregateOutputType = {
 }
 
 export type BookSumAggregateOutputType = {
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   pages: number | null
   totalEarning: runtime.Decimal | null
@@ -52,8 +56,10 @@ export type BookMinAggregateOutputType = {
   editor: string | null
   publisher: string | null
   description: string | null
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   isbn: string | null
   edition: string | null
@@ -82,8 +88,10 @@ export type BookMaxAggregateOutputType = {
   editor: string | null
   publisher: string | null
   description: string | null
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   isbn: string | null
   edition: string | null
@@ -112,8 +120,10 @@ export type BookCountAggregateOutputType = {
   editor: number
   publisher: number
   description: number
-  regularPrice: number
-  salePrice: number
+  physicalRegularPrice: number
+  physicalSalePrice: number
+  digitalRegularPrice: number
+  digitalSalePrice: number
   stock: number
   isbn: number
   edition: number
@@ -139,8 +149,10 @@ export type BookCountAggregateOutputType = {
 
 
 export type BookAvgAggregateInputType = {
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   pages?: true
   totalEarning?: true
@@ -148,8 +160,10 @@ export type BookAvgAggregateInputType = {
 }
 
 export type BookSumAggregateInputType = {
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   pages?: true
   totalEarning?: true
@@ -164,8 +178,10 @@ export type BookMinAggregateInputType = {
   editor?: true
   publisher?: true
   description?: true
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   isbn?: true
   edition?: true
@@ -194,8 +210,10 @@ export type BookMaxAggregateInputType = {
   editor?: true
   publisher?: true
   description?: true
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   isbn?: true
   edition?: true
@@ -224,8 +242,10 @@ export type BookCountAggregateInputType = {
   editor?: true
   publisher?: true
   description?: true
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   isbn?: true
   edition?: true
@@ -343,8 +363,10 @@ export type BookGroupByOutputType = {
   editor: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal
-  salePrice: runtime.Decimal
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number
   isbn: string | null
   edition: string | null
@@ -398,8 +420,10 @@ export type BookWhereInput = {
   editor?: Prisma.StringNullableFilter<"Book"> | string | null
   publisher?: Prisma.StringFilter<"Book"> | string
   description?: Prisma.StringFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFilter<"Book"> | number
   isbn?: Prisma.StringNullableFilter<"Book"> | string | null
   edition?: Prisma.StringNullableFilter<"Book"> | string | null
@@ -437,8 +461,10 @@ export type BookOrderByWithRelationInput = {
   editor?: Prisma.SortOrderInput | Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrderInput | Prisma.SortOrder
   edition?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -480,8 +506,10 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   editor?: Prisma.StringNullableFilter<"Book"> | string | null
   publisher?: Prisma.StringFilter<"Book"> | string
   description?: Prisma.StringFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFilter<"Book"> | number
   edition?: Prisma.StringNullableFilter<"Book"> | string | null
   pages?: Prisma.IntNullableFilter<"Book"> | number | null
@@ -518,8 +546,10 @@ export type BookOrderByWithAggregationInput = {
   editor?: Prisma.SortOrderInput | Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrderInput | Prisma.SortOrder
   edition?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -558,8 +588,10 @@ export type BookScalarWhereWithAggregatesInput = {
   editor?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   publisher?: Prisma.StringWithAggregatesFilter<"Book"> | string
   description?: Prisma.StringWithAggregatesFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntWithAggregatesFilter<"Book"> | number
   isbn?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   edition?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
@@ -590,8 +622,10 @@ export type BookCreateInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -627,8 +661,10 @@ export type BookUncheckedCreateInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -664,8 +700,10 @@ export type BookUpdateInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -701,8 +739,10 @@ export type BookUncheckedUpdateInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -738,8 +778,10 @@ export type BookCreateManyInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -770,8 +812,10 @@ export type BookUpdateManyMutationInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -800,8 +844,10 @@ export type BookUncheckedUpdateManyInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -855,8 +901,10 @@ export type BookCountOrderByAggregateInput = {
   editor?: Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrder
   edition?: Prisma.SortOrder
@@ -880,8 +928,10 @@ export type BookCountOrderByAggregateInput = {
 }
 
 export type BookAvgOrderByAggregateInput = {
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   pages?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
@@ -896,8 +946,10 @@ export type BookMaxOrderByAggregateInput = {
   editor?: Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrder
   edition?: Prisma.SortOrder
@@ -926,8 +978,10 @@ export type BookMinOrderByAggregateInput = {
   editor?: Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrder
   edition?: Prisma.SortOrder
@@ -949,8 +1003,10 @@ export type BookMinOrderByAggregateInput = {
 }
 
 export type BookSumOrderByAggregateInput = {
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   pages?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
@@ -1145,8 +1201,10 @@ export type BookCreateWithoutOwnerInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1181,8 +1239,10 @@ export type BookUncheckedCreateWithoutOwnerInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1246,8 +1306,10 @@ export type BookScalarWhereInput = {
   editor?: Prisma.StringNullableFilter<"Book"> | string | null
   publisher?: Prisma.StringFilter<"Book"> | string
   description?: Prisma.StringFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFilter<"Book"> | number
   isbn?: Prisma.StringNullableFilter<"Book"> | string | null
   edition?: Prisma.StringNullableFilter<"Book"> | string | null
@@ -1278,8 +1340,10 @@ export type BookCreateWithoutReviewsInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1314,8 +1378,10 @@ export type BookUncheckedCreateWithoutReviewsInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1366,8 +1432,10 @@ export type BookUpdateWithoutReviewsInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1402,8 +1470,10 @@ export type BookUncheckedUpdateWithoutReviewsInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1438,8 +1508,10 @@ export type BookCreateWithoutFilesInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1474,8 +1546,10 @@ export type BookUncheckedCreateWithoutFilesInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1526,8 +1600,10 @@ export type BookUpdateWithoutFilesInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1562,8 +1638,10 @@ export type BookUncheckedUpdateWithoutFilesInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1598,8 +1676,10 @@ export type BookCreateWithoutWishlistedByInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1634,8 +1714,10 @@ export type BookUncheckedCreateWithoutWishlistedByInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1686,8 +1768,10 @@ export type BookUpdateWithoutWishlistedByInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1722,8 +1806,10 @@ export type BookUncheckedUpdateWithoutWishlistedByInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1758,8 +1844,10 @@ export type BookCreateWithoutOrderItemInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1794,8 +1882,10 @@ export type BookUncheckedCreateWithoutOrderItemInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1846,8 +1936,10 @@ export type BookUpdateWithoutOrderItemInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1882,8 +1974,10 @@ export type BookUncheckedUpdateWithoutOrderItemInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1918,8 +2012,10 @@ export type BookCreateWithoutPaymentTransactionInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1954,8 +2050,10 @@ export type BookUncheckedCreateWithoutPaymentTransactionInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -2006,8 +2104,10 @@ export type BookUpdateWithoutPaymentTransactionInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2042,8 +2142,10 @@ export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2078,8 +2180,10 @@ export type BookCreateWithoutCategoryInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -2114,8 +2218,10 @@ export type BookUncheckedCreateWithoutCategoryInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -2176,8 +2282,10 @@ export type BookCreateManyOwnerInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -2207,8 +2315,10 @@ export type BookUpdateWithoutOwnerInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2243,8 +2353,10 @@ export type BookUncheckedUpdateWithoutOwnerInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2279,8 +2391,10 @@ export type BookUncheckedUpdateManyWithoutOwnerInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2310,8 +2424,10 @@ export type BookCreateManyCategoryInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -2341,8 +2457,10 @@ export type BookUpdateWithoutCategoryInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2377,8 +2495,10 @@ export type BookUncheckedUpdateWithoutCategoryInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2413,8 +2533,10 @@ export type BookUncheckedUpdateManyWithoutCategoryInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2511,8 +2633,10 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2551,8 +2675,10 @@ export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2585,8 +2711,10 @@ export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2619,8 +2747,10 @@ export type BookSelectScalar = {
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2643,7 +2773,7 @@ export type BookSelectScalar = {
   deletedAt?: boolean
 }
 
-export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "translator" | "editor" | "publisher" | "description" | "regularPrice" | "salePrice" | "stock" | "isbn" | "edition" | "pages" | "language" | "formats" | "totalEarning" | "viewCount" | "status" | "suspendReason" | "adminNote" | "updatedContent" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["book"]>
+export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "translator" | "editor" | "publisher" | "description" | "physicalRegularPrice" | "physicalSalePrice" | "digitalRegularPrice" | "digitalSalePrice" | "stock" | "isbn" | "edition" | "pages" | "language" | "formats" | "totalEarning" | "viewCount" | "status" | "suspendReason" | "adminNote" | "updatedContent" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["book"]>
 export type BookInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   files?: boolean | Prisma.Book$filesArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2682,8 +2812,10 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     editor: string | null
     publisher: string
     description: string
-    regularPrice: runtime.Decimal
-    salePrice: runtime.Decimal
+    physicalRegularPrice: runtime.Decimal | null
+    physicalSalePrice: runtime.Decimal | null
+    digitalRegularPrice: runtime.Decimal | null
+    digitalSalePrice: runtime.Decimal | null
     stock: number
     isbn: string | null
     edition: string | null
@@ -3141,8 +3273,10 @@ export interface BookFieldRefs {
   readonly editor: Prisma.FieldRef<"Book", 'String'>
   readonly publisher: Prisma.FieldRef<"Book", 'String'>
   readonly description: Prisma.FieldRef<"Book", 'String'>
-  readonly regularPrice: Prisma.FieldRef<"Book", 'Decimal'>
-  readonly salePrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly physicalRegularPrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly physicalSalePrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly digitalRegularPrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly digitalSalePrice: Prisma.FieldRef<"Book", 'Decimal'>
   readonly stock: Prisma.FieldRef<"Book", 'Int'>
   readonly isbn: Prisma.FieldRef<"Book", 'String'>
   readonly edition: Prisma.FieldRef<"Book", 'String'>

@@ -77,6 +77,7 @@ export const ModelName = {
   Wishlist: 'Wishlist',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  ShippingAddress: 'ShippingAddress',
   PaymentTransaction: 'PaymentTransaction',
   Payout: 'Payout',
   PayoutMethod: 'PayoutMethod',
@@ -492,8 +493,10 @@ export const BookScalarFieldEnum = {
   editor: 'editor',
   publisher: 'publisher',
   description: 'description',
-  regularPrice: 'regularPrice',
-  salePrice: 'salePrice',
+  physicalRegularPrice: 'physicalRegularPrice',
+  physicalSalePrice: 'physicalSalePrice',
+  digitalRegularPrice: 'digitalRegularPrice',
+  digitalSalePrice: 'digitalSalePrice',
   stock: 'stock',
   isbn: 'isbn',
   edition: 'edition',
@@ -563,6 +566,7 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   provider: 'provider',
   providerOrderId: 'providerOrderId',
+  shippingAddressId: 'shippingAddressId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -575,6 +579,7 @@ export const OrderItemScalarFieldEnum = {
   orderId: 'orderId',
   courseId: 'courseId',
   bookId: 'bookId',
+  format: 'format',
   price: 'price',
   currency: 'currency',
   status: 'status',
@@ -582,6 +587,19 @@ export const OrderItemScalarFieldEnum = {
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+export const ShippingAddressScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  addressLine: 'addressLine',
+  city: 'city',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone'
+} as const
+
+export type ShippingAddressScalarFieldEnum = (typeof ShippingAddressScalarFieldEnum)[keyof typeof ShippingAddressScalarFieldEnum]
 
 
 export const PaymentTransactionScalarFieldEnum = {

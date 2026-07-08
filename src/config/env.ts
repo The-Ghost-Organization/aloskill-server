@@ -5,7 +5,7 @@ dotenv.config();
 
 const envSchema = z.object({
   PORT: z.string().default(process.env.PORT as string),
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NODE_ENV: z.string().default(process.env.NODE_ENV as string),
   SECURE: z.enum(['development', 'production', 'test']).default('development'),
   JWT_SECRET: z
     .string()
