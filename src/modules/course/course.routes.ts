@@ -57,8 +57,6 @@ router.get(
 
 router.get('/public/viewCourse/:courseId', courseController.getSingleCourseForPublicView);
 
-router.post('/get-cart-courses', requireAuth, courseController.getCartCourses);
-
 router.get(
   '/private/viewCourse/:courseId/:userId',
   requireStudent,

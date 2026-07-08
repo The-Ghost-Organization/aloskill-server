@@ -410,6 +410,7 @@ export const ModelName = {
   Wishlist: 'Wishlist',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  ShippingAddress: 'ShippingAddress',
   PaymentTransaction: 'PaymentTransaction',
   Payout: 'Payout',
   PayoutMethod: 'PayoutMethod',
@@ -441,7 +442,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings"
+    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2369,6 +2370,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ShippingAddress: {
+      payload: Prisma.$ShippingAddressPayload<ExtArgs>
+      fields: Prisma.ShippingAddressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShippingAddressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShippingAddressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>
+        }
+        findFirst: {
+          args: Prisma.ShippingAddressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShippingAddressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>
+        }
+        findMany: {
+          args: Prisma.ShippingAddressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>[]
+        }
+        create: {
+          args: Prisma.ShippingAddressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>
+        }
+        createMany: {
+          args: Prisma.ShippingAddressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShippingAddressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>[]
+        }
+        delete: {
+          args: Prisma.ShippingAddressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>
+        }
+        update: {
+          args: Prisma.ShippingAddressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>
+        }
+        deleteMany: {
+          args: Prisma.ShippingAddressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShippingAddressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShippingAddressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>[]
+        }
+        upsert: {
+          args: Prisma.ShippingAddressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShippingAddressPayload>
+        }
+        aggregate: {
+          args: Prisma.ShippingAddressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShippingAddress>
+        }
+        groupBy: {
+          args: Prisma.ShippingAddressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShippingAddressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShippingAddressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShippingAddressCountAggregateOutputType> | number
+        }
+      }
+    }
     PaymentTransaction: {
       payload: Prisma.$PaymentTransactionPayload<ExtArgs>
       fields: Prisma.PaymentTransactionFieldRefs
@@ -3973,8 +4048,10 @@ export const BookScalarFieldEnum = {
   editor: 'editor',
   publisher: 'publisher',
   description: 'description',
-  regularPrice: 'regularPrice',
-  salePrice: 'salePrice',
+  physicalRegularPrice: 'physicalRegularPrice',
+  physicalSalePrice: 'physicalSalePrice',
+  digitalRegularPrice: 'digitalRegularPrice',
+  digitalSalePrice: 'digitalSalePrice',
   stock: 'stock',
   isbn: 'isbn',
   edition: 'edition',
@@ -4044,6 +4121,7 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   provider: 'provider',
   providerOrderId: 'providerOrderId',
+  shippingAddressId: 'shippingAddressId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -4056,6 +4134,7 @@ export const OrderItemScalarFieldEnum = {
   orderId: 'orderId',
   courseId: 'courseId',
   bookId: 'bookId',
+  format: 'format',
   price: 'price',
   currency: 'currency',
   status: 'status',
@@ -4063,6 +4142,19 @@ export const OrderItemScalarFieldEnum = {
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+export const ShippingAddressScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  addressLine: 'addressLine',
+  city: 'city',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone'
+} as const
+
+export type ShippingAddressScalarFieldEnum = (typeof ShippingAddressScalarFieldEnum)[keyof typeof ShippingAddressScalarFieldEnum]
 
 
 export const PaymentTransactionScalarFieldEnum = {
@@ -4717,6 +4809,20 @@ export type ListEnumPaymentProvidersFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'PurchaseFormat'
+ */
+export type EnumPurchaseFormatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseFormat'>
+    
+
+
+/**
+ * Reference to a field of type 'PurchaseFormat[]'
+ */
+export type ListEnumPurchaseFormatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurchaseFormat[]'>
+    
+
+
+/**
  * Reference to a field of type 'OrderItemStatus'
  */
 export type EnumOrderItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderItemStatus'>
@@ -4962,6 +5068,7 @@ export type GlobalOmitConfig = {
   wishlist?: Prisma.WishlistOmit
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
+  shippingAddress?: Prisma.ShippingAddressOmit
   paymentTransaction?: Prisma.PaymentTransactionOmit
   payout?: Prisma.PayoutOmit
   payoutMethod?: Prisma.PayoutMethodOmit

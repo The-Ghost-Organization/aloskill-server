@@ -291,3 +291,11 @@ export const BookStatus = {
 } as const
 
 export type BookStatus = (typeof BookStatus)[keyof typeof BookStatus]
+
+
+export const PurchaseFormat = {
+  PHYSICAL: 'PHYSICAL',
+  DIGITAL: 'DIGITAL'
+} as const
+
+export type PurchaseFormat = (typeof PurchaseFormat)[keyof typeof PurchaseFormat]

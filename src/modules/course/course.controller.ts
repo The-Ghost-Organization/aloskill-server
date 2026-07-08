@@ -62,11 +62,6 @@ const updateLessonProgress = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Course Updated successfully', result);
 });
 
-const getCartCourses = catchAsync(async (req, res): Promise<void> => {
-  const result = await courseService.getCartCourses(req);
-  ResponseHandler.ok(res, 'Course fetched successfully for Cart view!', result);
-});
-
 const getCategories = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getCategories();
   ResponseHandler.ok(res, 'Categories fetched successfully!', result);
@@ -194,7 +189,6 @@ export const courseController = {
   getSingleCourseForPublicView,
   getSingleCourseForPaidView,
   getSingleCourseForInstructorEdit,
-  getCartCourses,
   deleteVideo,
   deleteFile,
   getVideo,
