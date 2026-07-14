@@ -8,9 +8,11 @@ import {
   EnrollmentStatus,
   OrderStatus,
   PaymentProviders,
+  PurchaseFormat,
   TransactionStatus,
   TransactionType,
 } from '../../generated/client.js';
+import { getCheckoutSession } from '../../services/checkoutService.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
 
 const createPayment = async (req: Request) => {
@@ -314,7 +316,246 @@ const validateIPN = async (req: Request) => {
   console.log('Update Order Status: ', updateOrderStatus);
 };
 
+const createOrderWithEPS = async (req: Request) => {
+  const data = req.body as {
+    sessionId: string | null;
+    paymentMethod: string;
+    shippingDetails: {
+        fullName: string;
+        phoneNumber: string;
+        addressLine: string;
+        city: string;
+        postalCode: string;
+    } | null;
+    amount: number;
+  };
+
+  const user = req.user;
+  const shippingDetails = data.shippingDetails;
+
+  if (!user.email) {
+    throw new Error('Unauthorized');
+  }
+  if(!data.sessionId || !data.paymentMethod) {
+    throw new Error('Missing required fields');
+  }
+
+  const sessionData = await getCheckoutSession(data.sessionId) as { items: { books: {
+    category: string | undefined;
+    discountPrice: number;
+    id: string;
+    title: string;
+    originalPrice: number;
+    thumbnailUrl: string | null;
+  }[], courses: {
+    category: string | undefined;
+    discountPrice: number;
+    id: string;
+    title: string;
+    originalPrice: number;
+    thumbnailUrl: string | null;
+  }[] }, quantities:{ courses: { courseId: string; quantity: number }[]; books: { bookId: string; format: "PHYSICAL"| "EBOOK"; quantity: number }[]; }, subtotal: number } | null;
+
+  if (!sessionData) {
+    throw new Error('Invalid session ID');
+  }
+
+  const createOrder = await executeDbOperation(async (prisma) => {
+    return await prisma.$transaction(async (tx) => {
+      // 1. Verify User
+      const userData = await tx.user.findUnique({
+        where: {
+          email: user.email,
+          status: 'ACTIVE',
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          email: true,
+          studentProfile: {
+            select: {
+              displayName: true,
+            }
+          },
+          instructorProfile: {
+            where: {
+              deletedAt: null,
+              status: 'APPROVED',
+            },
+            select: {
+              displayName: true,
+            }
+          },
+        },
+      });
+
+      if (!userData) {throw new Error('User not found');}
+
+      // Safe fallbacks for items and quantities arrays
+      const sessionCourses = sessionData.items.courses;
+      const sessionBooks = sessionData.items.books;
+      const bookQuantities = sessionData.quantities.books;
+
+      // 2. Fetch courses and books from Database
+      const dbCourses = await tx.course.findMany({
+        where: {
+          id: { in: sessionCourses.map((c) => c.id) },
+          deletedAt: null,
+          status: 'PUBLISHED',
+        },
+        select: { id: true, originalPrice: true, discountPrice: true, isDiscountActive: true },
+      });
+
+      const dbBooks = await tx.book.findMany({
+        where: {
+          id: { in: sessionBooks.map((b) => b.id) },
+          deletedAt: null,
+          status: 'APPROVED',
+        },
+        select: {
+          id: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
+        },
+      });
+
+      if (dbCourses.length !== sessionCourses.length) {
+        throw new Error('One or more courses not found');
+      }
+      if (dbBooks.length !== sessionBooks.length) {
+        throw new Error('One or more books not found');
+      }
+
+      let total = 0;
+      const orderItemsData = [];
+
+      // 3. Process Course Prices
+      for (const course of dbCourses) {
+        const price = course.isDiscountActive && course.discountPrice
+          ? course.discountPrice
+          : course.originalPrice;
+
+        total += Number(price);
+        orderItemsData.push({
+          courseId: course.id,
+          format: PurchaseFormat.DIGITAL,
+          price,
+        });
+      }
+
+      // 4. Process Book Prices with Correct Format Extraction
+      let hasPhysicalItems = false;
+
+      for (const bookItem of sessionBooks) {
+        const dbBook = dbBooks.find((b) => b.id === bookItem.id);
+        if (!dbBook) {throw new Error('System mismatch fetching book data');}
+
+        // Look up the exact format for this specific book from quantities mapping
+        const quantityMeta = bookQuantities.find((q) => q.bookId === bookItem.id);
+
+        // Determine format safely (fall back to EBOOK/DIGITAL if metadata missing)
+        const isPhysical = quantityMeta?.format === 'PHYSICAL';
+        if (isPhysical) {hasPhysicalItems = true;}
+
+        let price = 0;
+        if (isPhysical) {
+          const decimalPrice = dbBook.physicalSalePrice ?? dbBook.physicalRegularPrice ?? 0;
+          price = Number(decimalPrice);
+        } else {
+          const decimalPrice = dbBook.digitalSalePrice ?? dbBook.digitalRegularPrice ?? 0;
+          price = Number(decimalPrice);
+        }
+
+        total += price;
+        orderItemsData.push({
+          bookId: dbBook.id,
+          format: isPhysical ? PurchaseFormat.PHYSICAL : PurchaseFormat.DIGITAL,
+          price,
+        });
+      }
+
+      // 5. Build dynamic shipping address relation
+      let shippingAddressConnectOrCreate;
+      if (shippingDetails && hasPhysicalItems) {
+        shippingAddressConnectOrCreate = {
+          create: {
+            fullName: shippingDetails.fullName,
+            addressLine: shippingDetails.addressLine,
+            city: shippingDetails.city,
+            postalCode: shippingDetails.postalCode,
+            phone: shippingDetails.phoneNumber,
+            country: 'Bangladesh',
+          }
+        };
+      }
+
+      const orderPayload: any = {
+        userId: userData.id,
+        totalAmount: total,
+        status: 'PENDING',
+        provider: 'SSLCommerce',
+        orderItems: {
+          create: orderItemsData,
+        },
+      };
+
+      if (shippingAddressConnectOrCreate) {
+        orderPayload.shippingAddress = shippingAddressConnectOrCreate;
+      }
+
+      // 6. Generate final order record
+      return {
+        ...userData,
+        orderData: await tx.order.create({
+          data: orderPayload,
+          select: {
+            id: true,
+            totalAmount: true,
+            orderItems: {
+              select: {
+                format: true,
+                price: true,
+                course: { select: { title: true } },
+                book: { select: { title: true } },
+              },
+            },
+            shippingAddress: true,
+          },
+        }),
+      };
+    });
+  });
+
+  if(!createOrder.id) {
+    throw new Error("Order Creation Failed");
+  }
+
+  const payWithUddoktaPay = await fetch('https://sandbox.uddoktapay.com/api/checkout-v2', {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'RT-UDDOKTAPAY-API-KEY': '982d381360a69d419689740d9f2e26ce36fb7a50',
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      full_name: createOrder.studentProfile?.displayName ?? createOrder.instructorProfile?.displayName ?? 'N/A',
+      email: createOrder.email,
+      amount: createOrder.orderData.totalAmount,
+      metadata: {user_id: createOrder.id, order_id: createOrder.orderData.id},
+      redirect_url: 'http://localhost:3000/success',
+      cancel_url: 'https://your-domain.com/cancel',
+      webhook_url: 'https://your-domain.com/ipn'
+    }),
+  });
+
+  const uddoktaPayData = await payWithUddoktaPay.json();
+  console.log("uddokta pay data : ", uddoktaPayData);
+};
+
 export const orderService = {
   createPayment,
   validateIPN,
+  createOrderWithEPS,
 };
