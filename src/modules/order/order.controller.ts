@@ -12,7 +12,14 @@ const validateIPN = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'IPN Validated Successfully!', result);
 });
 
+const createOrderWithEPS = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.createOrderWithEPS(req);
+  ResponseHandler.ok(res, 'Order Created Successfully!', result);
+});
+
 export const orderController = {
   createPayment,
   validateIPN,
+  createOrderWithEPS,
 };
+

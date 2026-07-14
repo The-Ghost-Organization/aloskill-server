@@ -824,6 +824,8 @@ model Book {
   digitalRegularPrice  Decimal?  @db.Decimal(10, 2)
   digitalSalePrice     Decimal?  @db.Decimal(10, 2)
 
+  // isDiscountActive field is required
+
   stock           Int      @default(0)
 
   isbn            String?  @unique
@@ -971,6 +973,9 @@ model ShippingAddress {
   country      String
   phone        String
   orders       Order[]
+
+  @@map("shipping_addresses")
+  // userId for future delivery address management for specific users.
 }
 
 /// Payments & payouts
