@@ -9,8 +9,4 @@ router.use(generalLimiter);
 
 router.post('/get-cart-items', requireAuth, cartController.getCartItems);
 
-router.post('/initiate-checkout', requireAuth, cartController.initiateCheckout);
-
-router.get("/get-checkout-summary/:sessionId", requireAuth, cartController.getCheckoutSummary);
-
 export const CartRoutes = router;

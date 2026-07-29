@@ -163,6 +163,7 @@ export type TransactionType = (typeof TransactionType)[keyof typeof TransactionT
 
 export const PaymentProviders = {
   SSLCommerce: 'SSLCommerce',
+  UDDOKTAPAY: 'UDDOKTAPAY',
   STRIPE: 'STRIPE',
   PAYPAL: 'PAYPAL'
 } as const

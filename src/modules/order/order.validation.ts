@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
-export const CreateOrderWithEPS = z.object({
+export const CreateOrderWithUDDOKTAPAY = z.object({
   body: z.object({
-      sessionId: z.string().nullable(),
       paymentMethod: z.string(),
       shippingDetails: z
         .object({
@@ -13,6 +12,49 @@ export const CreateOrderWithEPS = z.object({
           postalCode: z.string(),
         })
         .nullable(),
-      amount: z.number().positive(),
+      orderSummary: z
+        .object({
+          items: z.object({
+            books: z.array(
+              z.object({
+                id: z.string(),
+                title: z.string(),
+                category: z.string().optional(),
+                discountPrice: z.number().optional(),
+                originalPrice: z.number(),
+                thumbnailUrl: z.string().optional(),
+              })
+            ),
+            courses: z.array(
+              z.object({
+                id: z.string(),
+                title: z.string(),
+                category: z.string().optional(),
+                discountPrice: z.number().optional(),
+                originalPrice: z.number(),
+                thumbnailUrl: z.string().optional(),
+              })
+            ),
+          }),
+          quantities: z.object({
+            courses: z.array(
+              z.object({
+                courseId: z.string(),
+                quantity: z.number(),
+              })
+            ),
+            books: z.array(
+              z.object({
+                bookId: z.string(),
+                quantity: z.number(),
+                format: z.enum(['PHYSICAL', 'EBOOK']),
+              })
+            ),
+          }),
+          subtotal: z.number(),
+        })
+        .strict(),
     }),
 });
+
+export type UddoktapayPayload = z.infer<typeof CreateOrderWithUDDOKTAPAY>;

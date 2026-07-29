@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request } from 'express';
@@ -12,8 +13,8 @@ import {
   TransactionStatus,
   TransactionType,
 } from '../../generated/client.js';
-import { getCheckoutSession } from '../../services/checkoutService.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
+import { type UddoktapayPayload } from './order.validation.js';
 
 const createPayment = async (req: Request) => {
   const { courseIds, paymentMethod, user } = req.body;
@@ -316,48 +317,18 @@ const validateIPN = async (req: Request) => {
   console.log('Update Order Status: ', updateOrderStatus);
 };
 
-const createOrderWithEPS = async (req: Request) => {
-  const data = req.body as {
-    sessionId: string | null;
-    paymentMethod: string;
-    shippingDetails: {
-        fullName: string;
-        phoneNumber: string;
-        addressLine: string;
-        city: string;
-        postalCode: string;
-    } | null;
-    amount: number;
-  };
-
+const createOrderWithUDDOKTAPAY = async (req: Request) => {
+  console.log("hit the uddoktapay");
+  const data = req.body as UddoktapayPayload['body'];
   const user = req.user;
   const shippingDetails = data.shippingDetails;
 
   if (!user.email) {
     throw new Error('Unauthorized');
   }
-  if(!data.sessionId || !data.paymentMethod) {
-    throw new Error('Missing required fields');
-  }
 
-  const sessionData = await getCheckoutSession(data.sessionId) as { items: { books: {
-    category: string | undefined;
-    discountPrice: number;
-    id: string;
-    title: string;
-    originalPrice: number;
-    thumbnailUrl: string | null;
-  }[], courses: {
-    category: string | undefined;
-    discountPrice: number;
-    id: string;
-    title: string;
-    originalPrice: number;
-    thumbnailUrl: string | null;
-  }[] }, quantities:{ courses: { courseId: string; quantity: number }[]; books: { bookId: string; format: "PHYSICAL"| "EBOOK"; quantity: number }[]; }, subtotal: number } | null;
-
-  if (!sessionData) {
-    throw new Error('Invalid session ID');
+  if (!data.orderSummary) {
+    throw new Error('Invalid order summary');
   }
 
   const createOrder = await executeDbOperation(async (prisma) => {
@@ -392,9 +363,9 @@ const createOrderWithEPS = async (req: Request) => {
       if (!userData) {throw new Error('User not found');}
 
       // Safe fallbacks for items and quantities arrays
-      const sessionCourses = sessionData.items.courses;
-      const sessionBooks = sessionData.items.books;
-      const bookQuantities = sessionData.quantities.books;
+      const sessionCourses = data.orderSummary.items.courses;
+      const sessionBooks = data.orderSummary.items.books;
+      const bookQuantities = data.orderSummary.quantities.books;
 
       // 2. Fetch courses and books from Database
       const dbCourses = await tx.course.findMany({
@@ -477,32 +448,35 @@ const createOrderWithEPS = async (req: Request) => {
       }
 
       // 5. Build dynamic shipping address relation
-      let shippingAddressConnectOrCreate;
+      let shippingAddressId: string | null = null;
+
       if (shippingDetails && hasPhysicalItems) {
-        shippingAddressConnectOrCreate = {
-          create: {
+        const address = await tx.shippingAddress.create({
+          data: {
             fullName: shippingDetails.fullName,
             addressLine: shippingDetails.addressLine,
             city: shippingDetails.city,
             postalCode: shippingDetails.postalCode,
             phone: shippingDetails.phoneNumber,
             country: 'Bangladesh',
-          }
-        };
+          },
+          select: { id: true }
+        });
+        shippingAddressId = address.id;
       }
 
       const orderPayload: any = {
         userId: userData.id,
         totalAmount: total,
         status: 'PENDING',
-        provider: 'SSLCommerce',
+        provider: 'UDDOKTAPAY',
         orderItems: {
           create: orderItemsData,
         },
       };
 
-      if (shippingAddressConnectOrCreate) {
-        orderPayload.shippingAddress = shippingAddressConnectOrCreate;
+      if (shippingAddressId) {
+        orderPayload.shippingAddressId = shippingAddressId;
       }
 
       // 6. Generate final order record
@@ -532,30 +506,71 @@ const createOrderWithEPS = async (req: Request) => {
     throw new Error("Order Creation Failed");
   }
 
-  const payWithUddoktaPay = await fetch('https://sandbox.uddoktapay.com/api/checkout-v2', {
+  const payWithUddoktaPay = await fetch(`${config.UDDOKTAPAY_URL}/checkout-v2`, {
     method: 'POST',
     headers: {
       accept: 'application/json',
-      'RT-UDDOKTAPAY-API-KEY': '982d381360a69d419689740d9f2e26ce36fb7a50',
+      'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_CHECKOUT_API,
       'content-type': 'application/json'
     },
     body: JSON.stringify({
       full_name: createOrder.studentProfile?.displayName ?? createOrder.instructorProfile?.displayName ?? 'N/A',
       email: createOrder.email,
-      amount: createOrder.orderData.totalAmount,
+      amount: String(createOrder.orderData.totalAmount),
       metadata: {user_id: createOrder.id, order_id: createOrder.orderData.id},
+      return_type: "GET",
       redirect_url: 'http://localhost:3000/success',
-      cancel_url: 'https://your-domain.com/cancel',
-      webhook_url: 'https://your-domain.com/ipn'
+      cancel_url: 'http://localhost:3000/cancel',
+      webhook_url: 'http://localhost:5000/ipn'
     }),
   });
 
-  const uddoktaPayData = await payWithUddoktaPay.json();
-  console.log("uddokta pay data : ", uddoktaPayData);
+  const uddoktaPayData = await payWithUddoktaPay.json() as {
+    status?: boolean | string;
+    message?: string;
+    payment_url?: string;
+    errors?: Record<string, string[]>;
+  };
+
+  if (!payWithUddoktaPay.ok || !uddoktaPayData.payment_url) {
+    console.error("UddoktaPay Error Log:", {
+      httpStatus: payWithUddoktaPay.status,
+      message: uddoktaPayData.message ?? "No payment URL returned",
+      validationErrors: uddoktaPayData.errors ?? null,
+      fullResponse: uddoktaPayData
+    });
+
+    throw new Error(uddoktaPayData.message ?? "Failed to initiate payment with UddoktaPay");
+  }
+
+  return { gatewayUrl: uddoktaPayData.payment_url };
+};
+
+const verifyPayment = async (req: Request) => {
+  const { invoice_id } = req.query as { invoice_id: string; };
+
+  if (!invoice_id) {
+    throw new Error('Invalid request data');
+  }
+
+  const verifyPaymentWithUddoktapay = await fetch(config.UDDOKTAPAY_URL, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_VERIFY_API,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({invoice_id}),
+  });
+
+  const uddoktaPayData = await verifyPaymentWithUddoktapay.json() as { status: "COMPLETED" | "PENDING" | "FAILED"; };
+  return { orderStatus: uddoktaPayData.status };
+
 };
 
 export const orderService = {
   createPayment,
   validateIPN,
-  createOrderWithEPS,
+  createOrderWithUDDOKTAPAY,
+  verifyPayment,
 };
