@@ -3,7 +3,6 @@
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
 import { BookStatus, CourseStatus } from '../../generated/browser.js';
-import { createCheckoutSession, getCheckoutSession } from '../../services/checkoutService.js';
 
 const getCartItems = async (req: Request) => {
   const data = req.body as { courses?: string[]; books?: {bookId: string, format: string}[] };
@@ -98,22 +97,6 @@ const getCartItems = async (req: Request) => {
   return responseData;
 };
 
-const initiateCheckout = async (req: Request) => {
-  const data = req.body as { items: { books: [], courses: [] }, quantities:{ courses: { courseId: string; quantity: number }[]; books: { bookId: string; format: "PHYSICAL"| "EBOOK"; quantity: number }[]; }, subtotal: number };
-
-  const createSession = await createCheckoutSession(data.items, data.quantities, data.subtotal);
-  return createSession;
-};
-
-const getCheckoutSummary = async (req: Request) => {
-  const { sessionId } = req.params;
-  const getSession = await getCheckoutSession(sessionId as string) as { items: { books: [], courses: [] }, quantities:{ courses: { courseId: string; quantity: number }[]; books: { bookId: string; format: "PHYSICAL"| "EBOOK"; quantity: number }[]; }, subtotal: number };
-  return getSession;
-};
-
-
 export const cartService = {
   getCartItems,
-  initiateCheckout,
-  getCheckoutSummary
 };

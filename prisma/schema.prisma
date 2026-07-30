@@ -119,6 +119,7 @@ enum TransactionType {
 
 enum PaymentProviders {
   SSLCommerce
+  UDDOKTAPAY
   STRIPE
   PAYPAL
 }
@@ -928,7 +929,7 @@ model Order {
   orderItems          OrderItem[]
 
   shippingAddressId String?
-  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id], onDelete: SetNull)
+  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id], onDelete: Cascade)
 
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
@@ -975,7 +976,6 @@ model ShippingAddress {
   orders       Order[]
 
   @@map("shipping_addresses")
-  // userId for future delivery address management for specific users.
 }
 
 /// Payments & payouts

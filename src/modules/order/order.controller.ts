@@ -12,14 +12,20 @@ const validateIPN = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'IPN Validated Successfully!', result);
 });
 
-const createOrderWithEPS = catchAsync(async (req, res): Promise<void> => {
-  const result = await orderService.createOrderWithEPS(req);
+const createOrderWithUDDOKTAPAY = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.createOrderWithUDDOKTAPAY(req);
   ResponseHandler.ok(res, 'Order Created Successfully!', result);
+});
+
+const verifyPayment = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.verifyPayment(req);
+  ResponseHandler.ok(res, 'Payment Verified Successfully!', result);
 });
 
 export const orderController = {
   createPayment,
   validateIPN,
-  createOrderWithEPS,
+  createOrderWithUDDOKTAPAY,
+  verifyPayment,
 };
 

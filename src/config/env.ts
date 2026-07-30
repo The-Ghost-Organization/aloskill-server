@@ -63,6 +63,10 @@ const envSchema = z.object({
   BUNNY_PULL_ZONE: z.string().default(process.env.BUNNY_PULL_ZONE as string),
   SSLCOMMERCE_STORE_ID: z.string().default(process.env.SSLCOMMERCE_STORE_ID as string),
   SSLCOMMERCE_STORE_PASSWORD: z.string().default(process.env.SSLCOMMERCE_STORE_PASS as string),
+  UDDOKTAPAY_URL: z.string().default(process.env.UDDOKTAPAY_URL as string),
+  UDDOKTPAY_CHECKOUT_API: z.string().default(process.env.UDDOKTPAY_CHECKOUT_API as string),
+  UDDOKTPAY_VERIFY_API: z.string().default(process.env.UDDOKTPAY_VERIFY_API as string),
+  UDDOKTPAY_RETURN_API: z.string().default(process.env.UDDOKTPAY_RETURN_API as string),
 });
 
 export const config = envSchema.parse(process.env);
