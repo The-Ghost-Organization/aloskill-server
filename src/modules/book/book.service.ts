@@ -265,8 +265,10 @@ const getAllBooksDataforAdmin = async (req: Request) => {
           author: true,
           totalEarning: true,
           formats: true,
-          regularPrice: true,
-          salePrice: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
           stock: true,
           status: true,
           orderItem: {
