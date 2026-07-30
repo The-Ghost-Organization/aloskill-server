@@ -50,6 +50,10 @@ export type LessonMinAggregateOutputType = {
   deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  isNew: boolean | null
+  isUpdated: boolean | null
+  suspendReason: string | null
+  adminNote: string | null
 }
 
 export type LessonMaxAggregateOutputType = {
@@ -66,6 +70,10 @@ export type LessonMaxAggregateOutputType = {
   deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  isNew: boolean | null
+  isUpdated: boolean | null
+  suspendReason: string | null
+  adminNote: string | null
 }
 
 export type LessonCountAggregateOutputType = {
@@ -82,6 +90,10 @@ export type LessonCountAggregateOutputType = {
   deletedAt: number
   createdAt: number
   updatedAt: number
+  isNew: number
+  isUpdated: number
+  suspendReason: number
+  adminNote: number
   _all: number
 }
 
@@ -110,6 +122,10 @@ export type LessonMinAggregateInputType = {
   deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  isNew?: true
+  isUpdated?: true
+  suspendReason?: true
+  adminNote?: true
 }
 
 export type LessonMaxAggregateInputType = {
@@ -126,6 +142,10 @@ export type LessonMaxAggregateInputType = {
   deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  isNew?: true
+  isUpdated?: true
+  suspendReason?: true
+  adminNote?: true
 }
 
 export type LessonCountAggregateInputType = {
@@ -142,6 +162,10 @@ export type LessonCountAggregateInputType = {
   deletedAt?: true
   createdAt?: true
   updatedAt?: true
+  isNew?: true
+  isUpdated?: true
+  suspendReason?: true
+  adminNote?: true
   _all?: true
 }
 
@@ -245,6 +269,10 @@ export type LessonGroupByOutputType = {
   deletedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  isNew: boolean
+  isUpdated: boolean
+  suspendReason: string | null
+  adminNote: string | null
   _count: LessonCountAggregateOutputType | null
   _avg: LessonAvgAggregateOutputType | null
   _sum: LessonSumAggregateOutputType | null
@@ -284,6 +312,10 @@ export type LessonWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
+  isNew?: Prisma.BoolFilter<"Lesson"> | boolean
+  isUpdated?: Prisma.BoolFilter<"Lesson"> | boolean
+  suspendReason?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Lesson"> | string | null
   module?: Prisma.XOR<Prisma.ModuleScalarRelationFilter, Prisma.ModuleWhereInput>
   files?: Prisma.LessonFileListRelationFilter
   progressRecords?: Prisma.LessonProgressListRelationFilter
@@ -305,6 +337,10 @@ export type LessonOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isNew?: Prisma.SortOrder
+  isUpdated?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
   module?: Prisma.ModuleOrderByWithRelationInput
   files?: Prisma.LessonFileOrderByRelationAggregateInput
   progressRecords?: Prisma.LessonProgressOrderByRelationAggregateInput
@@ -329,6 +365,10 @@ export type LessonWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
+  isNew?: Prisma.BoolFilter<"Lesson"> | boolean
+  isUpdated?: Prisma.BoolFilter<"Lesson"> | boolean
+  suspendReason?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Lesson"> | string | null
   module?: Prisma.XOR<Prisma.ModuleScalarRelationFilter, Prisma.ModuleWhereInput>
   files?: Prisma.LessonFileListRelationFilter
   progressRecords?: Prisma.LessonProgressListRelationFilter
@@ -350,6 +390,10 @@ export type LessonOrderByWithAggregationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isNew?: Prisma.SortOrder
+  isUpdated?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LessonCountOrderByAggregateInput
   _avg?: Prisma.LessonAvgOrderByAggregateInput
   _max?: Prisma.LessonMaxOrderByAggregateInput
@@ -374,6 +418,10 @@ export type LessonScalarWhereWithAggregatesInput = {
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Lesson"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Lesson"> | Date | string
+  isNew?: Prisma.BoolWithAggregatesFilter<"Lesson"> | boolean
+  isUpdated?: Prisma.BoolWithAggregatesFilter<"Lesson"> | boolean
+  suspendReason?: Prisma.StringNullableWithAggregatesFilter<"Lesson"> | string | null
+  adminNote?: Prisma.StringNullableWithAggregatesFilter<"Lesson"> | string | null
 }
 
 export type LessonCreateInput = {
@@ -389,6 +437,10 @@ export type LessonCreateInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
   files?: Prisma.LessonFileCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressCreateNestedManyWithoutLessonInput
@@ -410,6 +462,10 @@ export type LessonUncheckedCreateInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   files?: Prisma.LessonFileUncheckedCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutLessonInput
@@ -429,6 +485,10 @@ export type LessonUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
   files?: Prisma.LessonFileUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUpdateManyWithoutLessonNestedInput
@@ -450,6 +510,10 @@ export type LessonUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   files?: Prisma.LessonFileUncheckedUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUncheckedUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutLessonNestedInput
@@ -470,6 +534,10 @@ export type LessonCreateManyInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
 }
 
 export type LessonUpdateManyMutationInput = {
@@ -485,6 +553,10 @@ export type LessonUpdateManyMutationInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LessonUncheckedUpdateManyInput = {
@@ -501,6 +573,10 @@ export type LessonUncheckedUpdateManyInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LessonListRelationFilter = {
@@ -527,6 +603,10 @@ export type LessonCountOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isNew?: Prisma.SortOrder
+  isUpdated?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
 }
 
 export type LessonAvgOrderByAggregateInput = {
@@ -548,6 +628,10 @@ export type LessonMaxOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isNew?: Prisma.SortOrder
+  isUpdated?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
 }
 
 export type LessonMinOrderByAggregateInput = {
@@ -564,6 +648,10 @@ export type LessonMinOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isNew?: Prisma.SortOrder
+  isUpdated?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
 }
 
 export type LessonSumOrderByAggregateInput = {
@@ -698,6 +786,10 @@ export type LessonCreateWithoutModuleInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   files?: Prisma.LessonFileCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionCreateNestedManyWithoutLessonInput
@@ -717,6 +809,10 @@ export type LessonUncheckedCreateWithoutModuleInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   files?: Prisma.LessonFileUncheckedCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutLessonInput
@@ -766,6 +862,10 @@ export type LessonScalarWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lesson"> | Date | string
+  isNew?: Prisma.BoolFilter<"Lesson"> | boolean
+  isUpdated?: Prisma.BoolFilter<"Lesson"> | boolean
+  suspendReason?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Lesson"> | string | null
 }
 
 export type LessonCreateWithoutFilesInput = {
@@ -781,6 +881,10 @@ export type LessonCreateWithoutFilesInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
   progressRecords?: Prisma.LessonProgressCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionCreateNestedManyWithoutLessonInput
@@ -801,6 +905,10 @@ export type LessonUncheckedCreateWithoutFilesInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   progressRecords?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutLessonInput
   quiz?: Prisma.QuizUncheckedCreateNestedOneWithoutLessonInput
@@ -835,6 +943,10 @@ export type LessonUpdateWithoutFilesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
   progressRecords?: Prisma.LessonProgressUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUpdateManyWithoutLessonNestedInput
@@ -855,6 +967,10 @@ export type LessonUncheckedUpdateWithoutFilesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   progressRecords?: Prisma.LessonProgressUncheckedUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutLessonNestedInput
   quiz?: Prisma.QuizUncheckedUpdateOneWithoutLessonNestedInput
@@ -873,6 +989,10 @@ export type LessonCreateWithoutDiscussionsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
   files?: Prisma.LessonFileCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressCreateNestedManyWithoutLessonInput
@@ -893,6 +1013,10 @@ export type LessonUncheckedCreateWithoutDiscussionsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   files?: Prisma.LessonFileUncheckedCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutLessonInput
   quiz?: Prisma.QuizUncheckedCreateNestedOneWithoutLessonInput
@@ -927,6 +1051,10 @@ export type LessonUpdateWithoutDiscussionsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
   files?: Prisma.LessonFileUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUpdateManyWithoutLessonNestedInput
@@ -947,6 +1075,10 @@ export type LessonUncheckedUpdateWithoutDiscussionsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   files?: Prisma.LessonFileUncheckedUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUncheckedUpdateManyWithoutLessonNestedInput
   quiz?: Prisma.QuizUncheckedUpdateOneWithoutLessonNestedInput
@@ -965,6 +1097,10 @@ export type LessonCreateWithoutProgressRecordsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
   files?: Prisma.LessonFileCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionCreateNestedManyWithoutLessonInput
@@ -985,6 +1121,10 @@ export type LessonUncheckedCreateWithoutProgressRecordsInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   files?: Prisma.LessonFileUncheckedCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutLessonInput
   quiz?: Prisma.QuizUncheckedCreateNestedOneWithoutLessonInput
@@ -1019,6 +1159,10 @@ export type LessonUpdateWithoutProgressRecordsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
   files?: Prisma.LessonFileUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUpdateManyWithoutLessonNestedInput
@@ -1039,6 +1183,10 @@ export type LessonUncheckedUpdateWithoutProgressRecordsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   files?: Prisma.LessonFileUncheckedUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutLessonNestedInput
   quiz?: Prisma.QuizUncheckedUpdateOneWithoutLessonNestedInput
@@ -1057,6 +1205,10 @@ export type LessonCreateWithoutQuizInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   module: Prisma.ModuleCreateNestedOneWithoutLessonsInput
   files?: Prisma.LessonFileCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressCreateNestedManyWithoutLessonInput
@@ -1077,6 +1229,10 @@ export type LessonUncheckedCreateWithoutQuizInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
   files?: Prisma.LessonFileUncheckedCreateNestedManyWithoutLessonInput
   progressRecords?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutLessonInput
   discussions?: Prisma.LessonDiscussionUncheckedCreateNestedManyWithoutLessonInput
@@ -1111,6 +1267,10 @@ export type LessonUpdateWithoutQuizInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   module?: Prisma.ModuleUpdateOneRequiredWithoutLessonsNestedInput
   files?: Prisma.LessonFileUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUpdateManyWithoutLessonNestedInput
@@ -1131,6 +1291,10 @@ export type LessonUncheckedUpdateWithoutQuizInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   files?: Prisma.LessonFileUncheckedUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUncheckedUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutLessonNestedInput
@@ -1149,6 +1313,10 @@ export type LessonCreateManyModuleInput = {
   deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: string | null
+  adminNote?: string | null
 }
 
 export type LessonUpdateWithoutModuleInput = {
@@ -1164,6 +1332,10 @@ export type LessonUpdateWithoutModuleInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   files?: Prisma.LessonFileUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUpdateManyWithoutLessonNestedInput
@@ -1183,6 +1355,10 @@ export type LessonUncheckedUpdateWithoutModuleInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   files?: Prisma.LessonFileUncheckedUpdateManyWithoutLessonNestedInput
   progressRecords?: Prisma.LessonProgressUncheckedUpdateManyWithoutLessonNestedInput
   discussions?: Prisma.LessonDiscussionUncheckedUpdateManyWithoutLessonNestedInput
@@ -1202,6 +1378,10 @@ export type LessonUncheckedUpdateManyWithoutModuleInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isNew?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isUpdated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1267,6 +1447,10 @@ export type LessonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
   files?: boolean | Prisma.Lesson$filesArgs<ExtArgs>
   progressRecords?: boolean | Prisma.Lesson$progressRecordsArgs<ExtArgs>
@@ -1289,6 +1473,10 @@ export type LessonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lesson"]>
 
@@ -1306,6 +1494,10 @@ export type LessonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lesson"]>
 
@@ -1323,9 +1515,13 @@ export type LessonSelectScalar = {
   deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isNew?: boolean
+  isUpdated?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
 }
 
-export type LessonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "moduleId" | "position" | "title" | "description" | "notes" | "type" | "contentUrl" | "contentName" | "duration" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lesson"]>
+export type LessonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "moduleId" | "position" | "title" | "description" | "notes" | "type" | "contentUrl" | "contentName" | "duration" | "deletedAt" | "createdAt" | "updatedAt" | "isNew" | "isUpdated" | "suspendReason" | "adminNote", ExtArgs["result"]["lesson"]>
 export type LessonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
   files?: boolean | Prisma.Lesson$filesArgs<ExtArgs>
@@ -1364,6 +1560,10 @@ export type $LessonPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    isNew: boolean
+    isUpdated: boolean
+    suspendReason: string | null
+    adminNote: string | null
   }, ExtArgs["result"]["lesson"]>
   composites: {}
 }
@@ -1805,6 +2005,10 @@ export interface LessonFieldRefs {
   readonly deletedAt: Prisma.FieldRef<"Lesson", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Lesson", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Lesson", 'DateTime'>
+  readonly isNew: Prisma.FieldRef<"Lesson", 'Boolean'>
+  readonly isUpdated: Prisma.FieldRef<"Lesson", 'Boolean'>
+  readonly suspendReason: Prisma.FieldRef<"Lesson", 'String'>
+  readonly adminNote: Prisma.FieldRef<"Lesson", 'String'>
 }
     
 

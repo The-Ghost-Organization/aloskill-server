@@ -6,10 +6,8 @@ import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
 import {
   ApplicationStatus,
-  CourseLevel,
   CourseStatus,
   EnrollmentStatus,
-  Language,
   QuestionType,
   UserStatus,
 } from '../../generated/client.js';
@@ -674,7 +672,7 @@ const getAllCoursesForStudent = async (req: Request) => {
         thumbnailUrl: true,
         LessonProgress: {
           where: {
-            userId: userExist.id
+            userId: userExist.id,
           },
           select: {
             completed: true,
@@ -698,12 +696,12 @@ const getAllCoursesForStudent = async (req: Request) => {
           select: {
             enrollments: true,
             reviews: true,
-            LessonProgress:{
+            LessonProgress: {
               where: {
-                userId: userExist.id
-              }
+                userId: userExist.id,
+              },
             },
-            courseInstructors: true
+            courseInstructors: true,
           },
         },
         modules: {
@@ -731,54 +729,13 @@ const getAllCoursesForStudent = async (req: Request) => {
 };
 
 const getAllCoursesForPublic = async (req: Request) => {
-  const { take, page, isHome, category, level, language, rating, priceMin, priceMax, userId } =
-    req.query;
-  console.log('user-id::', userId);
-  const categoryIds = await executeDbOperation(async prisma => {
-    if (!category) {
-      return [];
-    }
-
-    const parentCategory = await prisma.category.findFirst({
-      where: { name: category as string },
-      select: {
-        children: { select: { id: true } },
-      },
-    });
-
-    if (!parentCategory) {
-      return [];
-    }
-    return [...parentCategory.children.map(child => child.id)];
-  });
-
+  const { isHome } = req.query;
   const getCourses = await executeDbOperation(async prisma => {
     return await prisma.course.findMany({
       where: {
         status: CourseStatus.PUBLISHED,
         deletedAt: null,
-        ...(categoryIds.length > 0 && { categoryId: { in: categoryIds } }),
-        ...(language && {
-          language: language === 'bangla' ? Language.BANGLA : Language.ENGLISH,
-        }),
-        ...(level && {
-          level:
-            level === 'intermediate'
-              ? CourseLevel.INTERMEDIATE
-              : level === 'beginner'
-                ? CourseLevel.BEGINNER
-                : level === 'advanced'
-                  ? CourseLevel.ADVANCED
-                  : undefined,
-        }),
         ...(isHome && { ratingAverage: { gte: 2 } }),
-        ...(rating && { ratingAverage: { gte: Number(rating) } }),
-        ...((priceMin ?? priceMax) && {
-          originalPrice: {
-            ...(priceMin && { gte: Number(priceMin) }),
-            ...(priceMax && { lte: Number(priceMax) }),
-          },
-        }),
       },
       orderBy: [{ createdAt: 'desc' }],
       select: {
@@ -788,6 +745,9 @@ const getAllCoursesForPublic = async (req: Request) => {
         originalPrice: true,
         discountPrice: true,
         status: true,
+        language: true,
+        ratingAverage: true,
+        level: true,
         createdAt: true,
         category: {
           select: {
@@ -821,18 +781,11 @@ const getAllCoursesForPublic = async (req: Request) => {
           },
         },
         enrollments: {
-          where: {
-            user: {
-              id: userId as string,
-            },
-          },
           select: {
             userId: true,
           },
         },
       },
-      ...(page && { skip: (Number(page) - 1) * Number(take) }),
-      ...(take && { take: Number(take) }),
     });
   }, 'Get All Associated Courses for Public view');
 
@@ -840,6 +793,56 @@ const getAllCoursesForPublic = async (req: Request) => {
     throw new Error('No Courses Found');
   }
   return getCourses;
+};
+
+const getAllCoursesForAdminDashboardStudentView = async (req: Request) => {
+  const user = req.user;
+  if (!user.email) {
+    throw new Error('User email not found in request');
+  }
+
+  const userProfile = await executeDbOperation(async prisma => {
+    return await prisma.user.findUnique({
+      where: { email: user.email, deletedAt: null, status: UserStatus.ACTIVE },
+      include: { assignedRole: true },
+    });
+  });
+  if (!userProfile) {
+    throw new Error('Unauthorized: User profile not found.');
+  }
+  const isAuthorized = userProfile.assignedRole.some(r => r.role === 'ADMIN');
+  if (!isAuthorized) {
+    throw new Error('Security Violation: Only Admins can see this status');
+  }
+
+  const courses = await executeDbOperation(async prisma => {
+    return await prisma.course.findMany({
+      where: {
+        status: 'PUBLISHED',
+      },
+      select: {
+        id: true,
+        title: true,
+        discountPrice: true,
+        originalPrice: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        createdBy: {
+          select: {
+            displayName: true,
+          },
+        },
+      },
+    });
+  });
+
+  if (courses.length === 0) {
+    throw new Error('No courses found');
+  }
+  return courses;
 };
 
 const getSingleCourseForPublicView = async (req: Request) => {
@@ -1550,23 +1553,25 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
   return formatCourseData(getCourseDetails);
 };
 
-const getInstructorDashboardData = async(req: Request)=>{
+const getInstructorDashboardData = async (req: Request) => {
   const userId = req.query.userId as string;
-  if(!userId){
-    throw new Error("User not Found for Dashboard Data");
-  };
+  if (!userId) {
+    throw new Error('User not Found for Dashboard Data');
+  }
 
-  const instructorData = await executeDbOperation(async (prisma) => {
+  const instructorData = await executeDbOperation(async prisma => {
     const primaryInstructor = await prisma.instructorProfile.findUnique({
       where: { userId },
-      select: { id: true, displayName: true, ratingAverage: true }
+      select: { id: true, displayName: true, ratingAverage: true },
     });
 
-    if (!primaryInstructor) {throw new Error("Instructor profile not found");}
+    if (!primaryInstructor) {
+      throw new Error('Instructor profile not found');
+    }
 
     const ownedCourses = await prisma.course.findMany({
       where: { createdById: primaryInstructor.id },
-      select: { id: true }
+      select: { id: true },
     });
 
     const ownedCourseIds = ownedCourses.map(c => c.id);
@@ -1575,8 +1580,8 @@ const getInstructorDashboardData = async(req: Request)=>{
       by: ['instructorId'],
       where: {
         courseId: { in: ownedCourseIds },
-        instructorId: { not: primaryInstructor.id }
-      }
+        instructorId: { not: primaryInstructor.id },
+      },
     });
 
     const totalOtherInstructors = otherInstructors.length;
@@ -1594,9 +1599,9 @@ const getInstructorDashboardData = async(req: Request)=>{
             { userId },
             {
               entityType: { in: ['course', 'enrollment', 'payout'] },
-              entityId: { in: ownedCourseIds }
-            }
-          ]
+              entityId: { in: ownedCourseIds },
+            },
+          ],
         },
         orderBy: { timestamp: 'desc' },
         take: 10,
@@ -1605,7 +1610,7 @@ const getInstructorDashboardData = async(req: Request)=>{
             select: {
               avatarUrl: true,
               instructorProfile: { select: { displayName: true } },
-              studentProfile: { select: { displayName: true } }
+              studentProfile: { select: { displayName: true } },
             },
           },
         },
@@ -1616,8 +1621,8 @@ const getInstructorDashboardData = async(req: Request)=>{
         orderBy: { createdAt: 'desc' },
         take: 4,
         include: {
-          user: { select: { avatarUrl: true, studentProfile: { select: { displayName: true } } } }
-        }
+          user: { select: { avatarUrl: true, studentProfile: { select: { displayName: true } } } },
+        },
       }),
 
       prisma.course.findMany({
@@ -1629,8 +1634,8 @@ const getInstructorDashboardData = async(req: Request)=>{
           status: true,
         },
         orderBy: { enrollmentCount: 'desc' },
-        take: 5
-      })
+        take: 5,
+      }),
     ]);
 
     const totalStudentsCount = await prisma.enrollment.count({
@@ -1649,60 +1654,18 @@ const getInstructorDashboardData = async(req: Request)=>{
         totalOtherInstructors,
       },
       recentActivity,
-      reviews : reviews.map(review => ({
+      reviews: reviews.map(review => ({
         rating: review.rating,
         body: review.body,
         createdAt: review.createdAt,
         userDisplayName: review.user.studentProfile?.displayName,
         avatarUrl: review.user.avatarUrl,
       })),
-      courseOverview
+      courseOverview,
     };
-  }, "Fetch Instructor Dashboard Data");
+  }, 'Fetch Instructor Dashboard Data');
 
   return instructorData;
-};
-
-const getCartCourses = async (req: Request) => {
-  const courseIds = req.body as string[];
-  if (courseIds.length === 0) {
-    throw new Error('Course Not Provided');
-  }
-
-  const getCourseDetails = await executeDbOperation(async prisma => {
-    return await prisma.course.findMany({
-      where: {
-        id: { in: courseIds },
-        status: CourseStatus.PUBLISHED,
-        deletedAt: null,
-      },
-      select: {
-        id: true,
-        title: true,
-        originalPrice: true,
-        discountPrice: true,
-        thumbnailUrl: true,
-        category: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-  }, 'Get Specific Course Data for Cart');
-
-  if (getCourseDetails.length === 0) {
-    throw new Error('Course Not Found for Cart');
-  }
-
-  const formatCourseData = (courses: typeof getCourseDetails) => {
-    return courses.map(course => ({
-      ...course,
-      category: course.category?.name,
-      discountPrice: course.discountPrice ?? 0,
-    }));
-  };
-  return formatCourseData(getCourseDetails);
 };
 
 const updateLessonProgress = async (req: Request) => {
@@ -1831,9 +1794,8 @@ const createFileToBunny = async (req: Request) => {
   if (!folder) {
     return null;
   }
-  const REGION = 'SG';
+  const REGION = 'sg';
   const BASE_HOSTNAME = 'storage.bunnycdn.com';
-  // const HOSTNAME = `${BASE_HOSTNAME}`;
   const HOSTNAME = `${REGION}.${BASE_HOSTNAME}`;
 
   const uniqueId = Math.random().toString(36).substring(2, 8);
@@ -1856,9 +1818,11 @@ const createFileToBunny = async (req: Request) => {
     const errorText = await uploadfile.text();
     throw new Error(`Bunny Storage API Error: ${errorText}`);
   }
-  return `https://sg.storage.bunnycdn.com/${storageZone}/${safePath}/${fileName}`;
+  // return `https://sg.storage.bunnycdn.com/${storageZone}/${safePath}/${fileName}`;
+  return `https://aloskill-pull-zone-7.b-cdn.net/${safePath}/${fileName}`;
 };
 
+// currently not used in anyother api
 const getVideo = async (req: Request) => {
   const { videoUrl } = req.body as { videoUrl: string };
   if (!videoUrl) {
@@ -1888,7 +1852,7 @@ const getSecureVideoToken = (req: Request) => {
   // const userIp = req.ip;
   const authenticationKey = config.BUNNY_STREAM_TOKEN_AUTH_KEY;
   const libraryId = config.BUNNY_STREAM_LIBRARY_ID;
-  const expires = Math.floor(new Date().getTime() / 1000) + 1200 + duration * 60;
+  const expires = Math.floor(new Date().getTime() / 1000) + duration * 60;
   const hashableBase = authenticationKey + filePath + expires;
 
   const signature = crypto.createHash('sha256').update(hashableBase).digest('hex');
@@ -1921,18 +1885,23 @@ const deleteVideo = async (req: Request) => {
 };
 
 const deleteFile = async (req: Request) => {
+  const storageZone = config.BUNNY_STORAGE_ZONE_USERNAME;
   const { fileUrl } = req.body as { fileUrl: string };
   if (!fileUrl) {
     throw new Error('File path not provided');
   }
-
-  const response = await fetch(fileUrl, {
-    method: 'DELETE',
-    headers: {
-      AccessKey: config.BUNNY_STORAGE_ZONE_PASSWORD,
-      accept: 'application/json',
-    },
-  });
+  const fileArray = fileUrl.split('/');
+  fileArray.splice(0, 3);
+  const response = await fetch(
+    `https://sg.storage.bunnycdn.com/${storageZone}/${fileArray.join('/')}`,
+    {
+      method: 'DELETE',
+      headers: {
+        AccessKey: config.BUNNY_STORAGE_ZONE_PASSWORD,
+        accept: 'application/json',
+      },
+    }
+  );
 
   if (!response.ok) {
     return false;
@@ -1948,6 +1917,7 @@ export const courseService = {
   getAllCoursesForInstructor,
   getAllCoursesForStudent,
   getAllCoursesForPublic,
+  getAllCoursesForAdminDashboardStudentView,
   getCategories,
   getCourseInstructors,
   getInstructorDashboardData,
@@ -1959,7 +1929,6 @@ export const courseService = {
   getSingleCourseForPaidView,
   getSingleCourseForInstructorEdit,
   updateLessonProgress,
-  getCartCourses,
   deleteVideo,
   getVideo,
   deleteFile,

@@ -43,7 +43,7 @@ export type DeviceType = (typeof DeviceType)[keyof typeof DeviceType]
 export const CourseStatus = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED',
-  ARCHIVED: 'ARCHIVED'
+  PENDING: 'PENDING'
 } as const
 
 export type CourseStatus = (typeof CourseStatus)[keyof typeof CourseStatus]
@@ -163,6 +163,7 @@ export type TransactionType = (typeof TransactionType)[keyof typeof TransactionT
 
 export const PaymentProviders = {
   SSLCommerce: 'SSLCommerce',
+  UDDOKTAPAY: 'UDDOKTAPAY',
   STRIPE: 'STRIPE',
   PAYPAL: 'PAYPAL'
 } as const
@@ -282,3 +283,20 @@ export const BookFileType = {
 } as const
 
 export type BookFileType = (typeof BookFileType)[keyof typeof BookFileType]
+
+
+export const BookStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  DRAFT: 'DRAFT'
+} as const
+
+export type BookStatus = (typeof BookStatus)[keyof typeof BookStatus]
+
+
+export const PurchaseFormat = {
+  PHYSICAL: 'PHYSICAL',
+  DIGITAL: 'DIGITAL'
+} as const
+
+export type PurchaseFormat = (typeof PurchaseFormat)[keyof typeof PurchaseFormat]

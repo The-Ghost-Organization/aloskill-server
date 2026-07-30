@@ -27,8 +27,10 @@ export type AggregateBook = {
 }
 
 export type BookAvgAggregateOutputType = {
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   pages: number | null
   totalEarning: runtime.Decimal | null
@@ -36,8 +38,10 @@ export type BookAvgAggregateOutputType = {
 }
 
 export type BookSumAggregateOutputType = {
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   pages: number | null
   totalEarning: runtime.Decimal | null
@@ -52,8 +56,10 @@ export type BookMinAggregateOutputType = {
   editor: string | null
   publisher: string | null
   description: string | null
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   isbn: string | null
   edition: string | null
@@ -61,6 +67,9 @@ export type BookMinAggregateOutputType = {
   language: string | null
   totalEarning: runtime.Decimal | null
   viewCount: number | null
+  status: $Enums.BookStatus | null
+  suspendReason: string | null
+  adminNote: string | null
   metaKeywords: string | null
   metaDescription: string | null
   coverImage: string | null
@@ -68,6 +77,7 @@ export type BookMinAggregateOutputType = {
   categoryId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type BookMaxAggregateOutputType = {
@@ -78,8 +88,10 @@ export type BookMaxAggregateOutputType = {
   editor: string | null
   publisher: string | null
   description: string | null
-  regularPrice: runtime.Decimal | null
-  salePrice: runtime.Decimal | null
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number | null
   isbn: string | null
   edition: string | null
@@ -87,6 +99,9 @@ export type BookMaxAggregateOutputType = {
   language: string | null
   totalEarning: runtime.Decimal | null
   viewCount: number | null
+  status: $Enums.BookStatus | null
+  suspendReason: string | null
+  adminNote: string | null
   metaKeywords: string | null
   metaDescription: string | null
   coverImage: string | null
@@ -94,6 +109,7 @@ export type BookMaxAggregateOutputType = {
   categoryId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type BookCountAggregateOutputType = {
@@ -104,8 +120,10 @@ export type BookCountAggregateOutputType = {
   editor: number
   publisher: number
   description: number
-  regularPrice: number
-  salePrice: number
+  physicalRegularPrice: number
+  physicalSalePrice: number
+  digitalRegularPrice: number
+  digitalSalePrice: number
   stock: number
   isbn: number
   edition: number
@@ -114,6 +132,10 @@ export type BookCountAggregateOutputType = {
   formats: number
   totalEarning: number
   viewCount: number
+  status: number
+  suspendReason: number
+  adminNote: number
+  updatedContent: number
   metaKeywords: number
   metaDescription: number
   coverImage: number
@@ -121,13 +143,16 @@ export type BookCountAggregateOutputType = {
   categoryId: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
 export type BookAvgAggregateInputType = {
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   pages?: true
   totalEarning?: true
@@ -135,8 +160,10 @@ export type BookAvgAggregateInputType = {
 }
 
 export type BookSumAggregateInputType = {
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   pages?: true
   totalEarning?: true
@@ -151,8 +178,10 @@ export type BookMinAggregateInputType = {
   editor?: true
   publisher?: true
   description?: true
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   isbn?: true
   edition?: true
@@ -160,6 +189,9 @@ export type BookMinAggregateInputType = {
   language?: true
   totalEarning?: true
   viewCount?: true
+  status?: true
+  suspendReason?: true
+  adminNote?: true
   metaKeywords?: true
   metaDescription?: true
   coverImage?: true
@@ -167,6 +199,7 @@ export type BookMinAggregateInputType = {
   categoryId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type BookMaxAggregateInputType = {
@@ -177,8 +210,10 @@ export type BookMaxAggregateInputType = {
   editor?: true
   publisher?: true
   description?: true
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   isbn?: true
   edition?: true
@@ -186,6 +221,9 @@ export type BookMaxAggregateInputType = {
   language?: true
   totalEarning?: true
   viewCount?: true
+  status?: true
+  suspendReason?: true
+  adminNote?: true
   metaKeywords?: true
   metaDescription?: true
   coverImage?: true
@@ -193,6 +231,7 @@ export type BookMaxAggregateInputType = {
   categoryId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type BookCountAggregateInputType = {
@@ -203,8 +242,10 @@ export type BookCountAggregateInputType = {
   editor?: true
   publisher?: true
   description?: true
-  regularPrice?: true
-  salePrice?: true
+  physicalRegularPrice?: true
+  physicalSalePrice?: true
+  digitalRegularPrice?: true
+  digitalSalePrice?: true
   stock?: true
   isbn?: true
   edition?: true
@@ -213,6 +254,10 @@ export type BookCountAggregateInputType = {
   formats?: true
   totalEarning?: true
   viewCount?: true
+  status?: true
+  suspendReason?: true
+  adminNote?: true
+  updatedContent?: true
   metaKeywords?: true
   metaDescription?: true
   coverImage?: true
@@ -220,6 +265,7 @@ export type BookCountAggregateInputType = {
   categoryId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -317,8 +363,10 @@ export type BookGroupByOutputType = {
   editor: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal
-  salePrice: runtime.Decimal
+  physicalRegularPrice: runtime.Decimal | null
+  physicalSalePrice: runtime.Decimal | null
+  digitalRegularPrice: runtime.Decimal | null
+  digitalSalePrice: runtime.Decimal | null
   stock: number
   isbn: string | null
   edition: string | null
@@ -327,6 +375,10 @@ export type BookGroupByOutputType = {
   formats: $Enums.BookFormat[]
   totalEarning: runtime.Decimal
   viewCount: number
+  status: $Enums.BookStatus
+  suspendReason: string | null
+  adminNote: string | null
+  updatedContent: runtime.JsonValue | null
   metaKeywords: string | null
   metaDescription: string | null
   coverImage: string
@@ -334,6 +386,7 @@ export type BookGroupByOutputType = {
   categoryId: string | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: BookCountAggregateOutputType | null
   _avg: BookAvgAggregateOutputType | null
   _sum: BookSumAggregateOutputType | null
@@ -367,8 +420,10 @@ export type BookWhereInput = {
   editor?: Prisma.StringNullableFilter<"Book"> | string | null
   publisher?: Prisma.StringFilter<"Book"> | string
   description?: Prisma.StringFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFilter<"Book"> | number
   isbn?: Prisma.StringNullableFilter<"Book"> | string | null
   edition?: Prisma.StringNullableFilter<"Book"> | string | null
@@ -377,6 +432,10 @@ export type BookWhereInput = {
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusFilter<"Book"> | $Enums.BookStatus
+  suspendReason?: Prisma.StringNullableFilter<"Book"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Book"> | string | null
+  updatedContent?: Prisma.JsonNullableFilter<"Book">
   metaKeywords?: Prisma.StringNullableFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Book"> | string | null
   coverImage?: Prisma.StringFilter<"Book"> | string
@@ -384,6 +443,7 @@ export type BookWhereInput = {
   categoryId?: Prisma.StringNullableFilter<"Book"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Book"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Book"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Book"> | Date | string | null
   files?: Prisma.BookFileListRelationFilter
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   category?: Prisma.XOR<Prisma.BookCategoryNullableScalarRelationFilter, Prisma.BookCategoryWhereInput> | null
@@ -401,8 +461,10 @@ export type BookOrderByWithRelationInput = {
   editor?: Prisma.SortOrderInput | Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrderInput | Prisma.SortOrder
   edition?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -411,6 +473,10 @@ export type BookOrderByWithRelationInput = {
   formats?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedContent?: Prisma.SortOrderInput | Prisma.SortOrder
   metaKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -418,6 +484,7 @@ export type BookOrderByWithRelationInput = {
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   files?: Prisma.BookFileOrderByRelationAggregateInput
   owner?: Prisma.UserOrderByWithRelationInput
   category?: Prisma.BookCategoryOrderByWithRelationInput
@@ -439,8 +506,10 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   editor?: Prisma.StringNullableFilter<"Book"> | string | null
   publisher?: Prisma.StringFilter<"Book"> | string
   description?: Prisma.StringFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFilter<"Book"> | number
   edition?: Prisma.StringNullableFilter<"Book"> | string | null
   pages?: Prisma.IntNullableFilter<"Book"> | number | null
@@ -448,6 +517,10 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusFilter<"Book"> | $Enums.BookStatus
+  suspendReason?: Prisma.StringNullableFilter<"Book"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Book"> | string | null
+  updatedContent?: Prisma.JsonNullableFilter<"Book">
   metaKeywords?: Prisma.StringNullableFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Book"> | string | null
   coverImage?: Prisma.StringFilter<"Book"> | string
@@ -455,6 +528,7 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   categoryId?: Prisma.StringNullableFilter<"Book"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Book"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Book"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Book"> | Date | string | null
   files?: Prisma.BookFileListRelationFilter
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   category?: Prisma.XOR<Prisma.BookCategoryNullableScalarRelationFilter, Prisma.BookCategoryWhereInput> | null
@@ -472,8 +546,10 @@ export type BookOrderByWithAggregationInput = {
   editor?: Prisma.SortOrderInput | Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrderInput | Prisma.SortOrder
   edition?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -482,6 +558,10 @@ export type BookOrderByWithAggregationInput = {
   formats?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedContent?: Prisma.SortOrderInput | Prisma.SortOrder
   metaKeywords?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -489,6 +569,7 @@ export type BookOrderByWithAggregationInput = {
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.BookCountOrderByAggregateInput
   _avg?: Prisma.BookAvgOrderByAggregateInput
   _max?: Prisma.BookMaxOrderByAggregateInput
@@ -507,8 +588,10 @@ export type BookScalarWhereWithAggregatesInput = {
   editor?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   publisher?: Prisma.StringWithAggregatesFilter<"Book"> | string
   description?: Prisma.StringWithAggregatesFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntWithAggregatesFilter<"Book"> | number
   isbn?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   edition?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
@@ -517,6 +600,10 @@ export type BookScalarWhereWithAggregatesInput = {
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntWithAggregatesFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusWithAggregatesFilter<"Book"> | $Enums.BookStatus
+  suspendReason?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
+  adminNote?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
+  updatedContent?: Prisma.JsonNullableWithAggregatesFilter<"Book">
   metaKeywords?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   coverImage?: Prisma.StringWithAggregatesFilter<"Book"> | string
@@ -524,6 +611,7 @@ export type BookScalarWhereWithAggregatesInput = {
   categoryId?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Book"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Book"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Book"> | Date | string | null
 }
 
 export type BookCreateInput = {
@@ -534,8 +622,10 @@ export type BookCreateInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -544,11 +634,16 @@ export type BookCreateInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
@@ -566,8 +661,10 @@ export type BookUncheckedCreateInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -576,6 +673,10 @@ export type BookUncheckedCreateInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -583,6 +684,7 @@ export type BookUncheckedCreateInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
@@ -598,8 +700,10 @@ export type BookUpdateInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -608,11 +712,16 @@ export type BookUpdateInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
@@ -630,8 +739,10 @@ export type BookUncheckedUpdateInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -640,6 +751,10 @@ export type BookUncheckedUpdateInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -647,6 +762,7 @@ export type BookUncheckedUpdateInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
@@ -662,8 +778,10 @@ export type BookCreateManyInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -672,6 +790,10 @@ export type BookCreateManyInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -679,6 +801,7 @@ export type BookCreateManyInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type BookUpdateManyMutationInput = {
@@ -689,8 +812,10 @@ export type BookUpdateManyMutationInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -699,11 +824,16 @@ export type BookUpdateManyMutationInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type BookUncheckedUpdateManyInput = {
@@ -714,8 +844,10 @@ export type BookUncheckedUpdateManyInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -724,6 +856,10 @@ export type BookUncheckedUpdateManyInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -731,6 +867,7 @@ export type BookUncheckedUpdateManyInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type BookListRelationFilter = {
@@ -764,8 +901,10 @@ export type BookCountOrderByAggregateInput = {
   editor?: Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrder
   edition?: Prisma.SortOrder
@@ -774,6 +913,10 @@ export type BookCountOrderByAggregateInput = {
   formats?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
+  updatedContent?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -781,11 +924,14 @@ export type BookCountOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type BookAvgOrderByAggregateInput = {
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   pages?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
@@ -800,8 +946,10 @@ export type BookMaxOrderByAggregateInput = {
   editor?: Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrder
   edition?: Prisma.SortOrder
@@ -809,6 +957,9 @@ export type BookMaxOrderByAggregateInput = {
   language?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -816,6 +967,7 @@ export type BookMaxOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type BookMinOrderByAggregateInput = {
@@ -826,8 +978,10 @@ export type BookMinOrderByAggregateInput = {
   editor?: Prisma.SortOrder
   publisher?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   isbn?: Prisma.SortOrder
   edition?: Prisma.SortOrder
@@ -835,6 +989,9 @@ export type BookMinOrderByAggregateInput = {
   language?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   metaKeywords?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
   coverImage?: Prisma.SortOrder
@@ -842,11 +999,14 @@ export type BookMinOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type BookSumOrderByAggregateInput = {
-  regularPrice?: Prisma.SortOrder
-  salePrice?: Prisma.SortOrder
+  physicalRegularPrice?: Prisma.SortOrder
+  physicalSalePrice?: Prisma.SortOrder
+  digitalRegularPrice?: Prisma.SortOrder
+  digitalSalePrice?: Prisma.SortOrder
   stock?: Prisma.SortOrder
   pages?: Prisma.SortOrder
   totalEarning?: Prisma.SortOrder
@@ -923,6 +1083,10 @@ export type BookCreateformatsInput = {
 export type BookUpdateformatsInput = {
   set?: $Enums.BookFormat[]
   push?: $Enums.BookFormat | $Enums.BookFormat[]
+}
+
+export type EnumBookStatusFieldUpdateOperationsInput = {
+  set?: $Enums.BookStatus
 }
 
 export type BookCreateNestedOneWithoutFilesInput = {
@@ -1037,8 +1201,10 @@ export type BookCreateWithoutOwnerInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1047,11 +1213,16 @@ export type BookCreateWithoutOwnerInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
   orderItem?: Prisma.OrderItemCreateNestedManyWithoutBookInput
@@ -1068,8 +1239,10 @@ export type BookUncheckedCreateWithoutOwnerInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1078,12 +1251,17 @@ export type BookUncheckedCreateWithoutOwnerInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
@@ -1128,8 +1306,10 @@ export type BookScalarWhereInput = {
   editor?: Prisma.StringNullableFilter<"Book"> | string | null
   publisher?: Prisma.StringFilter<"Book"> | string
   description?: Prisma.StringFilter<"Book"> | string
-  regularPrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFilter<"Book"> | number
   isbn?: Prisma.StringNullableFilter<"Book"> | string | null
   edition?: Prisma.StringNullableFilter<"Book"> | string | null
@@ -1138,6 +1318,10 @@ export type BookScalarWhereInput = {
   formats?: Prisma.EnumBookFormatNullableListFilter<"Book">
   totalEarning?: Prisma.DecimalFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFilter<"Book"> | number
+  status?: Prisma.EnumBookStatusFilter<"Book"> | $Enums.BookStatus
+  suspendReason?: Prisma.StringNullableFilter<"Book"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Book"> | string | null
+  updatedContent?: Prisma.JsonNullableFilter<"Book">
   metaKeywords?: Prisma.StringNullableFilter<"Book"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Book"> | string | null
   coverImage?: Prisma.StringFilter<"Book"> | string
@@ -1145,6 +1329,7 @@ export type BookScalarWhereInput = {
   categoryId?: Prisma.StringNullableFilter<"Book"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Book"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Book"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Book"> | Date | string | null
 }
 
 export type BookCreateWithoutReviewsInput = {
@@ -1155,8 +1340,10 @@ export type BookCreateWithoutReviewsInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1165,11 +1352,16 @@ export type BookCreateWithoutReviewsInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
@@ -1186,8 +1378,10 @@ export type BookUncheckedCreateWithoutReviewsInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1196,6 +1390,10 @@ export type BookUncheckedCreateWithoutReviewsInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1203,6 +1401,7 @@ export type BookUncheckedCreateWithoutReviewsInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutBookInput
@@ -1233,8 +1432,10 @@ export type BookUpdateWithoutReviewsInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1243,11 +1444,16 @@ export type BookUpdateWithoutReviewsInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
@@ -1264,8 +1470,10 @@ export type BookUncheckedUpdateWithoutReviewsInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1274,6 +1482,10 @@ export type BookUncheckedUpdateWithoutReviewsInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1281,6 +1493,7 @@ export type BookUncheckedUpdateWithoutReviewsInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutBookNestedInput
@@ -1295,8 +1508,10 @@ export type BookCreateWithoutFilesInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1305,11 +1520,16 @@ export type BookCreateWithoutFilesInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
   orderItem?: Prisma.OrderItemCreateNestedManyWithoutBookInput
@@ -1326,8 +1546,10 @@ export type BookUncheckedCreateWithoutFilesInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1336,6 +1558,10 @@ export type BookUncheckedCreateWithoutFilesInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1343,6 +1569,7 @@ export type BookUncheckedCreateWithoutFilesInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutBookInput
@@ -1373,8 +1600,10 @@ export type BookUpdateWithoutFilesInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1383,11 +1612,16 @@ export type BookUpdateWithoutFilesInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUpdateManyWithoutBookNestedInput
@@ -1404,8 +1638,10 @@ export type BookUncheckedUpdateWithoutFilesInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1414,6 +1650,10 @@ export type BookUncheckedUpdateWithoutFilesInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1421,6 +1661,7 @@ export type BookUncheckedUpdateWithoutFilesInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutBookNestedInput
@@ -1435,8 +1676,10 @@ export type BookCreateWithoutWishlistedByInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1445,11 +1688,16 @@ export type BookCreateWithoutWishlistedByInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
@@ -1466,8 +1714,10 @@ export type BookUncheckedCreateWithoutWishlistedByInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1476,6 +1726,10 @@ export type BookUncheckedCreateWithoutWishlistedByInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1483,6 +1737,7 @@ export type BookUncheckedCreateWithoutWishlistedByInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
@@ -1513,8 +1768,10 @@ export type BookUpdateWithoutWishlistedByInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1523,11 +1780,16 @@ export type BookUpdateWithoutWishlistedByInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
@@ -1544,8 +1806,10 @@ export type BookUncheckedUpdateWithoutWishlistedByInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1554,6 +1818,10 @@ export type BookUncheckedUpdateWithoutWishlistedByInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1561,6 +1829,7 @@ export type BookUncheckedUpdateWithoutWishlistedByInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
@@ -1575,8 +1844,10 @@ export type BookCreateWithoutOrderItemInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1585,11 +1856,16 @@ export type BookCreateWithoutOrderItemInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
@@ -1606,8 +1882,10 @@ export type BookUncheckedCreateWithoutOrderItemInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1616,6 +1894,10 @@ export type BookUncheckedCreateWithoutOrderItemInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1623,6 +1905,7 @@ export type BookUncheckedCreateWithoutOrderItemInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutBookInput
@@ -1653,8 +1936,10 @@ export type BookUpdateWithoutOrderItemInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1663,11 +1948,16 @@ export type BookUpdateWithoutOrderItemInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
@@ -1684,8 +1974,10 @@ export type BookUncheckedUpdateWithoutOrderItemInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1694,6 +1986,10 @@ export type BookUncheckedUpdateWithoutOrderItemInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1701,6 +1997,7 @@ export type BookUncheckedUpdateWithoutOrderItemInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
   PaymentTransaction?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutBookNestedInput
@@ -1715,8 +2012,10 @@ export type BookCreateWithoutPaymentTransactionInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1725,11 +2024,16 @@ export type BookCreateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   category?: Prisma.BookCategoryCreateNestedOneWithoutBookInput
@@ -1746,8 +2050,10 @@ export type BookUncheckedCreateWithoutPaymentTransactionInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1756,6 +2062,10 @@ export type BookUncheckedCreateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
@@ -1763,6 +2073,7 @@ export type BookUncheckedCreateWithoutPaymentTransactionInput = {
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
@@ -1793,8 +2104,10 @@ export type BookUpdateWithoutPaymentTransactionInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1803,11 +2116,16 @@ export type BookUpdateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
@@ -1824,8 +2142,10 @@ export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1834,6 +2154,10 @@ export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1841,6 +2165,7 @@ export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
@@ -1855,8 +2180,10 @@ export type BookCreateWithoutCategoryInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1865,11 +2192,16 @@ export type BookCreateWithoutCategoryInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileCreateNestedManyWithoutBookInput
   owner: Prisma.UserCreateNestedOneWithoutBooksInput
   orderItem?: Prisma.OrderItemCreateNestedManyWithoutBookInput
@@ -1886,8 +2218,10 @@ export type BookUncheckedCreateWithoutCategoryInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1896,12 +2230,17 @@ export type BookUncheckedCreateWithoutCategoryInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   files?: Prisma.BookFileUncheckedCreateNestedManyWithoutBookInput
   orderItem?: Prisma.OrderItemUncheckedCreateNestedManyWithoutBookInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutBookInput
@@ -1943,8 +2282,10 @@ export type BookCreateManyOwnerInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -1953,12 +2294,17 @@ export type BookCreateManyOwnerInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type BookUpdateWithoutOwnerInput = {
@@ -1969,8 +2315,10 @@ export type BookUpdateWithoutOwnerInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1979,11 +2327,16 @@ export type BookUpdateWithoutOwnerInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   category?: Prisma.BookCategoryUpdateOneWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUpdateManyWithoutBookNestedInput
@@ -2000,8 +2353,10 @@ export type BookUncheckedUpdateWithoutOwnerInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2010,12 +2365,17 @@ export type BookUncheckedUpdateWithoutOwnerInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
@@ -2031,8 +2391,10 @@ export type BookUncheckedUpdateManyWithoutOwnerInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2041,12 +2403,17 @@ export type BookUncheckedUpdateManyWithoutOwnerInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type BookCreateManyCategoryInput = {
@@ -2057,8 +2424,10 @@ export type BookCreateManyCategoryInput = {
   editor?: string | null
   publisher: string
   description: string
-  regularPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: number
   isbn?: string | null
   edition?: string | null
@@ -2067,12 +2436,17 @@ export type BookCreateManyCategoryInput = {
   formats?: Prisma.BookCreateformatsInput | $Enums.BookFormat[]
   totalEarning?: runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: number
+  status?: $Enums.BookStatus
+  suspendReason?: string | null
+  adminNote?: string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: string | null
   metaDescription?: string | null
   coverImage: string
   ownerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type BookUpdateWithoutCategoryInput = {
@@ -2083,8 +2457,10 @@ export type BookUpdateWithoutCategoryInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2093,11 +2469,16 @@ export type BookUpdateWithoutCategoryInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUpdateManyWithoutBookNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBooksNestedInput
   orderItem?: Prisma.OrderItemUpdateManyWithoutBookNestedInput
@@ -2114,8 +2495,10 @@ export type BookUncheckedUpdateWithoutCategoryInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2124,12 +2507,17 @@ export type BookUncheckedUpdateWithoutCategoryInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   files?: Prisma.BookFileUncheckedUpdateManyWithoutBookNestedInput
   orderItem?: Prisma.OrderItemUncheckedUpdateManyWithoutBookNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutBookNestedInput
@@ -2145,8 +2533,10 @@ export type BookUncheckedUpdateManyWithoutCategoryInput = {
   editor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publisher?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  regularPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  salePrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  physicalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  physicalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalRegularPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  digitalSalePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   isbn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   edition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2155,12 +2545,17 @@ export type BookUncheckedUpdateManyWithoutCategoryInput = {
   formats?: Prisma.BookUpdateformatsInput | $Enums.BookFormat[]
   totalEarning?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedContent?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImage?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -2238,8 +2633,10 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2248,6 +2645,10 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
+  updatedContent?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2255,6 +2656,7 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   files?: boolean | Prisma.Book$filesArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.Book$categoryArgs<ExtArgs>
@@ -2273,8 +2675,10 @@ export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2283,6 +2687,10 @@ export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
+  updatedContent?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2290,6 +2698,7 @@ export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.Book$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["book"]>
@@ -2302,8 +2711,10 @@ export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2312,6 +2723,10 @@ export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
+  updatedContent?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2319,6 +2734,7 @@ export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.Book$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["book"]>
@@ -2331,8 +2747,10 @@ export type BookSelectScalar = {
   editor?: boolean
   publisher?: boolean
   description?: boolean
-  regularPrice?: boolean
-  salePrice?: boolean
+  physicalRegularPrice?: boolean
+  physicalSalePrice?: boolean
+  digitalRegularPrice?: boolean
+  digitalSalePrice?: boolean
   stock?: boolean
   isbn?: boolean
   edition?: boolean
@@ -2341,6 +2759,10 @@ export type BookSelectScalar = {
   formats?: boolean
   totalEarning?: boolean
   viewCount?: boolean
+  status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
+  updatedContent?: boolean
   metaKeywords?: boolean
   metaDescription?: boolean
   coverImage?: boolean
@@ -2348,9 +2770,10 @@ export type BookSelectScalar = {
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "translator" | "editor" | "publisher" | "description" | "regularPrice" | "salePrice" | "stock" | "isbn" | "edition" | "pages" | "language" | "formats" | "totalEarning" | "viewCount" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["book"]>
+export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "translator" | "editor" | "publisher" | "description" | "physicalRegularPrice" | "physicalSalePrice" | "digitalRegularPrice" | "digitalSalePrice" | "stock" | "isbn" | "edition" | "pages" | "language" | "formats" | "totalEarning" | "viewCount" | "status" | "suspendReason" | "adminNote" | "updatedContent" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["book"]>
 export type BookInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   files?: boolean | Prisma.Book$filesArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2389,8 +2812,10 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     editor: string | null
     publisher: string
     description: string
-    regularPrice: runtime.Decimal
-    salePrice: runtime.Decimal
+    physicalRegularPrice: runtime.Decimal | null
+    physicalSalePrice: runtime.Decimal | null
+    digitalRegularPrice: runtime.Decimal | null
+    digitalSalePrice: runtime.Decimal | null
     stock: number
     isbn: string | null
     edition: string | null
@@ -2399,6 +2824,10 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     formats: $Enums.BookFormat[]
     totalEarning: runtime.Decimal
     viewCount: number
+    status: $Enums.BookStatus
+    suspendReason: string | null
+    adminNote: string | null
+    updatedContent: runtime.JsonValue | null
     metaKeywords: string | null
     metaDescription: string | null
     coverImage: string
@@ -2406,6 +2835,7 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     categoryId: string | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["book"]>
   composites: {}
 }
@@ -2843,8 +3273,10 @@ export interface BookFieldRefs {
   readonly editor: Prisma.FieldRef<"Book", 'String'>
   readonly publisher: Prisma.FieldRef<"Book", 'String'>
   readonly description: Prisma.FieldRef<"Book", 'String'>
-  readonly regularPrice: Prisma.FieldRef<"Book", 'Decimal'>
-  readonly salePrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly physicalRegularPrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly physicalSalePrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly digitalRegularPrice: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly digitalSalePrice: Prisma.FieldRef<"Book", 'Decimal'>
   readonly stock: Prisma.FieldRef<"Book", 'Int'>
   readonly isbn: Prisma.FieldRef<"Book", 'String'>
   readonly edition: Prisma.FieldRef<"Book", 'String'>
@@ -2853,6 +3285,10 @@ export interface BookFieldRefs {
   readonly formats: Prisma.FieldRef<"Book", 'BookFormat[]'>
   readonly totalEarning: Prisma.FieldRef<"Book", 'Decimal'>
   readonly viewCount: Prisma.FieldRef<"Book", 'Int'>
+  readonly status: Prisma.FieldRef<"Book", 'BookStatus'>
+  readonly suspendReason: Prisma.FieldRef<"Book", 'String'>
+  readonly adminNote: Prisma.FieldRef<"Book", 'String'>
+  readonly updatedContent: Prisma.FieldRef<"Book", 'Json'>
   readonly metaKeywords: Prisma.FieldRef<"Book", 'String'>
   readonly metaDescription: Prisma.FieldRef<"Book", 'String'>
   readonly coverImage: Prisma.FieldRef<"Book", 'String'>
@@ -2860,6 +3296,7 @@ export interface BookFieldRefs {
   readonly categoryId: Prisma.FieldRef<"Book", 'String'>
   readonly createdAt: Prisma.FieldRef<"Book", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Book", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Book", 'DateTime'>
 }
     
 

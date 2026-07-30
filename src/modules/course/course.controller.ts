@@ -27,6 +27,11 @@ const getAllCoursesForPublic = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'All Courses Fetched Successfully for Public view!', result);
 });
 
+const getAllCoursesForAdminDashboardStudentView = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getAllCoursesForAdminDashboardStudentView(req);
+  ResponseHandler.ok(res, 'All Courses Fetched Successfully for Admin Dashboard Student View!', result);
+});
+
 const getSingleCourseForInstructorView = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getSingleCourseForInstructorView(req);
   ResponseHandler.ok(res, 'Course fetched successfully for instructor view!', result);
@@ -55,11 +60,6 @@ const getInstructorDashboardData = catchAsync(async (req, res): Promise<void> =>
 const updateLessonProgress = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.updateLessonProgress(req);
   ResponseHandler.ok(res, 'Course Updated successfully', result);
-});
-
-const getCartCourses = catchAsync(async (req, res): Promise<void> => {
-  const result = await courseService.getCartCourses(req);
-  ResponseHandler.ok(res, 'Course fetched successfully for Cart view!', result);
 });
 
 const getCategories = catchAsync(async (req, res): Promise<void> => {
@@ -177,6 +177,7 @@ export const courseController = {
   getAllCoursesForInstructor,
   getAllCoursesForStudent,
   getAllCoursesForPublic,
+  getAllCoursesForAdminDashboardStudentView,
   getInstructorDashboardData,
   getCategories,
   checkCourseSlugAvailability,
@@ -188,7 +189,6 @@ export const courseController = {
   getSingleCourseForPublicView,
   getSingleCourseForPaidView,
   getSingleCourseForInstructorEdit,
-  getCartCourses,
   deleteVideo,
   deleteFile,
   getVideo,

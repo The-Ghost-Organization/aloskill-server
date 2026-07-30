@@ -21,8 +21,16 @@ const getSingleInstructor = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Instructors Fetched Successfully', result);
 });
 
+// Admin Controllers
+
+const getAllStudentsForAdmin = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.getAllStudentsForAdmin();
+  ResponseHandler.ok(res, 'Students Fetched Successfully for admin', result);
+});
+
 export const userController = {
   getUserByEmail,
   getAllInstructors,
   getSingleInstructor,
+  getAllStudentsForAdmin,
 };

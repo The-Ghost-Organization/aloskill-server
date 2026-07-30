@@ -294,13 +294,6 @@ export type EnumGenderWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumGenderFilter<$PrismaModel>
 }
 
-export type EnumCourseCategoryFilter<$PrismaModel = never> = {
-  equals?: $Enums.CourseCategory | Prisma.EnumCourseCategoryFieldRefInput<$PrismaModel>
-  in?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  notIn?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumCourseCategoryFilter<$PrismaModel> | $Enums.CourseCategory
-}
-
 export type EnumCourseLevelFilter<$PrismaModel = never> = {
   equals?: $Enums.CourseLevel | Prisma.EnumCourseLevelFieldRefInput<$PrismaModel>
   in?: $Enums.CourseLevel[] | Prisma.ListEnumCourseLevelFieldRefInput<$PrismaModel>
@@ -356,16 +349,6 @@ export type DecimalFilter<$PrismaModel = never> = {
   gt?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   gte?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDecimalFilter<$PrismaModel> | runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
-export type EnumCourseCategoryWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.CourseCategory | Prisma.EnumCourseCategoryFieldRefInput<$PrismaModel>
-  in?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  notIn?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumCourseCategoryWithAggregatesFilter<$PrismaModel> | $Enums.CourseCategory
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumCourseCategoryFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumCourseCategoryFilter<$PrismaModel>
 }
 
 export type EnumCourseLevelWithAggregatesFilter<$PrismaModel = never> = {
@@ -579,6 +562,23 @@ export type EnumEnrollmentStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumEnrollmentStatusFilter<$PrismaModel>
 }
 
+export type EnumBookStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.BookStatus | Prisma.EnumBookStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBookStatusFilter<$PrismaModel> | $Enums.BookStatus
+}
+
+export type EnumBookStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BookStatus | Prisma.EnumBookStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBookStatusWithAggregatesFilter<$PrismaModel> | $Enums.BookStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBookStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBookStatusFilter<$PrismaModel>
+}
+
 export type EnumBookFileTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.BookFileType | Prisma.EnumBookFileTypeFieldRefInput<$PrismaModel>
   in?: $Enums.BookFileType[] | Prisma.ListEnumBookFileTypeFieldRefInput<$PrismaModel>
@@ -647,11 +647,28 @@ export type EnumPaymentProvidersNullableWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumPaymentProvidersNullableFilter<$PrismaModel>
 }
 
+export type EnumPurchaseFormatFilter<$PrismaModel = never> = {
+  equals?: $Enums.PurchaseFormat | Prisma.EnumPurchaseFormatFieldRefInput<$PrismaModel>
+  in?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPurchaseFormatFilter<$PrismaModel> | $Enums.PurchaseFormat
+}
+
 export type EnumOrderItemStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderItemStatus | Prisma.EnumOrderItemStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderItemStatus[] | Prisma.ListEnumOrderItemStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.OrderItemStatus[] | Prisma.ListEnumOrderItemStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumOrderItemStatusFilter<$PrismaModel> | $Enums.OrderItemStatus
+}
+
+export type EnumPurchaseFormatWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PurchaseFormat | Prisma.EnumPurchaseFormatFieldRefInput<$PrismaModel>
+  in?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPurchaseFormatWithAggregatesFilter<$PrismaModel> | $Enums.PurchaseFormat
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPurchaseFormatFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPurchaseFormatFilter<$PrismaModel>
 }
 
 export type EnumOrderItemStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -1083,13 +1100,6 @@ export type NestedEnumGenderWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumGenderFilter<$PrismaModel>
 }
 
-export type NestedEnumCourseCategoryFilter<$PrismaModel = never> = {
-  equals?: $Enums.CourseCategory | Prisma.EnumCourseCategoryFieldRefInput<$PrismaModel>
-  in?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  notIn?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumCourseCategoryFilter<$PrismaModel> | $Enums.CourseCategory
-}
-
 export type NestedEnumCourseLevelFilter<$PrismaModel = never> = {
   equals?: $Enums.CourseLevel | Prisma.EnumCourseLevelFieldRefInput<$PrismaModel>
   in?: $Enums.CourseLevel[] | Prisma.ListEnumCourseLevelFieldRefInput<$PrismaModel>
@@ -1145,16 +1155,6 @@ export type NestedDecimalFilter<$PrismaModel = never> = {
   gt?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   gte?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDecimalFilter<$PrismaModel> | runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
-export type NestedEnumCourseCategoryWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.CourseCategory | Prisma.EnumCourseCategoryFieldRefInput<$PrismaModel>
-  in?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  notIn?: $Enums.CourseCategory[] | Prisma.ListEnumCourseCategoryFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumCourseCategoryWithAggregatesFilter<$PrismaModel> | $Enums.CourseCategory
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumCourseCategoryFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumCourseCategoryFilter<$PrismaModel>
 }
 
 export type NestedEnumCourseLevelWithAggregatesFilter<$PrismaModel = never> = {
@@ -1368,6 +1368,23 @@ export type NestedEnumEnrollmentStatusWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumEnrollmentStatusFilter<$PrismaModel>
 }
 
+export type NestedEnumBookStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.BookStatus | Prisma.EnumBookStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBookStatusFilter<$PrismaModel> | $Enums.BookStatus
+}
+
+export type NestedEnumBookStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BookStatus | Prisma.EnumBookStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BookStatus[] | Prisma.ListEnumBookStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBookStatusWithAggregatesFilter<$PrismaModel> | $Enums.BookStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBookStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBookStatusFilter<$PrismaModel>
+}
+
 export type NestedEnumBookFileTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.BookFileType | Prisma.EnumBookFileTypeFieldRefInput<$PrismaModel>
   in?: $Enums.BookFileType[] | Prisma.ListEnumBookFileTypeFieldRefInput<$PrismaModel>
@@ -1436,11 +1453,28 @@ export type NestedEnumPaymentProvidersNullableWithAggregatesFilter<$PrismaModel 
   _max?: Prisma.NestedEnumPaymentProvidersNullableFilter<$PrismaModel>
 }
 
+export type NestedEnumPurchaseFormatFilter<$PrismaModel = never> = {
+  equals?: $Enums.PurchaseFormat | Prisma.EnumPurchaseFormatFieldRefInput<$PrismaModel>
+  in?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPurchaseFormatFilter<$PrismaModel> | $Enums.PurchaseFormat
+}
+
 export type NestedEnumOrderItemStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderItemStatus | Prisma.EnumOrderItemStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderItemStatus[] | Prisma.ListEnumOrderItemStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.OrderItemStatus[] | Prisma.ListEnumOrderItemStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumOrderItemStatusFilter<$PrismaModel> | $Enums.OrderItemStatus
+}
+
+export type NestedEnumPurchaseFormatWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PurchaseFormat | Prisma.EnumPurchaseFormatFieldRefInput<$PrismaModel>
+  in?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PurchaseFormat[] | Prisma.ListEnumPurchaseFormatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPurchaseFormatWithAggregatesFilter<$PrismaModel> | $Enums.PurchaseFormat
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPurchaseFormatFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPurchaseFormatFilter<$PrismaModel>
 }
 
 export type NestedEnumOrderItemStatusWithAggregatesFilter<$PrismaModel = never> = {

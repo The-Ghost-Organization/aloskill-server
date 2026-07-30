@@ -77,6 +77,7 @@ export const ModelName = {
   Wishlist: 'Wishlist',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  ShippingAddress: 'ShippingAddress',
   PaymentTransaction: 'PaymentTransaction',
   Payout: 'Payout',
   PayoutMethod: 'PayoutMethod',
@@ -122,6 +123,8 @@ export const UserScalarFieldEnum = {
   updatedAt: 'updatedAt',
   isEmailVerified: 'isEmailVerified',
   status: 'status',
+  suspendReason: 'suspendReason',
+  adminNote: 'adminNote',
   emailVerificationTokenHash: 'emailVerificationTokenHash',
   emailVerificationExpires: 'emailVerificationExpires',
   passwordResetTokenHash: 'passwordResetTokenHash',
@@ -265,7 +268,8 @@ export const InstructorProfileScalarFieldEnum = {
   website: 'website',
   paymentId: 'paymentId',
   status: 'status',
-  rejectionReason: 'rejectionReason',
+  suspendReason: 'suspendReason',
+  adminNote: 'adminNote',
   ratingAverage: 'ratingAverage',
   ratingCount: 'ratingCount',
   totalStudents: 'totalStudents',
@@ -319,6 +323,8 @@ export const CourseScalarFieldEnum = {
   totalRevenueAmount: 'totalRevenueAmount',
   moduleCount: 'moduleCount',
   status: 'status',
+  suspendReason: 'suspendReason',
+  adminNote: 'adminNote',
   language: 'language',
   level: 'level',
   thumbnailUrl: 'thumbnailUrl',
@@ -330,7 +336,8 @@ export const CourseScalarFieldEnum = {
   views: 'views',
   deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  updatedContent: 'updatedContent'
 } as const
 
 export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
@@ -373,7 +380,11 @@ export const LessonScalarFieldEnum = {
   duration: 'duration',
   deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isNew: 'isNew',
+  isUpdated: 'isUpdated',
+  suspendReason: 'suspendReason',
+  adminNote: 'adminNote'
 } as const
 
 export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
@@ -482,8 +493,10 @@ export const BookScalarFieldEnum = {
   editor: 'editor',
   publisher: 'publisher',
   description: 'description',
-  regularPrice: 'regularPrice',
-  salePrice: 'salePrice',
+  physicalRegularPrice: 'physicalRegularPrice',
+  physicalSalePrice: 'physicalSalePrice',
+  digitalRegularPrice: 'digitalRegularPrice',
+  digitalSalePrice: 'digitalSalePrice',
   stock: 'stock',
   isbn: 'isbn',
   edition: 'edition',
@@ -492,13 +505,18 @@ export const BookScalarFieldEnum = {
   formats: 'formats',
   totalEarning: 'totalEarning',
   viewCount: 'viewCount',
+  status: 'status',
+  suspendReason: 'suspendReason',
+  adminNote: 'adminNote',
+  updatedContent: 'updatedContent',
   metaKeywords: 'metaKeywords',
   metaDescription: 'metaDescription',
   coverImage: 'coverImage',
   ownerId: 'ownerId',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type BookScalarFieldEnum = (typeof BookScalarFieldEnum)[keyof typeof BookScalarFieldEnum]
@@ -548,6 +566,7 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   provider: 'provider',
   providerOrderId: 'providerOrderId',
+  shippingAddressId: 'shippingAddressId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -560,6 +579,7 @@ export const OrderItemScalarFieldEnum = {
   orderId: 'orderId',
   courseId: 'courseId',
   bookId: 'bookId',
+  format: 'format',
   price: 'price',
   currency: 'currency',
   status: 'status',
@@ -567,6 +587,19 @@ export const OrderItemScalarFieldEnum = {
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+export const ShippingAddressScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  addressLine: 'addressLine',
+  city: 'city',
+  postalCode: 'postalCode',
+  country: 'country',
+  phone: 'phone'
+} as const
+
+export type ShippingAddressScalarFieldEnum = (typeof ShippingAddressScalarFieldEnum)[keyof typeof ShippingAddressScalarFieldEnum]
 
 
 export const PaymentTransactionScalarFieldEnum = {

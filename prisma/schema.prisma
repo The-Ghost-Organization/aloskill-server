@@ -38,7 +38,7 @@ enum DeviceType {
 enum CourseStatus {
   DRAFT
   PUBLISHED
-  ARCHIVED
+  PENDING
 }
 
 enum Gender {
@@ -119,6 +119,7 @@ enum TransactionType {
 
 enum PaymentProviders {
   SSLCommerce
+  UDDOKTAPAY
   STRIPE
   PAYPAL
 }
@@ -201,6 +202,17 @@ enum BookFileType {
   EBOOK
 }
 
+enum BookStatus {
+  PENDING
+  APPROVED
+  DRAFT
+}
+
+enum PurchaseFormat {
+  PHYSICAL
+  DIGITAL
+}
+
 // === MODELS===//
 model User {
   id        String    @id @default(uuid())
@@ -215,6 +227,8 @@ model User {
   // === ACCOUNT STATUS=== //
   isEmailVerified Boolean    @default(false)
   status          UserStatus @default(PENDING_VERIFICATION)
+  suspendReason   String?
+  adminNote       String?
 
   // === EMAIL VERIFICATION ===
   emailVerificationTokenHash String?
@@ -446,7 +460,7 @@ model InstructorProfile {
   currentOrg     String?
 
   //== Course Info
-  proposedCourseCategory CourseCategory
+  proposedCourseCategory String
   courseLevel            CourseLevel
   courseType             CourseType
 
@@ -463,7 +477,8 @@ model InstructorProfile {
   socialAccount      SocialLink[]
   paymentId          String? // SSL Connect account id (or other payout id)
   status             ApplicationStatus @default(PENDING)
-  rejectionReason    String?
+  suspendReason      String?
+  adminNote          String?
   ratingAverage      Decimal?          @default(0) @db.Decimal(2, 1)
   ratingCount        Int               @default(0)
   totalStudents      Int               @default(0)
@@ -533,6 +548,8 @@ model Course {
   moduleCount        Int     @default(0)
 
   status       CourseStatus @default(DRAFT)
+  suspendReason   String?
+  adminNote       String?
   language     Language     @default(BANGLA)
   level        CourseLevel  @default(BEGINNER)
   thumbnailUrl String?
@@ -549,6 +566,7 @@ model Course {
   deletedAt     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  updatedContent          Json?
 
   courseInstructors  CourseInstructor[]
   LessonProgress     LessonProgress[]
@@ -622,6 +640,10 @@ model Lesson {
   deletedAt  DateTime?
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  isNew      Boolean    @default(false)
+  isUpdated  Boolean    @default(false)
+  suspendReason   String?
+  adminNote       String?
 
   progressRecords LessonProgress[]
   discussions     LessonDiscussion[]
@@ -798,8 +820,13 @@ model Book {
   publisher       String
   description     String   @db.Text
 
-  regularPrice    Decimal  @db.Decimal(10, 2)
-  salePrice       Decimal  @db.Decimal(10, 2)
+  physicalRegularPrice Decimal?  @db.Decimal(10, 2)
+  physicalSalePrice    Decimal?  @db.Decimal(10, 2)
+  digitalRegularPrice  Decimal?  @db.Decimal(10, 2)
+  digitalSalePrice     Decimal?  @db.Decimal(10, 2)
+
+  // isDiscountActive field is required
+
   stock           Int      @default(0)
 
   isbn            String?  @unique
@@ -809,6 +836,10 @@ model Book {
   formats         BookFormat[]
   totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
   viewCount       Int       @default(0)
+  status          BookStatus  @default(PENDING)
+  suspendReason   String?
+  adminNote       String?
+  updatedContent  Json?
 
   // tags are not listing yet for showing related book or course
 
@@ -831,6 +862,7 @@ model Book {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
 
   @@map("books")
   @@index([isbn])
@@ -895,6 +927,10 @@ model Order {
   providerOrderId     String?
   paymentTransactions PaymentTransaction[]
   orderItems          OrderItem[]
+
+  shippingAddressId String?
+  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id], onDelete: Cascade)
+
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
 
@@ -916,6 +952,8 @@ model OrderItem {
   book     Book?  @relation(fields: [bookId], references: [id], onDelete: Restrict)
   bookId   String?
 
+  format    PurchaseFormat @default(DIGITAL)
+
   price     Decimal         @db.Decimal(15, 2)
   currency  String?         @default("BDT")
   status    OrderItemStatus @default(PENDING)
@@ -925,6 +963,19 @@ model OrderItem {
   @@index([courseId])
 
   @@map("order_items")
+}
+
+model ShippingAddress {
+  id           String  @id @default(uuid())
+  fullName     String
+  addressLine  String
+  city         String
+  postalCode   String
+  country      String
+  phone        String
+  orders       Order[]
+
+  @@map("shipping_addresses")
 }
 
 /// Payments & payouts

@@ -59,6 +59,8 @@ export type UserMinAggregateOutputType = {
   updatedAt: Date | null
   isEmailVerified: boolean | null
   status: $Enums.UserStatus | null
+  suspendReason: string | null
+  adminNote: string | null
   emailVerificationTokenHash: string | null
   emailVerificationExpires: Date | null
   passwordResetTokenHash: string | null
@@ -91,6 +93,8 @@ export type UserMaxAggregateOutputType = {
   updatedAt: Date | null
   isEmailVerified: boolean | null
   status: $Enums.UserStatus | null
+  suspendReason: string | null
+  adminNote: string | null
   emailVerificationTokenHash: string | null
   emailVerificationExpires: Date | null
   passwordResetTokenHash: string | null
@@ -123,6 +127,8 @@ export type UserCountAggregateOutputType = {
   updatedAt: number
   isEmailVerified: number
   status: number
+  suspendReason: number
+  adminNote: number
   emailVerificationTokenHash: number
   emailVerificationExpires: number
   passwordResetTokenHash: number
@@ -179,6 +185,8 @@ export type UserMinAggregateInputType = {
   updatedAt?: true
   isEmailVerified?: true
   status?: true
+  suspendReason?: true
+  adminNote?: true
   emailVerificationTokenHash?: true
   emailVerificationExpires?: true
   passwordResetTokenHash?: true
@@ -211,6 +219,8 @@ export type UserMaxAggregateInputType = {
   updatedAt?: true
   isEmailVerified?: true
   status?: true
+  suspendReason?: true
+  adminNote?: true
   emailVerificationTokenHash?: true
   emailVerificationExpires?: true
   passwordResetTokenHash?: true
@@ -243,6 +253,8 @@ export type UserCountAggregateInputType = {
   updatedAt?: true
   isEmailVerified?: true
   status?: true
+  suspendReason?: true
+  adminNote?: true
   emailVerificationTokenHash?: true
   emailVerificationExpires?: true
   passwordResetTokenHash?: true
@@ -362,6 +374,8 @@ export type UserGroupByOutputType = {
   updatedAt: Date
   isEmailVerified: boolean
   status: $Enums.UserStatus
+  suspendReason: string | null
+  adminNote: string | null
   emailVerificationTokenHash: string | null
   emailVerificationExpires: Date | null
   passwordResetTokenHash: string | null
@@ -417,6 +431,8 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  suspendReason?: Prisma.StringNullableFilter<"User"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerificationTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerificationExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   passwordResetTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
@@ -467,6 +483,8 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerificationTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerificationExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   passwordResetTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -521,6 +539,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   isEmailVerified?: Prisma.BoolFilter<"User"> | boolean
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  suspendReason?: Prisma.StringNullableFilter<"User"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerificationTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerificationExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   passwordResetTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
@@ -570,6 +590,8 @@ export type UserOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerificationTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerificationExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   passwordResetTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -610,6 +632,8 @@ export type UserScalarWhereWithAggregatesInput = {
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   isEmailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  suspendReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  adminNote?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   emailVerificationTokenHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   emailVerificationExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   passwordResetTokenHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -642,6 +666,8 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -692,6 +718,8 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -742,6 +770,8 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -792,6 +822,8 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -842,6 +874,8 @@ export type UserCreateManyInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -874,6 +908,8 @@ export type UserUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -906,6 +942,8 @@ export type UserUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -938,6 +976,8 @@ export type UserCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   emailVerificationTokenHash?: Prisma.SortOrder
   emailVerificationExpires?: Prisma.SortOrder
   passwordResetTokenHash?: Prisma.SortOrder
@@ -981,6 +1021,8 @@ export type UserMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   emailVerificationTokenHash?: Prisma.SortOrder
   emailVerificationExpires?: Prisma.SortOrder
   passwordResetTokenHash?: Prisma.SortOrder
@@ -1013,6 +1055,8 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   isEmailVerified?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  suspendReason?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
   emailVerificationTokenHash?: Prisma.SortOrder
   emailVerificationExpires?: Prisma.SortOrder
   passwordResetTokenHash?: Prisma.SortOrder
@@ -1345,6 +1389,8 @@ export type UserCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -1394,6 +1440,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -1459,6 +1507,8 @@ export type UserUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1508,6 +1558,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1557,6 +1609,8 @@ export type UserCreateWithoutAssignedRoleInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -1606,6 +1660,8 @@ export type UserUncheckedCreateWithoutAssignedRoleInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -1671,6 +1727,8 @@ export type UserUpdateWithoutAssignedRoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1720,6 +1778,8 @@ export type UserUncheckedUpdateWithoutAssignedRoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1769,6 +1829,8 @@ export type UserCreateWithoutStudentProfileInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -1818,6 +1880,8 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -1883,6 +1947,8 @@ export type UserUpdateWithoutStudentProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1932,6 +1998,8 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1981,6 +2049,8 @@ export type UserCreateWithoutInstructorProfileInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2030,6 +2100,8 @@ export type UserUncheckedCreateWithoutInstructorProfileInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2095,6 +2167,8 @@ export type UserUpdateWithoutInstructorProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2144,6 +2218,8 @@ export type UserUncheckedUpdateWithoutInstructorProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2193,6 +2269,8 @@ export type UserCreateWithoutLessonDiscussionInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2242,6 +2320,8 @@ export type UserUncheckedCreateWithoutLessonDiscussionInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2307,6 +2387,8 @@ export type UserUpdateWithoutLessonDiscussionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2356,6 +2438,8 @@ export type UserUncheckedUpdateWithoutLessonDiscussionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2405,6 +2489,8 @@ export type UserCreateWithoutLessonCommentInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2454,6 +2540,8 @@ export type UserUncheckedCreateWithoutLessonCommentInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2519,6 +2607,8 @@ export type UserUpdateWithoutLessonCommentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2568,6 +2658,8 @@ export type UserUncheckedUpdateWithoutLessonCommentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2617,6 +2709,8 @@ export type UserCreateWithoutEnrollmentsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2666,6 +2760,8 @@ export type UserUncheckedCreateWithoutEnrollmentsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2731,6 +2827,8 @@ export type UserUpdateWithoutEnrollmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2780,6 +2878,8 @@ export type UserUncheckedUpdateWithoutEnrollmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2829,6 +2929,8 @@ export type UserCreateWithoutLessonProgressesInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2878,6 +2980,8 @@ export type UserUncheckedCreateWithoutLessonProgressesInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -2943,6 +3047,8 @@ export type UserUpdateWithoutLessonProgressesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2992,6 +3098,8 @@ export type UserUncheckedUpdateWithoutLessonProgressesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3041,6 +3149,8 @@ export type UserCreateWithoutReviewsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3090,6 +3200,8 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3155,6 +3267,8 @@ export type UserUpdateWithoutReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3204,6 +3318,8 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3253,6 +3369,8 @@ export type UserCreateWithoutBooksInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3302,6 +3420,8 @@ export type UserUncheckedCreateWithoutBooksInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3367,6 +3487,8 @@ export type UserUpdateWithoutBooksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3416,6 +3538,8 @@ export type UserUncheckedUpdateWithoutBooksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3465,6 +3589,8 @@ export type UserCreateWithoutWishlistsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3514,6 +3640,8 @@ export type UserUncheckedCreateWithoutWishlistsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3579,6 +3707,8 @@ export type UserUpdateWithoutWishlistsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3628,6 +3758,8 @@ export type UserUncheckedUpdateWithoutWishlistsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3677,6 +3809,8 @@ export type UserCreateWithoutOrdersInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3726,6 +3860,8 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3791,6 +3927,8 @@ export type UserUpdateWithoutOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3840,6 +3978,8 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3889,6 +4029,8 @@ export type UserCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -3938,6 +4080,8 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4003,6 +4147,8 @@ export type UserUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4052,6 +4198,8 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4101,6 +4249,8 @@ export type UserCreateWithoutPayoutsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4150,6 +4300,8 @@ export type UserUncheckedCreateWithoutPayoutsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4215,6 +4367,8 @@ export type UserUpdateWithoutPayoutsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4264,6 +4418,8 @@ export type UserUncheckedUpdateWithoutPayoutsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4313,6 +4469,8 @@ export type UserCreateWithoutPaymentMethodInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4362,6 +4520,8 @@ export type UserUncheckedCreateWithoutPaymentMethodInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4427,6 +4587,8 @@ export type UserUpdateWithoutPaymentMethodInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4476,6 +4638,8 @@ export type UserUncheckedUpdateWithoutPaymentMethodInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4525,6 +4689,8 @@ export type UserCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4574,6 +4740,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4639,6 +4807,8 @@ export type UserUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4688,6 +4858,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4737,6 +4909,8 @@ export type UserCreateWithoutQuizResultInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4786,6 +4960,8 @@ export type UserUncheckedCreateWithoutQuizResultInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4851,6 +5027,8 @@ export type UserUpdateWithoutQuizResultInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4900,6 +5078,8 @@ export type UserUncheckedUpdateWithoutQuizResultInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4949,6 +5129,8 @@ export type UserCreateWithoutAuditLogInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -4998,6 +5180,8 @@ export type UserUncheckedCreateWithoutAuditLogInput = {
   updatedAt?: Date | string
   isEmailVerified?: boolean
   status?: $Enums.UserStatus
+  suspendReason?: string | null
+  adminNote?: string | null
   emailVerificationTokenHash?: string | null
   emailVerificationExpires?: Date | string | null
   passwordResetTokenHash?: string | null
@@ -5063,6 +5247,8 @@ export type UserUpdateWithoutAuditLogInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5112,6 +5298,8 @@ export type UserUncheckedUpdateWithoutAuditLogInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  suspendReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerificationExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   passwordResetTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5327,6 +5515,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   isEmailVerified?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   emailVerificationTokenHash?: boolean
   emailVerificationExpires?: boolean
   passwordResetTokenHash?: boolean
@@ -5378,6 +5568,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   updatedAt?: boolean
   isEmailVerified?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   emailVerificationTokenHash?: boolean
   emailVerificationExpires?: boolean
   passwordResetTokenHash?: boolean
@@ -5410,6 +5602,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   updatedAt?: boolean
   isEmailVerified?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   emailVerificationTokenHash?: boolean
   emailVerificationExpires?: boolean
   passwordResetTokenHash?: boolean
@@ -5442,6 +5636,8 @@ export type UserSelectScalar = {
   updatedAt?: boolean
   isEmailVerified?: boolean
   status?: boolean
+  suspendReason?: boolean
+  adminNote?: boolean
   emailVerificationTokenHash?: boolean
   emailVerificationExpires?: boolean
   passwordResetTokenHash?: boolean
@@ -5463,7 +5659,7 @@ export type UserSelectScalar = {
   wishlistsCount?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "avatarUrl" | "locale" | "deletedAt" | "createdAt" | "updatedAt" | "isEmailVerified" | "status" | "emailVerificationTokenHash" | "emailVerificationExpires" | "passwordResetTokenHash" | "passwordResetExpires" | "googleId" | "loginAttempts" | "failedLoginAt" | "lockUntil" | "lastLogin" | "lastLoginIP" | "lastActivityAt" | "passwordChangedAt" | "enrollmentCount" | "reviewCount" | "paymentCount" | "notificationCount" | "orderCount" | "progressesCount" | "wishlistsCount", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "avatarUrl" | "locale" | "deletedAt" | "createdAt" | "updatedAt" | "isEmailVerified" | "status" | "suspendReason" | "adminNote" | "emailVerificationTokenHash" | "emailVerificationExpires" | "passwordResetTokenHash" | "passwordResetExpires" | "googleId" | "loginAttempts" | "failedLoginAt" | "lockUntil" | "lastLogin" | "lastLoginIP" | "lastActivityAt" | "passwordChangedAt" | "enrollmentCount" | "reviewCount" | "paymentCount" | "notificationCount" | "orderCount" | "progressesCount" | "wishlistsCount", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignedRole?: boolean | Prisma.User$assignedRoleArgs<ExtArgs>
   studentProfile?: boolean | Prisma.User$studentProfileArgs<ExtArgs>
@@ -5521,6 +5717,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     updatedAt: Date
     isEmailVerified: boolean
     status: $Enums.UserStatus
+    suspendReason: string | null
+    adminNote: string | null
     emailVerificationTokenHash: string | null
     emailVerificationExpires: Date | null
     passwordResetTokenHash: string | null
@@ -5991,6 +6189,8 @@ export interface UserFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly isEmailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly suspendReason: Prisma.FieldRef<"User", 'String'>
+  readonly adminNote: Prisma.FieldRef<"User", 'String'>
   readonly emailVerificationTokenHash: Prisma.FieldRef<"User", 'String'>
   readonly emailVerificationExpires: Prisma.FieldRef<"User", 'DateTime'>
   readonly passwordResetTokenHash: Prisma.FieldRef<"User", 'String'>

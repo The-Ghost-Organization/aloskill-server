@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { requireAuth, requireInstructor, requireStudent } from '../../middleware/auth.js';
+import { requireAdmin, requireAuth, requireInstructor, requireStudent } from '../../middleware/auth.js';
 import { generalLimiter, instructorQueryLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { courseController } from './course.controller.js';
@@ -47,6 +47,8 @@ router.get('/student/allCourses', requireStudent, courseController.getAllCourses
 
 router.get('/public/allCourses', courseController.getAllCoursesForPublic);
 
+router.get('/admin/student-view', requireAdmin, courseController.getAllCoursesForAdminDashboardStudentView);
+
 router.get(
   '/course/:courseId',
   requireInstructor,
@@ -54,8 +56,6 @@ router.get(
 );
 
 router.get('/public/viewCourse/:courseId', courseController.getSingleCourseForPublicView);
-
-router.post('/get-cart-courses', requireAuth, courseController.getCartCourses);
 
 router.get(
   '/private/viewCourse/:courseId/:userId',
@@ -80,11 +80,7 @@ router.get(
   courseController.getCourseInstructors
 );
 
-router.get(
-  '/instructorDashboard',
-  requireInstructor,
-  courseController.getInstructorDashboardData
-);
+router.get('/instructorDashboard', requireInstructor, courseController.getInstructorDashboardData);
 
 router.get('/tags', instructorQueryLimiter, requireInstructor, courseController.getCourseTags);
 
@@ -130,7 +126,7 @@ router.delete(
 
 router.delete(
   '/delete-file',
-  requireInstructor,
+  requireStudent,
   validate(GetAndDeleteFileSchema),
   courseController.deleteFile
 );

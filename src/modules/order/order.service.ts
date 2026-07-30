@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request } from 'express';
@@ -8,10 +9,12 @@ import {
   EnrollmentStatus,
   OrderStatus,
   PaymentProviders,
+  PurchaseFormat,
   TransactionStatus,
   TransactionType,
 } from '../../generated/client.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
+import { type UddoktapayPayload } from './order.validation.js';
 
 const createPayment = async (req: Request) => {
   const { courseIds, paymentMethod, user } = req.body;
@@ -314,7 +317,260 @@ const validateIPN = async (req: Request) => {
   console.log('Update Order Status: ', updateOrderStatus);
 };
 
+const createOrderWithUDDOKTAPAY = async (req: Request) => {
+  console.log("hit the uddoktapay");
+  const data = req.body as UddoktapayPayload['body'];
+  const user = req.user;
+  const shippingDetails = data.shippingDetails;
+
+  if (!user.email) {
+    throw new Error('Unauthorized');
+  }
+
+  if (!data.orderSummary) {
+    throw new Error('Invalid order summary');
+  }
+
+  const createOrder = await executeDbOperation(async (prisma) => {
+    return await prisma.$transaction(async (tx) => {
+      // 1. Verify User
+      const userData = await tx.user.findUnique({
+        where: {
+          email: user.email,
+          status: 'ACTIVE',
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          email: true,
+          studentProfile: {
+            select: {
+              displayName: true,
+            }
+          },
+          instructorProfile: {
+            where: {
+              deletedAt: null,
+              status: 'APPROVED',
+            },
+            select: {
+              displayName: true,
+            }
+          },
+        },
+      });
+
+      if (!userData) {throw new Error('User not found');}
+
+      // Safe fallbacks for items and quantities arrays
+      const sessionCourses = data.orderSummary.items.courses;
+      const sessionBooks = data.orderSummary.items.books;
+      const bookQuantities = data.orderSummary.quantities.books;
+
+      // 2. Fetch courses and books from Database
+      const dbCourses = await tx.course.findMany({
+        where: {
+          id: { in: sessionCourses.map((c) => c.id) },
+          deletedAt: null,
+          status: 'PUBLISHED',
+        },
+        select: { id: true, originalPrice: true, discountPrice: true, isDiscountActive: true },
+      });
+
+      const dbBooks = await tx.book.findMany({
+        where: {
+          id: { in: sessionBooks.map((b) => b.id) },
+          deletedAt: null,
+          status: 'APPROVED',
+        },
+        select: {
+          id: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
+        },
+      });
+
+      if (dbCourses.length !== sessionCourses.length) {
+        throw new Error('One or more courses not found');
+      }
+      if (dbBooks.length !== sessionBooks.length) {
+        throw new Error('One or more books not found');
+      }
+
+      let total = 0;
+      const orderItemsData = [];
+
+      // 3. Process Course Prices
+      for (const course of dbCourses) {
+        const price = course.isDiscountActive && course.discountPrice
+          ? course.discountPrice
+          : course.originalPrice;
+
+        total += Number(price);
+        orderItemsData.push({
+          courseId: course.id,
+          format: PurchaseFormat.DIGITAL,
+          price,
+        });
+      }
+
+      // 4. Process Book Prices with Correct Format Extraction
+      let hasPhysicalItems = false;
+
+      for (const bookItem of sessionBooks) {
+        const dbBook = dbBooks.find((b) => b.id === bookItem.id);
+        if (!dbBook) {throw new Error('System mismatch fetching book data');}
+
+        // Look up the exact format for this specific book from quantities mapping
+        const quantityMeta = bookQuantities.find((q) => q.bookId === bookItem.id);
+
+        // Determine format safely (fall back to EBOOK/DIGITAL if metadata missing)
+        const isPhysical = quantityMeta?.format === 'PHYSICAL';
+        if (isPhysical) {hasPhysicalItems = true;}
+
+        let price = 0;
+        if (isPhysical) {
+          const decimalPrice = dbBook.physicalSalePrice ?? dbBook.physicalRegularPrice ?? 0;
+          price = Number(decimalPrice);
+        } else {
+          const decimalPrice = dbBook.digitalSalePrice ?? dbBook.digitalRegularPrice ?? 0;
+          price = Number(decimalPrice);
+        }
+
+        total += price;
+        orderItemsData.push({
+          bookId: dbBook.id,
+          format: isPhysical ? PurchaseFormat.PHYSICAL : PurchaseFormat.DIGITAL,
+          price,
+        });
+      }
+
+      // 5. Build dynamic shipping address relation
+      let shippingAddressId: string | null = null;
+
+      if (shippingDetails && hasPhysicalItems) {
+        const address = await tx.shippingAddress.create({
+          data: {
+            fullName: shippingDetails.fullName,
+            addressLine: shippingDetails.addressLine,
+            city: shippingDetails.city,
+            postalCode: shippingDetails.postalCode,
+            phone: shippingDetails.phoneNumber,
+            country: 'Bangladesh',
+          },
+          select: { id: true }
+        });
+        shippingAddressId = address.id;
+      }
+
+      const orderPayload: any = {
+        userId: userData.id,
+        totalAmount: total,
+        status: 'PENDING',
+        provider: 'UDDOKTAPAY',
+        orderItems: {
+          create: orderItemsData,
+        },
+      };
+
+      if (shippingAddressId) {
+        orderPayload.shippingAddressId = shippingAddressId;
+      }
+
+      // 6. Generate final order record
+      return {
+        ...userData,
+        orderData: await tx.order.create({
+          data: orderPayload,
+          select: {
+            id: true,
+            totalAmount: true,
+            orderItems: {
+              select: {
+                format: true,
+                price: true,
+                course: { select: { title: true } },
+                book: { select: { title: true } },
+              },
+            },
+            shippingAddress: true,
+          },
+        }),
+      };
+    });
+  });
+
+  if(!createOrder.id) {
+    throw new Error("Order Creation Failed");
+  }
+
+  const payWithUddoktaPay = await fetch(`${config.UDDOKTAPAY_URL}/checkout-v2`, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_CHECKOUT_API,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      full_name: createOrder.studentProfile?.displayName ?? createOrder.instructorProfile?.displayName ?? 'N/A',
+      email: createOrder.email,
+      amount: String(createOrder.orderData.totalAmount),
+      metadata: {user_id: createOrder.id, order_id: createOrder.orderData.id},
+      return_type: "GET",
+      redirect_url: 'http://localhost:3000/success',
+      cancel_url: 'http://localhost:3000/cancel',
+      webhook_url: 'http://localhost:5000/ipn'
+    }),
+  });
+
+  const uddoktaPayData = await payWithUddoktaPay.json() as {
+    status?: boolean | string;
+    message?: string;
+    payment_url?: string;
+    errors?: Record<string, string[]>;
+  };
+
+  if (!payWithUddoktaPay.ok || !uddoktaPayData.payment_url) {
+    console.error("UddoktaPay Error Log:", {
+      httpStatus: payWithUddoktaPay.status,
+      message: uddoktaPayData.message ?? "No payment URL returned",
+      validationErrors: uddoktaPayData.errors ?? null,
+      fullResponse: uddoktaPayData
+    });
+
+    throw new Error(uddoktaPayData.message ?? "Failed to initiate payment with UddoktaPay");
+  }
+
+  return { gatewayUrl: uddoktaPayData.payment_url };
+};
+
+const verifyPayment = async (req: Request) => {
+  const { invoice_id } = req.query as { invoice_id: string; };
+
+  if (!invoice_id) {
+    throw new Error('Invalid request data');
+  }
+
+  const verifyPaymentWithUddoktapay = await fetch(config.UDDOKTAPAY_URL, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_VERIFY_API,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({invoice_id}),
+  });
+
+  const uddoktaPayData = await verifyPaymentWithUddoktapay.json() as { status: "COMPLETED" | "PENDING" | "FAILED"; };
+  return { orderStatus: uddoktaPayData.status };
+
+};
+
 export const orderService = {
   createPayment,
   validateIPN,
+  createOrderWithUDDOKTAPAY,
+  verifyPayment,
 };
