@@ -220,6 +220,66 @@ const getAllBooksForPublicView = async () => {
   }));
 };
 
+const getBookDetailsForPublicView = async (req: Request) => {
+  const bookId = req.params.bookId as string;
+  if (!bookId) {
+    throw new Error('Book ID is required.');
+  }
+  const book = await executeDbOperation(async prisma => {
+    return await prisma.book.findUnique({
+      where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        author: true,
+        publisher: true,
+        translator: true,
+        editor: true,
+        description: true,
+        physicalRegularPrice: true,
+        physicalSalePrice: true,
+        digitalRegularPrice: true,
+        digitalSalePrice: true,
+        stock: true,
+        language: true,
+        coverImage: true,
+        isbn: true,
+        edition: true,
+        pages: true,
+        owner: {
+          select: {
+            avatarUrl: true,
+            status: true,
+            instructorProfile: {
+              select: {
+                displayName: true,
+                qualifications: true,
+                expertise: true,
+              },
+            },
+          },
+        },
+        formats: true,
+        createdAt: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        files: {
+          select: {
+            name: true,
+            url: true,
+            fileType: true,
+          },
+        },
+      },
+    });
+  }, 'Get Book Details for Public View');
+
+  return book;
+};
+
 // Admin Dashboard
 
 const getAllBooksDataforAdmin = async (req: Request) => {
@@ -410,4 +470,5 @@ export const bookService = {
   getSingleBookDataForAdminEdit,
   approveBook,
   getAllBooksForPublicView,
+  getBookDetailsForPublicView,
 };
