@@ -1,71 +1,36 @@
-// import { Redis } from 'ioredis';
-// import { config } from '../config/env.js';
+import { Redis, type RedisOptions } from 'ioredis';
 
-// const redisConnection = new Redis({
-//   host: config.REDIS_HOST,
-//   port: Number(config.REDIS_PORT),
-//   password: config.REDIS_PASSWORD,
-//   // tls: {}, // ✅ required for Redis Cloud SSL - commented out for local Redis
-//   maxRetriesPerRequest: null,
-//   enableReadyCheck: false,
-// });
-// redisConnection.on('connect', () => {
-//   console.log('✅ Connected to Redis Cloud');
-// });
-
-// redisConnection.on('error', err => {
-//   console.error('❌ Redis connection error:', err);
-// });
-
-// export default redisConnection;
-
-import { Redis } from 'ioredis';
 import { config } from '../config/env.js';
 
-const isProduction = process.env.NODE_ENV === 'production' || config.REDIS_HOST.includes('redis.cloud');
+type RedisRole = 'producer' | 'worker';
 
-const redisConnection = new Redis({
-  host: config.REDIS_HOST,
-  port: Number(config.REDIS_PORT),
-  password: config.REDIS_PASSWORD,
+const useTls = process.env.REDIS_TLS === 'true';
 
-  // ✅ Automatically apply TLS configuration for secure cloud clusters
-  tls: isProduction ? {} : undefined,
+function connectionOptions(role: RedisRole): RedisOptions {
+  return {
+    host: config.REDIS_HOST,
+    port: Number(config.REDIS_PORT),
+    password: config.REDIS_PASSWORD,
+    tls: useTls ? {} : undefined,
+    enableReadyCheck: true,
+    maxRetriesPerRequest: role === 'worker' ? null : 1,
+    connectTimeout: 10_000,
+    retryStrategy(times) {
+      return Math.min(times * 100, 3_000);
+    },
+  };
+}
 
-  // ✅ Critical for background workers like BullMQ
-  maxRetriesPerRequest: null,
+export function createRedisConnection(role: RedisRole): Redis {
+  const connection = new Redis(connectionOptions(role));
 
-  // ✅ Changed to true for safe operational commands processing on startup
-  enableReadyCheck: true,
+  connection.on('error', error => {
+    console.error(`[redis:${role}] connection error`, { message: error.message });
+  });
 
-  // ✅ Production-grade backoff reconnection strategy
-  retryStrategy(times) {
-    const delay = Math.min(times * 50, 2000);
-    console.warn(`⚠️ Redis connection lost. Reconnecting attempt #${times} in ${delay}ms...`);
-    return delay; // Tries reconnecting with a backoff up to 2 seconds max per retry
-  },
+  return connection;
+}
 
-  // Optional: Prevent massive backlogs if Redis goes down for a long period
-  maxLoadingRetryTime: 10000,
-});
-
-// 2. Comprehensive Event Monitoring
-redisConnection.on('connect', () => {
-  console.log('✅ Connected to Redis (Socket initialized)');
-});
-
-redisConnection.on('ready', () => {
-  console.log('🚀 Redis Cloud is ready to accept commands');
-});
-
-redisConnection.on('error', (err) => {
-  // 💡 Crucial: Registering an error listener prevents your entire Express/Node app from crashing
-  // during a temporary network disconnect.
-  console.error('❌ Redis operational connection error:', err.message);
-});
-
-redisConnection.on('close', () => {
-  console.warn('📡 Redis connection socket closed');
-});
+const redisConnection = createRedisConnection('producer');
 
 export default redisConnection;
