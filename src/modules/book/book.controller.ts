@@ -17,6 +17,11 @@ const getAllBooksForPublicView = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'All Books for public view Retrieved Successfully!', result);
 });
 
+const getBookDetailsForPublicView = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getBookDetailsForPublicView(req);
+  ResponseHandler.ok(res, 'Book Details for public view Retrieved Successfully!', result);
+});
+
 const getAllBooksDataforAdmin = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.getAllBooksDataforAdmin(req);
   ResponseHandler.ok(res, 'Books Data Retrieved Successfully!', result);
@@ -32,12 +37,12 @@ const approvedBook = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book Approved Successfully!', result);
 });
 
-
 export const bookController = {
   uploadBook,
   updateBook,
   getAllBooksDataforAdmin,
   getSingleBookDataForAdminEdit,
   approvedBook,
-  getAllBooksForPublicView
+  getAllBooksForPublicView,
+  getBookDetailsForPublicView,
 };

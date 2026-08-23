@@ -101,7 +101,7 @@ const updateBook = async (req: Request) => {
   const user = req.user;
   if (!user.email) {
     throw new Error('Unauthorized: User not authenticated.');
-  };
+  }
 
   const updatedBook = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
@@ -186,7 +186,6 @@ const updateBook = async (req: Request) => {
   }, 'Update Book');
 
   return updatedBook.id;
-
 };
 
 const getAllBooksForPublicView = async () => {
@@ -209,7 +208,7 @@ const getAllBooksForPublicView = async () => {
         category: {
           select: {
             name: true,
-          }
+          },
         },
       },
     });
@@ -217,8 +216,68 @@ const getAllBooksForPublicView = async () => {
 
   return books.map(book => ({
     ...book,
-    stock: book.stock > 0 ? "in-stock" : 'out-of-stock',
+    stock: book.stock > 0 ? 'in-stock' : 'out-of-stock',
   }));
+};
+
+const getBookDetailsForPublicView = async (req: Request) => {
+  const bookId = req.params.bookId as string;
+  if (!bookId) {
+    throw new Error('Book ID is required.');
+  }
+  const book = await executeDbOperation(async prisma => {
+    return await prisma.book.findUnique({
+      where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        author: true,
+        publisher: true,
+        translator: true,
+        editor: true,
+        description: true,
+        physicalRegularPrice: true,
+        physicalSalePrice: true,
+        digitalRegularPrice: true,
+        digitalSalePrice: true,
+        stock: true,
+        language: true,
+        coverImage: true,
+        isbn: true,
+        edition: true,
+        pages: true,
+        owner: {
+          select: {
+            avatarUrl: true,
+            status: true,
+            instructorProfile: {
+              select: {
+                displayName: true,
+                qualifications: true,
+                expertise: true,
+              },
+            },
+          },
+        },
+        formats: true,
+        createdAt: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        files: {
+          select: {
+            name: true,
+            url: true,
+            fileType: true,
+          },
+        },
+      },
+    });
+  }, 'Get Book Details for Public View');
+
+  return book;
 };
 
 // Admin Dashboard
@@ -266,8 +325,10 @@ const getAllBooksDataforAdmin = async (req: Request) => {
           author: true,
           totalEarning: true,
           formats: true,
-          regularPrice: true,
-          salePrice: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
           stock: true,
           status: true,
           orderItem: {
@@ -278,9 +339,9 @@ const getAllBooksDataforAdmin = async (req: Request) => {
               id: true,
               price: true,
             },
-          }
+          },
         },
-        orderBy: {createdAt: "asc"}
+        orderBy: { createdAt: 'asc' },
       });
       const stockData = await tx.book.aggregate({
         _sum: {
@@ -304,92 +365,100 @@ const getAllBooksDataforAdmin = async (req: Request) => {
   return booksData;
 };
 
-const getSingleBookDataForAdminEdit= async(req: Request)=>{
+const getSingleBookDataForAdminEdit = async (req: Request) => {
   const { bookId } = req.query;
-  if (typeof bookId !== "string") {
-    throw new Error("Invalid book ID.");
+  if (typeof bookId !== 'string') {
+    throw new Error('Invalid book ID.');
   }
   const user = req.user;
-  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");};
+  if (!user.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
 
-  const bookData = await executeDbOperation(async (prisma) => {
-    return await prisma.$transaction(async tx =>{
+  const bookData = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
       const userProfile = await tx.user.findUnique({
-        where: { email: user.email, deletedAt: null, status: "ACTIVE" },
-        include: { assignedRole: true }
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
+        include: { assignedRole: true },
       });
       if (!userProfile) {
-        throw new Error("Unauthorized: User profile not found.");
-      };
-      const isAuthorized = userProfile.assignedRole.some(r =>
-        r.role === "ADMIN" || r.role === "INSTRUCTOR"
+        throw new Error('Unauthorized: User profile not found.');
+      }
+      const isAuthorized = userProfile.assignedRole.some(
+        r => r.role === 'ADMIN' || r.role === 'INSTRUCTOR'
       );
       if (!isAuthorized) {
-        throw new Error("Security Violation: Only Admins and Instructors can see this data.");
-      };
+        throw new Error('Security Violation: Only Admins and Instructors can see this data.');
+      }
 
       const book = await tx.book.findUnique({
         where: { id: bookId },
         include: {
           files: true,
-          category: true
-        }
+          category: true,
+        },
       });
-      if (!book) {throw new Error("Book not found.");}
+      if (!book) {
+        throw new Error('Book not found.');
+      }
       return book;
     });
-  }, "Get Single Book Data for Admin Edit");
+  }, 'Get Single Book Data for Admin Edit');
 
   return bookData;
 };
 
 const approveBook = async (req: Request) => {
   const { modifiedBookId } = req.query;
-  if (typeof modifiedBookId !== "string") {
-    throw new Error("Invalid book ID.");
+  if (typeof modifiedBookId !== 'string') {
+    throw new Error('Invalid book ID.');
   }
   const user = req.user;
-  if(!user.email) {throw new Error("Unauthorized: User not authenticated.");}
+  if (!user.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
 
-  const approvedBook = await executeDbOperation(async (prisma) => {
+  const approvedBook = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
       const userProfile = await tx.user.findUnique({
-        where: { email: user.email, deletedAt: null, status: "ACTIVE" },
-        include: { assignedRole: true }
+        where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
+        include: { assignedRole: true },
       });
-      if (!userProfile) {throw new Error("Unauthorized: User profile not found.");}
-      const isAuthorized = userProfile.assignedRole.some(r =>
-        r.role === "ADMIN"
-      );
+      if (!userProfile) {
+        throw new Error('Unauthorized: User profile not found.');
+      }
+      const isAuthorized = userProfile.assignedRole.some(r => r.role === 'ADMIN');
       if (!isAuthorized) {
-        throw new Error("Security Violation: Only Admins can approve books.");
+        throw new Error('Security Violation: Only Admins can approve books.');
       }
       const book = await tx.book.findUnique({
         where: { id: modifiedBookId },
       });
-      if (!book) {throw new Error("Book not found.");}
+      if (!book) {
+        throw new Error('Book not found.');
+      }
       if (book.status !== BookStatus.PENDING) {
-        throw new Error("Only books in PENDING status can be approved.");
+        throw new Error('Only books in PENDING status can be approved.');
       }
       const updatedBook = await tx.book.update({
         where: { id: modifiedBookId },
-        data: { status: BookStatus.APPROVED }
+        data: { status: BookStatus.APPROVED },
       });
 
       await tx.auditLog.create({
         data: {
           userId: userProfile.id,
-          action: "BOOK_APPROVED",
-          entityType: "BOOK",
+          action: 'BOOK_APPROVED',
+          entityType: 'BOOK',
           entityId: updatedBook.id,
           changesAfter: JSON.parse(JSON.stringify(updatedBook)),
-          ipAddress: "captured-from-request",
-        }
+          ipAddress: 'captured-from-request',
+        },
       });
 
       return updatedBook;
     });
-  }, "Approve Book");
+  }, 'Approve Book');
 
   return approvedBook.id;
 };
@@ -400,5 +469,6 @@ export const bookService = {
   getAllBooksDataforAdmin,
   getSingleBookDataForAdminEdit,
   approveBook,
-  getAllBooksForPublicView
+  getAllBooksForPublicView,
+  getBookDetailsForPublicView,
 };

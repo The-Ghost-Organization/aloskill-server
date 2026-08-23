@@ -5,6 +5,14 @@ export interface EmailOptions {
   from?: string;
 }
 
+export interface EmailJobData extends EmailOptions {
+  idempotencyKey: string;
+}
+
+export interface MailProviderResult {
+  id: string;
+}
+
 export interface IMailProvider {
-  sendEmail(email: EmailOptions): Promise<void>;
+  sendEmail(email: EmailJobData): Promise<MailProviderResult>;
 }
