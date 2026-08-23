@@ -4,12 +4,13 @@ import { validate } from '../../middleware/validation.js';
 import {
   forgotSchema,
   InstructorProfileSchema,
+  loginAdminSchema,
   loginSchema,
   registerSchema,
   resendVerificationEmailSchema,
   resetSchema,
   verifyUserSchema,
-} from '../../validations/auth.js';
+} from './auth.validation.js';
 import { authController } from './auth.controller.js';
 
 const router = express.Router({ caseSensitive: true });
@@ -19,6 +20,7 @@ router.use(authLimiter);
 
 //routes
 router.post('/login', validate(loginSchema), authController.loginUser);
+router.post('/admin-login', validate(loginAdminSchema), authController.loginAdmin);
 router.post('/register', validate(registerSchema), authController.registerStudent);
 router.post(
   '/register-instructor',

@@ -37,6 +37,35 @@ const loginUser = catchAsync(async (req, res): Promise<void> => {
   });
 });
 
+const loginAdmin = catchAsync(async (req, res): Promise<void> => {
+  const result = await authService.loginAdmin(req);
+
+  if (!result) {
+    throw new Error('Admin login failed');
+  }
+  const { user, refreshToken } = result as {
+    user: {
+      email: string;
+      role: string[];
+      id: string;
+      displayName: string;
+      profilePicture: string;
+    };
+    refreshToken: string;
+  };
+
+  const accessToken = JwtService.generateToken(
+    { email: user.email, role: user.role },
+    { expiresIn: '15m', type: 'ACCESS' }
+  );
+
+  ResponseHandler.ok(res, 'Login Successful', {
+    ...user,
+    accessToken,
+    refreshToken,
+  });
+});
+
 const registerStudent = catchAsync(async (req, res): Promise<void> => {
   const result = await authService.registerStudent(req);
 
@@ -231,4 +260,5 @@ export const authController = {
   logoutCurrentDevice,
   logoutAllDevices,
   refreshAccessToken,
+  loginAdmin,
 };

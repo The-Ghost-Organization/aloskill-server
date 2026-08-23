@@ -102,7 +102,7 @@ const loginUser = async (req: Request) => {
         email: data.email,
         deletedAt: null,
       },
-      include: { sessions: { include: { refreshTokens: true } } },
+      include: { sessions: { include: { refreshTokens: true } }, assignedRole: true },
     });
   });
 
@@ -112,6 +112,14 @@ const loginUser = async (req: Request) => {
 
   if (user.status !== UserStatus.ACTIVE) {
     throw new Error('Your account has been deactivated or Suspended');
+  }
+
+  const hasAdminRole = user.assignedRole.some(
+    (role) => role.role === UserRole.ADMIN
+  );
+
+  if (hasAdminRole) {
+    throw new Error('You are not authorized to login through this endpoint');
   }
 
   // Enforce device limit (3 devices max)
@@ -404,6 +412,215 @@ const loginUser = async (req: Request) => {
   }
 
   throw new Error('Invalid login payload');
+};
+
+const loginAdmin = async (req: Request) => {
+  const data = req.body;
+  const deviceData = req.deviceInfo as DeviceInfo;
+  const deviceId = DeviceFingerprint.generateDeviceId(deviceData);
+  const { refreshToken, hashedToken, expiresAt } = generateRefreshToken();
+
+  if (data.password.length < 8 || data.password.length > 16) {
+    throw new Error('Password must be between 8 and 16 characters');
+  }
+  if (!data.email) {
+    throw new Error('Email is not provided for login');
+  }
+
+  const user = await executeDbOperation(async prisma => {
+    return await prisma.user.findFirst({
+      where: {
+        email: data.email,
+        deletedAt: null,
+      },
+      include: { sessions: { include: { refreshTokens: true } }, assignedRole: true },
+    });
+  });
+
+  if (!user) {
+    throw new Error('User does not exist');
+  }
+
+  if (user.status !== UserStatus.ACTIVE) {
+    throw new Error('Your account has been deactivated or Suspended');
+  }
+
+  const hasAdminRole = user.assignedRole.some(
+    (role) => role.role === UserRole.ADMIN
+  );
+
+  if (!hasAdminRole) {
+    throw new Error('You are not authorized to login through this endpoint');
+  }
+
+  // Enforce device limit (3 devices max)
+  const activeSessions = user.sessions.filter(session => session.isActive);
+  if (activeSessions.length >= 3) {
+    throw new Error('Device limit exceeded');
+  }
+
+  if (!data.password || typeof data.password !== 'string' || data.password.trim() === '') {
+    throw new Error('Invalid Password');
+  }
+  if (!user.password) {
+    throw new Error('Invalid login method');
+  }
+  if (!user.isEmailVerified) {
+    throw new Error('Please Verify Your Email');
+  } else if (user.lockUntil && user.lockUntil > new Date()) {
+    throw new Error(`Account locked. Try again after ${user.lockUntil.toLocaleTimeString()}`);
+  }
+
+  const isPasswordValid = await verifyHash(data.password as string, user.password);
+
+  if (!isPasswordValid) {
+    const updateUserFailedAttempt = await executeDbOperation(async prisma => {
+      return await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: (() => {
+          const shouldResetAttempts =
+            !user.failedLoginAt || user.failedLoginAt < new Date(Date.now() - 30 * 60 * 1000);
+          const newAttemptCount = shouldResetAttempts ? 1 : user.loginAttempts + 1;
+
+          const updatePayload: any = shouldResetAttempts
+            ? {
+                loginAttempts: 1,
+                failedLoginAt: new Date(),
+              }
+            : {
+                loginAttempts: { increment: 1 },
+              };
+
+          if (newAttemptCount >= 5) {
+            const lockUntilTime = new Date(Date.now() + 1 * 60 * 60 * 1000);
+            updatePayload.lockUntil = lockUntilTime;
+          }
+          return updatePayload;
+        })(),
+      });
+    }, 'update Admin');
+    throw new Error(
+      updateUserFailedAttempt.lockUntil
+        ? `Account locked. Try again after ${updateUserFailedAttempt.lockUntil.toLocaleTimeString()}`
+        : 'Incorrect password'
+    );
+  }
+
+  const result = await executeDbOperation(async prisma => {
+    const sessionExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
+    return await prisma.$transaction(async tx => {
+      // Update user last login
+      const updatedUser = await tx.user.update({
+        where: { id: user.id },
+        data: {
+          loginAttempts: 0,
+          lockUntil: null,
+          failedLoginAt: null,
+          lastLogin: new Date(),
+          lastLoginIP: deviceData.ipAddress,
+        },
+        select: LOGIN_USER_SELECT,
+      });
+
+      // Check for existing session on this device
+      const existingSession = await tx.userSession.findUnique({
+        where: { userId_deviceId: { userId: user.id, deviceId } },
+        include: {
+          refreshTokens: {
+            where: { revoked: false },
+            orderBy: { createdAt: 'desc' },
+            take: 1,
+          },
+        },
+      });
+
+      let newRefreshToken;
+
+      if (existingSession) {
+        // === ROTATE REFRESH TOKEN ===
+        const oldToken = existingSession.refreshTokens[0];
+        if (oldToken) {
+          newRefreshToken = await tx.refreshToken.create({
+            data: {
+              token: hashedToken,
+              sessionId: existingSession.id,
+              expiresAt,
+              replacesToken: { connect: { id: oldToken.id } },
+            },
+          });
+
+          await tx.refreshToken.update({
+            where: { id: oldToken.id },
+            data: {
+              revoked: true,
+              revokedAt: new Date(),
+              replacedByTokenId: newRefreshToken.id,
+            },
+          });
+        } else {
+          // First token for this session
+          newRefreshToken = await tx.refreshToken.create({
+            data: {
+              token: hashedToken,
+              sessionId: existingSession.id,
+              expiresAt,
+            },
+          });
+        }
+
+        // Update session
+        await tx.userSession.update({
+          where: { id: existingSession.id },
+          data: {
+            sessionToken: hashRefreshToken(crypto.randomBytes(64).toString('hex')),
+            expiresAt,
+            lastActivity: new Date(),
+            ipAddress: deviceData.ipAddress,
+            userAgent: deviceData.userAgent,
+            isActive: true,
+          },
+        });
+      } else {
+        // === NEW SESSION ===
+        const fingerprint = DeviceFingerprint.generateFromDeviceInfo(deviceData);
+        const { location, ...otherDeviceData } = deviceData;
+        const newSession = await tx.userSession.create({
+          data: {
+            deviceId,
+            deviceFingerprint: fingerprint,
+            userId: user.id,
+            sessionToken: hashRefreshToken(crypto.randomBytes(64).toString('hex')),
+            // ...deviceData,
+            ...otherDeviceData,
+            ...location,
+            expiresAt: sessionExpiresAt,
+            refreshTokens: {
+              create: {
+                token: hashedToken,
+                expiresAt,
+              },
+            },
+          },
+          include: { refreshTokens: true },
+        });
+
+        newRefreshToken = newSession.refreshTokens[0];
+      }
+
+      return { updatedUser, newRefreshToken };
+    });
+  }, 'Update Credentials Admin');
+
+  const { updatedUser } = result;
+
+  return {
+    user: buildUserProfile(updatedUser),
+    refreshToken,
+  };
+
 };
 
 const registerStudent = async (req: Request) => {
@@ -1189,6 +1406,7 @@ const refreshAccessToken = async (req: Request) => {
 
 export const authService = {
   loginUser,
+  loginAdmin,
   registerStudent,
   registerInstructor,
   verifyUser,
