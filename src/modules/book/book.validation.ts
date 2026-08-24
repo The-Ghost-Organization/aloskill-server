@@ -23,6 +23,15 @@ export const CreateBookSchema = z.object({
       .string()
       .min(1, "Publisher is required")
       .regex(/^[^<>]*$/, "Publisher name must not contain any opening or closing HTML tags"),
+    publishYear: z
+      .string()
+      .min(1, "Publish year is required")
+      .regex(/^[^<>]*$/, "Publish year must not contain any opening or closing HTML tags"),
+    ratings: z
+      .string()
+      .min(1, "Ratings is required")
+      .max(5, "Ratings cannot exceed 5")
+      .regex(/^[^<>]*$/, "Ratings must not contain any opening or closing HTML tags"),
     description: z
       .string()
       .min(10, "Description must be at least 10 characters")
@@ -45,6 +54,7 @@ export const CreateBookSchema = z.object({
       .int()
       .positive("Pages must not contain any negative numbers")
       .optional(),
+    weight: z.coerce.number().positive("Weight must not contain any negative numbers"),
     language: z.string().min(1, "Language is required"),
     status: z.enum(["APPROVED", "PENDING", "DRAFT"]).default("PENDING"),
 

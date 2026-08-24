@@ -818,6 +818,8 @@ model Book {
   translator      String?
   editor          String?
   publisher       String
+  publishYear     String
+  ratings         Int @db.SmallInt() @default(0)
   description     String   @db.Text
 
   physicalRegularPrice Decimal?  @db.Decimal(10, 2)
@@ -832,6 +834,7 @@ model Book {
   isbn            String?  @unique
   edition         String?
   pages           Int?
+  weight          Decimal @db.Decimal(10, 2)
   language        String
   formats         BookFormat[]
   totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
