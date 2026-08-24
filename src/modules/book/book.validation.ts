@@ -26,7 +26,12 @@ export const CreateBookSchema = z.object({
     publishYear: z
       .string()
       .min(1, "Publish year is required")
-      .regex(/^[^<>]*$/, "Publish year must not contain any opening or closing HTML tags"),
+      .regex(/^\d{4}$/, "Must be a valid 4-digit year (e.g., 2024)")
+      .refine(val => {
+        const year = parseInt(val, 10);
+        const currentYear = new Date().getFullYear();
+        return year >= 1000 && year <= currentYear + 1;
+      }, "Year must be between 1000 and next year"),
     ratings: z
       .string()
       .min(1, "Ratings is required")
@@ -37,9 +42,17 @@ export const CreateBookSchema = z.object({
       .min(10, "Description must be at least 10 characters")
       .regex(/^[^<>]*$/, "Description must not contain any opening or closing HTML tags"),
 
-    regularPrice: z.coerce.number().min(0, "Price cannot be negative"),
-    salePrice: z.coerce.number().min(0, "Price cannot be negative"),
-    stock: z.coerce.number().int().min(0, "Stock cannot be negative"),
+    physicalRegularPrice: z.coerce.number().min(0, "Physical Regular Price cannot be negative"),
+    physicalSalePrice: z.coerce
+      .number()
+      .min(0, "Physical Sale Price cannot be negative")
+      .optional(),
+    digitalRegularPrice: z.coerce
+      .number()
+      .min(0, "Digital Regular Price cannot be negative")
+      .optional(),
+    digitalSalePrice: z.coerce.number().min(0, "Digital Sale Price cannot be negative").optional(),
+    stock: z.coerce.number().int().min(0, "Stock cannot be negative").optional(),
 
     isbn: z
       .string()
@@ -53,13 +66,13 @@ export const CreateBookSchema = z.object({
       .number()
       .int()
       .positive("Pages must not contain any negative numbers")
-      .optional(),
-    weight: z.coerce.number().positive("Weight must not contain any negative numbers"),
+      .min(1, "Pages is required"),
+    weight: z.coerce.number().positive("Weight must not contain any negative numbers").optional(),
     language: z.string().min(1, "Language is required"),
-    status: z.enum(["APPROVED", "PENDING", "DRAFT"]).default("PENDING"),
 
     category: z.string().min(1, "Category is required"),
     formats: z.array(z.string()).min(1, "Select at least one format"),
+    status: z.enum(["APPROVED", "PENDING", "DRAFT"]).default("PENDING"),
 
     metaKeywords: z
       .string()
@@ -82,26 +95,46 @@ export const CreateBookSchema = z.object({
   })
   .refine(
     data => {
-      if (data.formats.includes("E-Book") && !data.files.find(f => f.fileType === "EBOOK")) {
+      if (data.formats.includes("E-Book") && !data.digitalRegularPrice) {
         return false;
       }
       return true;
     },
     {
-      message: "E-Book PDF file is required when E-Book format is selected",
-      path: ["files"],
+      message: "Digital Prices are required when E-Book format is selected",
+      path: ["digitalRegularPrice"],
     }
   )
   .refine(
     data => {
-      if (data.regularPrice < data.salePrice) {
-        return false;
+      if (data.physicalSalePrice) {
+        if (data.physicalRegularPrice < data.physicalSalePrice) {
+          return false;
+        }
+        return true;
       }
       return true;
     },
     {
-      message: "Selling price cannot be higher than regular price",
-      path: ["salePrice"],
+      message: "HardCover Selling price cannot be higher than regular price",
+      path: ["physicalSalePrice"],
+    }
+  )
+  .refine(
+    data => {
+      if (data.formats.includes("E-Book")) {
+        if (data.digitalSalePrice && data.digitalRegularPrice) {
+          if (data.digitalRegularPrice < data.digitalSalePrice) {
+            return false;
+          }
+          return true;
+        }
+      }
+      return true;
+    },
+    {
+      message: "Ebook Selling price cannot be higher than regular price",
+      path: ["digitalSalePrice"],
     }
   )
 });

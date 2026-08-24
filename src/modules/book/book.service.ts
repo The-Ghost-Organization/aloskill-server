@@ -6,6 +6,19 @@ import { executeDbOperation } from '../../config/database.js';
 import { BookFormat, BookStatus, OrderStatus } from '../../generated/enums.js';
 import type { UploadBookPayload } from './book.validation.js';
 
+const getBooksCategories = async () => {
+  const categories = await executeDbOperation(async prisma => {
+    return await prisma.bookCategory.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }, 'Get Books Categories');
+
+  return categories;
+};
+
 const uploadBook = async (req: Request) => {
   const data = req.body as UploadBookPayload['body'];
   const user = req.user;
@@ -42,17 +55,22 @@ const uploadBook = async (req: Request) => {
           title: data.title,
           author: data.author,
           publisher: data.publisher,
+          publishYear: Number(data.publishYear),
+          ratings: new Decimal(data.ratings),
           translator: data.translator,
           editor: data.editor,
           description: data.description,
-          physicalRegularPrice: new Decimal(data.regularPrice),
-          physicalSalePrice: new Decimal(data.salePrice),
+          physicalRegularPrice: new Decimal(data.physicalRegularPrice),
+          physicalSalePrice: new Decimal(data.physicalSalePrice ?? 0),
+          digitalRegularPrice: new Decimal(data.digitalRegularPrice ?? 0),
+          digitalSalePrice: new Decimal(data.digitalSalePrice ?? 0),
           stock: data.stock,
           language: data.language,
           coverImage: data.coverImageUrl,
           isbn: data.isbn,
           edition: data.edition,
           pages: data.pages,
+          weight: data.weight,
           metaKeywords: data.metaKeywords,
           metaDescription: data.metaDescription,
           ownerId: owner.id,
@@ -137,17 +155,22 @@ const updateBook = async (req: Request) => {
           title: data.title,
           author: data.author,
           publisher: data.publisher,
+          publishYear: Number(data.publishYear),
+          ratings: new Decimal(data.ratings),
           translator: data.translator,
           editor: data.editor,
           description: data.description,
-          physicalRegularPrice: new Decimal(data.regularPrice),
-          physicalSalePrice: new Decimal(data.salePrice),
+          physicalRegularPrice: new Decimal(data.physicalRegularPrice),
+          physicalSalePrice: new Decimal(data.physicalSalePrice ?? 0),
+          digitalRegularPrice: new Decimal(data.digitalRegularPrice ?? 0),
+          digitalSalePrice: new Decimal(data.digitalSalePrice ?? 0),
           stock: data.stock,
           language: data.language,
           coverImage: data.coverImageUrl,
           isbn: data.isbn,
           edition: data.edition,
           pages: data.pages,
+          weight: data.weight,
           metaKeywords: data.metaKeywords,
           metaDescription: data.metaDescription,
           ownerId: owner.id,
@@ -464,6 +487,7 @@ const approveBook = async (req: Request) => {
 };
 
 export const bookService = {
+  getBooksCategories,
   uploadBook,
   updateBook,
   getAllBooksDataforAdmin,

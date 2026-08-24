@@ -9,6 +9,8 @@ const router = express.Router({ caseSensitive: true });
 
 router.use(generalLimiter);
 
+router.get('/categories', bookController.getBooksCategories);
+
 router.get('/public/all-books', bookController.getAllBooksForPublicView);
 
 router.post(

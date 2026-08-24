@@ -2,6 +2,11 @@ import catchAsync from '../../utils/asyncHandler.js';
 import ResponseHandler from '../../utils/response.js';
 import { bookService } from './book.service.js';
 
+const getBooksCategories = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getBooksCategories();
+  ResponseHandler.ok(res, 'Books Categories Retrieved Successfully!', result);
+});
+
 const uploadBook = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.uploadBook(req);
   ResponseHandler.ok(res, 'Book Uploaded Successfully!', result);
@@ -38,6 +43,7 @@ const approvedBook = catchAsync(async (req, res): Promise<void> => {
 });
 
 export const bookController = {
+  getBooksCategories,
   uploadBook,
   updateBook,
   getAllBooksDataforAdmin,
