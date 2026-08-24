@@ -949,8 +949,8 @@ const verifyUser = async (req: Request) => {
   if (!user) {
     throw new Error('User Does Not Exist');
   } else {
-    if (user.status !== UserStatus.ACTIVE) {
-      throw new Error('Your account has been deactivated or Suspended');
+    if (user.status === UserStatus.INACTIVE || user.status === UserStatus.SUSPENDED) {
+      throw new Error('Your account has been deactivated or suspended');
     }
     if (user.emailVerificationTokenHash !== token) {
       throw new Error('Invalid Verification Link');
