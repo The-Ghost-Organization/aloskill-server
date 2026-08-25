@@ -822,6 +822,7 @@ model Book {
   ratings         Decimal @db.Decimal(2, 1) @default(0.0)
   description     String   @db.Text
 
+  purchaseCost         Decimal?  @db.Decimal(10, 2) @default(0.0)
   physicalRegularPrice Decimal?  @db.Decimal(10, 2)
   physicalSalePrice    Decimal?  @db.Decimal(10, 2)
   digitalRegularPrice  Decimal?  @db.Decimal(10, 2)

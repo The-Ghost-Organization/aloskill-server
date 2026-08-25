@@ -42,7 +42,8 @@ export const CreateBookSchema = z.object({
       .min(10, "Description must be at least 10 characters")
       .regex(/^[^<>]*$/, "Description must not contain any opening or closing HTML tags"),
 
-    physicalRegularPrice: z.coerce.number().min(0, "Physical Regular Price cannot be negative"),
+    purchaseCost: z.coerce.number().min(0, "Purchase Cost cannot be negative").optional(),
+    physicalRegularPrice: z.coerce.number().min(0, "Physical Regular Price cannot be negative").optional(),
     physicalSalePrice: z.coerce
       .number()
       .min(0, "Physical Sale Price cannot be negative")
@@ -95,6 +96,18 @@ export const CreateBookSchema = z.object({
   })
   .refine(
     data => {
+      if (data.formats.includes("Hardcover") && !data.physicalRegularPrice) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Physical Prices are required when Hardcover format is selected",
+      path: ["physicalRegularPrice"],
+    }
+  )
+  .refine(
+    data => {
       if (data.formats.includes("E-Book") && !data.digitalRegularPrice) {
         return false;
       }
@@ -107,7 +120,7 @@ export const CreateBookSchema = z.object({
   )
   .refine(
     data => {
-      if (data.physicalSalePrice) {
+      if (data.physicalSalePrice && data.physicalRegularPrice) {
         if (data.physicalRegularPrice < data.physicalSalePrice) {
           return false;
         }

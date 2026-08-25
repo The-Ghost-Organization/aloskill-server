@@ -4050,6 +4050,7 @@ export const BookScalarFieldEnum = {
   publishYear: 'publishYear',
   ratings: 'ratings',
   description: 'description',
+  purchaseCost: 'purchaseCost',
   physicalRegularPrice: 'physicalRegularPrice',
   physicalSalePrice: 'physicalSalePrice',
   digitalRegularPrice: 'digitalRegularPrice',
