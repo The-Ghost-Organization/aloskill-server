@@ -12,6 +12,11 @@ const uploadBook = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book Uploaded Successfully!', result);
 });
 
+const bulkUploadBooks = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.bulkUploadBooks(req);
+  ResponseHandler.ok(res, 'Book Import Completed!', result);
+});
+
 const updateBook = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.updateBook(req);
   ResponseHandler.ok(res, 'Book Updated Successfully!', result);
@@ -45,6 +50,7 @@ const approvedBook = catchAsync(async (req, res): Promise<void> => {
 export const bookController = {
   getBooksCategories,
   uploadBook,
+  bulkUploadBooks,
   updateBook,
   getAllBooksDataforAdmin,
   getSingleBookDataForAdminEdit,
