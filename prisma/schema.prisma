@@ -118,8 +118,9 @@ enum TransactionType {
 }
 
 enum PaymentProviders {
-  SSLCommerce
+   SSLCommerce
   UDDOKTAPAY
+  CASH_ON_DELIVERY
   STRIPE
   PAYPAL
 }
@@ -130,6 +131,8 @@ enum PaymentMethod {
   MOBILE_WALLET
   BANK_TRANSFER
   OTHER
+  CASH_ON_DELIVERY
+  ONLINE_PAYMENT
 }
 
 enum MobileBanking {
@@ -142,6 +145,11 @@ enum MobileBanking {
 
 enum OrderStatus {
   PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
   PAID
   FAILED
   CANCELLED
@@ -934,6 +942,9 @@ model Order {
   user                User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId              String
   totalAmount         Decimal              @db.Decimal(15, 2)
+  shippingCost       Decimal              @default(0) @db.Decimal(10, 2)
+  totalWeight        Decimal              @default(0) @db.Decimal(10, 2)
+  paymentMethod      PaymentMethod?
   currency            String               @default("BDT")
   status              OrderStatus          @default(PENDING)
   provider            PaymentProviders?
@@ -968,6 +979,7 @@ model OrderItem {
   format    PurchaseFormat @default(DIGITAL)
 
   price     Decimal         @db.Decimal(15, 2)
+  quantity  Int             @default(1)
   currency  String?         @default("BDT")
   status    OrderItemStatus @default(PENDING)
   courierName     Courier?
@@ -990,10 +1002,17 @@ model ShippingAddress {
   postalCode   String
   country      String
   phone        String
+  deliveryArea DeliveryArea?
   orders       Order[]
 
   @@map("shipping_addresses")
 }
+
+enum DeliveryArea {
+  INSIDE_DHAKA
+  OUTSIDE_DHAKA
+}
+
 
 /// Payments & payouts
 model PaymentTransaction {

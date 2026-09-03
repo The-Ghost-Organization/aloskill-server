@@ -4121,6 +4121,9 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
+  shippingCost: 'shippingCost',
+  totalWeight: 'totalWeight',
+  paymentMethod: 'paymentMethod',
   currency: 'currency',
   status: 'status',
   provider: 'provider',
@@ -4140,6 +4143,7 @@ export const OrderItemScalarFieldEnum = {
   bookId: 'bookId',
   format: 'format',
   price: 'price',
+  quantity: 'quantity',
   currency: 'currency',
   status: 'status',
   courierName: 'courierName',
@@ -4159,7 +4163,8 @@ export const ShippingAddressScalarFieldEnum = {
   city: 'city',
   postalCode: 'postalCode',
   country: 'country',
-  phone: 'phone'
+  phone: 'phone',
+  deliveryArea: 'deliveryArea'
 } as const
 
 export type ShippingAddressScalarFieldEnum = (typeof ShippingAddressScalarFieldEnum)[keyof typeof ShippingAddressScalarFieldEnum]
@@ -4789,6 +4794,20 @@ export type ListEnumViewEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'PaymentMethod'
+ */
+export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentMethod[]'
+ */
+export type ListEnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod[]'>
+    
+
+
+/**
  * Reference to a field of type 'OrderStatus'
  */
 export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus'>
@@ -4859,16 +4878,16 @@ export type ListEnumCourierFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 
 
 /**
- * Reference to a field of type 'PaymentMethod'
+ * Reference to a field of type 'DeliveryArea'
  */
-export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>
+export type EnumDeliveryAreaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryArea'>
     
 
 
 /**
- * Reference to a field of type 'PaymentMethod[]'
+ * Reference to a field of type 'DeliveryArea[]'
  */
-export type ListEnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod[]'>
+export type ListEnumDeliveryAreaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryArea[]'>
     
 
 

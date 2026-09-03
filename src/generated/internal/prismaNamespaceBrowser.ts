@@ -566,6 +566,9 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
+  shippingCost: 'shippingCost',
+  totalWeight: 'totalWeight',
+  paymentMethod: 'paymentMethod',
   currency: 'currency',
   status: 'status',
   provider: 'provider',
@@ -585,6 +588,7 @@ export const OrderItemScalarFieldEnum = {
   bookId: 'bookId',
   format: 'format',
   price: 'price',
+  quantity: 'quantity',
   currency: 'currency',
   status: 'status',
   courierName: 'courierName',
@@ -604,7 +608,8 @@ export const ShippingAddressScalarFieldEnum = {
   city: 'city',
   postalCode: 'postalCode',
   country: 'country',
-  phone: 'phone'
+  phone: 'phone',
+  deliveryArea: 'deliveryArea'
 } as const
 
 export type ShippingAddressScalarFieldEnum = (typeof ShippingAddressScalarFieldEnum)[keyof typeof ShippingAddressScalarFieldEnum]

@@ -5,11 +5,11 @@ import { executeDbOperation } from '../../config/database.js';
 import { BookStatus, CourseStatus } from '../../generated/browser.js';
 
 const getCartItems = async (req: Request) => {
-  const data = req.body as { courses?: string[]; books?: {bookId: string, format: string}[] };
+  const data = req.body as { courses?: string[]; books?: { bookId: string; format: string }[] };
 
   const responseData = {
     courses: [] as any[],
-    books: [] as any[]
+    books: [] as any[],
   };
 
   if (data.books && data.books.length > 0) {
@@ -28,6 +28,7 @@ const getCartItems = async (req: Request) => {
           digitalRegularPrice: true,
           digitalSalePrice: true,
           coverImage: true,
+          weight: true,
           category: {
             select: {
               name: true,
@@ -38,8 +39,8 @@ const getCartItems = async (req: Request) => {
     }, 'Get Specific Book Data for Cart');
 
     if (getBookDetails && getBookDetails.length > 0) {
-      responseData.books = getBookDetails.map((dbBook) => {
-        const userCartItem = data.books?.find((b) => b.bookId === dbBook.id);
+      responseData.books = getBookDetails.map(dbBook => {
+        const userCartItem = data.books?.find(b => b.bookId === dbBook.id);
         const isPhysical = userCartItem?.format === 'PHYSICAL';
 
         const originalPrice = isPhysical
@@ -57,6 +58,7 @@ const getCartItems = async (req: Request) => {
           category: dbBook.category?.name,
           originalPrice,
           discountPrice,
+          weight: Number(dbBook.weight),
         };
       });
     }
@@ -92,7 +94,7 @@ const getCartItems = async (req: Request) => {
         discountPrice: course.discountPrice,
       }));
     }
-  };
+  }
 
   return responseData;
 };

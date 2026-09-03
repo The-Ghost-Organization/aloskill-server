@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -241,7 +240,7 @@ const excelRowToBook = (row: Record<string, unknown>, mediaUrls: MediaUrlMap): u
   publishYear: text(row.publishYear),
   ratings: text(row.ratings),
   description: text(row.description),
-  purchaseCost: new Decimal(row.purchaseCost),
+  purchaseCost: row.purchaseCost,
   physicalRegularPrice: row.physicalRegularPrice,
   physicalSalePrice: row.physicalSalePrice === '' ? undefined : row.physicalSalePrice,
   digitalRegularPrice: row.digitalRegularPrice === '' ? undefined : row.digitalRegularPrice,
@@ -626,7 +625,7 @@ const getAllBooksDataforUser = async (req: Request) => {
     throw new Error('Unauthorized: User not authenticated.');
   }
 
-  const booksData = await executeDbOperation(async (prisma) => {
+  const booksData = await executeDbOperation(async prisma => {
     const userProfile = await prisma.user.findUnique({
       where: { email: user.email, deletedAt: null, status: 'ACTIVE' },
       include: { assignedRole: true },
@@ -637,7 +636,7 @@ const getAllBooksDataforUser = async (req: Request) => {
     }
 
     const isAuthorized = userProfile.assignedRole.some(
-      (r) => r.role === 'STUDENT' || r.role === 'INSTRUCTOR'
+      r => r.role === 'STUDENT' || r.role === 'INSTRUCTOR'
     );
 
     if (!isAuthorized) {
@@ -649,7 +648,7 @@ const getAllBooksDataforUser = async (req: Request) => {
       where: {
         order: {
           userId: userProfile.id,
-          status: "PAID",
+          status: 'PAID',
         },
         bookId: { not: null },
       },
@@ -689,7 +688,7 @@ const getAllBooksDataforUser = async (req: Request) => {
       orderBy: { createdAt: 'desc' },
     });
 
-    return purchasedBookItems.map((item) => {
+    return purchasedBookItems.map(item => {
       const isDigital = item.format === 'DIGITAL';
 
       return {
@@ -714,16 +713,13 @@ const getAllBooksDataforUser = async (req: Request) => {
               shippedAt: item.shippedAt,
               deliveredAt: item.deliveredAt,
             },
-        downloadUrls: isDigital
-          ? item.book?.files.map((file) => file.fileUrl) ?? []
-          : null,
+        downloadUrls: isDigital ? (item.book?.files.map(file => file.fileUrl) ?? []) : null,
       };
     });
   }, 'Get All Purchased Books for Student');
 
   return booksData;
 };
-
 
 // Admin Dashboard
 
@@ -918,5 +914,5 @@ export const bookService = {
   approveBook,
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
-  getAllBooksDataforUser
+  getAllBooksDataforUser,
 };
