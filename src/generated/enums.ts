@@ -207,10 +207,22 @@ export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
 export const OrderItemStatus = {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
-  REFUNDED: 'REFUNDED'
+  REFUNDED: 'REFUNDED',
+  DELIVERED: 'DELIVERED',
+  SHIPPED: 'SHIPPED'
 } as const
 
 export type OrderItemStatus = (typeof OrderItemStatus)[keyof typeof OrderItemStatus]
+
+
+export const Courier = {
+  STEADFAST: 'STEADFAST',
+  REDX: 'REDX',
+  PAPERFLY: 'PAPERFLY',
+  PATHAO: 'PATHAO'
+} as const
+
+export type Courier = (typeof Courier)[keyof typeof Courier]
 
 
 export const EnrollmentStatus = {

@@ -43,6 +43,10 @@ export type OrderItemMinAggregateOutputType = {
   price: runtime.Decimal | null
   currency: string | null
   status: $Enums.OrderItemStatus | null
+  courierName: $Enums.Courier | null
+  trackingNumber: string | null
+  shippedAt: Date | null
+  deliveredAt: Date | null
   createdAt: Date | null
 }
 
@@ -55,6 +59,10 @@ export type OrderItemMaxAggregateOutputType = {
   price: runtime.Decimal | null
   currency: string | null
   status: $Enums.OrderItemStatus | null
+  courierName: $Enums.Courier | null
+  trackingNumber: string | null
+  shippedAt: Date | null
+  deliveredAt: Date | null
   createdAt: Date | null
 }
 
@@ -67,6 +75,10 @@ export type OrderItemCountAggregateOutputType = {
   price: number
   currency: number
   status: number
+  courierName: number
+  trackingNumber: number
+  shippedAt: number
+  deliveredAt: number
   createdAt: number
   _all: number
 }
@@ -89,6 +101,10 @@ export type OrderItemMinAggregateInputType = {
   price?: true
   currency?: true
   status?: true
+  courierName?: true
+  trackingNumber?: true
+  shippedAt?: true
+  deliveredAt?: true
   createdAt?: true
 }
 
@@ -101,6 +117,10 @@ export type OrderItemMaxAggregateInputType = {
   price?: true
   currency?: true
   status?: true
+  courierName?: true
+  trackingNumber?: true
+  shippedAt?: true
+  deliveredAt?: true
   createdAt?: true
 }
 
@@ -113,6 +133,10 @@ export type OrderItemCountAggregateInputType = {
   price?: true
   currency?: true
   status?: true
+  courierName?: true
+  trackingNumber?: true
+  shippedAt?: true
+  deliveredAt?: true
   createdAt?: true
   _all?: true
 }
@@ -212,6 +236,10 @@ export type OrderItemGroupByOutputType = {
   price: runtime.Decimal
   currency: string | null
   status: $Enums.OrderItemStatus
+  courierName: $Enums.Courier | null
+  trackingNumber: string | null
+  shippedAt: Date | null
+  deliveredAt: Date | null
   createdAt: Date
   _count: OrderItemCountAggregateOutputType | null
   _avg: OrderItemAvgAggregateOutputType | null
@@ -247,6 +275,10 @@ export type OrderItemWhereInput = {
   price?: Prisma.DecimalFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusFilter<"OrderItem"> | $Enums.OrderItemStatus
+  courierName?: Prisma.EnumCourierNullableFilter<"OrderItem"> | $Enums.Courier | null
+  trackingNumber?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  shippedAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
@@ -262,6 +294,10 @@ export type OrderItemOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  courierName?: Prisma.SortOrderInput | Prisma.SortOrder
+  trackingNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  shippedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
   course?: Prisma.CourseOrderByWithRelationInput
@@ -280,6 +316,10 @@ export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.DecimalFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusFilter<"OrderItem"> | $Enums.OrderItemStatus
+  courierName?: Prisma.EnumCourierNullableFilter<"OrderItem"> | $Enums.Courier | null
+  trackingNumber?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  shippedAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
@@ -295,6 +335,10 @@ export type OrderItemOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  courierName?: Prisma.SortOrderInput | Prisma.SortOrder
+  trackingNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  shippedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.OrderItemCountOrderByAggregateInput
   _avg?: Prisma.OrderItemAvgOrderByAggregateInput
@@ -315,6 +359,10 @@ export type OrderItemScalarWhereWithAggregatesInput = {
   price?: Prisma.DecimalWithAggregatesFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableWithAggregatesFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusWithAggregatesFilter<"OrderItem"> | $Enums.OrderItemStatus
+  courierName?: Prisma.EnumCourierNullableWithAggregatesFilter<"OrderItem"> | $Enums.Courier | null
+  trackingNumber?: Prisma.StringNullableWithAggregatesFilter<"OrderItem"> | string | null
+  shippedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OrderItem"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OrderItem"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrderItem"> | Date | string
 }
 
@@ -324,6 +372,10 @@ export type OrderItemCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
@@ -339,6 +391,10 @@ export type OrderItemUncheckedCreateInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -348,6 +404,10 @@ export type OrderItemUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
@@ -363,6 +423,10 @@ export type OrderItemUncheckedUpdateInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -375,6 +439,10 @@ export type OrderItemCreateManyInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -384,6 +452,10 @@ export type OrderItemUpdateManyMutationInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -396,6 +468,10 @@ export type OrderItemUncheckedUpdateManyInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -418,6 +494,10 @@ export type OrderItemCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  courierName?: Prisma.SortOrder
+  trackingNumber?: Prisma.SortOrder
+  shippedAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -434,6 +514,10 @@ export type OrderItemMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  courierName?: Prisma.SortOrder
+  trackingNumber?: Prisma.SortOrder
+  shippedAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -446,6 +530,10 @@ export type OrderItemMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  courierName?: Prisma.SortOrder
+  trackingNumber?: Prisma.SortOrder
+  shippedAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -587,12 +675,20 @@ export type EnumOrderItemStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderItemStatus
 }
 
+export type NullableEnumCourierFieldUpdateOperationsInput = {
+  set?: $Enums.Courier | null
+}
+
 export type OrderItemCreateWithoutCourseInput = {
   id?: string
   format?: $Enums.PurchaseFormat
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
@@ -606,6 +702,10 @@ export type OrderItemUncheckedCreateWithoutCourseInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -647,6 +747,10 @@ export type OrderItemScalarWhereInput = {
   price?: Prisma.DecimalFilter<"OrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   status?: Prisma.EnumOrderItemStatusFilter<"OrderItem"> | $Enums.OrderItemStatus
+  courierName?: Prisma.EnumCourierNullableFilter<"OrderItem"> | $Enums.Courier | null
+  trackingNumber?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  shippedAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
 }
 
@@ -656,6 +760,10 @@ export type OrderItemCreateWithoutBookInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
@@ -669,6 +777,10 @@ export type OrderItemUncheckedCreateWithoutBookInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -704,6 +816,10 @@ export type OrderItemCreateWithoutOrderInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
   course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
   book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
@@ -717,6 +833,10 @@ export type OrderItemUncheckedCreateWithoutOrderInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -754,6 +874,10 @@ export type OrderItemCreateManyCourseInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -763,6 +887,10 @@ export type OrderItemUpdateWithoutCourseInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
@@ -776,6 +904,10 @@ export type OrderItemUncheckedUpdateWithoutCourseInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -787,6 +919,10 @@ export type OrderItemUncheckedUpdateManyWithoutCourseInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -798,6 +934,10 @@ export type OrderItemCreateManyBookInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -807,6 +947,10 @@ export type OrderItemUpdateWithoutBookInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
@@ -820,6 +964,10 @@ export type OrderItemUncheckedUpdateWithoutBookInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -831,6 +979,10 @@ export type OrderItemUncheckedUpdateManyWithoutBookInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -842,6 +994,10 @@ export type OrderItemCreateManyOrderInput = {
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string | null
   status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -851,6 +1007,10 @@ export type OrderItemUpdateWithoutOrderInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
   book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
@@ -864,6 +1024,10 @@ export type OrderItemUncheckedUpdateWithoutOrderInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -875,6 +1039,10 @@ export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -889,6 +1057,10 @@ export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   price?: boolean
   currency?: boolean
   status?: boolean
+  courierName?: boolean
+  trackingNumber?: boolean
+  shippedAt?: boolean
+  deliveredAt?: boolean
   createdAt?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
@@ -904,6 +1076,10 @@ export type OrderItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   price?: boolean
   currency?: boolean
   status?: boolean
+  courierName?: boolean
+  trackingNumber?: boolean
+  shippedAt?: boolean
+  deliveredAt?: boolean
   createdAt?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
@@ -919,6 +1095,10 @@ export type OrderItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   price?: boolean
   currency?: boolean
   status?: boolean
+  courierName?: boolean
+  trackingNumber?: boolean
+  shippedAt?: boolean
+  deliveredAt?: boolean
   createdAt?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
@@ -934,10 +1114,14 @@ export type OrderItemSelectScalar = {
   price?: boolean
   currency?: boolean
   status?: boolean
+  courierName?: boolean
+  trackingNumber?: boolean
+  shippedAt?: boolean
+  deliveredAt?: boolean
   createdAt?: boolean
 }
 
-export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "courseId" | "bookId" | "format" | "price" | "currency" | "status" | "createdAt", ExtArgs["result"]["orderItem"]>
+export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "courseId" | "bookId" | "format" | "price" | "currency" | "status" | "courierName" | "trackingNumber" | "shippedAt" | "deliveredAt" | "createdAt", ExtArgs["result"]["orderItem"]>
 export type OrderItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
@@ -970,6 +1154,10 @@ export type $OrderItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     price: runtime.Decimal
     currency: string | null
     status: $Enums.OrderItemStatus
+    courierName: $Enums.Courier | null
+    trackingNumber: string | null
+    shippedAt: Date | null
+    deliveredAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["orderItem"]>
   composites: {}
@@ -1405,6 +1593,10 @@ export interface OrderItemFieldRefs {
   readonly price: Prisma.FieldRef<"OrderItem", 'Decimal'>
   readonly currency: Prisma.FieldRef<"OrderItem", 'String'>
   readonly status: Prisma.FieldRef<"OrderItem", 'OrderItemStatus'>
+  readonly courierName: Prisma.FieldRef<"OrderItem", 'Courier'>
+  readonly trackingNumber: Prisma.FieldRef<"OrderItem", 'String'>
+  readonly shippedAt: Prisma.FieldRef<"OrderItem", 'DateTime'>
+  readonly deliveredAt: Prisma.FieldRef<"OrderItem", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"OrderItem", 'DateTime'>
 }
     

@@ -4142,6 +4142,10 @@ export const OrderItemScalarFieldEnum = {
   price: 'price',
   currency: 'currency',
   status: 'status',
+  courierName: 'courierName',
+  trackingNumber: 'trackingNumber',
+  shippedAt: 'shippedAt',
+  deliveredAt: 'deliveredAt',
   createdAt: 'createdAt'
 } as const
 
@@ -4837,6 +4841,20 @@ export type EnumOrderItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'OrderItemStatus[]'
  */
 export type ListEnumOrderItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderItemStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Courier'
+ */
+export type EnumCourierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Courier'>
+    
+
+
+/**
+ * Reference to a field of type 'Courier[]'
+ */
+export type ListEnumCourierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Courier[]'>
     
 
 

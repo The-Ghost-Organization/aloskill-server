@@ -587,6 +587,10 @@ export const OrderItemScalarFieldEnum = {
   price: 'price',
   currency: 'currency',
   status: 'status',
+  courierName: 'courierName',
+  trackingNumber: 'trackingNumber',
+  shippedAt: 'shippedAt',
+  deliveredAt: 'deliveredAt',
   createdAt: 'createdAt'
 } as const
 

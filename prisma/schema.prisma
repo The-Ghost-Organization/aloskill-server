@@ -152,6 +152,15 @@ enum OrderItemStatus {
   PENDING
   COMPLETED
   REFUNDED
+  DELIVERED
+  SHIPPED
+}
+
+enum Courier {
+  STEADFAST
+  REDX
+  PAPERFLY
+  PATHAO
 }
 
 enum EnrollmentStatus {
@@ -961,6 +970,10 @@ model OrderItem {
   price     Decimal         @db.Decimal(15, 2)
   currency  String?         @default("BDT")
   status    OrderItemStatus @default(PENDING)
+  courierName     Courier?
+  trackingNumber  String?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
   createdAt DateTime        @default(now())
 
   @@index([orderId])
