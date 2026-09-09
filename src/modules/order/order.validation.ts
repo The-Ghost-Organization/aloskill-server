@@ -21,9 +21,13 @@ export const CreateOrderWithUDDOKTAPAY = z.object({
               id: z.string(),
               title: z.string(),
               category: z.string().optional(),
-              discountPrice: z.number().optional(),
-              originalPrice: z.number(),
               thumbnailUrl: z.string().optional(),
+              weight: z.number(),
+              physicalRegularPrice: z.number().nullable(),
+              physicalSalePrice: z.number().nullable(),
+              digitalRegularPrice: z.number().nullable(),
+              digitalSalePrice: z.number().nullable(),
+              hasDigital: z.boolean().optional(),
             })
           ),
           courses: z.array(

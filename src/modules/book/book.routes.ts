@@ -31,6 +31,10 @@ router.get('/categories', bookController.getBooksCategories);
 
 router.get('/public/all-books', bookController.getAllBooksForPublicView);
 
+router.get('/public/book-details/:bookId', bookController.getBookDetailsForPublicView);
+
+router.get('/user/checkout/:bookId', requireStudent, bookController.getSingleBookForCheckout);
+
 router.post(
   '/upload-book',
   requireInstructor,

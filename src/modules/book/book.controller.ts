@@ -12,6 +12,11 @@ const uploadBook = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book Uploaded Successfully!', result);
 });
 
+const getSingleBookForCheckout = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getSingleBookForCheckout(req);
+  ResponseHandler.ok(res, 'Book Data Retrieved Successfully!', result);
+});
+
 const bulkUploadBooks = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.bulkUploadBooks(req);
   ResponseHandler.ok(res, 'Book Import Completed!', result);
@@ -63,4 +68,5 @@ export const bookController = {
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,
+  getSingleBookForCheckout,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -617,6 +618,68 @@ const getBookDetailsForPublicView = async (req: Request) => {
   return book;
 };
 
+const getSingleBookForCheckout = async (req: Request) => {
+  const bookId = req.params.bookId as string;
+  const format = req.query.format as string;
+
+  if (!bookId) {
+    throw new Error('Book ID is required.');
+  }
+  const book = await executeDbOperation(async prisma => {
+    return await prisma.book.findUnique({
+      where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        coverImage: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        weight: true,
+        physicalRegularPrice: true,
+        physicalSalePrice: true,
+        digitalRegularPrice: true,
+        digitalSalePrice: true,
+        formats: true,
+        stock: true,
+      },
+    });
+  }, 'Get Single Book for Checkout');
+
+  if (!book) {
+    throw new Error('Book not found or not approved.');
+  }
+
+  const requestedFormat = format === 'EBOOK' ? BookFormat.E_BOOK : BookFormat.HARDCOVER;
+
+  if (!book.formats.includes(requestedFormat)) {
+    throw new Error(`This book is not available in ${format.toLowerCase()} format.`);
+  }
+
+  if(book.formats.includes(BookFormat.E_BOOK) && format === 'EBOOK' && book.digitalSalePrice === null) {
+    throw new Error('The digital copy of this book is currently unavailable for purchase.');
+  }
+
+  if(book.formats.includes(BookFormat.HARDCOVER) && format === 'PHYSICAL' && book.stock <= 0) {
+    throw new Error('The physical copy of this book is currently out of stock.');
+  }
+
+  return {
+    id: book.id,
+    title: book.title,
+    thumbnailUrl: book.coverImage,
+    category: book.category?.name,
+    weight: book.weight,
+    physicalRegularPrice: book.physicalRegularPrice,
+    physicalSalePrice: book.physicalSalePrice,
+    digitalRegularPrice: book.digitalRegularPrice,
+    digitalSalePrice: book.digitalSalePrice,
+    hasDigital: book.formats.includes(BookFormat.E_BOOK),
+  };
+};
+
 // User Dashboard
 
 const getAllBooksDataforUser = async (req: Request) => {
@@ -915,4 +978,5 @@ export const bookService = {
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,
+  getSingleBookForCheckout
 };

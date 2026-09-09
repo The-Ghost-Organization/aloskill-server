@@ -40,25 +40,16 @@ const getCartItems = async (req: Request) => {
 
     if (getBookDetails && getBookDetails.length > 0) {
       responseData.books = getBookDetails.map(dbBook => {
-        const userCartItem = data.books?.find(b => b.bookId === dbBook.id);
-        const isPhysical = userCartItem?.format === 'PHYSICAL';
-
-        const originalPrice = isPhysical
-          ? Number(dbBook.physicalRegularPrice)
-          : Number(dbBook.digitalRegularPrice);
-
-        const discountPrice = isPhysical
-          ? Number(dbBook.physicalSalePrice)
-          : Number(dbBook.digitalSalePrice);
-
         return {
           id: dbBook.id,
           title: dbBook.title,
           thumbnailUrl: dbBook.coverImage,
           category: dbBook.category?.name,
-          originalPrice,
-          discountPrice,
-          weight: Number(dbBook.weight),
+          weight: dbBook.weight,
+          physicalRegularPrice: dbBook.physicalRegularPrice,
+          physicalSalePrice: dbBook.physicalSalePrice,
+          digitalRegularPrice: dbBook.digitalRegularPrice,
+          digitalSalePrice: dbBook.digitalSalePrice,
         };
       });
     }
