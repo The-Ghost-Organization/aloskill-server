@@ -8,6 +8,7 @@ import {
   ApplicationStatus,
   EnrollmentStatus,
   OrderStatus,
+  PaymentMethod,
   PaymentProviders,
   PurchaseFormat,
   TransactionStatus,
@@ -318,10 +319,11 @@ const validateIPN = async (req: Request) => {
 };
 
 const createOrderWithUDDOKTAPAY = async (req: Request) => {
-  console.log("hit the uddoktapay");
+  console.log('hit the uddoktapay');
   const data = req.body as UddoktapayPayload['body'];
   const user = req.user;
   const shippingDetails = data.shippingDetails;
+  const isCashOnDelivery = data.paymentMethod === 'CASH_ON_DELIVERY';
 
   if (!user.email) {
     throw new Error('Unauthorized');
@@ -331,8 +333,8 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
     throw new Error('Invalid order summary');
   }
 
-  const createOrder = await executeDbOperation(async (prisma) => {
-    return await prisma.$transaction(async (tx) => {
+  const createOrder = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
       // 1. Verify User
       const userData = await tx.user.findUnique({
         where: {
@@ -346,7 +348,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           studentProfile: {
             select: {
               displayName: true,
-            }
+            },
           },
           instructorProfile: {
             where: {
@@ -355,12 +357,14 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
             },
             select: {
               displayName: true,
-            }
+            },
           },
         },
       });
 
-      if (!userData) {throw new Error('User not found');}
+      if (!userData) {
+        throw new Error('User not found');
+      }
 
       // Safe fallbacks for items and quantities arrays
       const sessionCourses = data.orderSummary.items.courses;
@@ -370,7 +374,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
       // 2. Fetch courses and books from Database
       const dbCourses = await tx.course.findMany({
         where: {
-          id: { in: sessionCourses.map((c) => c.id) },
+          id: { in: sessionCourses.map(c => c.id) },
           deletedAt: null,
           status: 'PUBLISHED',
         },
@@ -379,7 +383,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
 
       const dbBooks = await tx.book.findMany({
         where: {
-          id: { in: sessionBooks.map((b) => b.id) },
+          id: { in: sessionBooks.map(b => b.id) },
           deletedAt: null,
           status: 'APPROVED',
         },
@@ -389,6 +393,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           physicalSalePrice: true,
           digitalRegularPrice: true,
           digitalSalePrice: true,
+          weight: true,
         },
       });
 
@@ -399,20 +404,23 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         throw new Error('One or more books not found');
       }
 
-      let total = 0;
+      let subtotal = 0;
+      let totalWeight = 0;
       const orderItemsData = [];
 
       // 3. Process Course Prices
       for (const course of dbCourses) {
-        const price = course.isDiscountActive && course.discountPrice
-          ? course.discountPrice
-          : course.originalPrice;
+        const price =
+          course.isDiscountActive && course.discountPrice
+            ? course.discountPrice
+            : course.originalPrice;
 
-        total += Number(price);
+        subtotal += Number(price);
         orderItemsData.push({
           courseId: course.id,
           format: PurchaseFormat.DIGITAL,
           price,
+          quantity: 1,
         });
       }
 
@@ -420,15 +428,23 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
       let hasPhysicalItems = false;
 
       for (const bookItem of sessionBooks) {
-        const dbBook = dbBooks.find((b) => b.id === bookItem.id);
-        if (!dbBook) {throw new Error('System mismatch fetching book data');}
+        const dbBook = dbBooks.find(b => b.id === bookItem.id);
+        if (!dbBook) {
+          throw new Error('System mismatch fetching book data');
+        }
 
         // Look up the exact format for this specific book from quantities mapping
-        const quantityMeta = bookQuantities.find((q) => q.bookId === bookItem.id);
+        const quantityMeta = bookQuantities.find(q => q.bookId === bookItem.id);
 
         // Determine format safely (fall back to EBOOK/DIGITAL if metadata missing)
         const isPhysical = quantityMeta?.format === 'PHYSICAL';
-        if (isPhysical) {hasPhysicalItems = true;}
+        const quantity = quantityMeta?.quantity ?? 1;
+        if (!Number.isInteger(quantity) || quantity < 1) {
+          throw new Error(`Invalid quantity for book: ${bookItem.id}`);
+        }
+        if (isPhysical) {
+          hasPhysicalItems = true;
+        }
 
         let price = 0;
         if (isPhysical) {
@@ -439,13 +455,33 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           price = Number(decimalPrice);
         }
 
-        total += price;
+        subtotal += price * quantity;
+        if (isPhysical) {
+          totalWeight += Number(dbBook.weight) * quantity;
+        }
         orderItemsData.push({
           bookId: dbBook.id,
           format: isPhysical ? PurchaseFormat.PHYSICAL : PurchaseFormat.DIGITAL,
-          price,
+          price: price * quantity,
+          quantity,
         });
       }
+
+      if (hasPhysicalItems && !shippingDetails) {
+        throw new Error('Shipping details are required for physical books');
+      }
+      if (isCashOnDelivery && !hasPhysicalItems) {
+        throw new Error('Cash on Delivery is available only for physical books');
+      }
+
+      const baseShippingCost = hasPhysicalItems
+        ? shippingDetails?.deliveryArea === 'INSIDE_DHAKA'
+          ? 80
+          : 130
+        : 0;
+      const extraWeightCharge = hasPhysicalItems ? Math.ceil(Math.max(0, totalWeight - 2)) * 20 : 0;
+      const shippingCost = baseShippingCost + extraWeightCharge;
+      const total = subtotal + shippingCost;
 
       // 5. Build dynamic shipping address relation
       let shippingAddressId: string | null = null;
@@ -459,8 +495,9 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
             postalCode: shippingDetails.postalCode,
             phone: shippingDetails.phoneNumber,
             country: 'Bangladesh',
+            deliveryArea: shippingDetails.deliveryArea,
           },
-          select: { id: true }
+          select: { id: true },
         });
         shippingAddressId = address.id;
       }
@@ -470,10 +507,19 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         totalAmount: total,
         status: 'PENDING',
         provider: 'UDDOKTAPAY',
+        paymentMethod: isCashOnDelivery
+          ? PaymentMethod.CASH_ON_DELIVERY
+          : PaymentMethod.ONLINE_PAYMENT,
+        shippingCost,
+        totalWeight,
         orderItems: {
           create: orderItemsData,
         },
       };
+
+      if (isCashOnDelivery) {
+        orderPayload.provider = PaymentProviders.CASH_ON_DELIVERY;
+      }
 
       if (shippingAddressId) {
         orderPayload.shippingAddressId = shippingAddressId;
@@ -502,8 +548,15 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
     });
   });
 
-  if(!createOrder.id) {
-    throw new Error("Order Creation Failed");
+  if (!createOrder.orderData.id) {
+    throw new Error('Order Creation Failed');
+  }
+
+  if (isCashOnDelivery) {
+    return {
+      orderId: createOrder.orderData.id,
+      paymentType: 'CASH_ON_DELIVERY' as const,
+    };
   }
 
   const payWithUddoktaPay = await fetch(`${config.UDDOKTAPAY_URL}/checkout-v2`, {
@@ -511,21 +564,24 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
     headers: {
       accept: 'application/json',
       'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_CHECKOUT_API,
-      'content-type': 'application/json'
+      'content-type': 'application/json',
     },
     body: JSON.stringify({
-      full_name: createOrder.studentProfile?.displayName ?? createOrder.instructorProfile?.displayName ?? 'N/A',
+      full_name:
+        createOrder.studentProfile?.displayName ??
+        createOrder.instructorProfile?.displayName ??
+        'N/A',
       email: createOrder.email,
       amount: String(createOrder.orderData.totalAmount),
-      metadata: {user_id: createOrder.id, order_id: createOrder.orderData.id},
-      return_type: "GET",
-      redirect_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000/cancel',
-      webhook_url: 'http://localhost:5000/ipn'
+      metadata: { user_id: createOrder.id, order_id: createOrder.orderData.id },
+      return_type: 'GET',
+      redirect_url: `${config.FRONTEND_URL}/success`,
+      cancel_url: `${config.FRONTEND_URL}/cancel`,
+      webhook_url: 'http://localhost:5000/ipn',
     }),
   });
 
-  const uddoktaPayData = await payWithUddoktaPay.json() as {
+  const uddoktaPayData = (await payWithUddoktaPay.json()) as {
     status?: boolean | string;
     message?: string;
     payment_url?: string;
@@ -533,21 +589,25 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
   };
 
   if (!payWithUddoktaPay.ok || !uddoktaPayData.payment_url) {
-    console.error("UddoktaPay Error Log:", {
+    console.error('UddoktaPay Error Log:', {
       httpStatus: payWithUddoktaPay.status,
-      message: uddoktaPayData.message ?? "No payment URL returned",
+      message: uddoktaPayData.message ?? 'No payment URL returned',
       validationErrors: uddoktaPayData.errors ?? null,
-      fullResponse: uddoktaPayData
+      fullResponse: uddoktaPayData,
     });
 
-    throw new Error(uddoktaPayData.message ?? "Failed to initiate payment with UddoktaPay");
+    throw new Error(uddoktaPayData.message ?? 'Failed to initiate payment with UddoktaPay');
   }
 
-  return { gatewayUrl: uddoktaPayData.payment_url };
+  return {
+    gatewayUrl: uddoktaPayData.payment_url,
+    orderId: createOrder.orderData.id,
+    paymentType: 'ONLINE_PAYMENT' as const,
+  };
 };
 
 const verifyPayment = async (req: Request) => {
-  const { invoice_id } = req.query as { invoice_id: string; };
+  const { invoice_id } = req.query as { invoice_id: string };
 
   if (!invoice_id) {
     throw new Error('Invalid request data');
@@ -558,14 +618,114 @@ const verifyPayment = async (req: Request) => {
     headers: {
       accept: 'application/json',
       'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_VERIFY_API,
-      'content-type': 'application/json'
+      'content-type': 'application/json',
     },
-    body: JSON.stringify({invoice_id}),
+    body: JSON.stringify({ invoice_id }),
   });
 
-  const uddoktaPayData = await verifyPaymentWithUddoktapay.json() as { status: "COMPLETED" | "PENDING" | "FAILED"; };
+  const uddoktaPayData = (await verifyPaymentWithUddoktapay.json()) as {
+    status: 'COMPLETED' | 'PENDING' | 'FAILED';
+  };
   return { orderStatus: uddoktaPayData.status };
+};
 
+const getMyOrders = async (req: Request) => {
+  const userEmail = req.user?.email;
+  if (!userEmail) {
+    throw new Error('Unauthorized');
+  }
+
+  const orders = await executeDbOperation(prisma =>
+    prisma.order.findMany({
+      where: { user: { email: userEmail }, orderItems: { some: {} } },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        totalAmount: true,
+        shippingCost: true,
+        totalWeight: true,
+        currency: true,
+        status: true,
+        provider: true,
+        paymentMethod: true,
+        createdAt: true,
+        orderItems: {
+          select: {
+            id: true,
+            quantity: true,
+            format: true,
+            price: true,
+            status: true,
+            book: { select: { title: true, author: true, coverImage: true } },
+            course: { select: { title: true, thumbnailUrl: true } },
+          },
+        },
+      },
+    })
+  );
+
+  return orders.map(order => ({
+    ...order,
+    totalAmount: Number(order.totalAmount),
+    shippingCost: Number(order.shippingCost),
+    totalWeight: Number(order.totalWeight),
+    orderItems: order.orderItems.map(item => ({ ...item, price: Number(item.price) })),
+  }));
+};
+
+const getMyOrderById = async (req: Request) => {
+  const userEmail = req.user?.email;
+  const orderId = req.params.orderId as string;
+  if (!userEmail) {
+    throw new Error('Unauthorized');
+  }
+
+  const order = await executeDbOperation(prisma =>
+    prisma.order.findFirst({
+      where: { id: orderId, user: { email: userEmail } },
+      select: {
+        id: true,
+        totalAmount: true,
+        shippingCost: true,
+        totalWeight: true,
+        currency: true,
+        status: true,
+        provider: true,
+        paymentMethod: true,
+        providerOrderId: true,
+        createdAt: true,
+        updatedAt: true,
+        shippingAddress: true,
+        orderItems: {
+          select: {
+            id: true,
+            quantity: true,
+            format: true,
+            price: true,
+            status: true,
+            courierName: true,
+            trackingNumber: true,
+            shippedAt: true,
+            deliveredAt: true,
+            book: { select: { id: true, title: true, author: true, coverImage: true } },
+            course: { select: { id: true, title: true, thumbnailUrl: true } },
+          },
+        },
+      },
+    })
+  );
+
+  if (!order) {
+    throw new Error('Order not found');
+  }
+
+  return {
+    ...order,
+    totalAmount: Number(order.totalAmount),
+    shippingCost: Number(order.shippingCost),
+    totalWeight: Number(order.totalWeight),
+    orderItems: order.orderItems.map(item => ({ ...item, price: Number(item.price) })),
+  };
 };
 
 export const orderService = {
@@ -573,4 +733,6 @@ export const orderService = {
   validateIPN,
   createOrderWithUDDOKTAPAY,
   verifyPayment,
+  getMyOrders,
+  getMyOrderById,
 };

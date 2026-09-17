@@ -48,6 +48,7 @@ const envSchema = z.object({
   REDIS_PORT: z.string().default(process.env.REDIS_PORT as string),
   REDIS_PASSWORD: z.string().default(process.env.REDIS_PASSWORD as string),
   RESEND_API_KEY: z.string().default(process.env.RESEND_API_KEY as string),
+  RESEND_FROM_EMAIL: z.string().default(process.env.RESEND_FROM_EMAIL as string),
   PHONE_KEY: z.string().default(process.env.PHONE_KEY as string),
   BUNNY_STREAM_API_KEY: z.string().default(process.env.BUNNY_STREAM_API_KEY as string),
   BUNNY_STREAM_TOKEN_AUTH_KEY: z

@@ -164,6 +164,7 @@ export type TransactionType = (typeof TransactionType)[keyof typeof TransactionT
 export const PaymentProviders = {
   SSLCommerce: 'SSLCommerce',
   UDDOKTAPAY: 'UDDOKTAPAY',
+  CASH_ON_DELIVERY: 'CASH_ON_DELIVERY',
   STRIPE: 'STRIPE',
   PAYPAL: 'PAYPAL'
 } as const
@@ -176,7 +177,9 @@ export const PaymentMethod = {
   DEBIT_CARD: 'DEBIT_CARD',
   MOBILE_WALLET: 'MOBILE_WALLET',
   BANK_TRANSFER: 'BANK_TRANSFER',
-  OTHER: 'OTHER'
+  OTHER: 'OTHER',
+  CASH_ON_DELIVERY: 'CASH_ON_DELIVERY',
+  ONLINE_PAYMENT: 'ONLINE_PAYMENT'
 } as const
 
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
@@ -195,6 +198,11 @@ export type MobileBanking = (typeof MobileBanking)[keyof typeof MobileBanking]
 
 export const OrderStatus = {
   PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  DELIVERED: 'DELIVERED',
   PAID: 'PAID',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED',
@@ -207,10 +215,22 @@ export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
 export const OrderItemStatus = {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
-  REFUNDED: 'REFUNDED'
+  REFUNDED: 'REFUNDED',
+  DELIVERED: 'DELIVERED',
+  SHIPPED: 'SHIPPED'
 } as const
 
 export type OrderItemStatus = (typeof OrderItemStatus)[keyof typeof OrderItemStatus]
+
+
+export const Courier = {
+  STEADFAST: 'STEADFAST',
+  REDX: 'REDX',
+  PAPERFLY: 'PAPERFLY',
+  PATHAO: 'PATHAO'
+} as const
+
+export type Courier = (typeof Courier)[keyof typeof Courier]
 
 
 export const EnrollmentStatus = {
@@ -300,3 +320,11 @@ export const PurchaseFormat = {
 } as const
 
 export type PurchaseFormat = (typeof PurchaseFormat)[keyof typeof PurchaseFormat]
+
+
+export const DeliveryArea = {
+  INSIDE_DHAKA: 'INSIDE_DHAKA',
+  OUTSIDE_DHAKA: 'OUTSIDE_DHAKA'
+} as const
+
+export type DeliveryArea = (typeof DeliveryArea)[keyof typeof DeliveryArea]

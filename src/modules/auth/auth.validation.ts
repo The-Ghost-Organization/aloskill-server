@@ -8,6 +8,13 @@ export const loginSchema = z.object({
   }),
 });
 
+export const loginAdminSchema = z.object({
+  body: z.object({
+    email: z.email('Invalid email address'),
+    password: z.string("Password is required for admin login").min(8, 'Password must be at least 8 characters').max(16, 'Password must be less than 16 characters'),
+  }),
+});
+
 export const registerSchema = z.object({
   body: z.object({
     displayName: z.string().min(3, 'Name must be at least 3 characters'),
@@ -195,3 +202,4 @@ export const resetSchema = z.object({
     token: z.string('Token is required'),
   }),
 });
+

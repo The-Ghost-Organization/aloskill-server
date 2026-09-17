@@ -1803,7 +1803,6 @@ const createFileToBunny = async (req: Request) => {
   const fileName = `${timestamp}-${uniqueId}-${req.file?.originalname}`;
   const storageZone = config.BUNNY_STORAGE_ZONE_USERNAME;
   const accessKey = config.BUNNY_STORAGE_ZONE_PASSWORD;
-  // const pullZone = config.BUNNY_PULL_ZONE;
   const safePath = encodeURI(folder.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '/'));
 
   const uploadfile = await fetch(`https://${HOSTNAME}/${storageZone}/${safePath}/${fileName}`, {
@@ -1819,7 +1818,10 @@ const createFileToBunny = async (req: Request) => {
     throw new Error(`Bunny Storage API Error: ${errorText}`);
   }
   // return `https://sg.storage.bunnycdn.com/${storageZone}/${safePath}/${fileName}`;
-  return `https://aloskill-pull-zone-7.b-cdn.net/${safePath}/${fileName}`;
+  // return `https://aloskill-pull-zone-7.b-cdn.net/${safePath}/${fileName}`;
+  const pullZoneUrl = `https://${config.BUNNY_PULL_ZONE.replace(/\/+$/, '')}`;
+
+  return `${pullZoneUrl}/${safePath}/${fileName}`;
 };
 
 // currently not used in anyother api

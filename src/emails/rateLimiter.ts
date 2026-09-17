@@ -1,53 +1,71 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { createHash } from 'node:crypto';
+
 import redisConnection from './redisConnection.js';
 
+const COOLDOWN_SECONDS = Number(process.env.EMAIL_COOLDOWN_SECONDS ?? 60);
+const DAILY_LIMIT = Number(process.env.EMAIL_DAILY_LIMIT ?? 5);
+const DAILY_WINDOW_SECONDS = 24 * 60 * 60;
+
+const CONSUME_SCRIPT = `
+  local lastSentKey = KEYS[1]
+  local dailyCountKey = KEYS[2]
+  local cooldownSeconds = tonumber(ARGV[1])
+  local dailyLimit = tonumber(ARGV[2])
+  local dailyWindowSeconds = tonumber(ARGV[3])
+
+  if redis.call('EXISTS', lastSentKey) == 1 then
+    return {0, 'cooldown', redis.call('TTL', lastSentKey)}
+  end
+
+  local dailyCount = tonumber(redis.call('GET', dailyCountKey) or '0')
+  if dailyCount >= dailyLimit then
+    return {0, 'daily_limit', redis.call('TTL', dailyCountKey)}
+  end
+
+  redis.call('SET', lastSentKey, '1', 'EX', cooldownSeconds)
+  local newCount = redis.call('INCR', dailyCountKey)
+  if newCount == 1 then
+    redis.call('EXPIRE', dailyCountKey, dailyWindowSeconds)
+  end
+
+  return {1, 'allowed', newCount}
+`;
+
+function recipientKey(recipient: string): string {
+  return createHash('sha256').update(recipient.trim().toLowerCase()).digest('hex');
+}
+
 export class EmailRateLimiter {
-  private static getKeys(user: string) {
-    return {
-      lastSentKey: `email:lastSent:${user}`,
-      dailyCountKey: `email:dailyCount:${user}`,
-    };
-  }
-
-  /**
-   * Checks if user can send email
-   * - 1 min cooldown
-   * - 5 per day max
-   */
-  static async canSend(user: string): Promise<{ allowed: boolean; reason?: string }> {
-    const { lastSentKey, dailyCountKey } = this.getKeys(user);
-
-    const [lastSent, dailyCount] = await redisConnection.mget(lastSentKey, dailyCountKey);
-    const now = Date.now();
-
-    // Check cooldown (1 minute = 60_000 ms)
-    if (lastSent && now - parseInt(lastSent, 10) < 60_000) {
-      return { allowed: false, reason: 'Cooldown: wait 1 minute before retrying' };
+  static async consume(recipient: string): Promise<{ allowed: boolean; reason?: string }> {
+    if (!Number.isInteger(COOLDOWN_SECONDS) || COOLDOWN_SECONDS < 1) {
+      throw new Error('EMAIL_COOLDOWN_SECONDS must be a positive integer');
     }
 
-    // Check daily limit (max 5 per day)
-    if (dailyCount && parseInt(dailyCount, 10) >= 500) {
-      return { allowed: false, reason: 'Daily limit reached (2 emails per day)' };
+    if (!Number.isInteger(DAILY_LIMIT) || DAILY_LIMIT < 1) {
+      throw new Error('EMAIL_DAILY_LIMIT must be a positive integer');
     }
 
-    return { allowed: true };
-  }
+    const hash = recipientKey(recipient);
+    const result = (await redisConnection.eval(
+      CONSUME_SCRIPT,
+      2,
+      `email:last-sent:${hash}`,
+      `email:daily-count:${hash}`,
+      COOLDOWN_SECONDS,
+      DAILY_LIMIT,
+      DAILY_WINDOW_SECONDS
+    )) as [number, string, number];
 
-  /**
-   * Record a successful send attempt
-   */
-  static async recordSend(user: string) {
-    const { lastSentKey, dailyCountKey } = this.getKeys(user);
-    const now = Date.now();
-
-    // Update last sent timestamp
-    await redisConnection.set(lastSentKey, now.toString());
-
-    // Increment daily counter (expire after 24h)
-    const count = await redisConnection.incr(dailyCountKey);
-    if (count === 1) {
-      await redisConnection.expire(dailyCountKey, 24 * 60 * 60); // 24h
+    if (result[0] === 1) {
+      return { allowed: true };
     }
+
+    const waitSeconds = Math.max(Number(result[2]) || 0, 0);
+    const reason =
+      result[1] === 'cooldown'
+        ? `Please wait ${waitSeconds} seconds before requesting another email`
+        : `Daily email limit reached; try again in ${waitSeconds} seconds`;
+
+    return { allowed: false, reason };
   }
 }

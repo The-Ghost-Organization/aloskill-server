@@ -32,6 +32,7 @@ export type ShippingAddressMinAggregateOutputType = {
   postalCode: string | null
   country: string | null
   phone: string | null
+  deliveryArea: $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type ShippingAddressMaxAggregateOutputType = {
   postalCode: string | null
   country: string | null
   phone: string | null
+  deliveryArea: $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type ShippingAddressCountAggregateOutputType = {
   postalCode: number
   country: number
   phone: number
+  deliveryArea: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type ShippingAddressMinAggregateInputType = {
   postalCode?: true
   country?: true
   phone?: true
+  deliveryArea?: true
 }
 
 export type ShippingAddressMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type ShippingAddressMaxAggregateInputType = {
   postalCode?: true
   country?: true
   phone?: true
+  deliveryArea?: true
 }
 
 export type ShippingAddressCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type ShippingAddressCountAggregateInputType = {
   postalCode?: true
   country?: true
   phone?: true
+  deliveryArea?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type ShippingAddressGroupByOutputType = {
   postalCode: string
   country: string
   phone: string
+  deliveryArea: $Enums.DeliveryArea | null
   _count: ShippingAddressCountAggregateOutputType | null
   _min: ShippingAddressMinAggregateOutputType | null
   _max: ShippingAddressMaxAggregateOutputType | null
@@ -198,6 +205,7 @@ export type ShippingAddressWhereInput = {
   postalCode?: Prisma.StringFilter<"ShippingAddress"> | string
   country?: Prisma.StringFilter<"ShippingAddress"> | string
   phone?: Prisma.StringFilter<"ShippingAddress"> | string
+  deliveryArea?: Prisma.EnumDeliveryAreaNullableFilter<"ShippingAddress"> | $Enums.DeliveryArea | null
   orders?: Prisma.OrderListRelationFilter
 }
 
@@ -209,6 +217,7 @@ export type ShippingAddressOrderByWithRelationInput = {
   postalCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  deliveryArea?: Prisma.SortOrderInput | Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
@@ -223,6 +232,7 @@ export type ShippingAddressWhereUniqueInput = Prisma.AtLeast<{
   postalCode?: Prisma.StringFilter<"ShippingAddress"> | string
   country?: Prisma.StringFilter<"ShippingAddress"> | string
   phone?: Prisma.StringFilter<"ShippingAddress"> | string
+  deliveryArea?: Prisma.EnumDeliveryAreaNullableFilter<"ShippingAddress"> | $Enums.DeliveryArea | null
   orders?: Prisma.OrderListRelationFilter
 }, "id">
 
@@ -234,6 +244,7 @@ export type ShippingAddressOrderByWithAggregationInput = {
   postalCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  deliveryArea?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ShippingAddressCountOrderByAggregateInput
   _max?: Prisma.ShippingAddressMaxOrderByAggregateInput
   _min?: Prisma.ShippingAddressMinOrderByAggregateInput
@@ -250,6 +261,7 @@ export type ShippingAddressScalarWhereWithAggregatesInput = {
   postalCode?: Prisma.StringWithAggregatesFilter<"ShippingAddress"> | string
   country?: Prisma.StringWithAggregatesFilter<"ShippingAddress"> | string
   phone?: Prisma.StringWithAggregatesFilter<"ShippingAddress"> | string
+  deliveryArea?: Prisma.EnumDeliveryAreaNullableWithAggregatesFilter<"ShippingAddress"> | $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressCreateInput = {
@@ -260,6 +272,7 @@ export type ShippingAddressCreateInput = {
   postalCode: string
   country: string
   phone: string
+  deliveryArea?: $Enums.DeliveryArea | null
   orders?: Prisma.OrderCreateNestedManyWithoutShippingAddressInput
 }
 
@@ -271,6 +284,7 @@ export type ShippingAddressUncheckedCreateInput = {
   postalCode: string
   country: string
   phone: string
+  deliveryArea?: $Enums.DeliveryArea | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutShippingAddressInput
 }
 
@@ -282,6 +296,7 @@ export type ShippingAddressUpdateInput = {
   postalCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryArea?: Prisma.NullableEnumDeliveryAreaFieldUpdateOperationsInput | $Enums.DeliveryArea | null
   orders?: Prisma.OrderUpdateManyWithoutShippingAddressNestedInput
 }
 
@@ -293,6 +308,7 @@ export type ShippingAddressUncheckedUpdateInput = {
   postalCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryArea?: Prisma.NullableEnumDeliveryAreaFieldUpdateOperationsInput | $Enums.DeliveryArea | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutShippingAddressNestedInput
 }
 
@@ -304,6 +320,7 @@ export type ShippingAddressCreateManyInput = {
   postalCode: string
   country: string
   phone: string
+  deliveryArea?: $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressUpdateManyMutationInput = {
@@ -314,6 +331,7 @@ export type ShippingAddressUpdateManyMutationInput = {
   postalCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryArea?: Prisma.NullableEnumDeliveryAreaFieldUpdateOperationsInput | $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressUncheckedUpdateManyInput = {
@@ -324,6 +342,7 @@ export type ShippingAddressUncheckedUpdateManyInput = {
   postalCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryArea?: Prisma.NullableEnumDeliveryAreaFieldUpdateOperationsInput | $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressNullableScalarRelationFilter = {
@@ -339,6 +358,7 @@ export type ShippingAddressCountOrderByAggregateInput = {
   postalCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  deliveryArea?: Prisma.SortOrder
 }
 
 export type ShippingAddressMaxOrderByAggregateInput = {
@@ -349,6 +369,7 @@ export type ShippingAddressMaxOrderByAggregateInput = {
   postalCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  deliveryArea?: Prisma.SortOrder
 }
 
 export type ShippingAddressMinOrderByAggregateInput = {
@@ -359,6 +380,7 @@ export type ShippingAddressMinOrderByAggregateInput = {
   postalCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  deliveryArea?: Prisma.SortOrder
 }
 
 export type ShippingAddressCreateNestedOneWithoutOrdersInput = {
@@ -377,6 +399,10 @@ export type ShippingAddressUpdateOneWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ShippingAddressUpdateToOneWithWhereWithoutOrdersInput, Prisma.ShippingAddressUpdateWithoutOrdersInput>, Prisma.ShippingAddressUncheckedUpdateWithoutOrdersInput>
 }
 
+export type NullableEnumDeliveryAreaFieldUpdateOperationsInput = {
+  set?: $Enums.DeliveryArea | null
+}
+
 export type ShippingAddressCreateWithoutOrdersInput = {
   id?: string
   fullName: string
@@ -385,6 +411,7 @@ export type ShippingAddressCreateWithoutOrdersInput = {
   postalCode: string
   country: string
   phone: string
+  deliveryArea?: $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressUncheckedCreateWithoutOrdersInput = {
@@ -395,6 +422,7 @@ export type ShippingAddressUncheckedCreateWithoutOrdersInput = {
   postalCode: string
   country: string
   phone: string
+  deliveryArea?: $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressCreateOrConnectWithoutOrdersInput = {
@@ -421,6 +449,7 @@ export type ShippingAddressUpdateWithoutOrdersInput = {
   postalCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryArea?: Prisma.NullableEnumDeliveryAreaFieldUpdateOperationsInput | $Enums.DeliveryArea | null
 }
 
 export type ShippingAddressUncheckedUpdateWithoutOrdersInput = {
@@ -431,6 +460,7 @@ export type ShippingAddressUncheckedUpdateWithoutOrdersInput = {
   postalCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
+  deliveryArea?: Prisma.NullableEnumDeliveryAreaFieldUpdateOperationsInput | $Enums.DeliveryArea | null
 }
 
 
@@ -472,6 +502,7 @@ export type ShippingAddressSelect<ExtArgs extends runtime.Types.Extensions.Inter
   postalCode?: boolean
   country?: boolean
   phone?: boolean
+  deliveryArea?: boolean
   orders?: boolean | Prisma.ShippingAddress$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.ShippingAddressCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["shippingAddress"]>
@@ -484,6 +515,7 @@ export type ShippingAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   postalCode?: boolean
   country?: boolean
   phone?: boolean
+  deliveryArea?: boolean
 }, ExtArgs["result"]["shippingAddress"]>
 
 export type ShippingAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -494,6 +526,7 @@ export type ShippingAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   postalCode?: boolean
   country?: boolean
   phone?: boolean
+  deliveryArea?: boolean
 }, ExtArgs["result"]["shippingAddress"]>
 
 export type ShippingAddressSelectScalar = {
@@ -504,9 +537,10 @@ export type ShippingAddressSelectScalar = {
   postalCode?: boolean
   country?: boolean
   phone?: boolean
+  deliveryArea?: boolean
 }
 
-export type ShippingAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "addressLine" | "city" | "postalCode" | "country" | "phone", ExtArgs["result"]["shippingAddress"]>
+export type ShippingAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "addressLine" | "city" | "postalCode" | "country" | "phone" | "deliveryArea", ExtArgs["result"]["shippingAddress"]>
 export type ShippingAddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.ShippingAddress$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.ShippingAddressCountOutputTypeDefaultArgs<ExtArgs>
@@ -527,6 +561,7 @@ export type $ShippingAddressPayload<ExtArgs extends runtime.Types.Extensions.Int
     postalCode: string
     country: string
     phone: string
+    deliveryArea: $Enums.DeliveryArea | null
   }, ExtArgs["result"]["shippingAddress"]>
   composites: {}
 }
@@ -958,6 +993,7 @@ export interface ShippingAddressFieldRefs {
   readonly postalCode: Prisma.FieldRef<"ShippingAddress", 'String'>
   readonly country: Prisma.FieldRef<"ShippingAddress", 'String'>
   readonly phone: Prisma.FieldRef<"ShippingAddress", 'String'>
+  readonly deliveryArea: Prisma.FieldRef<"ShippingAddress", 'DeliveryArea'>
 }
     
 

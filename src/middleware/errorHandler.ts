@@ -207,7 +207,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
   if (err.name === 'DatabaseQueryError') {
     if (err.cause instanceof Prisma.PrismaClientValidationError) {
-      return ResponseHandler.badRequest(res, 'Invalid data provided for user creation');
+      return ResponseHandler.badRequest(res, 'Invalid data provided');
     }
     return ResponseHandler.internalError(res, 'Database operation failed');
   }

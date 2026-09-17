@@ -4047,7 +4047,10 @@ export const BookScalarFieldEnum = {
   translator: 'translator',
   editor: 'editor',
   publisher: 'publisher',
+  publishYear: 'publishYear',
+  ratings: 'ratings',
   description: 'description',
+  purchaseCost: 'purchaseCost',
   physicalRegularPrice: 'physicalRegularPrice',
   physicalSalePrice: 'physicalSalePrice',
   digitalRegularPrice: 'digitalRegularPrice',
@@ -4056,6 +4059,7 @@ export const BookScalarFieldEnum = {
   isbn: 'isbn',
   edition: 'edition',
   pages: 'pages',
+  weight: 'weight',
   language: 'language',
   formats: 'formats',
   totalEarning: 'totalEarning',
@@ -4117,6 +4121,9 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
+  shippingCost: 'shippingCost',
+  totalWeight: 'totalWeight',
+  paymentMethod: 'paymentMethod',
   currency: 'currency',
   status: 'status',
   provider: 'provider',
@@ -4136,8 +4143,13 @@ export const OrderItemScalarFieldEnum = {
   bookId: 'bookId',
   format: 'format',
   price: 'price',
+  quantity: 'quantity',
   currency: 'currency',
   status: 'status',
+  courierName: 'courierName',
+  trackingNumber: 'trackingNumber',
+  shippedAt: 'shippedAt',
+  deliveredAt: 'deliveredAt',
   createdAt: 'createdAt'
 } as const
 
@@ -4151,7 +4163,8 @@ export const ShippingAddressScalarFieldEnum = {
   city: 'city',
   postalCode: 'postalCode',
   country: 'country',
-  phone: 'phone'
+  phone: 'phone',
+  deliveryArea: 'deliveryArea'
 } as const
 
 export type ShippingAddressScalarFieldEnum = (typeof ShippingAddressScalarFieldEnum)[keyof typeof ShippingAddressScalarFieldEnum]
@@ -4781,6 +4794,20 @@ export type ListEnumViewEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'PaymentMethod'
+ */
+export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentMethod[]'
+ */
+export type ListEnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod[]'>
+    
+
+
+/**
  * Reference to a field of type 'OrderStatus'
  */
 export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus'>
@@ -4837,16 +4864,30 @@ export type ListEnumOrderItemStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
- * Reference to a field of type 'PaymentMethod'
+ * Reference to a field of type 'Courier'
  */
-export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>
+export type EnumCourierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Courier'>
     
 
 
 /**
- * Reference to a field of type 'PaymentMethod[]'
+ * Reference to a field of type 'Courier[]'
  */
-export type ListEnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod[]'>
+export type ListEnumCourierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Courier[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DeliveryArea'
+ */
+export type EnumDeliveryAreaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryArea'>
+    
+
+
+/**
+ * Reference to a field of type 'DeliveryArea[]'
+ */
+export type ListEnumDeliveryAreaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryArea[]'>
     
 
 
