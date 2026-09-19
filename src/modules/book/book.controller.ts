@@ -57,6 +57,16 @@ const approvedBook = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book Approved Successfully!', result);
 });
 
+const getAllBooksDataForInstructor = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getAllBooksDataForInstructor(req);
+  ResponseHandler.ok(res, 'Instructor books retrieved successfully!', result);
+});
+
+const getSingleBookDataForInstructorEdit = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getSingleBookDataForInstructorEdit(req);
+  ResponseHandler.ok(res, 'Instructor book retrieved successfully!', result);
+});
+
 export const bookController = {
   getBooksCategories,
   uploadBook,
@@ -69,4 +79,6 @@ export const bookController = {
   getBookDetailsForPublicView,
   getAllBooksDataforUser,
   getSingleBookForCheckout,
+  getAllBooksDataForInstructor,
+  getSingleBookDataForInstructorEdit,
 };

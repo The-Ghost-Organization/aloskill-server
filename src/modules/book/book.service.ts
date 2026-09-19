@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -463,6 +462,10 @@ const updateBook = async (req: Request) => {
       if (!existingBook) {
         throw new Error('Book not found.');
       }
+      const isAdmin = owner.assignedRole.some(r => r.role === 'ADMIN');
+      if (!isAdmin && existingBook.ownerId !== owner.id) {
+        throw new Error('Forbidden: You can only update books that you uploaded.');
+      }
       const updated = await tx.book.update({
         where: { id: bookId },
         data: {
@@ -488,7 +491,6 @@ const updateBook = async (req: Request) => {
           weight: data.weight,
           metaKeywords: data.metaKeywords,
           metaDescription: data.metaDescription,
-          ownerId: owner.id,
           categoryId: category.id,
           status: data.status === 'DRAFT' ? BookStatus.DRAFT : BookStatus.PENDING,
           formats: data.formats.map(f =>
@@ -658,11 +660,15 @@ const getSingleBookForCheckout = async (req: Request) => {
     throw new Error(`This book is not available in ${format.toLowerCase()} format.`);
   }
 
-  if(book.formats.includes(BookFormat.E_BOOK) && format === 'EBOOK' && book.digitalSalePrice === null) {
+  if (
+    book.formats.includes(BookFormat.E_BOOK) &&
+    format === 'EBOOK' &&
+    book.digitalSalePrice === null
+  ) {
     throw new Error('The digital copy of this book is currently unavailable for purchase.');
   }
 
-  if(book.formats.includes(BookFormat.HARDCOVER) && format === 'PHYSICAL' && book.stock <= 0) {
+  if (book.formats.includes(BookFormat.HARDCOVER) && format === 'PHYSICAL' && book.stock <= 0) {
     throw new Error('The physical copy of this book is currently out of stock.');
   }
 
@@ -968,6 +974,103 @@ const approveBook = async (req: Request) => {
   return approvedBook.id;
 };
 
+// Instructor Dashboard. Every query is scoped to the authenticated owner.
+const getAllBooksDataForInstructor = async (req: Request) => {
+  const email = req.user.email;
+  if (!email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const instructor = await prisma.user.findUnique({
+      where: { email, deletedAt: null, status: 'ACTIVE' },
+      include: { assignedRole: true },
+    });
+    if (!instructor || !instructor.assignedRole.some(role => role.role === 'INSTRUCTOR')) {
+      throw new Error('Security Violation: Only instructors can access this data.');
+    }
+
+    const ownerFilter = { ownerId: instructor.id, deletedAt: null };
+    const [sales, stock, bookBreakdown] = await Promise.all([
+      prisma.orderItem.aggregate({
+        where: {
+          book: ownerFilter,
+          order: { status: OrderStatus.PAID },
+        },
+        _count: { id: true },
+        _sum: { price: true },
+      }),
+      prisma.book.aggregate({
+        where: ownerFilter,
+        _sum: { stock: true },
+        _count: { id: true },
+      }),
+      prisma.book.findMany({
+        where: ownerFilter,
+        select: {
+          id: true,
+          title: true,
+          author: true,
+          formats: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
+          stock: true,
+          status: true,
+          createdAt: true,
+          orderItem: {
+            where: { order: { status: OrderStatus.PAID } },
+            select: { id: true, price: true },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+
+    return {
+      totalBooks: stock._count.id,
+      totalSold: sales._count.id,
+      totalStock: stock._sum.stock ?? 0,
+      totalRevenue: sales._sum.price ?? 0,
+      bookBreakdown: bookBreakdown.map(book => ({
+        ...book,
+        totalEarning: book.orderItem.reduce((sum, item) => sum + Number(item.price), 0),
+      })),
+    };
+  }, 'Get All Books Data for Instructor');
+};
+
+const getSingleBookDataForInstructorEdit = async (req: Request) => {
+  const bookId = req.query.bookId;
+  const email = req.user.email;
+  if (typeof bookId !== 'string') {
+    throw new Error('Invalid book ID.');
+  }
+  if (!email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const instructor = await prisma.user.findUnique({
+      where: { email, deletedAt: null, status: 'ACTIVE' },
+      include: { assignedRole: true },
+    });
+    if (!instructor || !instructor.assignedRole.some(role => role.role === 'INSTRUCTOR')) {
+      throw new Error('Security Violation: Only instructors can edit their books.');
+    }
+
+    const book = await prisma.book.findFirst({
+      where: { id: bookId, ownerId: instructor.id, deletedAt: null },
+      include: { files: true, category: true },
+    });
+    if (!book) {
+      throw new Error('Book not found or you do not have permission to edit it.');
+    }
+    return book;
+  }, 'Get Single Book Data for Instructor Edit');
+};
+
 export const bookService = {
   getBooksCategories,
   uploadBook,
@@ -979,5 +1082,7 @@ export const bookService = {
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,
-  getSingleBookForCheckout
+  getSingleBookForCheckout,
+  getAllBooksDataForInstructor,
+  getSingleBookDataForInstructorEdit,
 };
