@@ -711,7 +711,9 @@ const getAllBooksDataforUser = async (req: Request) => {
       where: {
         order: {
           userId: userProfile.id,
-          status: 'PAID',
+          status: {
+            in: ['PAID', 'DELIVERED'],
+          },
         },
         bookId: { not: null },
       },
@@ -741,7 +743,7 @@ const getAllBooksDataforUser = async (req: Request) => {
             files: {
               select: {
                 id: true,
-                fileUrl: true,
+                url: true,
                 fileType: true,
               },
             },
@@ -758,12 +760,13 @@ const getAllBooksDataforUser = async (req: Request) => {
         orderItemId: item.id,
         createdAt: item.createdAt,
         orderId: item.order.id,
-        orderStatus: item.order.status,
+        orderStatus: item.status,
         shippingAddress: isDigital ? null : item.order.shippingAddress,
         book: {
           id: item.book?.id,
           title: item.book?.title,
           coverImage: item.book?.coverImage,
+          author: item.book?.author,
           format: item.format,
           price: item.price,
         },
@@ -776,7 +779,8 @@ const getAllBooksDataforUser = async (req: Request) => {
               shippedAt: item.shippedAt,
               deliveredAt: item.deliveredAt,
             },
-        downloadUrls: isDigital ? (item.book?.files.map(file => file.fileUrl) ?? []) : null,
+        downloadUrls: isDigital ? (item.book?.files.map(file => file.url) ?? []) : null,
+        // downloadUrl: isDigital ? item.book?.files.find(file => file.fileType === 'EBOOK')?.url ?? null : null,
       };
     });
   }, 'Get All Purchased Books for Student');
