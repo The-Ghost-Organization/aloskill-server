@@ -1,3 +1,5 @@
+/* eslint-disable require-await */
+/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -6,7 +8,9 @@ import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
 import {
   ApplicationStatus,
+  Courier,
   EnrollmentStatus,
+  OrderItemStatus,
   OrderStatus,
   PaymentMethod,
   PaymentProviders,
@@ -14,8 +18,145 @@ import {
   TransactionStatus,
   TransactionType,
 } from '../../generated/client.js';
+import { calculateShippingCost, getDeliveryArea } from '../../services/shipping.service.js';
+import {
+  createSteadfastConsignment,
+  getSteadfastStatusByTrackingCode,
+  type SteadfastDeliveryStatus,
+} from '../../services/steadfastCourier.service.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
 import { type UddoktapayPayload } from './order.validation.js';
+
+const courierOrderStatus: Partial<Record<SteadfastDeliveryStatus, OrderStatus>> = {
+  in_review: OrderStatus.PROCESSING,
+  pending: OrderStatus.SHIPPED,
+  delivered_approval_pending: OrderStatus.OUT_FOR_DELIVERY,
+  partial_delivered_approval_pending: OrderStatus.OUT_FOR_DELIVERY,
+  cancelled_approval_pending: OrderStatus.CANCELLED,
+  delivered: OrderStatus.DELIVERED,
+  partial_delivered: OrderStatus.DELIVERED,
+  cancelled: OrderStatus.CANCELLED,
+  hold: OrderStatus.PROCESSING,
+};
+
+const createCourierConsignmentForOrder = async (orderId: string) => {
+  const order = await executeDbOperation(prisma =>
+    prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        shippingAddress: true,
+        orderItems: {
+          where: { format: PurchaseFormat.PHYSICAL },
+          include: { book: { select: { title: true } } },
+        },
+      },
+    })
+  );
+
+  if (!order || order.orderItems.length === 0 || !order.shippingAddress) {
+    return null;
+  }
+  if (order.courierTrackingCode) {
+    return order.courierTrackingCode;
+  }
+  if (order.paymentMethod !== PaymentMethod.CASH_ON_DELIVERY && order.status !== OrderStatus.PAID) {
+    return null;
+  }
+
+  const claim = await executeDbOperation(prisma =>
+    prisma.order.updateMany({
+      where: {
+        id: order.id,
+        courierTrackingCode: null,
+        OR: [{ courierStatus: null }, { courierStatus: { not: 'creating' } }],
+      },
+      data: { courierStatus: 'creating', courierLastError: null },
+    })
+  );
+  if (claim.count !== 1) {
+    return null;
+  }
+
+  try {
+    const itemDescription = order.orderItems
+      .map(item => `${item.book?.title ?? 'Book'} x${item.quantity}`)
+      .join(', ');
+    const address = order.shippingAddress;
+    const consignment = await createSteadfastConsignment({
+      invoice: order.id,
+      recipientName: address.fullName,
+      recipientPhone: address.phone,
+      recipientAddress: `${address.addressLine}, ${address.city} ${address.postalCode}`,
+      codAmount:
+        order.paymentMethod === PaymentMethod.CASH_ON_DELIVERY ? Number(order.totalAmount) : 0,
+      note: `Aloskill order ${order.id}`,
+      itemDescription,
+      totalLot: order.orderItems.reduce((sum, item) => sum + item.quantity, 0),
+    });
+
+    await executeDbOperation(prisma =>
+      prisma.$transaction([
+        prisma.order.update({
+          where: { id: order.id },
+          data: {
+            courierName: Courier.STEADFAST,
+            courierConsignmentId: String(consignment.consignment_id),
+            courierTrackingCode: consignment.tracking_code,
+            courierStatus: consignment.status,
+            courierStatusUpdatedAt: new Date(),
+            courierLastError: null,
+            status: courierOrderStatus[consignment.status] ?? OrderStatus.PROCESSING,
+          },
+        }),
+        prisma.orderItem.updateMany({
+          where: { orderId: order.id, format: PurchaseFormat.PHYSICAL },
+          data: {
+            courierName: Courier.STEADFAST,
+            trackingNumber: consignment.tracking_code,
+            status: OrderItemStatus.SHIPPED,
+            shippedAt: new Date(),
+          },
+        }),
+      ])
+    );
+    return consignment.tracking_code;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown Steadfast error';
+    await executeDbOperation(prisma =>
+      prisma.order.update({
+        where: { id: order.id },
+        data: { courierStatus: 'creation_failed', courierLastError: message },
+      })
+    );
+    return null;
+  }
+};
+
+const releasePhysicalStockForFailedOrder = async (orderId: string) => {
+  await executeDbOperation(prisma =>
+    prisma.$transaction(async tx => {
+      const order = await tx.order.findUnique({
+        where: { id: orderId },
+        include: { orderItems: { where: { format: PurchaseFormat.PHYSICAL } } },
+      });
+      if (!order || order.status !== OrderStatus.PENDING) {
+        return;
+      }
+      for (const item of order.orderItems) {
+        if (item.bookId) {
+          await tx.book.update({
+            where: { id: item.bookId },
+            data: { stock: { increment: item.quantity } },
+          });
+        }
+      }
+      await tx.order.update({
+        where: { id: order.id },
+        data: { status: OrderStatus.FAILED, stockReservationExpiresAt: null },
+      });
+    })
+  );
+};
 
 const createPayment = async (req: Request) => {
   const { courseIds, paymentMethod, user } = req.body;
@@ -394,6 +535,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           digitalRegularPrice: true,
           digitalSalePrice: true,
           weight: true,
+          stock: true,
         },
       });
 
@@ -444,6 +586,17 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         }
         if (isPhysical) {
           hasPhysicalItems = true;
+          // Atomic stock checkpoint. The transaction rolls back every earlier
+          // decrement if any physical book cannot satisfy its requested quantity.
+          const stockUpdate = await tx.book.updateMany({
+            where: { id: dbBook.id, stock: { gte: quantity } },
+            data: { stock: { decrement: quantity } },
+          });
+          if (stockUpdate.count !== 1) {
+            throw new Error(
+              `Insufficient stock for ${bookItem.title}. Requested ${quantity}, available ${dbBook.stock}.`
+            );
+          }
         }
 
         let price = 0;
@@ -474,13 +627,14 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         throw new Error('Cash on Delivery is available only for physical books');
       }
 
-      const baseShippingCost = hasPhysicalItems
-        ? shippingDetails?.deliveryArea === 'INSIDE_DHAKA'
-          ? 80
-          : 130
-        : 0;
-      const extraWeightCharge = hasPhysicalItems ? Math.ceil(Math.max(0, totalWeight - 2)) * 20 : 0;
-      const shippingCost = baseShippingCost + extraWeightCharge;
+      const deliveryArea = shippingDetails
+        ? getDeliveryArea({
+            districtId: shippingDetails.district.id,
+            upazilaId: shippingDetails.upazila.id,
+          })
+        : null;
+      const shippingCost =
+        hasPhysicalItems && deliveryArea ? calculateShippingCost(deliveryArea, totalWeight) : 0;
       const total = subtotal + shippingCost;
 
       // 5. Build dynamic shipping address relation
@@ -491,11 +645,11 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           data: {
             fullName: shippingDetails.fullName,
             addressLine: shippingDetails.addressLine,
-            city: shippingDetails.city,
+            city: `${shippingDetails.upazila.name}, ${shippingDetails.district.name}, ${shippingDetails.division.name}`,
             postalCode: shippingDetails.postalCode,
             phone: shippingDetails.phoneNumber,
             country: 'Bangladesh',
-            deliveryArea: shippingDetails.deliveryArea,
+            deliveryArea,
           },
           select: { id: true },
         });
@@ -512,6 +666,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           : PaymentMethod.ONLINE_PAYMENT,
         shippingCost,
         totalWeight,
+        stockReservationExpiresAt: isCashOnDelivery ? null : new Date(Date.now() + 15 * 60 * 1000),
         orderItems: {
           create: orderItemsData,
         },
@@ -553,33 +708,42 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
   }
 
   if (isCashOnDelivery) {
+    const trackingCode = await createCourierConsignmentForOrder(createOrder.orderData.id);
     return {
       orderId: createOrder.orderData.id,
       paymentType: 'CASH_ON_DELIVERY' as const,
+      courierSubmitted: Boolean(trackingCode),
+      trackingCode,
     };
   }
 
-  const payWithUddoktaPay = await fetch(`${config.UDDOKTAPAY_URL}/checkout-v2`, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_CHECKOUT_API,
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      full_name:
-        createOrder.studentProfile?.displayName ??
-        createOrder.instructorProfile?.displayName ??
-        'N/A',
-      email: createOrder.email,
-      amount: String(createOrder.orderData.totalAmount),
-      metadata: { user_id: createOrder.id, order_id: createOrder.orderData.id },
-      return_type: 'GET',
-      redirect_url: `${config.FRONTEND_URL}/success`,
-      cancel_url: `${config.FRONTEND_URL}/cancel`,
-      webhook_url: 'http://localhost:5000/ipn',
-    }),
-  });
+  let payWithUddoktaPay: Response;
+  try {
+    payWithUddoktaPay = await fetch(`${config.UDDOKTAPAY_URL}/checkout-v2`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'RT-UDDOKTAPAY-API-KEY': config.UDDOKTPAY_CHECKOUT_API,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        full_name:
+          createOrder.studentProfile?.displayName ??
+          createOrder.instructorProfile?.displayName ??
+          'N/A',
+        email: createOrder.email,
+        amount: String(createOrder.orderData.totalAmount),
+        metadata: { user_id: createOrder.id, order_id: createOrder.orderData.id },
+        return_type: 'GET',
+        redirect_url: `${config.FRONTEND_URL}/success`,
+        cancel_url: `${config.FRONTEND_URL}/cancel`,
+        ...(config.UDDOKTAPAY_WEBHOOK_URL ? { webhook_url: config.UDDOKTAPAY_WEBHOOK_URL } : {}),
+      }),
+    });
+  } catch (error) {
+    await releasePhysicalStockForFailedOrder(createOrder.orderData.id);
+    throw error;
+  }
 
   const uddoktaPayData = (await payWithUddoktaPay.json()) as {
     status?: boolean | string;
@@ -596,6 +760,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
       fullResponse: uddoktaPayData,
     });
 
+    await releasePhysicalStockForFailedOrder(createOrder.orderData.id);
     throw new Error(uddoktaPayData.message ?? 'Failed to initiate payment with UddoktaPay');
   }
 
@@ -607,7 +772,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
 };
 
 const verifyPayment = async (req: Request) => {
-  const { invoice_id } = req.query as { invoice_id: string };
+  const invoice_id = String(req.query.invoice_id ?? req.body?.invoice_id ?? '');
 
   if (!invoice_id) {
     throw new Error('Invalid request data');
@@ -625,8 +790,99 @@ const verifyPayment = async (req: Request) => {
 
   const uddoktaPayData = (await verifyPaymentWithUddoktapay.json()) as {
     status: 'COMPLETED' | 'PENDING' | 'FAILED';
+    metadata?: { order_id?: string };
+    transaction_id?: string;
   };
-  return { orderStatus: uddoktaPayData.status };
+
+  const orderId = uddoktaPayData.metadata?.order_id;
+  if (uddoktaPayData.status === 'COMPLETED' && orderId) {
+    await executeDbOperation(prisma =>
+      prisma.order.updateMany({
+        where: { id: orderId, status: { in: [OrderStatus.PENDING, OrderStatus.CONFIRMED] } },
+        data: {
+          status: OrderStatus.PAID,
+          providerOrderId: uddoktaPayData.transaction_id ?? invoice_id,
+          stockReservationExpiresAt: null,
+        },
+      })
+    );
+    await createCourierConsignmentForOrder(orderId);
+  }
+
+  return { orderStatus: uddoktaPayData.status, orderId: orderId ?? null };
+};
+
+const refreshMyOrderTracking = async (req: Request) => {
+  const userEmail = req.user?.email;
+  const orderId = req.params.orderId as string;
+  if (!userEmail) {
+    throw new Error('Unauthorized');
+  }
+
+  const order = await executeDbOperation(prisma =>
+    prisma.order.findFirst({
+      where: { id: orderId, user: { email: userEmail } },
+      select: { id: true, courierTrackingCode: true },
+    })
+  );
+  if (!order) {
+    throw new Error('Order not found');
+  }
+  if (!order.courierTrackingCode) {
+    return { trackingAvailable: false, courierStatus: null };
+  }
+
+  const courierStatus = await getSteadfastStatusByTrackingCode(order.courierTrackingCode as string);
+  const mappedOrderStatus = courierOrderStatus[courierStatus];
+  const delivered = courierStatus === 'delivered' || courierStatus === 'partial_delivered';
+  const cancelled = courierStatus === 'cancelled' || courierStatus === 'cancelled_approval_pending';
+
+  await executeDbOperation(prisma =>
+    prisma.$transaction([
+      prisma.order.update({
+        where: { id: order.id },
+        data: {
+          courierStatus,
+          courierStatusUpdatedAt: new Date(),
+          courierLastError: null,
+          ...(mappedOrderStatus ? { status: mappedOrderStatus } : {}),
+        },
+      }),
+      prisma.orderItem.updateMany({
+        where: { orderId: order.id, format: PurchaseFormat.PHYSICAL },
+        data: {
+          ...(delivered
+            ? { status: OrderItemStatus.DELIVERED, deliveredAt: new Date() }
+            : cancelled
+              ? { status: OrderItemStatus.PENDING }
+              : { status: OrderItemStatus.SHIPPED }),
+        },
+      }),
+    ])
+  );
+
+  return { trackingAvailable: true, courierStatus };
+};
+
+const getShippingQuote = async (req: Request) => {
+  const districtId = typeof req.query.districtId === 'string' ? req.query.districtId : '';
+  const upazilaId = typeof req.query.upazilaId === 'string' ? req.query.upazilaId : '';
+  const weight = Number(req.query.weight ?? 0);
+  if (!districtId || !upazilaId || !Number.isFinite(weight) || weight < 0) {
+    throw new Error('A valid district, upazila and weight are required');
+  }
+  const deliveryArea = getDeliveryArea({ districtId, upazilaId });
+  return {
+    deliveryArea,
+    shippingCost: calculateShippingCost(deliveryArea, weight),
+    weight,
+  };
+};
+
+const retrySteadfastConsignment = async (req: Request) => {
+  const orderId = req.params.orderId as string;
+  const trackingCode = await createCourierConsignmentForOrder(orderId);
+  return { courierSubmitted: Boolean(trackingCode), trackingCode };
 };
 
 const getMyOrders = async (req: Request) => {
@@ -648,6 +904,10 @@ const getMyOrders = async (req: Request) => {
         status: true,
         provider: true,
         paymentMethod: true,
+        courierName: true,
+        courierTrackingCode: true,
+        courierStatus: true,
+        courierStatusUpdatedAt: true,
         createdAt: true,
         orderItems: {
           select: {
@@ -693,6 +953,12 @@ const getMyOrderById = async (req: Request) => {
         provider: true,
         paymentMethod: true,
         providerOrderId: true,
+        courierName: true,
+        courierConsignmentId: true,
+        courierTrackingCode: true,
+        courierStatus: true,
+        courierStatusUpdatedAt: true,
+        courierLastError: true,
         createdAt: true,
         updatedAt: true,
         shippingAddress: true,
@@ -735,4 +1001,7 @@ export const orderService = {
   verifyPayment,
   getMyOrders,
   getMyOrderById,
+  refreshMyOrderTracking,
+  getShippingQuote,
+  retrySteadfastConsignment,
 };

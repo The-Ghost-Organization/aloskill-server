@@ -1,5 +1,5 @@
 import express from 'express';
-import { requireAuth, requireStudent } from '../../middleware/auth.js';
+import { requireAdmin, requireAuth, requireStudent } from '../../middleware/auth.js';
 import { generalLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { orderController } from './order.controller.js';
@@ -22,8 +22,24 @@ router.post(
 
 router.get('/verify-payment', orderController.verifyPayment);
 
+router.post('/uddoktapay-webhook', orderController.verifyPayment);
+
+router.post(
+  '/admin/:orderId/create-steadfast',
+  requireAdmin,
+  orderController.retrySteadfastConsignment
+);
+
 router.get('/my-orders', requireAuth, orderController.getMyOrders);
 
+router.get('/shipping-quote', requireAuth, orderController.getShippingQuote);
+
 router.get('/my-orders/:orderId', requireAuth, orderController.getMyOrderById);
+
+router.post(
+  '/my-orders/:orderId/refresh-tracking',
+  requireAuth,
+  orderController.refreshMyOrderTracking
+);
 
 export const OrderRoutes = router;

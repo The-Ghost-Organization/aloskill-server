@@ -703,10 +703,6 @@ export type EnumOrderItemStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderItemStatus
 }
 
-export type NullableEnumCourierFieldUpdateOperationsInput = {
-  set?: $Enums.Courier | null
-}
-
 export type OrderItemCreateWithoutCourseInput = {
   id?: string
   format?: $Enums.PurchaseFormat

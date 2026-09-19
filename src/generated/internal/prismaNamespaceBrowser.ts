@@ -573,6 +573,13 @@ export const OrderScalarFieldEnum = {
   status: 'status',
   provider: 'provider',
   providerOrderId: 'providerOrderId',
+  courierName: 'courierName',
+  courierConsignmentId: 'courierConsignmentId',
+  courierTrackingCode: 'courierTrackingCode',
+  courierStatus: 'courierStatus',
+  courierStatusUpdatedAt: 'courierStatusUpdatedAt',
+  courierLastError: 'courierLastError',
+  stockReservationExpiresAt: 'stockReservationExpiresAt',
   shippingAddressId: 'shippingAddressId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

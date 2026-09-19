@@ -68,6 +68,17 @@ const envSchema = z.object({
   UDDOKTPAY_CHECKOUT_API: z.string().default(process.env.UDDOKTPAY_CHECKOUT_API as string),
   UDDOKTPAY_VERIFY_API: z.string().default(process.env.UDDOKTPAY_VERIFY_API as string),
   UDDOKTPAY_RETURN_API: z.string().default(process.env.UDDOKTPAY_RETURN_API as string),
+  UDDOKTAPAY_WEBHOOK_URL: z.url().optional(),
+  STEADFAST_BASE_URL: z
+    .url({ message: 'Invalid Steadfast base URL' })
+    .default('https://portal.packzy.com/api/v1'),
+  STEADFAST_API_KEY: z.string().default(process.env.STEADFAST_API_KEY ?? ''),
+  STEADFAST_SECRET_KEY: z.string().default(process.env.STEADFAST_SECRET_KEY ?? ''),
+  SHIPPING_INSIDE_DHAKA: z.coerce.number().nonnegative().default(70),
+  SHIPPING_DHAKA_SUBURBAN: z.coerce.number().nonnegative().default(100),
+  SHIPPING_OUTSIDE_DHAKA: z.coerce.number().nonnegative().default(130),
+  SHIPPING_BASE_WEIGHT_KG: z.coerce.number().positive().default(1),
+  SHIPPING_EXTRA_PER_KG: z.coerce.number().nonnegative().default(20),
 });
 
 export const config = envSchema.parse(process.env);

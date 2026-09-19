@@ -66,4 +66,12 @@ router.get('/admin/books/edit', requireAdmin, bookController.getSingleBookDataFo
 
 router.patch('/admin/books/approve', requireAdmin, bookController.approvedBook);
 
+router.get('/instructor/books', requireInstructor, bookController.getAllBooksDataForInstructor);
+
+router.get(
+  '/instructor/books/edit',
+  requireInstructor,
+  bookController.getSingleBookDataForInstructorEdit
+);
+
 export const BookRoutes = router;

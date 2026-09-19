@@ -1,4 +1,3 @@
-
 import cron from 'node-cron';
 import { connectCronDatabase, disconnectCronDatabase } from '../config/cronDatabase.js';
 
@@ -30,7 +29,7 @@ cron.schedule(
     isRunning = true;
     try {
       const now = new Date();
-      const updateCourse =await runCronDbOperation(async prisma => {
+      const updateCourse = await runCronDbOperation(async prisma => {
         return await prisma.course.updateMany({
           where: {
             discountEndDate: { lte: now },
@@ -45,6 +44,49 @@ cron.schedule(
         });
       }, 'Updating Course Discount End function');
       console.log(`Updated ${updateCourse.count} course for discountPrice and DiscountEnd date.`);
+
+      const expiredOrders = await runCronDbOperation(prisma =>
+        prisma.order.findMany({
+          where: {
+            status: 'PENDING',
+            stockReservationExpiresAt: { lte: now },
+          },
+          select: {
+            id: true,
+            orderItems: {
+              where: { format: 'PHYSICAL' },
+              select: { bookId: true, quantity: true },
+            },
+          },
+          take: 100,
+        })
+      );
+
+      for (const order of expiredOrders) {
+        await runCronDbOperation(prisma =>
+          prisma.$transaction(async tx => {
+            const claimed = await tx.order.updateMany({
+              where: {
+                id: order.id,
+                status: 'PENDING',
+                stockReservationExpiresAt: { lte: now },
+              },
+              data: { status: 'CANCELLED', stockReservationExpiresAt: null },
+            });
+            if (claimed.count !== 1) {
+              return;
+            }
+            for (const item of order.orderItems) {
+              if (item.bookId) {
+                await tx.book.update({
+                  where: { id: item.bookId },
+                  data: { stock: { increment: item.quantity } },
+                });
+              }
+            }
+          })
+        );
+      }
     } catch (error) {
       console.error('❌ Cron job failed (Update course for discount manage):', error);
     } finally {
@@ -89,7 +131,7 @@ cron.schedule('0 2 * * 0', () => {
   '';
 });
 
-const shutdown = () : void => {
+const shutdown = (): void => {
   console.log('🛑 Cron process shutting down...');
   disconnectCronDatabase()
     .catch(err => {
