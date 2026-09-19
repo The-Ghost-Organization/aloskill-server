@@ -32,6 +32,21 @@ const getMyOrderById = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Order retrieved successfully!', result);
 });
 
+const refreshMyOrderTracking = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.refreshMyOrderTracking(req);
+  ResponseHandler.ok(res, 'Courier tracking refreshed successfully!', result);
+});
+
+const getShippingQuote = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.getShippingQuote(req);
+  ResponseHandler.ok(res, 'Shipping quote calculated successfully!', result);
+});
+
+const retrySteadfastConsignment = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.retrySteadfastConsignment(req);
+  ResponseHandler.ok(res, 'Steadfast submission processed.', result);
+});
+
 export const orderController = {
   createPayment,
   validateIPN,
@@ -39,4 +54,7 @@ export const orderController = {
   verifyPayment,
   getMyOrders,
   getMyOrderById,
+  refreshMyOrderTracking,
+  getShippingQuote,
+  retrySteadfastConsignment,
 };

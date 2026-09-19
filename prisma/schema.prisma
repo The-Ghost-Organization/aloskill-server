@@ -949,6 +949,13 @@ model Order {
   status              OrderStatus          @default(PENDING)
   provider            PaymentProviders?
   providerOrderId     String?
+  courierName         Courier?
+  courierConsignmentId String?              @unique
+  courierTrackingCode String?               @unique
+  courierStatus       String?
+  courierStatusUpdatedAt DateTime?
+  courierLastError    String?
+  stockReservationExpiresAt DateTime?
   paymentTransactions PaymentTransaction[]
   orderItems          OrderItem[]
 
@@ -962,6 +969,7 @@ model Order {
   @@index([status, createdAt])
   @@index([userId, createdAt, status])
   @@index([totalAmount])
+  @@index([stockReservationExpiresAt, status])
 
   @@map("orders")
 }
@@ -1010,6 +1018,7 @@ model ShippingAddress {
 
 enum DeliveryArea {
   INSIDE_DHAKA
+  DHAKA_SUBURBAN
   OUTSIDE_DHAKA
 }
 

@@ -6,12 +6,17 @@ export const CreateOrderWithUDDOKTAPAY = z.object({
     shippingDetails: z
       .object({
         fullName: z.string().trim().min(1),
-        phoneNumber: z.string().trim().min(1),
+        phoneNumber: z
+          .string()
+          .trim()
+          .regex(/^(?:\+?88)?01[3-9]\d{8}$/, 'Enter a valid Bangladeshi mobile number'),
         addressLine: z.string().trim().min(1),
-        city: z.string().trim().min(1),
         postalCode: z.string().trim().min(1),
-        deliveryArea: z.enum(['INSIDE_DHAKA', 'OUTSIDE_DHAKA']),
+        division: z.object({ id: z.string().min(1), name: z.string().min(1) }),
+        district: z.object({ id: z.string().min(1), name: z.string().min(1) }),
+        upazila: z.object({ id: z.string().min(1), name: z.string().min(1) }),
       })
+      .strict()
       .nullable(),
     orderSummary: z
       .object({

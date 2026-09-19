@@ -29,6 +29,7 @@ const getCartItems = async (req: Request) => {
           digitalSalePrice: true,
           coverImage: true,
           weight: true,
+          stock: true,
           category: {
             select: {
               name: true,
@@ -46,6 +47,7 @@ const getCartItems = async (req: Request) => {
           thumbnailUrl: dbBook.coverImage,
           category: dbBook.category?.name,
           weight: dbBook.weight,
+          stock: dbBook.stock,
           physicalRegularPrice: dbBook.physicalRegularPrice,
           physicalSalePrice: dbBook.physicalSalePrice,
           digitalRegularPrice: dbBook.digitalRegularPrice,

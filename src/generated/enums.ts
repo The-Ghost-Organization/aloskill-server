@@ -324,6 +324,7 @@ export type PurchaseFormat = (typeof PurchaseFormat)[keyof typeof PurchaseFormat
 
 export const DeliveryArea = {
   INSIDE_DHAKA: 'INSIDE_DHAKA',
+  DHAKA_SUBURBAN: 'DHAKA_SUBURBAN',
   OUTSIDE_DHAKA: 'OUTSIDE_DHAKA'
 } as const
 
