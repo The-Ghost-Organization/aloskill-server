@@ -5,7 +5,7 @@ import { Decimal } from '@prisma/client/runtime/client';
 import { type Request } from 'express';
 import * as XLSX from 'xlsx';
 import { executeDbOperation } from '../../config/database.js';
-import { BookFormat, BookStatus, OrderStatus } from '../../generated/enums.js';
+import { ApplicationStatus, BookFormat, BookStatus, OrderStatus } from '../../generated/enums.js';
 import {
   CreateBookBodySchema,
   type CreateBookInput,
@@ -526,6 +526,54 @@ const updateBook = async (req: Request) => {
   }, 'Update Book');
 
   return updatedBook.id;
+};
+
+const getPublishedBooksByInstructor = async (req: Request) => {
+  const instructorId = req.params.instructorId as string;
+  if (!instructorId) {
+    throw new Error('Instructor ID is required.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const instructor = await prisma.instructorProfile.findFirst({
+      where: {
+        userId: instructorId,
+        status: ApplicationStatus.APPROVED,
+        deletedAt: null,
+      },
+      select: { userId: true },
+    });
+
+    if (!instructor) {
+      return [];
+    }
+
+    return await prisma.book.findMany({
+      where: {
+        ownerId: instructor.userId,
+        status: BookStatus.APPROVED,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        title: true,
+        author: true,
+        coverImage: true,
+        physicalRegularPrice: true,
+        physicalSalePrice: true,
+        digitalRegularPrice: true,
+        digitalSalePrice: true,
+        formats: true,
+        stock: true,
+        publisher: true,
+        createdAt: true,
+        category: {
+          select: { name: true },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }, 'Get Published Books By Instructor');
 };
 
 const getAllBooksForPublicView = async () => {
@@ -1073,6 +1121,7 @@ const getSingleBookDataForInstructorEdit = async (req: Request) => {
 
 export const bookService = {
   getBooksCategories,
+  getPublishedBooksByInstructor,
   uploadBook,
   bulkUploadBooks,
   updateBook,
