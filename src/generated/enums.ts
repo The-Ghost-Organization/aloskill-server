@@ -309,6 +309,7 @@ export type BookFileType = (typeof BookFileType)[keyof typeof BookFileType]
 export const BookStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
+  SUSPENDED: 'SUSPENDED',
   DRAFT: 'DRAFT'
 } as const
 

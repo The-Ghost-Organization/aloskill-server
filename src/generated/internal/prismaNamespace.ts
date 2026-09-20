@@ -405,6 +405,7 @@ export const ModelName = {
   LessonProgress: 'LessonProgress',
   Review: 'Review',
   Book: 'Book',
+  BookAuthor: 'BookAuthor',
   BookFile: 'BookFile',
   ViewLog: 'ViewLog',
   Wishlist: 'Wishlist',
@@ -442,7 +443,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings"
+    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookAuthor" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1997,6 +1998,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.BookCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.BookCountAggregateOutputType> | number
+        }
+      }
+    }
+    BookAuthor: {
+      payload: Prisma.$BookAuthorPayload<ExtArgs>
+      fields: Prisma.BookAuthorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BookAuthorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BookAuthorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>
+        }
+        findFirst: {
+          args: Prisma.BookAuthorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BookAuthorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>
+        }
+        findMany: {
+          args: Prisma.BookAuthorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>[]
+        }
+        create: {
+          args: Prisma.BookAuthorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>
+        }
+        createMany: {
+          args: Prisma.BookAuthorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BookAuthorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>[]
+        }
+        delete: {
+          args: Prisma.BookAuthorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>
+        }
+        update: {
+          args: Prisma.BookAuthorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>
+        }
+        deleteMany: {
+          args: Prisma.BookAuthorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BookAuthorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BookAuthorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>[]
+        }
+        upsert: {
+          args: Prisma.BookAuthorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookAuthorPayload>
+        }
+        aggregate: {
+          args: Prisma.BookAuthorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBookAuthor>
+        }
+        groupBy: {
+          args: Prisma.BookAuthorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookAuthorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BookAuthorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookAuthorCountAggregateOutputType> | number
         }
       }
     }
@@ -4044,6 +4119,7 @@ export const BookScalarFieldEnum = {
   id: 'id',
   title: 'title',
   author: 'author',
+  authorProfileId: 'authorProfileId',
   translator: 'translator',
   editor: 'editor',
   publisher: 'publisher',
@@ -4079,6 +4155,22 @@ export const BookScalarFieldEnum = {
 } as const
 
 export type BookScalarFieldEnum = (typeof BookScalarFieldEnum)[keyof typeof BookScalarFieldEnum]
+
+
+export const BookAuthorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  bio: 'bio',
+  photoUrl: 'photoUrl',
+  websiteUrl: 'websiteUrl',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BookAuthorScalarFieldEnum = (typeof BookAuthorScalarFieldEnum)[keyof typeof BookAuthorScalarFieldEnum]
 
 
 export const BookFileScalarFieldEnum = {
@@ -5111,6 +5203,7 @@ export type GlobalOmitConfig = {
   lessonProgress?: Prisma.LessonProgressOmit
   review?: Prisma.ReviewOmit
   book?: Prisma.BookOmit
+  bookAuthor?: Prisma.BookAuthorOmit
   bookFile?: Prisma.BookFileOmit
   viewLog?: Prisma.ViewLogOmit
   wishlist?: Prisma.WishlistOmit

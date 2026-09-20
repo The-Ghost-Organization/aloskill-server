@@ -72,6 +72,7 @@ export const ModelName = {
   LessonProgress: 'LessonProgress',
   Review: 'Review',
   Book: 'Book',
+  BookAuthor: 'BookAuthor',
   BookFile: 'BookFile',
   ViewLog: 'ViewLog',
   Wishlist: 'Wishlist',
@@ -489,6 +490,7 @@ export const BookScalarFieldEnum = {
   id: 'id',
   title: 'title',
   author: 'author',
+  authorProfileId: 'authorProfileId',
   translator: 'translator',
   editor: 'editor',
   publisher: 'publisher',
@@ -524,6 +526,22 @@ export const BookScalarFieldEnum = {
 } as const
 
 export type BookScalarFieldEnum = (typeof BookScalarFieldEnum)[keyof typeof BookScalarFieldEnum]
+
+
+export const BookAuthorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  bio: 'bio',
+  photoUrl: 'photoUrl',
+  websiteUrl: 'websiteUrl',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BookAuthorScalarFieldEnum = (typeof BookAuthorScalarFieldEnum)[keyof typeof BookAuthorScalarFieldEnum]
 
 
 export const BookFileScalarFieldEnum = {

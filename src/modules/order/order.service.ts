@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable require-await */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
@@ -1081,11 +1082,11 @@ const createOrderWithEPS = async (req: Request) => {
   }
 
   const eps = new EPS({
-    username: "Epsdemo@gmail.com",
-    password: "Epsdemo258@",
-    hashKey: "FHZxyzeps56789gfhg678ygu876o=",
-    merchantId: "29e86e70-0ac6-45eb-ba04-9fcb0aaed12a",
-    storeId: "d44e705f-9e3a-41de-98b1-1674631637da",
+    username: 'Epsdemo@gmail.com',
+    password: 'Epsdemo258@',
+    hashKey: 'FHZxyzeps56789gfhg678ygu876o=',
+    merchantId: '29e86e70-0ac6-45eb-ba04-9fcb0aaed12a',
+    storeId: 'd44e705f-9e3a-41de-98b1-1674631637da',
     sandbox: true,
   });
 
@@ -1099,24 +1100,28 @@ const createOrderWithEPS = async (req: Request) => {
       failUrl: `${config.FRONTEND_URL}/payment/fail`,
       cancelUrl: `${config.FRONTEND_URL}/payment/cancel`,
 
-      customerName: createOrder.studentProfile?.displayName ??
-          createOrder.instructorProfile?.displayName ??
-          'N/A',
+      customerName:
+        createOrder.studentProfile?.displayName ??
+        createOrder.instructorProfile?.displayName ??
+        'N/A',
       customerEmail: createOrder.email,
-      customerPhone: createOrder.studentProfile?.encryptedPhone
-          ? decryptPhoneNumber(createOrder.studentProfile.encryptedPhone)
-          : createOrder.instructorProfile?.encryptedPhone
-              ? decryptPhoneNumber(createOrder.instructorProfile.encryptedPhone)
-              : 'N/A',
+      customerPhone: shippingDetails?.phoneNumber ?? '01934567890',
+      // customerPhone: createOrder.studentProfile?.encryptedPhone
+      //     ? decryptPhoneNumber(createOrder.studentProfile.encryptedPhone)
+      //     : createOrder.instructorProfile?.encryptedPhone
+      //         ? decryptPhoneNumber(createOrder.instructorProfile.encryptedPhone)
+      //         : 'N/A',
       customerAddress: createOrder.orderData.shippingAddress?.addressLine ?? 'N/A',
       customerCity: createOrder.orderData.shippingAddress?.city ?? 'N/A',
       customerState: createOrder.orderData.shippingAddress?.city ?? 'N/A',
-      customerPostcode: createOrder.orderData.shippingAddress?.postalCode ?? "1200",
+      customerPostcode: createOrder.orderData.shippingAddress?.postalCode ?? '1200',
 
-      productName: createOrder.orderData.orderItems.map(item => item.course?.title ?? item.book?.title).join(', '),
+      productName: createOrder.orderData.orderItems
+        .map(item => item.course?.title ?? item.book?.title)
+        .join(', '),
     });
 
-    console.log("EPS Payment : ", payment);
+    console.log('EPS Payment : ', payment);
 
     if (!payment.TransactionId || !payment.RedirectURL) {
       console.error('EPS Error Log:', {
@@ -1128,12 +1133,12 @@ const createOrderWithEPS = async (req: Request) => {
       throw new Error(payment.ErrorMessage ?? 'Failed to initiate payment with EPS');
     }
 
-  return {
-    gatewayUrl: payment.RedirectURL,
-    orderId: createOrder.orderData.id,
-    paymentType: 'ONLINE_PAYMENT' as const,
-  };
-  } catch (error:any) {
+    return {
+      gatewayUrl: payment.RedirectURL,
+      orderId: createOrder.orderData.id,
+      paymentType: 'ONLINE_PAYMENT' as const,
+    };
+  } catch (error: any) {
     console.error('EPS initialization failed:', {
       name: error?.name,
       message: error?.message,
@@ -1343,5 +1348,5 @@ export const orderService = {
   refreshMyOrderTracking,
   getShippingQuote,
   retrySteadfastConsignment,
-  createOrderWithEPS
+  createOrderWithEPS,
 };

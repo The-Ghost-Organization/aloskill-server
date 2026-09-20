@@ -145,6 +145,11 @@ export type Review = Prisma.ReviewModel
  */
 export type Book = Prisma.BookModel
 /**
+ * Model BookAuthor
+ * 
+ */
+export type BookAuthor = Prisma.BookAuthorModel
+/**
  * Model BookFile
  * 
  */

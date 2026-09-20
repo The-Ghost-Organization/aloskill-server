@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -32,7 +31,9 @@ const getAuthorizedOwner = async (tx: TransactionClient, email: string) => {
 };
 
 const getAuthorizedAdmin = async (tx: TransactionClient, email?: string) => {
-  if (!email) throw new Error('Unauthorized: User not authenticated.');
+  if (!email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
   const admin = await tx.user.findUnique({
     where: { email, deletedAt: null, status: 'ACTIVE' },
     include: { assignedRole: true },
@@ -1061,143 +1062,153 @@ const approveBook = async (req: Request) => {
 };
 
 const updateBookSelling = async (req: Request) => {
-  const { bookId } = req.params;
+  const { bookId } = req.params as { bookId: string };
   const { action, note } = req.body as { action: 'STOP' | 'RESUME'; note: string };
 
-  return executeDbOperation(prisma =>
-    prisma.$transaction(async tx => {
-      const admin = await getAuthorizedAdmin(tx, req.user.email);
-      const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
-      if (!book) throw new Error('Book not found.');
-      if (book.status === BookStatus.PENDING) {
-        throw new Error('Pending books must be handled from the approvals route.');
-      }
+  return await executeDbOperation(
+    prisma =>
+      prisma.$transaction(async tx => {
+        const admin = await getAuthorizedAdmin(tx, req.user.email);
+        const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
+        if (!book) {
+          throw new Error('Book not found.');
+        }
+        if (book.status === BookStatus.PENDING) {
+          throw new Error('Pending books must be handled from the approvals route.');
+        }
 
-      if (action === 'STOP' && book.status !== BookStatus.APPROVED) {
-        throw new Error('Only approved books can be stopped.');
-      }
-      if (action === 'RESUME' && book.status !== BookStatus.SUSPENDED) {
-        throw new Error('Only suspended books can resume selling.');
-      }
+        if (action === 'STOP' && book.status !== BookStatus.APPROVED) {
+          throw new Error('Only approved books can be stopped.');
+        }
+        if (action === 'RESUME' && book.status !== BookStatus.SUSPENDED) {
+          throw new Error('Only suspended books can resume selling.');
+        }
 
-      const nextStatus = action === 'STOP' ? BookStatus.SUSPENDED : BookStatus.APPROVED;
-      const updatedBook = await tx.book.update({
-        where: { id: bookId },
-        data: {
-          status: nextStatus,
-          suspendReason: action === 'STOP' ? note : null,
-          adminNote: note,
-        },
-      });
+        const nextStatus = action === 'STOP' ? BookStatus.SUSPENDED : BookStatus.APPROVED;
+        const updatedBook = await tx.book.update({
+          where: { id: bookId },
+          data: {
+            status: nextStatus,
+            suspendReason: action === 'STOP' ? note : null,
+            adminNote: note,
+          },
+        });
 
-      await tx.auditLog.create({
-        data: {
-          userId: admin.id,
-          action: action === 'STOP' ? 'BOOK_SELLING_STOPPED' : 'BOOK_SELLING_RESUMED',
-          entityType: 'BOOK',
-          entityId: bookId,
-          changesBefore: JSON.parse(JSON.stringify(book)),
-          changesAfter: JSON.parse(JSON.stringify(updatedBook)),
-          ipAddress: req.ip,
-          userAgent: req.get('user-agent'),
-        },
-      });
-      return updatedBook;
-    }),
+        await tx.auditLog.create({
+          data: {
+            userId: admin.id,
+            action: action === 'STOP' ? 'BOOK_SELLING_STOPPED' : 'BOOK_SELLING_RESUMED',
+            entityType: 'BOOK',
+            entityId: bookId,
+            changesBefore: JSON.parse(JSON.stringify(book)),
+            changesAfter: JSON.parse(JSON.stringify(updatedBook)),
+            ipAddress: req.ip,
+            userAgent: req.get('user-agent'),
+          },
+        });
+        return updatedBook;
+      }),
     'Update Book Selling State'
   );
 };
 
 const updateBookStock = async (req: Request) => {
-  const { bookId } = req.params;
+  const { bookId } = req.params as { bookId: string };
   const { stock, note } = req.body as { stock: number; note: string };
 
-  return executeDbOperation(prisma =>
-    prisma.$transaction(async tx => {
-      const admin = await getAuthorizedAdmin(tx, req.user.email);
-      const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
-      if (!book) throw new Error('Book not found.');
+  return await executeDbOperation(
+    prisma =>
+      prisma.$transaction(async tx => {
+        const admin = await getAuthorizedAdmin(tx, req.user.email);
+        const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
+        if (!book) {
+          throw new Error('Book not found.');
+        }
 
-      const updatedBook = await tx.book.update({
-        where: { id: bookId },
-        data: { stock, adminNote: note },
-      });
-      await tx.auditLog.create({
-        data: {
-          userId: admin.id,
-          action: 'BOOK_STOCK_UPDATED',
-          entityType: 'BOOK',
-          entityId: bookId,
-          changesBefore: { stock: book.stock },
-          changesAfter: { stock, note },
-          ipAddress: req.ip,
-          userAgent: req.get('user-agent'),
-        },
-      });
-      return updatedBook;
-    }),
+        const updatedBook = await tx.book.update({
+          where: { id: bookId },
+          data: { stock, adminNote: note },
+        });
+        await tx.auditLog.create({
+          data: {
+            userId: admin.id,
+            action: 'BOOK_STOCK_UPDATED',
+            entityType: 'BOOK',
+            entityId: bookId,
+            changesBefore: { stock: book.stock },
+            changesAfter: { stock, note },
+            ipAddress: req.ip,
+            userAgent: req.get('user-agent'),
+          },
+        });
+        return updatedBook;
+      }),
     'Update Book Stock'
   );
 };
 
 const deleteBook = async (req: Request) => {
-  const { bookId } = req.params;
+  const { bookId } = req.params as { bookId: string };
   const { note } = req.body as { note: string };
 
-  return executeDbOperation(prisma =>
-    prisma.$transaction(async tx => {
-      const admin = await getAuthorizedAdmin(tx, req.user.email);
-      const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
-      if (!book) throw new Error('Book not found.');
+  return await executeDbOperation(
+    prisma =>
+      prisma.$transaction(async tx => {
+        const admin = await getAuthorizedAdmin(tx, req.user.email);
+        const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
+        if (!book) {
+          throw new Error('Book not found.');
+        }
 
-      const deletedBook = await tx.book.update({
-        where: { id: bookId },
-        data: {
-          deletedAt: new Date(),
-          status: BookStatus.SUSPENDED,
-          suspendReason: note,
-          adminNote: note,
-        },
-      });
-      await tx.auditLog.create({
-        data: {
-          userId: admin.id,
-          action: 'BOOK_SOFT_DELETED',
-          entityType: 'BOOK',
-          entityId: bookId,
-          changesBefore: JSON.parse(JSON.stringify(book)),
-          changesAfter: JSON.parse(JSON.stringify(deletedBook)),
-          ipAddress: req.ip,
-          userAgent: req.get('user-agent'),
-        },
-      });
-      return { id: deletedBook.id };
-    }),
+        const deletedBook = await tx.book.update({
+          where: { id: bookId },
+          data: {
+            deletedAt: new Date(),
+            status: BookStatus.SUSPENDED,
+            suspendReason: note,
+            adminNote: note,
+          },
+        });
+        await tx.auditLog.create({
+          data: {
+            userId: admin.id,
+            action: 'BOOK_SOFT_DELETED',
+            entityType: 'BOOK',
+            entityId: bookId,
+            changesBefore: JSON.parse(JSON.stringify(book)),
+            changesAfter: JSON.parse(JSON.stringify(deletedBook)),
+            ipAddress: req.ip,
+            userAgent: req.get('user-agent'),
+          },
+        });
+        return { id: deletedBook.id };
+      }),
     'Soft Delete Book'
   );
 };
 
 const createBookCategory = async (req: Request) => {
   const { name, parentId } = req.body as { name: string; parentId?: string | null };
-  return executeDbOperation(prisma =>
-    prisma.$transaction(async tx => {
-      const admin = await getAuthorizedAdmin(tx, req.user.email);
-      const category = await tx.bookCategory.create({
-        data: { name: name.trim(), slug: toSlug(name), parentId: parentId ?? null },
-      });
-      await tx.auditLog.create({
-        data: {
-          userId: admin.id,
-          action: 'BOOK_CATEGORY_CREATED',
-          entityType: 'BOOK_CATEGORY',
-          entityId: category.id,
-          changesAfter: JSON.parse(JSON.stringify(category)),
-          ipAddress: req.ip,
-          userAgent: req.get('user-agent'),
-        },
-      });
-      return category;
-    }),
+  return await executeDbOperation(
+    prisma =>
+      prisma.$transaction(async tx => {
+        const admin = await getAuthorizedAdmin(tx, req.user.email);
+        const category = await tx.bookCategory.create({
+          data: { name: name.trim(), slug: toSlug(name), parentId: parentId ?? null },
+        });
+        await tx.auditLog.create({
+          data: {
+            userId: admin.id,
+            action: 'BOOK_CATEGORY_CREATED',
+            entityType: 'BOOK_CATEGORY',
+            entityId: category.id,
+            changesAfter: JSON.parse(JSON.stringify(category)),
+            ipAddress: req.ip,
+            userAgent: req.get('user-agent'),
+          },
+        });
+        return category;
+      }),
     'Create Book Category'
   );
 };
@@ -1209,31 +1220,32 @@ const createBookAuthor = async (req: Request) => {
     photoUrl?: string;
     websiteUrl?: string;
   };
-  return executeDbOperation(prisma =>
-    prisma.$transaction(async tx => {
-      const admin = await getAuthorizedAdmin(tx, req.user.email);
-      const author = await tx.bookAuthor.create({
-        data: {
-          name: name.trim(),
-          slug: toSlug(name),
-          bio: bio || null,
-          photoUrl: photoUrl || null,
-          websiteUrl: websiteUrl || null,
-        },
-      });
-      await tx.auditLog.create({
-        data: {
-          userId: admin.id,
-          action: 'BOOK_AUTHOR_CREATED',
-          entityType: 'BOOK_AUTHOR',
-          entityId: author.id,
-          changesAfter: JSON.parse(JSON.stringify(author)),
-          ipAddress: req.ip,
-          userAgent: req.get('user-agent'),
-        },
-      });
-      return author;
-    }),
+  return await executeDbOperation(
+    prisma =>
+      prisma.$transaction(async tx => {
+        const admin = await getAuthorizedAdmin(tx, req.user.email);
+        const author = await tx.bookAuthor.create({
+          data: {
+            name: name.trim(),
+            slug: toSlug(name),
+            bio,
+            photoUrl,
+            websiteUrl,
+          },
+        });
+        await tx.auditLog.create({
+          data: {
+            userId: admin.id,
+            action: 'BOOK_AUTHOR_CREATED',
+            entityType: 'BOOK_AUTHOR',
+            entityId: author.id,
+            changesAfter: JSON.parse(JSON.stringify(author)),
+            ipAddress: req.ip,
+            userAgent: req.get('user-agent'),
+          },
+        });
+        return author;
+      }),
     'Create Book Author'
   );
 };
