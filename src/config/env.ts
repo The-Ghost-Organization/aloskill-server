@@ -77,8 +77,15 @@ const envSchema = z.object({
   SHIPPING_INSIDE_DHAKA: z.coerce.number().nonnegative().default(70),
   SHIPPING_DHAKA_SUBURBAN: z.coerce.number().nonnegative().default(100),
   SHIPPING_OUTSIDE_DHAKA: z.coerce.number().nonnegative().default(130),
-  SHIPPING_BASE_WEIGHT_KG: z.coerce.number().positive().default(1),
+  SHIPPING_BASE_WEIGHT_KG: z.coerce.number().positive().default(.5),
   SHIPPING_EXTRA_PER_KG: z.coerce.number().nonnegative().default(20),
+
+  EPS_USERNAME: z.string().default(process.env.EPS_USERNAME as string),
+  EPS_PASSWORD: z.string().default(process.env.EPS_PASSWORD as string),
+  EPS_HASH_KEY: z.string().default(process.env.EPS_HASH_KEY as string),
+  EPS_MERCHANT_ID: z.string().default(process.env.EPS_MERCHANT_ID as string),
+  EPS_STORE_ID: z.string().default(process.env.EPS_STORE_ID as string),
+  EPS_SANDBOX: z.coerce.boolean().default(process.env.EPS_SANDBOX === 'true'),
 });
 
 export const config = envSchema.parse(process.env);

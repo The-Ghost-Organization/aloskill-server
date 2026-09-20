@@ -3,9 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { EPS, generateTransactionId } from 'eps-gateway-nodejs';
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
+
 import {
   ApplicationStatus,
   Courier,
@@ -25,7 +27,7 @@ import {
   type SteadfastDeliveryStatus,
 } from '../../services/steadfastCourier.service.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
-import { type UddoktapayPayload } from './order.validation.js';
+import type { EPSPayload, UddoktapayPayload } from './order.validation.js';
 
 const courierOrderStatus: Partial<Record<SteadfastDeliveryStatus, OrderStatus>> = {
   in_review: OrderStatus.PROCESSING,
@@ -459,6 +461,8 @@ const validateIPN = async (req: Request) => {
   console.log('Update Order Status: ', updateOrderStatus);
 };
 
+// for uddoktapay payment gateway Start
+
 const createOrderWithUDDOKTAPAY = async (req: Request) => {
   console.log('hit the uddoktapay');
   const data = req.body as UddoktapayPayload['body'];
@@ -812,6 +816,341 @@ const verifyPayment = async (req: Request) => {
   return { orderStatus: uddoktaPayData.status, orderId: orderId ?? null };
 };
 
+// for uddoktapay payment gateway End
+
+// for EPS payment system Start
+
+const createOrderWithEPS = async (req: Request) => {
+  console.log('hit the EPS');
+  const data = req.body as EPSPayload['body'];
+  const user = req.user;
+  const shippingDetails = data.shippingDetails;
+  const isCashOnDelivery = data.paymentMethod === 'CASH_ON_DELIVERY';
+
+  if (!user.email) {
+    throw new Error('Unauthorized');
+  }
+
+  if (!data.orderSummary) {
+    throw new Error('Invalid order summary');
+  }
+
+  const createOrder = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      // 1. Verify User
+      const userData = await tx.user.findUnique({
+        where: {
+          email: user.email,
+          status: 'ACTIVE',
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          email: true,
+          studentProfile: {
+            select: {
+              displayName: true,
+              encryptedPhone: true,
+            },
+          },
+          instructorProfile: {
+            where: {
+              deletedAt: null,
+              status: 'APPROVED',
+            },
+            select: {
+              displayName: true,
+              encryptedPhone: true,
+            },
+          },
+        },
+      });
+
+      if (!userData) {
+        throw new Error('User not found');
+      }
+
+      // Safe fallbacks for items and quantities arrays
+      const sessionCourses = data.orderSummary.items.courses;
+      const sessionBooks = data.orderSummary.items.books;
+      const bookQuantities = data.orderSummary.quantities.books;
+
+      // 2. Fetch courses and books from Database
+      const dbCourses = await tx.course.findMany({
+        where: {
+          id: { in: sessionCourses.map(c => c.id) },
+          deletedAt: null,
+          status: 'PUBLISHED',
+        },
+        select: { id: true, originalPrice: true, discountPrice: true, isDiscountActive: true },
+      });
+
+      const dbBooks = await tx.book.findMany({
+        where: {
+          id: { in: sessionBooks.map(b => b.id) },
+          deletedAt: null,
+          status: 'APPROVED',
+        },
+        select: {
+          id: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
+          weight: true,
+          stock: true,
+        },
+      });
+
+      if (dbCourses.length !== sessionCourses.length) {
+        throw new Error('One or more courses not found');
+      }
+      if (dbBooks.length !== sessionBooks.length) {
+        throw new Error('One or more books not found');
+      }
+
+      let subtotal = 0;
+      let totalWeight = 0;
+      const orderItemsData = [];
+
+      // 3. Process Course Prices
+      for (const course of dbCourses) {
+        const price =
+          course.isDiscountActive && course.discountPrice
+            ? course.discountPrice
+            : course.originalPrice;
+
+        subtotal += Number(price);
+        orderItemsData.push({
+          courseId: course.id,
+          format: PurchaseFormat.DIGITAL,
+          price,
+          quantity: 1,
+        });
+      }
+
+      // 4. Process Book Prices with Correct Format Extraction
+      let hasPhysicalItems = false;
+
+      for (const bookItem of sessionBooks) {
+        const dbBook = dbBooks.find(b => b.id === bookItem.id);
+        if (!dbBook) {
+          throw new Error('System mismatch fetching book data');
+        }
+
+        // Look up the exact format for this specific book from quantities mapping
+        const quantityMeta = bookQuantities.find(q => q.bookId === bookItem.id);
+
+        // Determine format safely (fall back to EBOOK/DIGITAL if metadata missing)
+        const isPhysical = quantityMeta?.format === 'PHYSICAL';
+        const quantity = quantityMeta?.quantity ?? 1;
+        if (!Number.isInteger(quantity) || quantity < 1) {
+          throw new Error(`Invalid quantity for book: ${bookItem.id}`);
+        }
+        if (isPhysical) {
+          hasPhysicalItems = true;
+          // Atomic stock checkpoint. The transaction rolls back every earlier
+          // decrement if any physical book cannot satisfy its requested quantity.
+          const stockUpdate = await tx.book.updateMany({
+            where: { id: dbBook.id, stock: { gte: quantity } },
+            data: { stock: { decrement: quantity } },
+          });
+          if (stockUpdate.count !== 1) {
+            throw new Error(
+              `Insufficient stock for ${bookItem.title}. Requested ${quantity}, available ${dbBook.stock}.`
+            );
+          }
+        }
+
+        let price = 0;
+        if (isPhysical) {
+          const decimalPrice = dbBook.physicalSalePrice ?? dbBook.physicalRegularPrice ?? 0;
+          price = Number(decimalPrice);
+        } else {
+          const decimalPrice = dbBook.digitalSalePrice ?? dbBook.digitalRegularPrice ?? 0;
+          price = Number(decimalPrice);
+        }
+
+        subtotal += price * quantity;
+        if (isPhysical) {
+          totalWeight += Number(dbBook.weight) * quantity;
+        }
+        orderItemsData.push({
+          bookId: dbBook.id,
+          format: isPhysical ? PurchaseFormat.PHYSICAL : PurchaseFormat.DIGITAL,
+          price: price * quantity,
+          quantity,
+        });
+      }
+
+      if (hasPhysicalItems && !shippingDetails) {
+        throw new Error('Shipping details are required for physical books');
+      }
+      if (isCashOnDelivery && !hasPhysicalItems) {
+        throw new Error('Cash on Delivery is available only for physical books');
+      }
+
+      const deliveryArea = shippingDetails
+        ? getDeliveryArea({
+            districtId: shippingDetails.district.id,
+            upazilaId: shippingDetails.upazila.id,
+          })
+        : null;
+      const shippingCost =
+        hasPhysicalItems && deliveryArea ? calculateShippingCost(deliveryArea, totalWeight) : 0;
+      const total = subtotal + shippingCost;
+
+      // 5. Build dynamic shipping address relation
+      let shippingAddressId: string | null = null;
+
+      if (shippingDetails && hasPhysicalItems) {
+        const address = await tx.shippingAddress.create({
+          data: {
+            fullName: shippingDetails.fullName,
+            addressLine: shippingDetails.addressLine,
+            city: `${shippingDetails.upazila.name}, ${shippingDetails.district.name}, ${shippingDetails.division.name}`,
+            postalCode: shippingDetails.postalCode,
+            phone: shippingDetails.phoneNumber,
+            country: 'Bangladesh',
+            deliveryArea,
+          },
+          select: { id: true },
+        });
+        shippingAddressId = address.id;
+      }
+
+      const orderPayload: any = {
+        userId: userData.id,
+        totalAmount: total,
+        status: 'PENDING',
+        provider: 'EPS',
+        paymentMethod: isCashOnDelivery
+          ? PaymentMethod.CASH_ON_DELIVERY
+          : PaymentMethod.ONLINE_PAYMENT,
+        shippingCost,
+        totalWeight,
+        stockReservationExpiresAt: isCashOnDelivery ? null : new Date(Date.now() + 15 * 60 * 1000),
+        orderItems: {
+          create: orderItemsData,
+        },
+      };
+
+      if (isCashOnDelivery) {
+        orderPayload.provider = PaymentProviders.CASH_ON_DELIVERY;
+      }
+
+      if (shippingAddressId) {
+        orderPayload.shippingAddressId = shippingAddressId;
+      }
+
+      // 6. Generate final order record
+      return {
+        ...userData,
+        orderData: await tx.order.create({
+          data: orderPayload,
+          select: {
+            id: true,
+            totalAmount: true,
+            orderItems: {
+              select: {
+                format: true,
+                price: true,
+                course: { select: { title: true } },
+                book: { select: { title: true } },
+              },
+            },
+            shippingAddress: true,
+          },
+        }),
+      };
+    });
+  });
+
+  if (!createOrder.orderData.id) {
+    throw new Error('Order Creation Failed');
+  }
+
+  if (isCashOnDelivery) {
+    const trackingCode = await createCourierConsignmentForOrder(createOrder.orderData.id);
+    return {
+      orderId: createOrder.orderData.id,
+      paymentType: 'CASH_ON_DELIVERY' as const,
+      courierSubmitted: Boolean(trackingCode),
+      trackingCode,
+    };
+  }
+
+  const eps = new EPS({
+    username: "Epsdemo@gmail.com",
+    password: "Epsdemo258@",
+    hashKey: "FHZxyzeps56789gfhg678ygu876o=",
+    merchantId: "29e86e70-0ac6-45eb-ba04-9fcb0aaed12a",
+    storeId: "d44e705f-9e3a-41de-98b1-1674631637da",
+    sandbox: true,
+  });
+
+  try {
+    const payment = await eps.initializePayment({
+      customerOrderId: createOrder.orderData.id,
+      merchantTransactionId: generateTransactionId(),
+      totalAmount: Number(createOrder.orderData.totalAmount),
+
+      successUrl: `${config.FRONTEND_URL}/payment/success`,
+      failUrl: `${config.FRONTEND_URL}/payment/fail`,
+      cancelUrl: `${config.FRONTEND_URL}/payment/cancel`,
+
+      customerName: createOrder.studentProfile?.displayName ??
+          createOrder.instructorProfile?.displayName ??
+          'N/A',
+      customerEmail: createOrder.email,
+      customerPhone: createOrder.studentProfile?.encryptedPhone
+          ? decryptPhoneNumber(createOrder.studentProfile.encryptedPhone)
+          : createOrder.instructorProfile?.encryptedPhone
+              ? decryptPhoneNumber(createOrder.instructorProfile.encryptedPhone)
+              : 'N/A',
+      customerAddress: createOrder.orderData.shippingAddress?.addressLine ?? 'N/A',
+      customerCity: createOrder.orderData.shippingAddress?.city ?? 'N/A',
+      customerState: createOrder.orderData.shippingAddress?.city ?? 'N/A',
+      customerPostcode: createOrder.orderData.shippingAddress?.postalCode ?? "1200",
+
+      productName: createOrder.orderData.orderItems.map(item => item.course?.title ?? item.book?.title).join(', '),
+    });
+
+    console.log("EPS Payment : ", payment);
+
+    if (!payment.TransactionId || !payment.RedirectURL) {
+      console.error('EPS Error Log:', {
+        httpStatus: payment.ErrorCode,
+        message: payment.ErrorMessage ?? 'No payment URL returned',
+        fullResponse: payment,
+      });
+
+      throw new Error(payment.ErrorMessage ?? 'Failed to initiate payment with EPS');
+    }
+
+  return {
+    gatewayUrl: payment.RedirectURL,
+    orderId: createOrder.orderData.id,
+    paymentType: 'ONLINE_PAYMENT' as const,
+  };
+  } catch (error:any) {
+    console.error('EPS initialization failed:', {
+      name: error?.name,
+      message: error?.message,
+      code: error?.code,
+      cause: error?.cause,
+      status: error?.response?.status,
+      response: error?.response?.data,
+      stack: error?.stack,
+    });
+
+    await releasePhysicalStockForFailedOrder(createOrder.orderData.id);
+    throw error;
+  }
+};
+
+// for EPS payment system End
+
 const refreshMyOrderTracking = async (req: Request) => {
   const userEmail = req.user?.email;
   const orderId = req.params.orderId as string;
@@ -832,7 +1171,7 @@ const refreshMyOrderTracking = async (req: Request) => {
     return { trackingAvailable: false, courierStatus: null };
   }
 
-  const courierStatus = await getSteadfastStatusByTrackingCode(order.courierTrackingCode as string);
+  const courierStatus = await getSteadfastStatusByTrackingCode(order.courierTrackingCode);
   const mappedOrderStatus = courierOrderStatus[courierStatus];
   const delivered = courierStatus === 'delivered' || courierStatus === 'partial_delivered';
   const cancelled = courierStatus === 'cancelled' || courierStatus === 'cancelled_approval_pending';
@@ -1004,4 +1343,5 @@ export const orderService = {
   refreshMyOrderTracking,
   getShippingQuote,
   retrySteadfastConsignment,
+  createOrderWithEPS
 };

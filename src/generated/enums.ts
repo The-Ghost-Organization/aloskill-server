@@ -166,7 +166,8 @@ export const PaymentProviders = {
   UDDOKTAPAY: 'UDDOKTAPAY',
   CASH_ON_DELIVERY: 'CASH_ON_DELIVERY',
   STRIPE: 'STRIPE',
-  PAYPAL: 'PAYPAL'
+  PAYPAL: 'PAYPAL',
+  EPS: 'EPS'
 } as const
 
 export type PaymentProviders = (typeof PaymentProviders)[keyof typeof PaymentProviders]

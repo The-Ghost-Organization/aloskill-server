@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -29,6 +30,27 @@ const getAuthorizedOwner = async (tx: TransactionClient, email: string) => {
   }
   return owner;
 };
+
+const getAuthorizedAdmin = async (tx: TransactionClient, email?: string) => {
+  if (!email) throw new Error('Unauthorized: User not authenticated.');
+  const admin = await tx.user.findUnique({
+    where: { email, deletedAt: null, status: 'ACTIVE' },
+    include: { assignedRole: true },
+  });
+  if (!admin?.assignedRole.some(role => role.role === 'ADMIN')) {
+    throw new Error('Security Violation: Only admins can perform this action.');
+  }
+  return admin;
+};
+
+const toSlug = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
+    .replace(/^-+|-+$/g, '');
 
 const createBook = async (
   tx: TransactionClient,
@@ -821,7 +843,7 @@ const getAllBooksDataforAdmin = async (req: Request) => {
 
       const stats = await tx.orderItem.aggregate({
         where: {
-          bookId: { not: null },
+          book: { deletedAt: null, status: { in: [BookStatus.APPROVED, BookStatus.SUSPENDED] } },
           order: {
             status: OrderStatus.PAID,
           },
@@ -831,9 +853,11 @@ const getAllBooksDataforAdmin = async (req: Request) => {
         },
         _sum: {
           price: true,
+          quantity: true,
         },
       });
       const bookBreakdown = await tx.book.findMany({
+        where: { deletedAt: null, status: { in: [BookStatus.APPROVED, BookStatus.SUSPENDED] } },
         select: {
           id: true,
           title: true,
@@ -846,6 +870,13 @@ const getAllBooksDataforAdmin = async (req: Request) => {
           digitalSalePrice: true,
           stock: true,
           status: true,
+          coverImage: true,
+          viewCount: true,
+          suspendReason: true,
+          adminNote: true,
+          createdAt: true,
+          updatedAt: true,
+          category: { select: { id: true, name: true } },
           orderItem: {
             where: {
               order: { status: OrderStatus.PAID },
@@ -853,12 +884,15 @@ const getAllBooksDataforAdmin = async (req: Request) => {
             select: {
               id: true,
               price: true,
+              quantity: true,
             },
           },
+          _count: { select: { reviews: true, wishlistedBy: true } },
         },
-        orderBy: { createdAt: 'asc' },
+        orderBy: { updatedAt: 'desc' },
       });
       const stockData = await tx.book.aggregate({
+        where: { deletedAt: null, status: { in: [BookStatus.APPROVED, BookStatus.SUSPENDED] } },
         _sum: {
           stock: true,
         },
@@ -869,7 +903,7 @@ const getAllBooksDataforAdmin = async (req: Request) => {
 
       return {
         totalBooks: stockData._count.id,
-        totalSold: stats._count.id,
+        totalSold: stats._sum.quantity ?? 0,
         totalStock: stockData._sum.stock ?? 0,
         totalRevenue: stats._sum.price ?? 0,
         bookBreakdown,
@@ -978,6 +1012,184 @@ const approveBook = async (req: Request) => {
   return approvedBook.id;
 };
 
+const updateBookSelling = async (req: Request) => {
+  const { bookId } = req.params;
+  const { action, note } = req.body as { action: 'STOP' | 'RESUME'; note: string };
+
+  return executeDbOperation(prisma =>
+    prisma.$transaction(async tx => {
+      const admin = await getAuthorizedAdmin(tx, req.user.email);
+      const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
+      if (!book) throw new Error('Book not found.');
+      if (book.status === BookStatus.PENDING) {
+        throw new Error('Pending books must be handled from the approvals route.');
+      }
+
+      if (action === 'STOP' && book.status !== BookStatus.APPROVED) {
+        throw new Error('Only approved books can be stopped.');
+      }
+      if (action === 'RESUME' && book.status !== BookStatus.SUSPENDED) {
+        throw new Error('Only suspended books can resume selling.');
+      }
+
+      const nextStatus = action === 'STOP' ? BookStatus.SUSPENDED : BookStatus.APPROVED;
+      const updatedBook = await tx.book.update({
+        where: { id: bookId },
+        data: {
+          status: nextStatus,
+          suspendReason: action === 'STOP' ? note : null,
+          adminNote: note,
+        },
+      });
+
+      await tx.auditLog.create({
+        data: {
+          userId: admin.id,
+          action: action === 'STOP' ? 'BOOK_SELLING_STOPPED' : 'BOOK_SELLING_RESUMED',
+          entityType: 'BOOK',
+          entityId: bookId,
+          changesBefore: JSON.parse(JSON.stringify(book)),
+          changesAfter: JSON.parse(JSON.stringify(updatedBook)),
+          ipAddress: req.ip,
+          userAgent: req.get('user-agent'),
+        },
+      });
+      return updatedBook;
+    }),
+    'Update Book Selling State'
+  );
+};
+
+const updateBookStock = async (req: Request) => {
+  const { bookId } = req.params;
+  const { stock, note } = req.body as { stock: number; note: string };
+
+  return executeDbOperation(prisma =>
+    prisma.$transaction(async tx => {
+      const admin = await getAuthorizedAdmin(tx, req.user.email);
+      const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
+      if (!book) throw new Error('Book not found.');
+
+      const updatedBook = await tx.book.update({
+        where: { id: bookId },
+        data: { stock, adminNote: note },
+      });
+      await tx.auditLog.create({
+        data: {
+          userId: admin.id,
+          action: 'BOOK_STOCK_UPDATED',
+          entityType: 'BOOK',
+          entityId: bookId,
+          changesBefore: { stock: book.stock },
+          changesAfter: { stock, note },
+          ipAddress: req.ip,
+          userAgent: req.get('user-agent'),
+        },
+      });
+      return updatedBook;
+    }),
+    'Update Book Stock'
+  );
+};
+
+const deleteBook = async (req: Request) => {
+  const { bookId } = req.params;
+  const { note } = req.body as { note: string };
+
+  return executeDbOperation(prisma =>
+    prisma.$transaction(async tx => {
+      const admin = await getAuthorizedAdmin(tx, req.user.email);
+      const book = await tx.book.findFirst({ where: { id: bookId, deletedAt: null } });
+      if (!book) throw new Error('Book not found.');
+
+      const deletedBook = await tx.book.update({
+        where: { id: bookId },
+        data: {
+          deletedAt: new Date(),
+          status: BookStatus.SUSPENDED,
+          suspendReason: note,
+          adminNote: note,
+        },
+      });
+      await tx.auditLog.create({
+        data: {
+          userId: admin.id,
+          action: 'BOOK_SOFT_DELETED',
+          entityType: 'BOOK',
+          entityId: bookId,
+          changesBefore: JSON.parse(JSON.stringify(book)),
+          changesAfter: JSON.parse(JSON.stringify(deletedBook)),
+          ipAddress: req.ip,
+          userAgent: req.get('user-agent'),
+        },
+      });
+      return { id: deletedBook.id };
+    }),
+    'Soft Delete Book'
+  );
+};
+
+const createBookCategory = async (req: Request) => {
+  const { name, parentId } = req.body as { name: string; parentId?: string | null };
+  return executeDbOperation(prisma =>
+    prisma.$transaction(async tx => {
+      const admin = await getAuthorizedAdmin(tx, req.user.email);
+      const category = await tx.bookCategory.create({
+        data: { name: name.trim(), slug: toSlug(name), parentId: parentId ?? null },
+      });
+      await tx.auditLog.create({
+        data: {
+          userId: admin.id,
+          action: 'BOOK_CATEGORY_CREATED',
+          entityType: 'BOOK_CATEGORY',
+          entityId: category.id,
+          changesAfter: JSON.parse(JSON.stringify(category)),
+          ipAddress: req.ip,
+          userAgent: req.get('user-agent'),
+        },
+      });
+      return category;
+    }),
+    'Create Book Category'
+  );
+};
+
+const createBookAuthor = async (req: Request) => {
+  const { name, bio, photoUrl, websiteUrl } = req.body as {
+    name: string;
+    bio?: string;
+    photoUrl?: string;
+    websiteUrl?: string;
+  };
+  return executeDbOperation(prisma =>
+    prisma.$transaction(async tx => {
+      const admin = await getAuthorizedAdmin(tx, req.user.email);
+      const author = await tx.bookAuthor.create({
+        data: {
+          name: name.trim(),
+          slug: toSlug(name),
+          bio: bio || null,
+          photoUrl: photoUrl || null,
+          websiteUrl: websiteUrl || null,
+        },
+      });
+      await tx.auditLog.create({
+        data: {
+          userId: admin.id,
+          action: 'BOOK_AUTHOR_CREATED',
+          entityType: 'BOOK_AUTHOR',
+          entityId: author.id,
+          changesAfter: JSON.parse(JSON.stringify(author)),
+          ipAddress: req.ip,
+          userAgent: req.get('user-agent'),
+        },
+      });
+      return author;
+    }),
+    'Create Book Author'
+  );
+};
+
 // Instructor Dashboard. Every query is scoped to the authenticated owner.
 const getAllBooksDataForInstructor = async (req: Request) => {
   const email = req.user.email;
@@ -1083,6 +1295,11 @@ export const bookService = {
   getAllBooksDataforAdmin,
   getSingleBookDataForAdminEdit,
   approveBook,
+  updateBookSelling,
+  updateBookStock,
+  deleteBook,
+  createBookCategory,
+  createBookAuthor,
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,
