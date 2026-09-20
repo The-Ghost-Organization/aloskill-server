@@ -123,6 +123,7 @@ enum PaymentProviders {
   CASH_ON_DELIVERY
   STRIPE
   PAYPAL
+  EPS
 }
 
 enum PaymentMethod {
@@ -222,6 +223,7 @@ enum BookFileType {
 enum BookStatus {
   PENDING
   APPROVED
+  SUSPENDED
   DRAFT
 }
 
@@ -832,6 +834,8 @@ model Book {
   id              String   @id @default(uuid())
   title           String
   author          String
+  authorProfileId String?
+  authorProfile   BookAuthor? @relation(fields: [authorProfileId], references: [id], onDelete: SetNull)
   translator      String?
   editor          String?
   publisher       String
@@ -888,6 +892,25 @@ model Book {
   @@map("books")
   @@index([isbn])
   @@index([isbn, ownerId])
+  @@index([authorProfileId])
+}
+
+model BookAuthor {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  bio         String?  @db.Text
+  photoUrl    String?
+  websiteUrl  String?
+  isActive    Boolean  @default(true)
+  books       Book[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@index([name])
+  @@index([isActive, deletedAt])
+  @@map("book_authors")
 }
 
 model BookFile {

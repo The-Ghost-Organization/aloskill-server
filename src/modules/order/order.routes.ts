@@ -3,16 +3,19 @@ import { requireAdmin, requireAuth, requireStudent } from '../../middleware/auth
 import { generalLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { orderController } from './order.controller.js';
-import { CreateOrderWithUDDOKTAPAY } from './order.validation.js';
+import { CreateOrderWithEPS, CreateOrderWithUDDOKTAPAY } from './order.validation.js';
 
 const router = express.Router({ caseSensitive: true });
 
 router.use(generalLimiter);
 
+// SSLCommerz Payment Routes
 router.post('/create-payment', requireStudent, orderController.createPayment);
 
 router.post('/validate-ipn', orderController.validateIPN);
+// SSLCommerz Payment Routes
 
+// UDDOKTAPAY Payment Routes
 router.post(
   '/create-order-with-UDDOKTAPAY',
   requireAuth,
@@ -23,6 +26,16 @@ router.post(
 router.get('/verify-payment', orderController.verifyPayment);
 
 router.post('/uddoktapay-webhook', orderController.verifyPayment);
+// UDDOKTAPAY Payment Routes
+
+// EPS Payment Routes
+
+router.post(
+  '/create-order-with-EPS',
+  requireAuth,
+  validate(CreateOrderWithEPS),
+  orderController.createOrderWithEPS
+);
 
 router.post(
   '/admin/:orderId/create-steadfast',

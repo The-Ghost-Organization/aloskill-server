@@ -4,7 +4,14 @@ import { requireAdmin, requireInstructor, requireStudent } from '../../middlewar
 import { generalLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { bookController } from './book.controller.js';
-import { CreateBookSchema } from './book.validation.js';
+import {
+  CreateBookAuthorSchema,
+  CreateBookCategorySchema,
+  CreateBookSchema,
+  DeleteBookSchema,
+  UpdateBookSellingSchema,
+  UpdateBookStockSchema,
+} from './book.validation.js';
 
 const router = express.Router({ caseSensitive: true });
 
@@ -67,6 +74,41 @@ router.get('/admin/all-books-data', requireAdmin, bookController.getAllBooksData
 router.get('/admin/books/edit', requireAdmin, bookController.getSingleBookDataForAdminEdit);
 
 router.patch('/admin/books/approve', requireAdmin, bookController.approvedBook);
+
+router.patch(
+  '/admin/books/:bookId/selling',
+  requireAdmin,
+  validate(UpdateBookSellingSchema),
+  bookController.updateBookSelling
+);
+
+router.patch(
+  '/admin/books/:bookId/stock',
+  requireAdmin,
+  validate(UpdateBookStockSchema),
+  bookController.updateBookStock
+);
+
+router.patch(
+  '/admin/books/:bookId/delete',
+  requireAdmin,
+  validate(DeleteBookSchema),
+  bookController.deleteBook
+);
+
+router.post(
+  '/admin/categories',
+  requireAdmin,
+  validate(CreateBookCategorySchema),
+  bookController.createBookCategory
+);
+
+router.post(
+  '/admin/authors',
+  requireAdmin,
+  validate(CreateBookAuthorSchema),
+  bookController.createBookAuthor
+);
 
 router.get('/instructor/books', requireInstructor, bookController.getAllBooksDataForInstructor);
 

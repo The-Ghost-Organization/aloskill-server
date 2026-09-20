@@ -159,3 +159,47 @@ export type UploadBookPayload = z.infer<typeof CreateBookSchema>;
 
 export const CreateBookBodySchema = CreateBookSchema.shape.body;
 export type CreateBookInput = z.infer<typeof CreateBookBodySchema>;
+
+const AdminNoteSchema = z
+  .string()
+  .trim()
+  .min(5, 'Admin note must be at least 5 characters.')
+  .max(500, 'Admin note cannot exceed 500 characters.')
+  .regex(/^[^<>]*$/, 'Admin note cannot contain HTML tags.');
+
+export const UpdateBookSellingSchema = z.object({
+  params: z.object({ bookId: z.uuid() }),
+  body: z.object({
+    action: z.enum(['STOP', 'RESUME']),
+    note: AdminNoteSchema,
+  }),
+});
+
+export const UpdateBookStockSchema = z.object({
+  params: z.object({ bookId: z.uuid() }),
+  body: z.object({
+    stock: z.coerce.number().int().min(0).max(1_000_000),
+    note: AdminNoteSchema,
+  }),
+});
+
+export const DeleteBookSchema = z.object({
+  params: z.object({ bookId: z.uuid() }),
+  body: z.object({ note: AdminNoteSchema }),
+});
+
+export const CreateBookCategorySchema = z.object({
+  body: z.object({
+    name: z.string().trim().min(2).max(80).regex(/^[^<>]*$/),
+    parentId: z.uuid().nullable().optional(),
+  }),
+});
+
+export const CreateBookAuthorSchema = z.object({
+  body: z.object({
+    name: z.string().trim().min(2).max(120).regex(/^[^<>]*$/),
+    bio: z.string().trim().max(3000).regex(/^[^<>]*$/).optional(),
+    photoUrl: z.url().optional().or(z.literal('')),
+    websiteUrl: z.url().optional().or(z.literal('')),
+  }),
+});

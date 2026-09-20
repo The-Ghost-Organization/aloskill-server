@@ -62,6 +62,31 @@ const approvedBook = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book Approved Successfully!', result);
 });
 
+const updateBookSelling = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.updateBookSelling(req);
+  ResponseHandler.ok(res, 'Book selling status updated successfully!', result);
+});
+
+const updateBookStock = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.updateBookStock(req);
+  ResponseHandler.ok(res, 'Book stock updated successfully!', result);
+});
+
+const deleteBook = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.deleteBook(req);
+  ResponseHandler.ok(res, 'Book deleted successfully!', result);
+});
+
+const createBookCategory = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.createBookCategory(req);
+  ResponseHandler.ok(res, 'Book category created successfully!', result);
+});
+
+const createBookAuthor = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.createBookAuthor(req);
+  ResponseHandler.ok(res, 'Book author created successfully!', result);
+});
+
 const getAllBooksDataForInstructor = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.getAllBooksDataForInstructor(req);
   ResponseHandler.ok(res, 'Instructor books retrieved successfully!', result);
@@ -81,6 +106,11 @@ export const bookController = {
   getAllBooksDataforAdmin,
   getSingleBookDataForAdminEdit,
   approvedBook,
+  updateBookSelling,
+  updateBookStock,
+  deleteBook,
+  createBookCategory,
+  createBookAuthor,
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,
