@@ -513,6 +513,7 @@ model InstructorProfile {
   // Relations
   ownedCourses      Course[]           @relation("CourseOwner")
   courseInstructors CourseInstructor[]
+  authorProfile     BookAuthor?
 
   @@index([userId])
   @@index([status])
@@ -897,6 +898,8 @@ model Book {
 
 model BookAuthor {
   id          String   @id @default(uuid())
+  instructorProfileId String? @unique
+  instructorProfile   InstructorProfile? @relation(fields: [instructorProfileId], references: [id], onDelete: SetNull)
   name        String
   slug        String   @unique
   bio         String?  @db.Text
@@ -909,6 +912,7 @@ model BookAuthor {
   deletedAt   DateTime?
 
   @@index([name])
+  @@index([instructorProfileId])
   @@index([isActive, deletedAt])
   @@map("book_authors")
 }

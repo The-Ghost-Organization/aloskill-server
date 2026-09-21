@@ -11,6 +11,7 @@ export const CreateBookSchema = z.object({
         .string()
         .min(1, 'Author name is required')
         .regex(/^[^<>]*$/, 'Author name must not contain any opening or closing HTML tags'),
+      authorProfileId: z.uuid().optional(),
       translator: z
         .string()
         .regex(/^[^<>]*$/, 'Translator name must not contain any opening or closing HTML tags')
@@ -196,10 +197,16 @@ export const CreateBookCategorySchema = z.object({
 });
 
 export const CreateBookAuthorSchema = z.object({
-  body: z.object({
-    name: z.string().trim().min(2).max(120).regex(/^[^<>]*$/),
-    bio: z.string().trim().max(3000).regex(/^[^<>]*$/).optional(),
-    photoUrl: z.url().optional().or(z.literal('')),
-    websiteUrl: z.url().optional().or(z.literal('')),
-  }),
+  body: z
+    .object({
+      name: z.string().trim().min(2).max(120).regex(/^[^<>]*$/).optional(),
+      instructorProfileId: z.uuid().optional(),
+      bio: z.string().trim().max(3000).regex(/^[^<>]*$/).optional(),
+      photoUrl: z.url().optional().or(z.literal('')),
+      websiteUrl: z.url().optional().or(z.literal('')),
+    })
+    .refine(data => Boolean(data.name || data.instructorProfileId), {
+      message: 'Provide an author name or select an instructor.',
+      path: ['name'],
+    }),
 });

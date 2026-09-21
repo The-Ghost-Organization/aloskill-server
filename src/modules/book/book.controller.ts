@@ -82,6 +82,22 @@ const createBookCategory = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Book category created successfully!', result);
 });
 
+
+const getBookAuthors = catchAsync(async (_req, res): Promise<void> => {
+  const result = await bookService.getBookAuthors();
+  ResponseHandler.ok(res, 'Book authors retrieved successfully!', result);
+});
+
+const getAuthorCandidates = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getAuthorCandidates(req);
+  ResponseHandler.ok(res, 'Instructor author candidates retrieved successfully!', result);
+});
+
+const getPublicAuthorProfile = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getPublicAuthorProfile(req);
+  ResponseHandler.ok(res, 'Author profile retrieved successfully!', result);
+});
+
 const createBookAuthor = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.createBookAuthor(req);
   ResponseHandler.ok(res, 'Book author created successfully!', result);
@@ -111,6 +127,9 @@ export const bookController = {
   deleteBook,
   createBookCategory,
   createBookAuthor,
+  getBookAuthors,
+  getAuthorCandidates,
+  getPublicAuthorProfile,
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,

@@ -35,6 +35,8 @@ const excelUpload = multer({
 router.use(generalLimiter);
 
 router.get('/categories', bookController.getBooksCategories);
+router.get('/authors', bookController.getBookAuthors);
+router.get('/public/authors/:slug', bookController.getPublicAuthorProfile);
 
 router.get('/public/all-books', bookController.getAllBooksForPublicView);
 
@@ -102,6 +104,8 @@ router.post(
   validate(CreateBookCategorySchema),
   bookController.createBookCategory
 );
+
+router.get('/admin/author-candidates', requireAdmin, bookController.getAuthorCandidates);
 
 router.post(
   '/admin/authors',

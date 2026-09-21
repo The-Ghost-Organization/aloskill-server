@@ -53,6 +53,104 @@ const toSlug = (value: string) =>
     .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
     .replace(/^-+|-+$/g, '');
 
+
+const uniqueAuthorSlug = async (tx: TransactionClient, name: string, excludeId?: string) => {
+  const base = toSlug(name) || 'author';
+  let slug = base;
+  let suffix = 2;
+
+  while (
+    await tx.bookAuthor.findFirst({
+      where: {
+        slug,
+        ...(excludeId ? { id: { not: excludeId } } : {}),
+      },
+      select: { id: true },
+    })
+  ) {
+    slug = `${base}-${suffix++}`;
+  }
+
+  return slug;
+};
+
+const ensureInstructorAuthorProfile = async (
+  tx: TransactionClient,
+  owner: Awaited<ReturnType<typeof getAuthorizedOwner>>
+) => {
+  const instructor = await tx.instructorProfile.findUnique({
+    where: { userId: owner.id },
+    select: {
+      id: true,
+      displayName: true,
+      bio: true,
+      website: true,
+      deletedAt: true,
+      user: { select: { avatarUrl: true } },
+    },
+  });
+
+  if (!instructor || instructor.deletedAt) {
+    throw new Error('Instructor profile not found.');
+  }
+
+  const existing = await tx.bookAuthor.findUnique({
+    where: { instructorProfileId: instructor.id },
+  });
+  if (existing) {
+    return existing;
+  }
+
+  const slug = await uniqueAuthorSlug(tx, instructor.displayName);
+  return await tx.bookAuthor.create({
+    data: {
+      instructorProfileId: instructor.id,
+      name: instructor.displayName,
+      slug,
+      bio: instructor.bio,
+      websiteUrl: instructor.website,
+      photoUrl: instructor.user.avatarUrl,
+      isActive: true,
+    },
+  });
+};
+
+const resolveBookAuthor = async (
+  tx: TransactionClient,
+  owner: Awaited<ReturnType<typeof getAuthorizedOwner>>,
+  data: CreateBookInput
+) => {
+  const isInstructor = owner.assignedRole.some(role => role.role === 'INSTRUCTOR');
+
+  if (isInstructor) {
+    const author = await ensureInstructorAuthorProfile(tx, owner);
+    return { authorName: author.name, authorProfileId: author.id };
+  }
+
+  if (data.authorProfileId) {
+    const author = await tx.bookAuthor.findFirst({
+      where: { id: data.authorProfileId, deletedAt: null, isActive: true },
+    });
+    if (!author) {
+      throw new Error('Selected author profile was not found.');
+    }
+    return { authorName: author.name, authorProfileId: author.id };
+  }
+
+  const existingAuthor = await tx.bookAuthor.findFirst({
+    where: {
+      name: { equals: data.author.trim(), mode: 'insensitive' },
+      deletedAt: null,
+      isActive: true,
+    },
+  });
+
+  return {
+    authorName: existingAuthor?.name ?? data.author.trim(),
+    authorProfileId: existingAuthor?.id ?? null,
+  };
+};
+
 const createBook = async (
   tx: TransactionClient,
   owner: Awaited<ReturnType<typeof getAuthorizedOwner>>,
@@ -63,10 +161,13 @@ const createBook = async (
     throw new Error(`Invalid category: ${data.category}.`);
   }
 
+  const resolvedAuthor = await resolveBookAuthor(tx, owner, data);
+
   const newBook = await tx.book.create({
     data: {
       title: data.title,
-      author: data.author,
+      author: resolvedAuthor.authorName,
+      authorProfileId: resolvedAuthor.authorProfileId,
       publisher: data.publisher,
       publishYear: Number(data.publishYear),
       ratings: new Decimal(data.ratings),
@@ -489,11 +590,13 @@ const updateBook = async (req: Request) => {
       if (!isAdmin && existingBook.ownerId !== owner.id) {
         throw new Error('Forbidden: You can only update books that you uploaded.');
       }
+      const resolvedAuthor = await resolveBookAuthor(tx, owner, data);
       const updated = await tx.book.update({
         where: { id: bookId },
         data: {
           title: data.title,
-          author: data.author,
+          author: resolvedAuthor.authorName,
+          authorProfileId: resolvedAuthor.authorProfileId,
           publisher: data.publisher,
           publishYear: Number(data.publishYear),
           ratings: new Decimal(data.ratings),
@@ -581,6 +684,7 @@ const getPublishedBooksByInstructor = async (req: Request) => {
         id: true,
         title: true,
         author: true,
+        authorProfile: { select: { id: true, name: true, slug: true } },
         coverImage: true,
         physicalRegularPrice: true,
         physicalSalePrice: true,
@@ -607,6 +711,7 @@ const getAllBooksForPublicView = async () => {
         id: true,
         title: true,
         author: true,
+        authorProfile: { select: { id: true, name: true, slug: true } },
         coverImage: true,
         physicalRegularPrice: true,
         physicalSalePrice: true,
@@ -643,6 +748,16 @@ const getBookDetailsForPublicView = async (req: Request) => {
         id: true,
         title: true,
         author: true,
+        authorProfile: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            photoUrl: true,
+            bio: true,
+            instructorProfileId: true,
+          },
+        },
         publisher: true,
         translator: true,
         editor: true,
@@ -1213,26 +1328,133 @@ const createBookCategory = async (req: Request) => {
   );
 };
 
+const getBookAuthors = async () => {
+  return await executeDbOperation(async prisma => {
+    return await prisma.bookAuthor.findMany({
+      where: { deletedAt: null, isActive: true },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        photoUrl: true,
+        instructorProfileId: true,
+      },
+      orderBy: { name: 'asc' },
+    });
+  }, 'Get Book Authors');
+};
+
+const getAuthorCandidates = async (req: Request) => {
+  return await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      await getAuthorizedAdmin(tx, req.user.email);
+      return await tx.instructorProfile.findMany({
+        where: {
+          deletedAt: null,
+          status: ApplicationStatus.APPROVED,
+          authorProfile: null,
+        },
+        select: {
+          id: true,
+          userId: true,
+          displayName: true,
+          bio: true,
+          website: true,
+          user: { select: { avatarUrl: true } },
+        },
+        orderBy: { displayName: 'asc' },
+      });
+    });
+  }, 'Get Instructor Author Candidates');
+};
+
 const createBookAuthor = async (req: Request) => {
-  const { name, bio, photoUrl, websiteUrl } = req.body as {
-    name: string;
+  const { name, instructorProfileId, bio, photoUrl, websiteUrl } = req.body as {
+    name?: string;
+    instructorProfileId?: string;
     bio?: string;
     photoUrl?: string;
     websiteUrl?: string;
   };
+
   return await executeDbOperation(
     prisma =>
       prisma.$transaction(async tx => {
         const admin = await getAuthorizedAdmin(tx, req.user.email);
+
+        let authorName = name?.trim();
+        let resolvedBio = bio;
+        let resolvedPhotoUrl = photoUrl;
+        let resolvedWebsiteUrl = websiteUrl;
+
+        if (instructorProfileId) {
+          const instructor = await tx.instructorProfile.findFirst({
+            where: {
+              id: instructorProfileId,
+              status: ApplicationStatus.APPROVED,
+              deletedAt: null,
+            },
+            select: {
+              id: true,
+              displayName: true,
+              bio: true,
+              website: true,
+              user: { select: { avatarUrl: true } },
+              authorProfile: { select: { id: true } },
+            },
+          });
+
+          if (!instructor) {
+            throw new Error('Instructor profile not found or is not approved.');
+          }
+          if (instructor.authorProfile) {
+            throw new Error('This instructor already has an author profile.');
+          }
+
+          authorName = instructor.displayName;
+          resolvedBio = bio || instructor.bio;
+          resolvedPhotoUrl = photoUrl || instructor.user.avatarUrl || undefined;
+          resolvedWebsiteUrl = websiteUrl || instructor.website || undefined;
+        }
+
+        if (!authorName) {
+          throw new Error('Author name is required.');
+        }
+
+        const slug = await uniqueAuthorSlug(tx, authorName);
         const author = await tx.bookAuthor.create({
           data: {
-            name: name.trim(),
-            slug: toSlug(name),
-            bio,
-            photoUrl,
-            websiteUrl,
+            name: authorName,
+            slug,
+            instructorProfileId: instructorProfileId ?? null,
+            bio: resolvedBio || null,
+            photoUrl: resolvedPhotoUrl || null,
+            websiteUrl: resolvedWebsiteUrl || null,
           },
         });
+
+        // Legacy instructor books only stored the name string. When an instructor is
+        // explicitly linked as an author, attach their existing uploaded books too.
+        if (instructorProfileId) {
+          const instructor = await tx.instructorProfile.findUnique({
+            where: { id: instructorProfileId },
+            select: { userId: true },
+          });
+          if (instructor) {
+            await tx.book.updateMany({
+              where: {
+                ownerId: instructor.userId,
+                authorProfileId: null,
+                deletedAt: null,
+              },
+              data: {
+                authorProfileId: author.id,
+                author: author.name,
+              },
+            });
+          }
+        }
+
         await tx.auditLog.create({
           data: {
             userId: admin.id,
@@ -1248,6 +1470,91 @@ const createBookAuthor = async (req: Request) => {
       }),
     'Create Book Author'
   );
+};
+
+const getPublicAuthorProfile = async (req: Request) => {
+  const slug = req.params.slug as string;
+  if (!slug) {
+    throw new Error('Author slug is required.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const author = await prisma.bookAuthor.findFirst({
+      where: { slug, deletedAt: null, isActive: true },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        bio: true,
+        photoUrl: true,
+        websiteUrl: true,
+        instructorProfileId: true,
+        books: {
+          where: { status: BookStatus.APPROVED, deletedAt: null },
+          select: {
+            id: true,
+            title: true,
+            author: true,
+            coverImage: true,
+            physicalRegularPrice: true,
+            physicalSalePrice: true,
+            digitalRegularPrice: true,
+            digitalSalePrice: true,
+            formats: true,
+            stock: true,
+            publisher: true,
+            category: { select: { name: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+        instructorProfile: {
+          select: {
+            userId: true,
+            displayName: true,
+            expertise: true,
+            bio: true,
+            website: true,
+            user: { select: { avatarUrl: true } },
+            ownedCourses: {
+              where: { status: 'PUBLISHED', deletedAt: null },
+              select: {
+                id: true,
+                title: true,
+                slug: true,
+                thumbnailUrl: true,
+                originalPrice: true,
+                discountPrice: true,
+                ratingAverage: true,
+                enrollmentCount: true,
+                category: { select: { name: true } },
+              },
+              orderBy: { createdAt: 'desc' },
+            },
+          },
+        },
+      },
+    });
+
+    if (!author) {
+      return null;
+    }
+
+    return {
+      ...author,
+      photoUrl: author.photoUrl ?? author.instructorProfile?.user.avatarUrl ?? null,
+      bio: author.bio ?? author.instructorProfile?.bio ?? null,
+      websiteUrl: author.websiteUrl ?? author.instructorProfile?.website ?? null,
+      instructor: author.instructorProfile
+        ? {
+            userId: author.instructorProfile.userId,
+            displayName: author.instructorProfile.displayName,
+            expertise: author.instructorProfile.expertise,
+          }
+        : null,
+      courses: author.instructorProfile?.ownedCourses ?? [],
+      instructorProfile: undefined,
+    };
+  }, 'Get Public Author Profile');
 };
 
 // Instructor Dashboard. Every query is scoped to the authenticated owner.
@@ -1361,6 +1668,9 @@ export const bookService = {
   deleteBook,
   createBookCategory,
   createBookAuthor,
+  getBookAuthors,
+  getAuthorCandidates,
+  getPublicAuthorProfile,
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
   getAllBooksDataforUser,

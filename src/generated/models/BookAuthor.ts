@@ -26,6 +26,7 @@ export type AggregateBookAuthor = {
 
 export type BookAuthorMinAggregateOutputType = {
   id: string | null
+  instructorProfileId: string | null
   name: string | null
   slug: string | null
   bio: string | null
@@ -39,6 +40,7 @@ export type BookAuthorMinAggregateOutputType = {
 
 export type BookAuthorMaxAggregateOutputType = {
   id: string | null
+  instructorProfileId: string | null
   name: string | null
   slug: string | null
   bio: string | null
@@ -52,6 +54,7 @@ export type BookAuthorMaxAggregateOutputType = {
 
 export type BookAuthorCountAggregateOutputType = {
   id: number
+  instructorProfileId: number
   name: number
   slug: number
   bio: number
@@ -67,6 +70,7 @@ export type BookAuthorCountAggregateOutputType = {
 
 export type BookAuthorMinAggregateInputType = {
   id?: true
+  instructorProfileId?: true
   name?: true
   slug?: true
   bio?: true
@@ -80,6 +84,7 @@ export type BookAuthorMinAggregateInputType = {
 
 export type BookAuthorMaxAggregateInputType = {
   id?: true
+  instructorProfileId?: true
   name?: true
   slug?: true
   bio?: true
@@ -93,6 +98,7 @@ export type BookAuthorMaxAggregateInputType = {
 
 export type BookAuthorCountAggregateInputType = {
   id?: true
+  instructorProfileId?: true
   name?: true
   slug?: true
   bio?: true
@@ -179,6 +185,7 @@ export type BookAuthorGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type BookAuthorGroupByOutputType = {
   id: string
+  instructorProfileId: string | null
   name: string
   slug: string
   bio: string | null
@@ -213,6 +220,7 @@ export type BookAuthorWhereInput = {
   OR?: Prisma.BookAuthorWhereInput[]
   NOT?: Prisma.BookAuthorWhereInput | Prisma.BookAuthorWhereInput[]
   id?: Prisma.StringFilter<"BookAuthor"> | string
+  instructorProfileId?: Prisma.StringNullableFilter<"BookAuthor"> | string | null
   name?: Prisma.StringFilter<"BookAuthor"> | string
   slug?: Prisma.StringFilter<"BookAuthor"> | string
   bio?: Prisma.StringNullableFilter<"BookAuthor"> | string | null
@@ -222,11 +230,13 @@ export type BookAuthorWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"BookAuthor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BookAuthor"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"BookAuthor"> | Date | string | null
+  instructorProfile?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
   books?: Prisma.BookListRelationFilter
 }
 
 export type BookAuthorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  instructorProfileId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -236,11 +246,13 @@ export type BookAuthorOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  instructorProfile?: Prisma.InstructorProfileOrderByWithRelationInput
   books?: Prisma.BookOrderByRelationAggregateInput
 }
 
 export type BookAuthorWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  instructorProfileId?: string
   slug?: string
   AND?: Prisma.BookAuthorWhereInput | Prisma.BookAuthorWhereInput[]
   OR?: Prisma.BookAuthorWhereInput[]
@@ -253,11 +265,13 @@ export type BookAuthorWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"BookAuthor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BookAuthor"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"BookAuthor"> | Date | string | null
+  instructorProfile?: Prisma.XOR<Prisma.InstructorProfileNullableScalarRelationFilter, Prisma.InstructorProfileWhereInput> | null
   books?: Prisma.BookListRelationFilter
-}, "id" | "slug">
+}, "id" | "instructorProfileId" | "slug">
 
 export type BookAuthorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  instructorProfileId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -277,6 +291,7 @@ export type BookAuthorScalarWhereWithAggregatesInput = {
   OR?: Prisma.BookAuthorScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BookAuthorScalarWhereWithAggregatesInput | Prisma.BookAuthorScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"BookAuthor"> | string
+  instructorProfileId?: Prisma.StringNullableWithAggregatesFilter<"BookAuthor"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"BookAuthor"> | string
   slug?: Prisma.StringWithAggregatesFilter<"BookAuthor"> | string
   bio?: Prisma.StringNullableWithAggregatesFilter<"BookAuthor"> | string | null
@@ -299,11 +314,13 @@ export type BookAuthorCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutAuthorProfileInput
   books?: Prisma.BookCreateNestedManyWithoutAuthorProfileInput
 }
 
 export type BookAuthorUncheckedCreateInput = {
   id?: string
+  instructorProfileId?: string | null
   name: string
   slug: string
   bio?: string | null
@@ -327,11 +344,13 @@ export type BookAuthorUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutAuthorProfileNestedInput
   books?: Prisma.BookUpdateManyWithoutAuthorProfileNestedInput
 }
 
 export type BookAuthorUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -346,6 +365,7 @@ export type BookAuthorUncheckedUpdateInput = {
 
 export type BookAuthorCreateManyInput = {
   id?: string
+  instructorProfileId?: string | null
   name: string
   slug: string
   bio?: string | null
@@ -372,6 +392,7 @@ export type BookAuthorUpdateManyMutationInput = {
 
 export type BookAuthorUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -390,6 +411,7 @@ export type BookAuthorNullableScalarRelationFilter = {
 
 export type BookAuthorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  instructorProfileId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   bio?: Prisma.SortOrder
@@ -403,6 +425,7 @@ export type BookAuthorCountOrderByAggregateInput = {
 
 export type BookAuthorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  instructorProfileId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   bio?: Prisma.SortOrder
@@ -416,6 +439,7 @@ export type BookAuthorMaxOrderByAggregateInput = {
 
 export type BookAuthorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  instructorProfileId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   bio?: Prisma.SortOrder
@@ -425,6 +449,38 @@ export type BookAuthorMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+}
+
+export type BookAuthorCreateNestedOneWithoutInstructorProfileInput = {
+  create?: Prisma.XOR<Prisma.BookAuthorCreateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedCreateWithoutInstructorProfileInput>
+  connectOrCreate?: Prisma.BookAuthorCreateOrConnectWithoutInstructorProfileInput
+  connect?: Prisma.BookAuthorWhereUniqueInput
+}
+
+export type BookAuthorUncheckedCreateNestedOneWithoutInstructorProfileInput = {
+  create?: Prisma.XOR<Prisma.BookAuthorCreateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedCreateWithoutInstructorProfileInput>
+  connectOrCreate?: Prisma.BookAuthorCreateOrConnectWithoutInstructorProfileInput
+  connect?: Prisma.BookAuthorWhereUniqueInput
+}
+
+export type BookAuthorUpdateOneWithoutInstructorProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.BookAuthorCreateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedCreateWithoutInstructorProfileInput>
+  connectOrCreate?: Prisma.BookAuthorCreateOrConnectWithoutInstructorProfileInput
+  upsert?: Prisma.BookAuthorUpsertWithoutInstructorProfileInput
+  disconnect?: Prisma.BookAuthorWhereInput | boolean
+  delete?: Prisma.BookAuthorWhereInput | boolean
+  connect?: Prisma.BookAuthorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookAuthorUpdateToOneWithWhereWithoutInstructorProfileInput, Prisma.BookAuthorUpdateWithoutInstructorProfileInput>, Prisma.BookAuthorUncheckedUpdateWithoutInstructorProfileInput>
+}
+
+export type BookAuthorUncheckedUpdateOneWithoutInstructorProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.BookAuthorCreateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedCreateWithoutInstructorProfileInput>
+  connectOrCreate?: Prisma.BookAuthorCreateOrConnectWithoutInstructorProfileInput
+  upsert?: Prisma.BookAuthorUpsertWithoutInstructorProfileInput
+  disconnect?: Prisma.BookAuthorWhereInput | boolean
+  delete?: Prisma.BookAuthorWhereInput | boolean
+  connect?: Prisma.BookAuthorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookAuthorUpdateToOneWithWhereWithoutInstructorProfileInput, Prisma.BookAuthorUpdateWithoutInstructorProfileInput>, Prisma.BookAuthorUncheckedUpdateWithoutInstructorProfileInput>
 }
 
 export type BookAuthorCreateNestedOneWithoutBooksInput = {
@@ -443,6 +499,78 @@ export type BookAuthorUpdateOneWithoutBooksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BookAuthorUpdateToOneWithWhereWithoutBooksInput, Prisma.BookAuthorUpdateWithoutBooksInput>, Prisma.BookAuthorUncheckedUpdateWithoutBooksInput>
 }
 
+export type BookAuthorCreateWithoutInstructorProfileInput = {
+  id?: string
+  name: string
+  slug: string
+  bio?: string | null
+  photoUrl?: string | null
+  websiteUrl?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  books?: Prisma.BookCreateNestedManyWithoutAuthorProfileInput
+}
+
+export type BookAuthorUncheckedCreateWithoutInstructorProfileInput = {
+  id?: string
+  name: string
+  slug: string
+  bio?: string | null
+  photoUrl?: string | null
+  websiteUrl?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutAuthorProfileInput
+}
+
+export type BookAuthorCreateOrConnectWithoutInstructorProfileInput = {
+  where: Prisma.BookAuthorWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookAuthorCreateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedCreateWithoutInstructorProfileInput>
+}
+
+export type BookAuthorUpsertWithoutInstructorProfileInput = {
+  update: Prisma.XOR<Prisma.BookAuthorUpdateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedUpdateWithoutInstructorProfileInput>
+  create: Prisma.XOR<Prisma.BookAuthorCreateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedCreateWithoutInstructorProfileInput>
+  where?: Prisma.BookAuthorWhereInput
+}
+
+export type BookAuthorUpdateToOneWithWhereWithoutInstructorProfileInput = {
+  where?: Prisma.BookAuthorWhereInput
+  data: Prisma.XOR<Prisma.BookAuthorUpdateWithoutInstructorProfileInput, Prisma.BookAuthorUncheckedUpdateWithoutInstructorProfileInput>
+}
+
+export type BookAuthorUpdateWithoutInstructorProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  websiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  books?: Prisma.BookUpdateManyWithoutAuthorProfileNestedInput
+}
+
+export type BookAuthorUncheckedUpdateWithoutInstructorProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  websiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  books?: Prisma.BookUncheckedUpdateManyWithoutAuthorProfileNestedInput
+}
+
 export type BookAuthorCreateWithoutBooksInput = {
   id?: string
   name: string
@@ -454,10 +582,12 @@ export type BookAuthorCreateWithoutBooksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  instructorProfile?: Prisma.InstructorProfileCreateNestedOneWithoutAuthorProfileInput
 }
 
 export type BookAuthorUncheckedCreateWithoutBooksInput = {
   id?: string
+  instructorProfileId?: string | null
   name: string
   slug: string
   bio?: string | null
@@ -496,10 +626,12 @@ export type BookAuthorUpdateWithoutBooksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  instructorProfile?: Prisma.InstructorProfileUpdateOneWithoutAuthorProfileNestedInput
 }
 
 export type BookAuthorUncheckedUpdateWithoutBooksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorProfileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -544,6 +676,7 @@ export type BookAuthorCountOutputTypeCountBooksArgs<ExtArgs extends runtime.Type
 
 export type BookAuthorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  instructorProfileId?: boolean
   name?: boolean
   slug?: boolean
   bio?: boolean
@@ -553,12 +686,14 @@ export type BookAuthorSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  instructorProfile?: boolean | Prisma.BookAuthor$instructorProfileArgs<ExtArgs>
   books?: boolean | Prisma.BookAuthor$booksArgs<ExtArgs>
   _count?: boolean | Prisma.BookAuthorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bookAuthor"]>
 
 export type BookAuthorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  instructorProfileId?: boolean
   name?: boolean
   slug?: boolean
   bio?: boolean
@@ -568,10 +703,12 @@ export type BookAuthorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  instructorProfile?: boolean | Prisma.BookAuthor$instructorProfileArgs<ExtArgs>
 }, ExtArgs["result"]["bookAuthor"]>
 
 export type BookAuthorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  instructorProfileId?: boolean
   name?: boolean
   slug?: boolean
   bio?: boolean
@@ -581,10 +718,12 @@ export type BookAuthorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  instructorProfile?: boolean | Prisma.BookAuthor$instructorProfileArgs<ExtArgs>
 }, ExtArgs["result"]["bookAuthor"]>
 
 export type BookAuthorSelectScalar = {
   id?: boolean
+  instructorProfileId?: boolean
   name?: boolean
   slug?: boolean
   bio?: boolean
@@ -596,21 +735,28 @@ export type BookAuthorSelectScalar = {
   deletedAt?: boolean
 }
 
-export type BookAuthorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "bio" | "photoUrl" | "websiteUrl" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["bookAuthor"]>
+export type BookAuthorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "instructorProfileId" | "name" | "slug" | "bio" | "photoUrl" | "websiteUrl" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["bookAuthor"]>
 export type BookAuthorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  instructorProfile?: boolean | Prisma.BookAuthor$instructorProfileArgs<ExtArgs>
   books?: boolean | Prisma.BookAuthor$booksArgs<ExtArgs>
   _count?: boolean | Prisma.BookAuthorCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type BookAuthorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type BookAuthorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type BookAuthorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  instructorProfile?: boolean | Prisma.BookAuthor$instructorProfileArgs<ExtArgs>
+}
+export type BookAuthorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  instructorProfile?: boolean | Prisma.BookAuthor$instructorProfileArgs<ExtArgs>
+}
 
 export type $BookAuthorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "BookAuthor"
   objects: {
+    instructorProfile: Prisma.$InstructorProfilePayload<ExtArgs> | null
     books: Prisma.$BookPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    instructorProfileId: string | null
     name: string
     slug: string
     bio: string | null
@@ -1014,6 +1160,7 @@ readonly fields: BookAuthorFieldRefs;
  */
 export interface Prisma__BookAuthorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  instructorProfile<T extends Prisma.BookAuthor$instructorProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BookAuthor$instructorProfileArgs<ExtArgs>>): Prisma.Prisma__InstructorProfileClient<runtime.Types.Result.GetResult<Prisma.$InstructorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   books<T extends Prisma.BookAuthor$booksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BookAuthor$booksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1045,6 +1192,7 @@ export interface Prisma__BookAuthorClient<T, Null = never, ExtArgs extends runti
  */
 export interface BookAuthorFieldRefs {
   readonly id: Prisma.FieldRef<"BookAuthor", 'String'>
+  readonly instructorProfileId: Prisma.FieldRef<"BookAuthor", 'String'>
   readonly name: Prisma.FieldRef<"BookAuthor", 'String'>
   readonly slug: Prisma.FieldRef<"BookAuthor", 'String'>
   readonly bio: Prisma.FieldRef<"BookAuthor", 'String'>
@@ -1303,6 +1451,10 @@ export type BookAuthorCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    */
   data: Prisma.BookAuthorCreateManyInput | Prisma.BookAuthorCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookAuthorIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1373,6 +1525,10 @@ export type BookAuthorUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * Limit how many BookAuthors to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookAuthorIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1439,6 +1595,25 @@ export type BookAuthorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many BookAuthors to delete.
    */
   limit?: number
+}
+
+/**
+ * BookAuthor.instructorProfile
+ */
+export type BookAuthor$instructorProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InstructorProfile
+   */
+  select?: Prisma.InstructorProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InstructorProfile
+   */
+  omit?: Prisma.InstructorProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InstructorProfileInclude<ExtArgs> | null
+  where?: Prisma.InstructorProfileWhereInput
 }
 
 /**

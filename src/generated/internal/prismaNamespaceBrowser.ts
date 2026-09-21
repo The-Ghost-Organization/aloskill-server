@@ -530,6 +530,7 @@ export type BookScalarFieldEnum = (typeof BookScalarFieldEnum)[keyof typeof Book
 
 export const BookAuthorScalarFieldEnum = {
   id: 'id',
+  instructorProfileId: 'instructorProfileId',
   name: 'name',
   slug: 'slug',
   bio: 'bio',
