@@ -6,6 +6,7 @@ import { validate } from '../../middleware/validation.js';
 import { bookController } from './book.controller.js';
 import {
   CreateBookAuthorSchema,
+  UpdateBookAuthorSchema,
   CreateBookCategorySchema,
   CreateBookSchema,
   DeleteBookSchema,
@@ -105,6 +106,9 @@ router.post(
   bookController.createBookCategory
 );
 
+router.get('/admin/authors', requireAdmin, bookController.getAdminBookAuthors);
+router.get('/admin/authors/:authorId', requireAdmin, bookController.getAdminBookAuthorDetails);
+router.patch('/admin/authors/:authorId', requireAdmin, validate(UpdateBookAuthorSchema), bookController.updateBookAuthor);
 router.get('/admin/author-candidates', requireAdmin, bookController.getAuthorCandidates);
 
 router.post(

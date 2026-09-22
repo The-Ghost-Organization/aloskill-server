@@ -205,8 +205,18 @@ export const CreateBookAuthorSchema = z.object({
       photoUrl: z.url().optional().or(z.literal('')),
       websiteUrl: z.url().optional().or(z.literal('')),
     })
-    .refine(data => Boolean(data.name || data.instructorProfileId), {
+    .refine(data => Boolean(data.name ?? data.instructorProfileId), {
       message: 'Provide an author name or select an instructor.',
       path: ['name'],
     }),
+});
+
+export const UpdateBookAuthorSchema = z.object({
+  body: z.object({
+    name: z.string().trim().min(2).max(120).regex(/^[^<>]*$/).optional(),
+    bio: z.string().trim().max(3000).regex(/^[^<>]*$/).nullable().optional(),
+    photoUrl: z.url().nullable().optional(),
+    websiteUrl: z.url().nullable().optional(),
+    isActive: z.boolean().optional(),
+  }).refine(data => Object.keys(data).length > 0, 'At least one change is required.'),
 });

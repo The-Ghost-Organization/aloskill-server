@@ -1048,6 +1048,7 @@ const getAllBooksDataforAdmin = async (req: Request) => {
           title: true,
           author: true,
           totalEarning: true,
+          purchaseCost: true,
           formats: true,
           physicalRegularPrice: true,
           physicalSalePrice: true,
@@ -1070,12 +1071,62 @@ const getAllBooksDataforAdmin = async (req: Request) => {
               id: true,
               price: true,
               quantity: true,
+              order: { select: { createdAt: true } },
             },
           },
           _count: { select: { reviews: true, wishlistedBy: true } },
         },
         orderBy: { updatedAt: 'desc' },
       });
+      bookBreakdown.sort((a, b) => {
+        const count = (book: typeof a) =>
+          book.orderItem.reduce((sum, item) => sum + item.quantity, 0);
+        return count(b) - count(a) || b.updatedAt.getTime() - a.updatedAt.getTime();
+      });
+      // Count paid orders by order creation date; the schema has no paidAt field.
+      // Calendar weeks begin Monday in Bangladesh (UTC+06:00).
+      const now = new Date();
+      const offset = 6 * 60 * 60 * 1000;
+      const local = new Date(now.getTime() + offset);
+      const weekday = (local.getUTCDay() + 6) % 7;
+      const weekStart =
+        Date.UTC(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate() - weekday) -
+        offset;
+      const previousStart = weekStart - 7 * 86400000;
+      const emptyWeek = () => ({
+        units: 0,
+        sales: 0,
+        revenue: 0,
+        dailyUnits: Array<number>(7).fill(0),
+        dailySales: Array<number>(7).fill(0),
+        dailyRevenue: Array<number>(7).fill(0),
+      });
+      const thisWeek = emptyWeek();
+      const previousWeek = emptyWeek();
+      let totalProfit = 0;
+      for (const book of bookBreakdown) {
+        for (const item of book.orderItem) {
+          const sale = Number(item.price);
+          const profit = sale - Number(book.purchaseCost ?? 0) * item.quantity;
+          totalProfit += profit;
+          const time = item.order.createdAt.getTime();
+          const week = time >= weekStart ? thisWeek : time >= previousStart ? previousWeek : null;
+          if (!week || time > now.getTime()) {
+            continue;
+          }
+          const start = week === thisWeek ? weekStart : previousStart;
+          const day = Math.floor((time - start) / 86400000);
+          if (day < 0 || day > 6) {
+            continue;
+          }
+          week.units += item.quantity;
+          week.sales += sale;
+          week.revenue += profit;
+          week.dailyUnits[day] += item.quantity;
+          week.dailySales[day] += sale;
+          week.dailyRevenue[day] += profit;
+        }
+      }
       const stockData = await tx.book.aggregate({
         where: { deletedAt: null, status: { in: [BookStatus.APPROVED, BookStatus.SUSPENDED] } },
         _sum: {
@@ -1091,6 +1142,8 @@ const getAllBooksDataforAdmin = async (req: Request) => {
         totalSold: stats._sum.quantity ?? 0,
         totalStock: stockData._sum.stock ?? 0,
         totalRevenue: stats._sum.price ?? 0,
+        totalProfit,
+        salesInsights: { thisWeek, previousWeek },
         bookBreakdown,
       };
     });
@@ -1349,10 +1402,16 @@ const createBookCategory = async (req: Request) => {
   );
 };
 
-const getBookAuthors = async () => {
+const getBookAuthors = async (req: Request) => {
+  // Keep requests without a search term compatible with existing consumers.
+  const search = typeof req.query.search === 'string' ? req.query.search.trim().slice(0, 100) : '';
   return await executeDbOperation(async prisma => {
     return await prisma.bookAuthor.findMany({
-      where: { deletedAt: null, isActive: true },
+      where: {
+        deletedAt: null,
+        isActive: true,
+        ...(search ? { name: { contains: search, mode: 'insensitive' as const } } : {}),
+      },
       select: {
         id: true,
         name: true,
@@ -1361,8 +1420,182 @@ const getBookAuthors = async () => {
         instructorProfileId: true,
       },
       orderBy: { name: 'asc' },
+      ...(search ? { take: 20 } : {}),
     });
   }, 'Get Book Authors');
+};
+
+const getAdminBookAuthors = async (req: Request) => {
+  return await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      await getAuthorizedAdmin(tx, req.user.email);
+      return await tx.bookAuthor.findMany({
+        where: { deletedAt: null },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          bio: true,
+          photoUrl: true,
+          websiteUrl: true,
+          instructorProfileId: true,
+          isActive: true,
+          createdAt: true,
+          _count: { select: { books: { where: { deletedAt: null } } } },
+        },
+        orderBy: { name: 'asc' },
+      });
+    });
+  }, 'Get Admin Book Authors');
+};
+
+const getAdminBookAuthorDetails = async (req: Request) => {
+  const authorId = req.params.authorId as string;
+  return await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      await getAuthorizedAdmin(tx, req.user.email);
+      const author = await tx.bookAuthor.findFirst({
+        where: { id: authorId, deletedAt: null },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          bio: true,
+          photoUrl: true,
+          websiteUrl: true,
+          instructorProfileId: true,
+          isActive: true,
+          createdAt: true,
+          books: {
+            where: { deletedAt: null },
+            select: {
+              id: true,
+              title: true,
+              status: true,
+              coverImage: true,
+              formats: true,
+              stock: true,
+              viewCount: true,
+              orderItem: {
+                where: { order: { status: OrderStatus.PAID } },
+                select: { quantity: true, price: true },
+              },
+              reviews: {
+                where: { deletedAt: null, flagged: false },
+                select: { rating: true },
+              },
+            },
+            orderBy: { createdAt: 'desc' },
+          },
+        },
+      });
+      if (!author) {
+        throw new Error('Author profile not found.');
+      }
+
+      const books = author.books.map(book => {
+        const unitsSold = book.orderItem.reduce((sum, item) => sum + item.quantity, 0);
+        const sales = book.orderItem.reduce((sum, item) => sum + Number(item.price), 0);
+        const reviewCount = book.reviews.length;
+        const rating = reviewCount
+          ? book.reviews.reduce((sum, review) => sum + review.rating, 0) / reviewCount
+          : null;
+        return {
+          id: book.id,
+          title: book.title,
+          status: book.status,
+          coverImage: book.coverImage,
+          formats: book.formats,
+          stock: book.stock,
+          viewCount: book.viewCount,
+          unitsSold,
+          sales,
+          reviewCount,
+          rating,
+        };
+      });
+      const reviewCount = books.reduce((sum, book) => sum + book.reviewCount, 0);
+      const rating = reviewCount
+        ? books.reduce((sum, book) => sum + (book.rating ?? 0) * book.reviewCount, 0) / reviewCount
+        : null;
+      return {
+        id: author.id,
+        name: author.name,
+        slug: author.slug,
+        bio: author.bio,
+        photoUrl: author.photoUrl,
+        websiteUrl: author.websiteUrl,
+        instructorProfileId: author.instructorProfileId,
+        isActive: author.isActive,
+        createdAt: author.createdAt,
+        books,
+        stats: {
+          bookCount: books.length,
+          publishedBooks: books.filter(book => book.status === BookStatus.APPROVED).length,
+          unitsSold: books.reduce((sum, book) => sum + book.unitsSold, 0),
+          sales: books.reduce((sum, book) => sum + book.sales, 0),
+          views: books.reduce((sum, book) => sum + book.viewCount, 0),
+          reviewCount,
+          rating,
+        },
+      };
+    });
+  }, 'Get Admin Author Details');
+};
+
+const updateBookAuthor = async (req: Request) => {
+  const authorId = req.params.authorId as string;
+  const input = req.body as {
+    name?: string;
+    bio?: string | null;
+    photoUrl?: string | null;
+    websiteUrl?: string | null;
+    isActive?: boolean;
+  };
+  return await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      const admin = await getAuthorizedAdmin(tx, req.user.email);
+      const existing = await tx.bookAuthor.findFirst({
+        where: { id: authorId, deletedAt: null },
+      });
+      if (!existing) {
+        throw new Error('Author profile not found.');
+      }
+      if (input.name && existing.instructorProfileId && input.name !== existing.name) {
+        throw new Error('An instructor author name is managed by their instructor profile.');
+      }
+      const author = await tx.bookAuthor.update({
+        where: { id: authorId },
+        data: {
+          ...(input.name !== undefined ? { name: input.name.trim() } : {}),
+          ...(input.bio !== undefined ? { bio: input.bio } : {}),
+          ...(input.photoUrl !== undefined ? { photoUrl: input.photoUrl } : {}),
+          ...(input.websiteUrl !== undefined ? { websiteUrl: input.websiteUrl } : {}),
+          ...(input.isActive !== undefined ? { isActive: input.isActive } : {}),
+        },
+      });
+      // Book rows also store the author as text for legacy and search views.
+      if (input.name && input.name.trim() !== existing.name) {
+        await tx.book.updateMany({
+          where: { authorProfileId: authorId, deletedAt: null },
+          data: { author: author.name },
+        });
+      }
+      await tx.auditLog.create({
+        data: {
+          userId: admin.id,
+          action: 'BOOK_AUTHOR_UPDATED',
+          entityType: 'BOOK_AUTHOR',
+          entityId: authorId,
+          changesBefore: JSON.parse(JSON.stringify(existing)),
+          changesAfter: JSON.parse(JSON.stringify(author)),
+          ipAddress: req.ip,
+          userAgent: req.get('user-agent'),
+        },
+      });
+      return author;
+    });
+  }, 'Update Book Author');
 };
 
 const getAuthorCandidates = async (req: Request) => {
@@ -1434,8 +1667,8 @@ const createBookAuthor = async (req: Request) => {
 
           authorName = instructor.displayName;
           resolvedBio = bio ?? instructor.bio;
-          resolvedPhotoUrl = photoUrl;
-          resolvedWebsiteUrl = websiteUrl;
+          resolvedPhotoUrl = photoUrl ?? instructor.user.avatarUrl ?? undefined;
+          resolvedWebsiteUrl = websiteUrl ?? instructor.website ?? undefined;
         }
 
         if (!authorName) {
@@ -1690,6 +1923,9 @@ export const bookService = {
   createBookCategory,
   createBookAuthor,
   getBookAuthors,
+  getAdminBookAuthors,
+  getAdminBookAuthorDetails,
+  updateBookAuthor,
   getAuthorCandidates,
   getPublicAuthorProfile,
   getAllBooksForPublicView,
