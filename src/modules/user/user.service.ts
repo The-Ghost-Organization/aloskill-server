@@ -2,8 +2,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
-import { ApplicationStatus, EnrollmentStatus, OrderStatus, UserStatus } from '../../generated/client.js';
-import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
+import {
+  ApplicationStatus,
+  EnrollmentStatus,
+  OrderStatus,
+  UserStatus,
+} from '../../generated/client.js';
+import { decryptPhoneNumber, encryptPhoneNumber } from '../../utils/phoneNumber.js';
 
 const getSingleUser = async (req: Request) => {
   const { email } = req.params;
@@ -278,6 +283,179 @@ const getAllInstructors = async () => {
   ];
 };
 
+const getInstructorSettings = async (req: Request) => {
+  const user = req.user;
+  if (!user?.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const result = await executeDbOperation(async prisma => {
+    return await prisma.user.findUnique({
+      where: { email: user.email, deletedAt: null },
+      select: {
+        id: true,
+        email: true,
+        avatarUrl: true,
+        instructorProfile: {
+          select: {
+            id: true,
+            displayName: true,
+            encryptedPhone: true,
+            expertise: true,
+            bio: true,
+            website: true,
+            qualifications: true,
+            currentOrg: true,
+            experience: true,
+            address: true,
+            city: true,
+            nationality: true,
+            socialAccount: {
+              select: { platform: true, url: true },
+              orderBy: { createdAt: 'asc' },
+            },
+          },
+        },
+      },
+    });
+  }, 'Get Instructor Settings');
+
+  if (!result?.instructorProfile) {
+    throw new Error('Instructor profile not found.');
+  }
+
+  return {
+    id: result.id,
+    email: result.email,
+    avatarUrl: result.avatarUrl,
+    displayName: result.instructorProfile.displayName,
+    phoneNumber: decryptPhoneNumber(result.instructorProfile.encryptedPhone),
+    expertise: result.instructorProfile.expertise,
+    bio: result.instructorProfile.bio,
+    website: result.instructorProfile.website,
+    qualifications: result.instructorProfile.qualifications,
+    currentOrg: result.instructorProfile.currentOrg,
+    experience: result.instructorProfile.experience,
+    address: result.instructorProfile.address,
+    city: result.instructorProfile.city,
+    nationality: result.instructorProfile.nationality,
+    socialAccounts: result.instructorProfile.socialAccount,
+  };
+};
+
+const updateInstructorSettings = async (req: Request) => {
+  const user = req.user;
+  if (!user?.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const data = req.body as {
+    displayName?: string;
+    phoneNumber?: string;
+    expertise?: string | null;
+    bio?: string;
+    website?: string | null;
+    avatarUrl?: string | null;
+    qualifications?: string;
+    currentOrg?: string | null;
+    experience?: number;
+    address?: string;
+    city?: string;
+    nationality?: string;
+    socialAccounts?: Array<{
+      platform: 'FACEBOOK' | 'TWITTER' | 'INSTAGRAM' | 'LINKEDIN' | 'YOUTUBE';
+      url: string;
+    }>;
+  };
+
+  const updated = await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      const existingUser = await tx.user.findUnique({
+        where: { email: user.email, deletedAt: null },
+        select: {
+          id: true,
+          instructorProfile: {
+            select: { id: true },
+          },
+        },
+      });
+
+      if (!existingUser?.instructorProfile) {
+        throw new Error('Instructor profile not found.');
+      }
+
+      const instructorId = existingUser.instructorProfile.id;
+      const normalizedPhone = data.phoneNumber?.trim();
+
+      await tx.instructorProfile.update({
+        where: { id: instructorId },
+        data: {
+          ...(data.displayName !== undefined ? { displayName: data.displayName.trim() } : {}),
+          ...(data.expertise !== undefined ? { expertise: data.expertise?.trim() } : {}),
+          ...(data.bio !== undefined ? { bio: data.bio.trim() } : {}),
+          ...(data.website !== undefined ? { website: data.website?.trim() } : {}),
+          ...(data.qualifications !== undefined
+            ? { qualifications: data.qualifications.trim() }
+            : {}),
+          ...(data.currentOrg !== undefined ? { currentOrg: data.currentOrg?.trim() } : {}),
+          ...(data.experience !== undefined ? { experience: data.experience } : {}),
+          ...(data.address !== undefined ? { address: data.address.trim() } : {}),
+          ...(data.city !== undefined ? { city: data.city.trim() } : {}),
+          ...(data.nationality !== undefined ? { nationality: data.nationality.trim() } : {}),
+          ...(normalizedPhone
+            ? {
+                encryptedPhone: encryptPhoneNumber(normalizedPhone),
+                phoneLastFour: normalizedPhone.slice(-4),
+              }
+            : {}),
+        },
+      });
+
+      if (data.avatarUrl !== undefined) {
+        await tx.user.update({
+          where: { id: existingUser.id },
+          data: { avatarUrl: data.avatarUrl },
+        });
+      }
+
+      if (data.socialAccounts !== undefined) {
+        await tx.socialLink.deleteMany({ where: { userId: instructorId } });
+        if (data.socialAccounts.length > 0) {
+          await tx.socialLink.createMany({
+            data: data.socialAccounts.map(account => ({
+              userId: instructorId,
+              platform: account.platform,
+              url: account.url,
+            })),
+          });
+        }
+      }
+
+      // Keep the linked Author Profile in sync with the instructor's public identity.
+      const authorProfile = await tx.bookAuthor.findUnique({
+        where: { instructorProfileId: instructorId },
+        select: { id: true },
+      });
+
+      if (authorProfile) {
+        await tx.bookAuthor.update({
+          where: { id: authorProfile.id },
+          data: {
+            ...(data.displayName !== undefined ? { name: data.displayName.trim() } : {}),
+            ...(data.bio !== undefined ? { bio: data.bio.trim() } : {}),
+            ...(data.website !== undefined ? { websiteUrl: data.website?.trim() } : {}),
+            ...(data.avatarUrl !== undefined ? { photoUrl: data.avatarUrl } : {}),
+          },
+        });
+      }
+
+      return existingUser.id;
+    });
+  }, 'Update Instructor Settings');
+
+  return updated;
+};
+
 // For Admin Use Only
 
 const getAllStudentsForAdmin = async () => {
@@ -287,9 +465,9 @@ const getAllStudentsForAdmin = async () => {
         deletedAt: null,
         assignedRole: {
           some: {
-            role: "STUDENT"
-          }
-        }
+            role: 'STUDENT',
+          },
+        },
       },
       select: {
         studentProfile: {
@@ -299,7 +477,7 @@ const getAllStudentsForAdmin = async () => {
           select: {
             displayName: true,
             encryptedPhone: true,
-          }
+          },
         },
         email: true,
         createdAt: true,
@@ -309,39 +487,39 @@ const getAllStudentsForAdmin = async () => {
           select: {
             enrollments: {
               where: {
-                status: EnrollmentStatus.ACTIVE
-              }
+                status: EnrollmentStatus.ACTIVE,
+              },
             },
           },
         },
         orders: {
           where: {
-            status: OrderStatus.PAID
+            status: OrderStatus.PAID,
           },
           select: {
             totalAmount: true,
             orderItems: {
               select: {
-                bookId: true
-              }
-            }
-          }
+                bookId: true,
+              },
+            },
+          },
         },
         lessonProgresses: {
           select: {
             completed: true,
-          }
+          },
         },
       },
     });
   }, 'Get all Students');
 
-  return students.map(student=> ({
+  return students.map(student => ({
     ...student,
     studentProfile: {
       ...student.studentProfile,
-      encryptedPhone: decryptPhoneNumber(student.studentProfile?.encryptedPhone as string)
-    }
+      encryptedPhone: decryptPhoneNumber(student.studentProfile?.encryptedPhone as string),
+    },
   }));
 };
 
@@ -350,5 +528,7 @@ export const userService = {
   getAllUsers,
   getAllInstructors,
   getSingleInstructor,
+  getInstructorSettings,
+  updateInstructorSettings,
   getAllStudentsForAdmin,
 };

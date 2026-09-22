@@ -8,6 +8,8 @@ import {
   ApplicationStatus,
   CourseStatus,
   EnrollmentStatus,
+  OrderStatus,
+  PaymentStatus,
   QuestionType,
   UserStatus,
 } from '../../generated/client.js';
@@ -1553,115 +1555,488 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
   return formatCourseData(getCourseDetails);
 };
 
+const getInstructorEarnings = async (req: Request) => {
+  const userId = (req as any).user?.id as string | undefined;
+  if (!userId) {
+    throw new Error('Unauthorized: Instructor user not found');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const instructor = await prisma.instructorProfile.findFirst({
+      where: {
+        userId,
+        deletedAt: null,
+        status: ApplicationStatus.APPROVED,
+      },
+      select: {
+        id: true,
+        userId: true,
+        displayName: true,
+        authorProfile: { select: { id: true } },
+      },
+    });
+
+    if (!instructor) {
+      throw new Error('Approved instructor profile not found');
+    }
+
+    const instructorContentFilter = {
+      OR: [
+        { course: { is: { createdById: instructor.id, deletedAt: null } } },
+        {
+          book: {
+            is: {
+              deletedAt: null,
+              OR: [
+                { ownerId: instructor.userId },
+                ...(instructor.authorProfile?.id
+                  ? [{ authorProfileId: instructor.authorProfile.id }]
+                  : []),
+              ],
+            },
+          },
+        },
+      ],
+    };
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5, 1);
+    sixMonthsAgo.setHours(0, 0, 0, 0);
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const [paidItems, payouts, payoutMethods] = await Promise.all([
+      prisma.orderItem.findMany({
+        where: {
+          ...instructorContentFilter,
+          order: { status: OrderStatus.PAID },
+        },
+        select: {
+          id: true,
+          price: true,
+          quantity: true,
+          createdAt: true,
+          course: { select: { id: true, title: true } },
+          book: { select: { id: true, title: true, coverImage: true } },
+          order: {
+            select: {
+              id: true,
+              currency: true,
+              createdAt: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.payout.findMany({
+        where: { instructorId: userId, deletedAt: null },
+        select: {
+          id: true,
+          amount: true,
+          fee: true,
+          currency: true,
+          payoutDate: true,
+          status: true,
+          failureReason: true,
+          rejectionReason: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+      }),
+      prisma.payoutMethod.findMany({
+        where: { instructorId: userId },
+        select: {
+          id: true,
+          type: true,
+          bankName: true,
+          mobileBankingName: true,
+          accHolderName: true,
+          accountNumber: true,
+          branchName: true,
+          routingNumber: true,
+          isDefault: true,
+          createdAt: true,
+        },
+        orderBy: [{ isDefault: 'desc' }, { createdAt: 'desc' }],
+      }),
+    ]);
+
+    const amountForItem = (item: { price: unknown; quantity: number }) =>
+      Number(item.price) * item.quantity;
+
+    const totalRevenue = paidItems.reduce((sum, item) => sum + amountForItem(item), 0);
+    const todayRevenue = paidItems
+      .filter(item => item.order.createdAt >= todayStart)
+      .reduce((sum, item) => sum + amountForItem(item), 0);
+
+    const totalWithdrawn = payouts
+      .filter(payout => payout.status === PaymentStatus.PAID)
+      .reduce((sum, payout) => sum + Number(payout.amount), 0);
+    const pendingPayout = payouts
+      .filter(payout => payout.status === PaymentStatus.PENDING)
+      .reduce((sum, payout) => sum + Number(payout.amount), 0);
+    const availableBalance = Math.max(0, totalRevenue - totalWithdrawn - pendingPayout);
+
+    const monthKeys: { key: string; label: string }[] = [];
+    for (let offset = 5; offset >= 0; offset -= 1) {
+      const date = new Date();
+      date.setMonth(date.getMonth() - offset, 1);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      monthKeys.push({
+        key,
+        label: date.toLocaleString('en-US', { month: 'short' }),
+      });
+    }
+
+    const monthlyTotals = new Map(monthKeys.map(month => [month.key, 0]));
+    for (const item of paidItems) {
+      if (item.order.createdAt < sixMonthsAgo) {
+        continue;
+      }
+      const date = item.order.createdAt;
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      if (monthlyTotals.has(key)) {
+        monthlyTotals.set(key, (monthlyTotals.get(key) ?? 0) + amountForItem(item));
+      }
+    }
+
+    const productMap = new Map<
+      string,
+      { id: string; title: string; type: 'COURSE' | 'BOOK'; sales: number; revenue: number }
+    >();
+    for (const item of paidItems) {
+      const product = item.course
+        ? { id: item.course.id, title: item.course.title, type: 'COURSE' as const }
+        : item.book
+          ? { id: item.book.id, title: item.book.title, type: 'BOOK' as const }
+          : null;
+      if (!product) {
+        continue;
+      }
+      const key = `${product.type}:${product.id}`;
+      const current = productMap.get(key) ?? { ...product, sales: 0, revenue: 0 };
+      current.sales += item.quantity;
+      current.revenue += amountForItem(item);
+      productMap.set(key, current);
+    }
+
+    const maskAccountNumber = (value: string) => {
+      const clean = value.trim();
+      if (clean.length <= 4) {
+        return clean;
+      }
+      return `${'*'.repeat(Math.max(4, clean.length - 4))}${clean.slice(-4)}`;
+    };
+
+    return {
+      currency: paidItems[0]?.order.currency ?? payouts[0]?.currency ?? 'BDT',
+      instructorName: instructor.displayName,
+      summary: {
+        totalRevenue,
+        availableBalance,
+        totalWithdrawn,
+        pendingPayout,
+        todayRevenue,
+        totalSales: paidItems.reduce((sum, item) => sum + item.quantity, 0),
+      },
+      monthlyRevenue: monthKeys.map(month => ({
+        month: month.label,
+        amount: monthlyTotals.get(month.key) ?? 0,
+      })),
+      topProducts: [...productMap.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 8),
+      recentSales: paidItems.slice(0, 10).map(item => ({
+        id: item.id,
+        orderId: item.order.id,
+        productId: item.course?.id ?? item.book?.id ?? '',
+        productTitle: item.course?.title ?? item.book?.title ?? 'Unknown item',
+        type: item.course ? ('COURSE' as const) : ('BOOK' as const),
+        amount: amountForItem(item),
+        quantity: item.quantity,
+        createdAt: item.order.createdAt,
+      })),
+      payouts: payouts.map(payout => ({
+        ...payout,
+        amount: Number(payout.amount),
+        fee: payout.fee ? Number(payout.fee) : 0,
+      })),
+      payoutMethods: payoutMethods.map(method => ({
+        ...method,
+        accountNumber: maskAccountNumber(method.accountNumber),
+      })),
+    };
+  }, 'Get Instructor Earnings');
+};
+
 const getInstructorDashboardData = async (req: Request) => {
-  const userId = req.query.userId as string;
+  const authenticatedUserId = (req as any).user?.id as string | undefined;
+  const requestedUserId = req.query.userId as string | undefined;
+  const userId = authenticatedUserId ?? requestedUserId;
+
   if (!userId) {
     throw new Error('User not Found for Dashboard Data');
   }
 
   const instructorData = await executeDbOperation(async prisma => {
-    const primaryInstructor = await prisma.instructorProfile.findUnique({
-      where: { userId },
-      select: { id: true, displayName: true, ratingAverage: true },
-    });
-
-    if (!primaryInstructor) {
-      throw new Error('Instructor profile not found');
-    }
-
-    const ownedCourses = await prisma.course.findMany({
-      where: { createdById: primaryInstructor.id },
-      select: { id: true },
-    });
-
-    const ownedCourseIds = ownedCourses.map(c => c.id);
-
-    const otherInstructors = await prisma.courseInstructor.groupBy({
-      by: ['instructorId'],
+    const primaryInstructor = await prisma.instructorProfile.findFirst({
       where: {
-        courseId: { in: ownedCourseIds },
-        instructorId: { not: primaryInstructor.id },
+        userId,
+        deletedAt: null,
+        status: ApplicationStatus.APPROVED,
+      },
+      select: {
+        id: true,
+        userId: true,
+        displayName: true,
+        ratingAverage: true,
+        user: { select: { avatarUrl: true } },
+        authorProfile: { select: { id: true } },
       },
     });
 
-    const totalOtherInstructors = otherInstructors.length;
+    if (!primaryInstructor) {
+      throw new Error('Approved instructor profile not found');
+    }
 
-    const [stats, recentActivity, reviews, courseOverview] = await Promise.all([
-      prisma.course.aggregate({
-        where: { createdById: primaryInstructor.id, deletedAt: null },
-        _count: { id: true },
-        _sum: { enrollmentCount: true },
-      }),
+    const ownedCourses = await prisma.course.findMany({
+      where: { createdById: primaryInstructor.id, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        enrollmentCount: true,
+        ratingAverage: true,
+        ratingCount: true,
+        views: true,
+        thumbnailUrl: true,
+        totalRevenueAmount: true,
+        createdAt: true,
+      },
+      orderBy: [{ enrollmentCount: 'desc' }, { createdAt: 'desc' }],
+    });
 
-      prisma.auditLog.findMany({
-        where: {
-          OR: [
-            { userId },
-            {
-              entityType: { in: ['course', 'enrollment', 'payout'] },
-              entityId: { in: ownedCourseIds },
+    const ownedCourseIds = ownedCourses.map(course => course.id);
+
+    const instructorContentFilter = {
+      OR: [
+        { course: { is: { createdById: primaryInstructor.id, deletedAt: null } } },
+        {
+          book: {
+            is: {
+              deletedAt: null,
+              OR: [
+                { ownerId: primaryInstructor.userId },
+                ...(primaryInstructor.authorProfile?.id
+                  ? [{ authorProfileId: primaryInstructor.authorProfile.id }]
+                  : []),
+              ],
             },
-          ],
+          },
         },
-        orderBy: { timestamp: 'desc' },
-        take: 10,
-        include: {
+      ],
+    };
+
+    const [
+      activeEnrollments,
+      uniqueStudents,
+      latestEnrollments,
+      reviews,
+      latestReviews,
+      paidItems,
+    ] = await Promise.all([
+      prisma.enrollment.count({
+        where: {
+          courseId: { in: ownedCourseIds },
+          status: EnrollmentStatus.ACTIVE,
+          deletedAt: null,
+        },
+      }),
+      prisma.enrollment.findMany({
+        where: {
+          courseId: { in: ownedCourseIds },
+          status: EnrollmentStatus.ACTIVE,
+          deletedAt: null,
+        },
+        distinct: ['userId'],
+        select: { userId: true },
+      }),
+      prisma.enrollment.findMany({
+        where: {
+          courseId: { in: ownedCourseIds },
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          startedAt: true,
+          course: { select: { id: true, title: true } },
           user: {
             select: {
               avatarUrl: true,
-              instructorProfile: { select: { displayName: true } },
               studentProfile: { select: { displayName: true } },
             },
           },
         },
+        orderBy: { startedAt: 'desc' },
+        take: 8,
       }),
-
       prisma.review.findMany({
-        where: { course: { createdById: primaryInstructor.id } },
-        orderBy: { createdAt: 'desc' },
-        take: 4,
-        include: {
-          user: { select: { avatarUrl: true, studentProfile: { select: { displayName: true } } } },
+        where: {
+          courseId: { in: ownedCourseIds },
+          deletedAt: null,
         },
+        select: { rating: true },
       }),
-
-      prisma.course.findMany({
-        where: { createdById: primaryInstructor.id, deletedAt: null },
-        select: {
-          title: true,
-          enrollmentCount: true,
-          ratingAverage: true,
-          status: true,
+      prisma.review.findMany({
+        where: {
+          courseId: { in: ownedCourseIds },
+          deletedAt: null,
         },
-        orderBy: { enrollmentCount: 'desc' },
-        take: 5,
+        select: {
+          id: true,
+          rating: true,
+          title: true,
+          body: true,
+          createdAt: true,
+          course: { select: { id: true, title: true } },
+          user: {
+            select: {
+              avatarUrl: true,
+              studentProfile: { select: { displayName: true } },
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 6,
+      }),
+      prisma.orderItem.findMany({
+        where: {
+          ...instructorContentFilter,
+          order: { status: OrderStatus.PAID },
+        },
+        select: {
+          id: true,
+          price: true,
+          quantity: true,
+          createdAt: true,
+          course: { select: { id: true, title: true } },
+          book: { select: { id: true, title: true } },
+          order: {
+            select: {
+              currency: true,
+              createdAt: true,
+              user: {
+                select: {
+                  avatarUrl: true,
+                  studentProfile: { select: { displayName: true } },
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
       }),
     ]);
 
-    const totalStudentsCount = await prisma.enrollment.count({
-      where: { course: { createdById: primaryInstructor.id } },
+    const amountForItem = (item: { price: unknown; quantity: number }) =>
+      Number(item.price) * item.quantity;
+
+    const totalRevenue = paidItems.reduce((sum, item) => sum + amountForItem(item), 0);
+    const totalViews = ownedCourses.reduce((sum, course) => sum + course.views, 0);
+
+    const ratingCount = reviews.length;
+    const ratingTotal = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const overallRating = ratingCount > 0 ? Number((ratingTotal / ratingCount).toFixed(1)) : 0;
+
+    const ratingDistribution = [5, 4, 3, 2, 1].map(star => {
+      const count = reviews.filter(review => review.rating === star).length;
+      return {
+        star,
+        count,
+        percentage: ratingCount > 0 ? Math.round((count / ratingCount) * 100) : 0,
+      };
     });
+
+    const courseRevenue = new Map<string, number>();
+    for (const item of paidItems) {
+      if (!item.course?.id) {
+        continue;
+      }
+      courseRevenue.set(
+        item.course.id,
+        (courseRevenue.get(item.course.id) ?? 0) + amountForItem(item)
+      );
+    }
+
+    const enrollmentActivities = latestEnrollments.map(enrollment => ({
+      id: `enrollment-${enrollment.id}`,
+      type: 'ENROLLMENT' as const,
+      title: `${enrollment.user.studentProfile?.displayName ?? 'A student'} enrolled`,
+      detail: enrollment.course.title,
+      timestamp: enrollment.startedAt,
+      avatarUrl: enrollment.user.avatarUrl,
+    }));
+
+    const reviewActivities = latestReviews.map(review => ({
+      id: `review-${review.id}`,
+      type: 'REVIEW' as const,
+      title: `${review.user.studentProfile?.displayName ?? 'A student'} left a ${review.rating}-star review`,
+      detail: review.course?.title ?? 'Course review',
+      timestamp: review.createdAt,
+      avatarUrl: review.user.avatarUrl,
+    }));
+
+    const purchaseActivities = paidItems.slice(0, 8).map(item => ({
+      id: `purchase-${item.id}`,
+      type: 'PURCHASE' as const,
+      title: `${item.order.user.studentProfile?.displayName ?? 'A customer'} made a purchase`,
+      detail: item.course?.title ?? item.book?.title ?? 'AloSkill content',
+      timestamp: item.order.createdAt,
+      avatarUrl: item.order.user.avatarUrl,
+    }));
+
+    const recentActivity = [...enrollmentActivities, ...reviewActivities, ...purchaseActivities]
+      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+      .slice(0, 10);
 
     return {
       profile: {
         name: primaryInstructor.displayName,
-        overallRating: primaryInstructor.ratingAverage,
+        avatarUrl: primaryInstructor.user.avatarUrl,
+        overallRating,
+        ratingCount,
       },
       counters: {
-        totalCourses: stats._count.id,
-        totalEnrolled: stats._sum.enrollmentCount ?? 0,
-        totalStudents: totalStudentsCount,
-        totalOtherInstructors,
+        totalCourses: ownedCourses.length,
+        totalStudents: uniqueStudents.length,
+        totalEnrolled: activeEnrollments,
+        totalRevenue,
+        totalViews,
       },
       recentActivity,
-      reviews: reviews.map(review => ({
+      reviews: latestReviews.map(review => ({
+        id: review.id,
         rating: review.rating,
+        title: review.title,
         body: review.body,
         createdAt: review.createdAt,
-        userDisplayName: review.user.studentProfile?.displayName,
+        courseId: review.course?.id,
+        courseTitle: review.course?.title,
+        userDisplayName: review.user.studentProfile?.displayName ?? 'Student',
         avatarUrl: review.user.avatarUrl,
       })),
-      courseOverview,
+      ratingDistribution,
+      courseOverview: ownedCourses.slice(0, 6).map(course => ({
+        id: course.id,
+        title: course.title,
+        status: course.status,
+        enrollmentCount: course.enrollmentCount,
+        ratingAverage: Number(course.ratingAverage ?? 0),
+        ratingCount: course.ratingCount,
+        views: course.views,
+        thumbnailUrl: course.thumbnailUrl,
+        revenue: courseRevenue.get(course.id) ?? Number(course.totalRevenueAmount ?? 0),
+      })),
     };
   }, 'Fetch Instructor Dashboard Data');
 
@@ -1923,6 +2298,7 @@ export const courseService = {
   getCategories,
   getCourseInstructors,
   getInstructorDashboardData,
+  getInstructorEarnings,
   getCourseTags,
   getBunnySignature,
   createFileToBunny,

@@ -53,7 +53,6 @@ const toSlug = (value: string) =>
     .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
     .replace(/^-+|-+$/g, '');
 
-
 const uniqueAuthorSlug = async (tx: TransactionClient, name: string, excludeId?: string) => {
   const base = toSlug(name) || 'author';
   let slug = base;
@@ -660,14 +659,20 @@ const getPublishedBooksByInstructor = async (req: Request) => {
     throw new Error('Instructor ID is required.');
   }
 
-  return await executeDbOperation(async prisma => {
+  const books = await executeDbOperation(async prisma => {
     const instructor = await prisma.instructorProfile.findFirst({
       where: {
         userId: instructorId,
         status: ApplicationStatus.APPROVED,
         deletedAt: null,
       },
-      select: { userId: true },
+      select: {
+        id: true,
+        userId: true,
+        authorProfile: {
+          select: { id: true },
+        },
+      },
     });
 
     if (!instructor) {
@@ -676,9 +681,18 @@ const getPublishedBooksByInstructor = async (req: Request) => {
 
     return await prisma.book.findMany({
       where: {
-        ownerId: instructor.userId,
         status: BookStatus.APPROVED,
         deletedAt: null,
+        OR: [
+          // Legacy / instructor-uploaded books.
+          { ownerId: instructor.userId },
+
+          // Books attached to this instructor's Author Profile, including
+          // books uploaded by an admin on behalf of the instructor.
+          ...(instructor.authorProfile?.id
+            ? [{ authorProfileId: instructor.authorProfile.id }]
+            : []),
+        ],
       },
       select: {
         id: true,
@@ -701,6 +715,13 @@ const getPublishedBooksByInstructor = async (req: Request) => {
       orderBy: { createdAt: 'desc' },
     });
   }, 'Get Published Books By Instructor');
+
+  // Keep the response shape identical to the public books endpoint so the
+  // same BookCard component can be reused in the instructor Books tab.
+  return books.map(book => ({
+    ...book,
+    stock: book.stock > 0 ? 'in-stock' : 'out-of-stock',
+  }));
 };
 
 const getAllBooksForPublicView = async () => {
@@ -1412,9 +1433,9 @@ const createBookAuthor = async (req: Request) => {
           }
 
           authorName = instructor.displayName;
-          resolvedBio = bio || instructor.bio;
-          resolvedPhotoUrl = photoUrl || instructor.user.avatarUrl || undefined;
-          resolvedWebsiteUrl = websiteUrl || instructor.website || undefined;
+          resolvedBio = bio ?? instructor.bio;
+          resolvedPhotoUrl = photoUrl;
+          resolvedWebsiteUrl = websiteUrl;
         }
 
         if (!authorName) {
@@ -1427,9 +1448,9 @@ const createBookAuthor = async (req: Request) => {
             name: authorName,
             slug,
             instructorProfileId: instructorProfileId ?? null,
-            bio: resolvedBio || null,
-            photoUrl: resolvedPhotoUrl || null,
-            websiteUrl: resolvedWebsiteUrl || null,
+            bio: resolvedBio,
+            photoUrl: resolvedPhotoUrl,
+            websiteUrl: resolvedWebsiteUrl,
           },
         });
 
