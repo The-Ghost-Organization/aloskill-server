@@ -83,9 +83,24 @@ const createBookCategory = catchAsync(async (req, res): Promise<void> => {
 });
 
 
-const getBookAuthors = catchAsync(async (_req, res): Promise<void> => {
-  const result = await bookService.getBookAuthors();
+const getBookAuthors = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getBookAuthors(req);
   ResponseHandler.ok(res, 'Book authors retrieved successfully!', result);
+});
+
+const getAdminBookAuthors = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getAdminBookAuthors(req);
+  ResponseHandler.ok(res, 'Admin authors retrieved successfully!', result);
+});
+
+const getAdminBookAuthorDetails = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getAdminBookAuthorDetails(req);
+  ResponseHandler.ok(res, 'Author details retrieved successfully!', result);
+});
+
+const updateBookAuthor = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.updateBookAuthor(req);
+  ResponseHandler.ok(res, 'Author profile updated successfully!', result);
 });
 
 const getAuthorCandidates = catchAsync(async (req, res): Promise<void> => {
@@ -128,6 +143,9 @@ export const bookController = {
   createBookCategory,
   createBookAuthor,
   getBookAuthors,
+  getAdminBookAuthors,
+  getAdminBookAuthorDetails,
+  updateBookAuthor,
   getAuthorCandidates,
   getPublicAuthorProfile,
   getAllBooksForPublicView,

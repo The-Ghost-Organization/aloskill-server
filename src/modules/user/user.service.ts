@@ -2,8 +2,12 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
-import { ApplicationStatus, EnrollmentStatus, OrderStatus, UserStatus } from '../../generated/client.js';
+import { ApplicationStatus, EnrollmentStatus, OrderStatus, UserRole, UserStatus } from '../../generated/client.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
+
+type DatabaseClient = Parameters<Parameters<typeof executeDbOperation>[0]>[0];
+type TransactionArgument = Parameters<DatabaseClient['$transaction']>[0];
+type TransactionClient = TransactionArgument extends (tx: infer T) => unknown ? T : never;
 
 const getSingleUser = async (req: Request) => {
   const { email } = req.params;
@@ -278,6 +282,173 @@ const getAllInstructors = async () => {
   ];
 };
 
+// Admin instructor management. Pending and rejected profiles are included so their
+// status can be reviewed without relying on demonstration data.
+const requireInstructorAdmin = async (tx: TransactionClient, email?: string) => {
+  if (!email) throw new Error('Unauthorized');
+  const admin = await tx.user.findUnique({
+    where: { email, deletedAt: null, status: UserStatus.ACTIVE },
+    include: { assignedRole: true },
+  });
+  if (!admin?.assignedRole.some((role: { role: string }) => role.role === UserRole.ADMIN)) {
+    throw new Error('Only admins can manage instructors.');
+  }
+  return admin;
+};
+
+const getAdminInstructors = async (req: Request) => executeDbOperation(async prisma =>
+  prisma.$transaction(async tx => {
+    await requireInstructorAdmin(tx, req.user.email);
+    const profiles = await tx.instructorProfile.findMany({
+      where: { deletedAt: null, user: { deletedAt: null } },
+      select: {
+        id: true, userId: true, displayName: true, status: true,
+        ratingAverage: true, ratingCount: true, createdAt: true,
+        user: { select: { email: true, status: true, avatarUrl: true } },
+        ownedCourses: {
+          where: { deletedAt: null },
+          select: {
+            id: true,
+            _count: { select: { enrollments: { where: { status: EnrollmentStatus.ACTIVE } } } },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    return profiles.map(({ ownedCourses, ...profile }) => ({
+      ...profile,
+      courseCount: ownedCourses.length,
+      activeEnrollments: ownedCourses.reduce((sum, course) => sum + course._count.enrollments, 0),
+      rating: profile.ratingCount ? Number(profile.ratingAverage ?? 0) : null,
+    }));
+  }), 'Get Admin Instructors');
+
+const getAdminInstructorDetails = async (req: Request) => executeDbOperation(async prisma =>
+  prisma.$transaction(async tx => {
+    await requireInstructorAdmin(tx, req.user.email);
+    const profile = await tx.instructorProfile.findFirst({
+      where: { id: req.params.id as string, deletedAt: null },
+      select: {
+        id: true, userId: true, displayName: true, status: true, bio: true,
+        expertise: true, website: true, adminNote: true, suspendReason: true,
+        createdAt: true, ratingAverage: true, ratingCount: true,
+        user: { select: { email: true, status: true, avatarUrl: true } },
+        authorProfile: { select: { id: true, _count: { select: { books: { where: { deletedAt: null } } } } } },
+        ownedCourses: {
+          where: { deletedAt: null },
+          select: {
+            id: true, title: true, slug: true, status: true, views: true,
+            enrollments: {
+              where: { status: EnrollmentStatus.ACTIVE },
+              select: { userId: true },
+            },
+            reviews: {
+              where: { deletedAt: null, flagged: false },
+              select: { rating: true },
+            },
+            OrderItem: {
+              where: { order: { status: OrderStatus.PAID } },
+              select: { price: true, quantity: true },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+    if (!profile) throw new Error('Instructor profile not found.');
+    const pendingPayout = await tx.payout.aggregate({
+      where: { instructorId: profile.userId, status: 'PENDING', deletedAt: null },
+      _sum: { amount: true },
+    });
+    const courses = profile.ownedCourses.map(course => {
+      const reviewCount = course.reviews.length;
+      return {
+        id: course.id, title: course.title, slug: course.slug, status: course.status,
+        views: course.views, activeEnrollments: course.enrollments.length,
+        unitsSold: course.OrderItem.reduce((sum, item) => sum + item.quantity, 0),
+        paidSales: course.OrderItem.reduce((sum, item) => sum + Number(item.price), 0),
+        reviewCount,
+        rating: reviewCount ? course.reviews.reduce((sum, review) => sum + review.rating, 0) / reviewCount : null,
+      };
+    });
+    const reviewCount = courses.reduce((sum, course) => sum + course.reviewCount, 0);
+    return {
+      id: profile.id, userId: profile.userId, displayName: profile.displayName,
+      status: profile.status, bio: profile.bio, expertise: profile.expertise,
+      website: profile.website, adminNote: profile.adminNote,
+      suspendReason: profile.suspendReason, createdAt: profile.createdAt,
+      user: profile.user,
+      authorBookCount: profile.authorProfile?._count.books ?? 0,
+      stats: {
+        courses: courses.length,
+        activeEnrollments: courses.reduce((sum, course) => sum + course.activeEnrollments, 0),
+        unitsSold: courses.reduce((sum, course) => sum + course.unitsSold, 0),
+        paidSales: courses.reduce((sum, course) => sum + course.paidSales, 0),
+        views: courses.reduce((sum, course) => sum + course.views, 0),
+        reviewCount,
+        rating: reviewCount ? courses.reduce((sum, course) => sum + (course.rating ?? 0) * course.reviewCount, 0) / reviewCount : null,
+        pendingPayout: Number(pendingPayout._sum.amount ?? 0),
+      },
+      courses,
+    };
+  }), 'Get Admin Instructor Details');
+
+const updateAdminInstructor = async (req: Request) => executeDbOperation(async prisma =>
+  prisma.$transaction(async tx => {
+    const admin = await requireInstructorAdmin(tx, req.user.email);
+    const { action, note } = req.body as {
+      action: 'APPROVE' | 'REJECT' | 'SUSPEND' | 'REACTIVATE'; note: string;
+    };
+    const profile = await tx.instructorProfile.findFirst({
+      where: { id: req.params.id as string, deletedAt: null },
+      include: { user: { select: { status: true, deletedAt: true, assignedRole: { select: { role: true } } } } },
+    });
+    if (!profile || profile.user.deletedAt) throw new Error('Instructor profile not found.');
+    if (action === 'APPROVE' || action === 'REJECT') {
+      if (profile.status !== ApplicationStatus.PENDING) {
+        throw new Error('Only pending applications can be approved or rejected.');
+      }
+      await tx.instructorProfile.update({
+        where: { id: profile.id },
+        data: {
+          status: action === 'APPROVE' ? ApplicationStatus.APPROVED : ApplicationStatus.REJECTED,
+          adminNote: note,
+        },
+      });
+      if (action === 'APPROVE') {
+        await tx.userRoleAssignment.createMany({
+          data: [{ userId: profile.userId, role: UserRole.INSTRUCTOR, grantedById: admin.id }],
+          skipDuplicates: true,
+        });
+      }
+    } else if (action === 'SUSPEND') {
+      if (profile.user.assignedRole.some(role => role.role === UserRole.ADMIN)) {
+        throw new Error('An admin account cannot be suspended from instructor management.');
+      }
+      if (profile.status !== ApplicationStatus.APPROVED || profile.user.status !== UserStatus.ACTIVE) {
+        throw new Error('Only active approved instructors can be suspended.');
+      }
+      await tx.user.update({ where: { id: profile.userId }, data: { status: UserStatus.SUSPENDED } });
+      await tx.instructorProfile.update({ where: { id: profile.id }, data: { suspendReason: note, adminNote: note } });
+    } else {
+      if (profile.status !== ApplicationStatus.APPROVED || profile.user.status !== UserStatus.SUSPENDED) {
+        throw new Error('Only suspended approved instructors can be reactivated.');
+      }
+      await tx.user.update({ where: { id: profile.userId }, data: { status: UserStatus.ACTIVE } });
+      await tx.instructorProfile.update({ where: { id: profile.id }, data: { suspendReason: null, adminNote: note } });
+    }
+    await tx.auditLog.create({
+      data: {
+        userId: admin.id, action: `INSTRUCTOR_${action}`,
+        entityType: 'INSTRUCTOR_PROFILE', entityId: profile.id,
+        changesBefore: JSON.parse(JSON.stringify({ status: profile.status, userStatus: profile.user.status })),
+        changesAfter: JSON.parse(JSON.stringify({ action, note })),
+        ipAddress: req.ip, userAgent: req.get('user-agent'),
+      },
+    });
+    return { id: profile.id, action };
+  }), 'Update Admin Instructor');
+
 // For Admin Use Only
 
 const getAllStudentsForAdmin = async () => {
@@ -351,4 +522,7 @@ export const userService = {
   getAllInstructors,
   getSingleInstructor,
   getAllStudentsForAdmin,
+  getAdminInstructors,
+  getAdminInstructorDetails,
+  updateAdminInstructor,
 };
