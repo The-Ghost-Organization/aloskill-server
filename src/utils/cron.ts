@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 import { connectCronDatabase, disconnectCronDatabase } from '../config/cronDatabase.js';
+import { orderService } from '../modules/order/order.service.js';
 
 let isRunning = false;
 
@@ -44,6 +45,11 @@ cron.schedule(
         });
       }, 'Updating Course Discount End function');
       console.log(`Updated ${updateCourse.count} course for discountPrice and DiscountEnd date.`);
+
+      // EPS documents browser return URLs rather than a server webhook. Reconcile
+      // pending transactions before expiring their stock reservations so a paid
+      // order is completed even if the customer closes the return page.
+      await orderService.reconcilePendingEPSPayments();
 
       const expiredOrders = await runCronDbOperation(prisma =>
         prisma.order.findMany({

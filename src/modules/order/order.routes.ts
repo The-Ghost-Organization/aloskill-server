@@ -3,7 +3,11 @@ import { requireAdmin, requireAuth, requireStudent } from '../../middleware/auth
 import { generalLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { orderController } from './order.controller.js';
-import { CreateOrderWithEPS, CreateOrderWithUDDOKTAPAY } from './order.validation.js';
+import {
+  CreateOrderWithEPS,
+  CreateOrderWithUDDOKTAPAY,
+  VerifyEPSPayment,
+} from './order.validation.js';
 
 const router = express.Router({ caseSensitive: true });
 
@@ -35,6 +39,13 @@ router.post(
   requireAuth,
   validate(CreateOrderWithEPS),
   orderController.createOrderWithEPS
+);
+
+router.post(
+  '/eps/verify',
+  requireAuth,
+  validate(VerifyEPSPayment),
+  orderController.verifyEPSPayment
 );
 
 router.post(

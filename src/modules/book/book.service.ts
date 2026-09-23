@@ -1442,7 +1442,7 @@ const getAdminBookAuthorDetails = async (req: Request) => {
           },
         },
       });
-      if (!author) throw new Error('Author profile not found.');
+      if (!author) {throw new Error('Author profile not found.');}
 
       const books = author.books.map(book => {
         const unitsSold = book.orderItem.reduce((sum, item) => sum + item.quantity, 0);
@@ -1497,7 +1497,7 @@ const updateBookAuthor = async (req: Request) => {
       const existing = await tx.bookAuthor.findFirst({
         where: { id: authorId, deletedAt: null },
       });
-      if (!existing) throw new Error('Author profile not found.');
+      if (!existing) {throw new Error('Author profile not found.');}
       if (input.name && existing.instructorProfileId && input.name !== existing.name) {
         throw new Error('An instructor author name is managed by their instructor profile.');
       }

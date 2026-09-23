@@ -3,13 +3,14 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { EPS, generateTransactionId } from 'eps-gateway-nodejs';
+import { createHmac } from 'node:crypto';
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
 
 import {
   ApplicationStatus,
+  BookFormat,
   Courier,
   EnrollmentStatus,
   OrderItemStatus,
@@ -39,6 +40,119 @@ const courierOrderStatus: Partial<Record<SteadfastDeliveryStatus, OrderStatus>> 
   partial_delivered: OrderStatus.DELIVERED,
   cancelled: OrderStatus.CANCELLED,
   hold: OrderStatus.PROCESSING,
+};
+
+type EPSInitializeResponse = {
+  TransactionId?: string;
+  RedirectURL?: string;
+  ErrorMessage?: string;
+  ErrorCode?: string | null;
+};
+
+type EPSVerifyResponse = {
+  MerchantTransactionId?: string;
+  merchantTransactionId?: string;
+  EpsTransactionId?: string;
+  EPSTransactionId?: string;
+  TransactionId?: string;
+  Status?: string;
+  status?: string;
+  TransactionStatus?: string;
+  transactionStatus?: string;
+  TotalAmount?: string | number;
+  totalAmount?: string | number;
+  ErrorMessage?: string;
+  errorMessage?: string;
+  ErrorCode?: string | null;
+  errorCode?: string | null;
+};
+
+const epsApiBaseUrl = () =>
+  config.EPS_SANDBOX ? 'https://sandboxpgapi.eps.com.bd/v1' : 'https://pgapi.eps.com.bd/v1';
+
+const generateEPSHash = (value: string) =>
+  createHmac('sha512', Buffer.from(config.EPS_HASH_KEY, 'utf8'))
+    .update(value, 'utf8')
+    .digest('base64');
+
+const generateEPSTransactionId = () => {
+  const now = new Date();
+  return [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, '0'),
+    String(now.getDate()).padStart(2, '0'),
+    String(now.getHours()).padStart(2, '0'),
+    String(now.getMinutes()).padStart(2, '0'),
+    String(now.getSeconds()).padStart(2, '0'),
+    String(now.getMilliseconds()).padStart(3, '0'),
+  ].join('');
+};
+
+const readEPSResponse = async <T>(response: Response): Promise<T> => {
+  const raw = await response.text();
+  let body: Record<string, unknown> = {};
+  try {
+    body = raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
+  } catch {
+    throw new Error(`EPS returned a non-JSON response (${response.status}).`);
+  }
+  if (!response.ok) {
+    const message = body.ErrorMessage ?? body.errorMessage ?? body.message;
+    throw new Error(
+      typeof message === 'string' ? message : `EPS request failed with HTTP ${response.status}.`
+    );
+  }
+  return body as T;
+};
+
+const getEPSToken = async () => {
+  const response = await fetch(`${epsApiBaseUrl()}/Auth/GetToken`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-hash': generateEPSHash(config.EPS_USERNAME) },
+    body: JSON.stringify({ userName: config.EPS_USERNAME, password: config.EPS_PASSWORD }),
+    signal: AbortSignal.timeout(45_000),
+  });
+  const result = await readEPSResponse<{
+    token?: string;
+    errorMessage?: string;
+    errorCode?: string;
+  }>(response);
+  if (!result.token) {
+    throw new Error(result.errorMessage ?? `EPS authentication failed (${result.errorCode ?? 'no code'}).`);
+  }
+  return result.token;
+};
+
+const initializeEPSPayment = async (payload: Record<string, unknown>) => {
+  const token = await getEPSToken();
+  const merchantTransactionId = String(payload.merchantTransactionId);
+  const response = await fetch(`${epsApiBaseUrl()}/EPSEngine/InitializeEPS`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'x-hash': generateEPSHash(merchantTransactionId),
+    },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(45_000),
+  });
+  return readEPSResponse<EPSInitializeResponse>(response);
+};
+
+const checkEPSTransaction = async (merchantTransactionId: string) => {
+  const token = await getEPSToken();
+  const query = new URLSearchParams({ merchantTransactionId });
+  const response = await fetch(
+    `${epsApiBaseUrl()}/EPSEngine/CheckMerchantTransactionStatus?${query.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'x-hash': generateEPSHash(merchantTransactionId),
+      },
+      signal: AbortSignal.timeout(45_000),
+    }
+  );
+  return readEPSResponse<EPSVerifyResponse>(response);
 };
 
 const createCourierConsignmentForOrder = async (orderId: string) => {
@@ -134,7 +248,10 @@ const createCourierConsignmentForOrder = async (orderId: string) => {
   }
 };
 
-const releasePhysicalStockForFailedOrder = async (orderId: string) => {
+const releasePhysicalStockForFailedOrder = async (
+  orderId: string,
+  finalStatus: OrderStatus = OrderStatus.FAILED
+) => {
   await executeDbOperation(prisma =>
     prisma.$transaction(async tx => {
       const order = await tx.order.findUnique({
@@ -154,7 +271,7 @@ const releasePhysicalStockForFailedOrder = async (orderId: string) => {
       }
       await tx.order.update({
         where: { id: order.id },
-        data: { status: OrderStatus.FAILED, stockReservationExpiresAt: null },
+        data: { status: finalStatus, stockReservationExpiresAt: null },
       });
     })
   );
@@ -526,9 +643,10 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         select: { id: true, originalPrice: true, discountPrice: true, isDiscountActive: true },
       });
 
+      const requestedBookIds = [...new Set(sessionBooks.map(book => book.id))];
       const dbBooks = await tx.book.findMany({
         where: {
-          id: { in: sessionBooks.map(b => b.id) },
+          id: { in: requestedBookIds },
           deletedAt: null,
           status: 'APPROVED',
         },
@@ -540,13 +658,14 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           digitalSalePrice: true,
           weight: true,
           stock: true,
+          formats: true,
         },
       });
 
       if (dbCourses.length !== sessionCourses.length) {
         throw new Error('One or more courses not found');
       }
-      if (dbBooks.length !== sessionBooks.length) {
+      if (dbBooks.length !== requestedBookIds.length) {
         throw new Error('One or more books not found');
       }
 
@@ -570,23 +689,31 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         });
       }
 
-      // 4. Process Book Prices with Correct Format Extraction
+      // 4. Create one order item per requested book format. A physical book
+      // can therefore have a second, zero-price DIGITAL item for its free e-book.
       let hasPhysicalItems = false;
 
-      for (const bookItem of sessionBooks) {
-        const dbBook = dbBooks.find(b => b.id === bookItem.id);
+      for (const quantityMeta of bookQuantities) {
+        const bookItem = sessionBooks.find(book => book.id === quantityMeta.bookId);
+        const dbBook = dbBooks.find(book => book.id === quantityMeta.bookId);
         if (!dbBook) {
           throw new Error('System mismatch fetching book data');
         }
+        if (!bookItem) {
+          throw new Error(`Book ${quantityMeta.bookId} is missing from the order summary`);
+        }
 
-        // Look up the exact format for this specific book from quantities mapping
-        const quantityMeta = bookQuantities.find(q => q.bookId === bookItem.id);
-
-        // Determine format safely (fall back to EBOOK/DIGITAL if metadata missing)
-        const isPhysical = quantityMeta?.format === 'PHYSICAL';
-        const quantity = quantityMeta?.quantity ?? 1;
+        const isPhysical = quantityMeta.format === 'PHYSICAL';
+        const quantity = quantityMeta.quantity;
         if (!Number.isInteger(quantity) || quantity < 1) {
           throw new Error(`Invalid quantity for book: ${bookItem.id}`);
+        }
+
+        if (isPhysical && !dbBook.formats.includes(BookFormat.HARDCOVER)) {
+          throw new Error(`${bookItem.title} is not available as a physical book`);
+        }
+        if (!isPhysical && !dbBook.formats.includes(BookFormat.E_BOOK)) {
+          throw new Error(`${bookItem.title} is not available as an e-book`);
         }
         if (isPhysical) {
           hasPhysicalItems = true;
@@ -603,23 +730,31 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
           }
         }
 
-        let price = 0;
+        // The UI sends PHYSICAL + EBOOK for a complimentary e-book bundle.
+        const complimentaryEbook =
+          !isPhysical &&
+          bookQuantities.some(
+            item => item.bookId === dbBook.id && item.format === 'PHYSICAL'
+          );
+
+        let unitPrice = 0;
         if (isPhysical) {
           const decimalPrice = dbBook.physicalSalePrice ?? dbBook.physicalRegularPrice ?? 0;
-          price = Number(decimalPrice);
-        } else {
+          unitPrice = Number(decimalPrice);
+        } else if (!complimentaryEbook) {
           const decimalPrice = dbBook.digitalSalePrice ?? dbBook.digitalRegularPrice ?? 0;
-          price = Number(decimalPrice);
+          unitPrice = Number(decimalPrice);
         }
 
-        subtotal += price * quantity;
+        const lineTotal = unitPrice * quantity;
+        subtotal += lineTotal;
         if (isPhysical) {
           totalWeight += Number(dbBook.weight) * quantity;
         }
         orderItemsData.push({
           bookId: dbBook.id,
           format: isPhysical ? PurchaseFormat.PHYSICAL : PurchaseFormat.DIGITAL,
-          price: price * quantity,
+          price: lineTotal,
           quantity,
         });
       }
@@ -885,9 +1020,10 @@ const createOrderWithEPS = async (req: Request) => {
         select: { id: true, originalPrice: true, discountPrice: true, isDiscountActive: true },
       });
 
+      const requestedBookIds = [...new Set(sessionBooks.map(book => book.id))];
       const dbBooks = await tx.book.findMany({
         where: {
-          id: { in: sessionBooks.map(b => b.id) },
+          id: { in: requestedBookIds },
           deletedAt: null,
           status: 'APPROVED',
         },
@@ -899,13 +1035,14 @@ const createOrderWithEPS = async (req: Request) => {
           digitalSalePrice: true,
           weight: true,
           stock: true,
+          formats: true,
         },
       });
 
       if (dbCourses.length !== sessionCourses.length) {
         throw new Error('One or more courses not found');
       }
-      if (dbBooks.length !== sessionBooks.length) {
+      if (dbBooks.length !== requestedBookIds.length) {
         throw new Error('One or more books not found');
       }
 
@@ -929,23 +1066,31 @@ const createOrderWithEPS = async (req: Request) => {
         });
       }
 
-      // 4. Process Book Prices with Correct Format Extraction
+      // 4. Create one order item per requested format. A physical book may
+      // have a second, zero-price DIGITAL item for its complimentary e-book.
       let hasPhysicalItems = false;
 
-      for (const bookItem of sessionBooks) {
-        const dbBook = dbBooks.find(b => b.id === bookItem.id);
+      for (const quantityMeta of bookQuantities) {
+        const bookItem = sessionBooks.find(book => book.id === quantityMeta.bookId);
+        const dbBook = dbBooks.find(book => book.id === quantityMeta.bookId);
         if (!dbBook) {
           throw new Error('System mismatch fetching book data');
         }
+        if (!bookItem) {
+          throw new Error(`Book ${quantityMeta.bookId} is missing from the order summary`);
+        }
 
-        // Look up the exact format for this specific book from quantities mapping
-        const quantityMeta = bookQuantities.find(q => q.bookId === bookItem.id);
-
-        // Determine format safely (fall back to EBOOK/DIGITAL if metadata missing)
-        const isPhysical = quantityMeta?.format === 'PHYSICAL';
-        const quantity = quantityMeta?.quantity ?? 1;
+        const isPhysical = quantityMeta.format === 'PHYSICAL';
+        const quantity = quantityMeta.quantity;
         if (!Number.isInteger(quantity) || quantity < 1) {
           throw new Error(`Invalid quantity for book: ${bookItem.id}`);
+        }
+
+        if (isPhysical && !dbBook.formats.includes(BookFormat.HARDCOVER)) {
+          throw new Error(`${bookItem.title} is not available as a physical book`);
+        }
+        if (!isPhysical && !dbBook.formats.includes(BookFormat.E_BOOK)) {
+          throw new Error(`${bookItem.title} is not available as an e-book`);
         }
         if (isPhysical) {
           hasPhysicalItems = true;
@@ -962,23 +1107,30 @@ const createOrderWithEPS = async (req: Request) => {
           }
         }
 
-        let price = 0;
+        const complimentaryEbook =
+          !isPhysical &&
+          bookQuantities.some(
+            item => item.bookId === dbBook.id && item.format === 'PHYSICAL'
+          );
+
+        let unitPrice = 0;
         if (isPhysical) {
           const decimalPrice = dbBook.physicalSalePrice ?? dbBook.physicalRegularPrice ?? 0;
-          price = Number(decimalPrice);
-        } else {
+          unitPrice = Number(decimalPrice);
+        } else if (!complimentaryEbook) {
           const decimalPrice = dbBook.digitalSalePrice ?? dbBook.digitalRegularPrice ?? 0;
-          price = Number(decimalPrice);
+          unitPrice = Number(decimalPrice);
         }
 
-        subtotal += price * quantity;
+        const lineTotal = unitPrice * quantity;
+        subtotal += lineTotal;
         if (isPhysical) {
           totalWeight += Number(dbBook.weight) * quantity;
         }
         orderItemsData.push({
           bookId: dbBook.id,
           format: isPhysical ? PurchaseFormat.PHYSICAL : PurchaseFormat.DIGITAL,
-          price: price * quantity,
+          price: lineTotal,
           quantity,
         });
       }
@@ -1080,77 +1232,366 @@ const createOrderWithEPS = async (req: Request) => {
     };
   }
 
-  const eps = new EPS({
-    username: 'Epsdemo@gmail.com',
-    password: 'Epsdemo258@',
-    hashKey: 'FHZxyzeps56789gfhg678ygu876o=',
-    merchantId: '29e86e70-0ac6-45eb-ba04-9fcb0aaed12a',
-    storeId: 'd44e705f-9e3a-41de-98b1-1674631637da',
-    sandbox: true,
-  });
+
+  const merchantTransactionId = generateEPSTransactionId();
+  const callbackQuery = new URLSearchParams({
+    orderId: createOrder.orderData.id,
+    merchantTransactionId,
+  }).toString();
+  const profilePhone = createOrder.studentProfile?.encryptedPhone
+    ? decryptPhoneNumber(createOrder.studentProfile.encryptedPhone)
+    : createOrder.instructorProfile?.encryptedPhone
+      ? decryptPhoneNumber(createOrder.instructorProfile.encryptedPhone)
+      : null;
+  const customerPhone = shippingDetails?.phoneNumber ?? profilePhone;
+  if (!customerPhone) {
+    throw new Error('A customer phone number is required for EPS payment.');
+  }
 
   try {
-    const payment = await eps.initializePayment({
-      customerOrderId: createOrder.orderData.id,
-      merchantTransactionId: generateTransactionId(),
+    const payment = await initializeEPSPayment({
+      merchantId: config.EPS_MERCHANT_ID,
+      storeId: config.EPS_STORE_ID,
+      CustomerOrderId: createOrder.orderData.id,
+      merchantTransactionId,
+      transactionTypeId: 1,
+      financialEntityId: 0,
+      transitionStatusId: 0,
       totalAmount: Number(createOrder.orderData.totalAmount),
-
-      successUrl: `${config.FRONTEND_URL}/payment/success`,
-      failUrl: `${config.FRONTEND_URL}/payment/fail`,
-      cancelUrl: `${config.FRONTEND_URL}/payment/cancel`,
-
+      ipAddress: req.ip ?? '0.0.0.0',
+      version: '1',
+      successUrl: `${config.FRONTEND_URL}/payment/success?${callbackQuery}`,
+      failUrl: `${config.FRONTEND_URL}/payment/fail?${callbackQuery}`,
+      cancelUrl: `${config.FRONTEND_URL}/payment/cancel?${callbackQuery}`,
       customerName:
         createOrder.studentProfile?.displayName ??
         createOrder.instructorProfile?.displayName ??
-        'N/A',
+        'AloSkill Customer',
       customerEmail: createOrder.email,
-      customerPhone: shippingDetails?.phoneNumber ?? '01934567890',
-      // customerPhone: createOrder.studentProfile?.encryptedPhone
-      //     ? decryptPhoneNumber(createOrder.studentProfile.encryptedPhone)
-      //     : createOrder.instructorProfile?.encryptedPhone
-      //         ? decryptPhoneNumber(createOrder.instructorProfile.encryptedPhone)
-      //         : 'N/A',
-      customerAddress: createOrder.orderData.shippingAddress?.addressLine ?? 'N/A',
-      customerCity: createOrder.orderData.shippingAddress?.city ?? 'N/A',
-      customerState: createOrder.orderData.shippingAddress?.city ?? 'N/A',
-      customerPostcode: createOrder.orderData.shippingAddress?.postalCode ?? '1200',
-
-      productName: createOrder.orderData.orderItems
-        .map(item => item.course?.title ?? item.book?.title)
-        .join(', '),
+      CustomerPhone: customerPhone,
+      CustomerAddress: createOrder.orderData.shippingAddress?.addressLine ?? 'Dhaka',
+      CustomerAddress2: '',
+      CustomerCity: createOrder.orderData.shippingAddress?.city ?? 'Dhaka',
+      CustomerState: createOrder.orderData.shippingAddress?.city ?? 'Dhaka',
+      CustomerPostcode: createOrder.orderData.shippingAddress?.postalCode ?? '1200',
+      CustomerCountry: 'BD',
+      ShippingMethod: createOrder.orderData.shippingAddress ? 'YES' : 'NO',
+      NoOfItem: String(createOrder.orderData.orderItems.length),
+      ProductName:
+        createOrder.orderData.orderItems
+          .map(item => item.course?.title ?? item.book?.title)
+          .filter(Boolean)
+          .join(', ')
+          .slice(0, 250) || 'AloSkill order',
+      ProductProfile: 'general',
+      ProductCategory: 'Education',
+      ProductList: [],
+      ValueA: createOrder.orderData.id,
     });
 
-    console.log('EPS Payment : ', payment);
-
     if (!payment.TransactionId || !payment.RedirectURL) {
-      console.error('EPS Error Log:', {
-        httpStatus: payment.ErrorCode,
-        message: payment.ErrorMessage ?? 'No payment URL returned',
-        fullResponse: payment,
-      });
-
-      throw new Error(payment.ErrorMessage ?? 'Failed to initiate payment with EPS');
+      throw new Error(
+        payment.ErrorMessage ?? `EPS initialization failed (${payment.ErrorCode ?? 'no code'}).`
+      );
     }
+
+    await executeDbOperation(prisma =>
+      prisma.$transaction([
+        prisma.order.update({
+          where: { id: createOrder.orderData.id },
+          data: { providerOrderId: merchantTransactionId },
+        }),
+        prisma.paymentTransaction.create({
+          data: {
+            userId: createOrder.id,
+            orderId: createOrder.orderData.id,
+            amount: createOrder.orderData.totalAmount,
+            currency: 'BDT',
+            provider: PaymentProviders.EPS,
+            paymentMethod: PaymentMethod.ONLINE_PAYMENT,
+            providerTransactionId: merchantTransactionId,
+            providerPaymentId: payment.TransactionId,
+            status: TransactionStatus.PENDING,
+            type: TransactionType.PURCHASE,
+          },
+        }),
+      ])
+    );
 
     return {
       gatewayUrl: payment.RedirectURL,
       orderId: createOrder.orderData.id,
+      merchantTransactionId,
       paymentType: 'ONLINE_PAYMENT' as const,
     };
-  } catch (error: any) {
+  } catch (error) {
     console.error('EPS initialization failed:', {
-      name: error?.name,
-      message: error?.message,
-      code: error?.code,
-      cause: error?.cause,
-      status: error?.response?.status,
-      response: error?.response?.data,
-      stack: error?.stack,
+      orderId: createOrder.orderData.id,
+      merchantTransactionId,
+      message: error instanceof Error ? error.message : String(error),
+      cause: error instanceof Error ? error.cause : undefined,
     });
-
-    await releasePhysicalStockForFailedOrder(createOrder.orderData.id);
-    throw error;
+    // A timeout can happen after EPS accepts the payment. Keep the order
+    // pending; the existing stock-expiry task safely releases it after 15 min.
+    throw new Error(
+      `Could not initialize EPS payment. Order ${createOrder.orderData.id} remains pending. ${
+        error instanceof Error ? error.message : ''
+      }`
+    );
   }
+};
+
+const normalizeEPSStatus = (result: EPSVerifyResponse) =>
+  String(
+    result.Status ?? result.status ?? result.TransactionStatus ?? result.transactionStatus ?? 'PENDING'
+  ).toUpperCase();
+
+const verifyEPSPaymentByTransactionId = async (
+  merchantTransactionId: string,
+  expectedOutcome = 'success',
+  userEmail?: string
+) => {
+  if (!/^\d{17}$/.test(merchantTransactionId)) {
+    throw new Error('Invalid EPS merchant transaction ID.');
+  }
+
+  const localPayment = await executeDbOperation(prisma =>
+    prisma.paymentTransaction.findUnique({
+      where: { providerTransactionId: merchantTransactionId },
+      include: {
+        order: {
+          include: {
+            user: { select: { email: true } },
+            orderItems: true,
+          },
+        },
+      },
+    })
+  );
+  if (!localPayment || localPayment.provider !== PaymentProviders.EPS || !localPayment.order) {
+    throw new Error('EPS payment record not found.');
+  }
+  if (userEmail && localPayment.order.user.email !== userEmail) {
+    throw new Error('You cannot verify another user’s order.');
+  }
+  if (localPayment.order.status === OrderStatus.PAID) {
+    // Also repairs orders paid by an older version that completed only
+    // DIGITAL items and left PHYSICAL items pending.
+    await executeDbOperation(prisma =>
+      prisma.orderItem.updateMany({
+        where: {
+          orderId: localPayment.order?.id,
+          status: OrderItemStatus.PENDING,
+        },
+        data: { status: OrderItemStatus.COMPLETED },
+      })
+    );
+    await createCourierConsignmentForOrder(localPayment.order.id);
+    return {
+      paymentStatus: 'PAID' as const,
+      orderId: localPayment.order.id,
+      orderStatus: localPayment.order.status,
+      amount: Number(localPayment.order.totalAmount),
+      currency: localPayment.order.currency,
+    };
+  }
+
+  const epsResult = await checkEPSTransaction(merchantTransactionId);
+  const epsStatus = normalizeEPSStatus(epsResult);
+  const responseMerchantId = epsResult.MerchantTransactionId ?? epsResult.merchantTransactionId;
+  if (responseMerchantId && responseMerchantId !== merchantTransactionId) {
+    throw new Error('EPS returned a different merchant transaction ID.');
+  }
+  const epsAmountValue = epsResult.TotalAmount ?? epsResult.totalAmount;
+  if (epsAmountValue !== undefined) {
+    const epsAmount = Number(epsAmountValue);
+    if (!Number.isFinite(epsAmount) || Math.abs(epsAmount - Number(localPayment.amount)) > 0.01) {
+      throw new Error('EPS transaction amount does not match the order amount.');
+    }
+  }
+
+  const successStatuses = new Set(['SUCCESS', 'SUCCEEDED', 'COMPLETED', 'PAID']);
+  const failedStatuses = new Set(['FAILED', 'FAILURE', 'DECLINED']);
+  const cancelledStatuses = new Set(['CANCEL', 'CANCELLED', 'CANCELED']);
+
+  if (successStatuses.has(epsStatus)) {
+    const epsTransactionId =
+      epsResult.EpsTransactionId ??
+      epsResult.EPSTransactionId ??
+      epsResult.TransactionId ??
+      localPayment.providerPaymentId;
+
+    const completedOrder = await executeDbOperation(prisma =>
+      prisma.$transaction(async tx => {
+        const claim = await tx.order.updateMany({
+          where: {
+            id: localPayment.order?.id,
+            status: { in: [OrderStatus.PENDING, OrderStatus.CONFIRMED] },
+          },
+          data: {
+            status: OrderStatus.PAID,
+            providerOrderId: epsTransactionId ?? merchantTransactionId,
+            stockReservationExpiresAt: null,
+          },
+        });
+
+        if (claim.count === 0) {
+          const existing = await tx.order.findUnique({ where: { id: localPayment.order?.id } });
+          if (existing?.status !== OrderStatus.PAID) {
+            throw new Error(`Order cannot be paid from status ${existing?.status ?? 'UNKNOWN'}.`);
+          }
+          return existing;
+        }
+
+        await tx.paymentTransaction.update({
+          where: { providerTransactionId: merchantTransactionId },
+          data: {
+            status: TransactionStatus.SUCCEEDED,
+            providerPaymentId: epsTransactionId ?? localPayment.providerPaymentId,
+          },
+        });
+        // COMPLETED means payment completed. Physical items later move to
+        // SHIPPED and DELIVERED when courier tracking advances.
+        await tx.orderItem.updateMany({
+          where: { orderId: localPayment.order?.id },
+          data: { status: OrderItemStatus.COMPLETED },
+        });
+
+        for (const item of localPayment.order?.orderItems ?? []) {
+          if (item.courseId) {
+            const enrollment = await tx.enrollment.createMany({
+              data: [
+                {
+                  userId: localPayment.userId,
+                  courseId: item.courseId,
+                  pricePaid: item.price,
+                  originalPriceAtTime: item.price,
+                  status: EnrollmentStatus.ACTIVE,
+                },
+              ],
+              skipDuplicates: true,
+            });
+            const course = await tx.course.update({
+              where: { id: item.courseId },
+              data: {
+                totalRevenueAmount: { increment: item.price },
+                ...(enrollment.count ? { enrollmentCount: { increment: 1 } } : {}),
+              },
+              select: { createdById: true },
+            });
+            if (course.createdById) {
+              await tx.instructorProfile.update({
+                where: { id: course.createdById },
+                data: {
+                  totalRevenueAmount: { increment: item.price },
+                  ...(enrollment.count ? { totalStudents: { increment: 1 } } : {}),
+                },
+              });
+            }
+            await tx.wishlist.deleteMany({
+              where: { userId: localPayment.userId, courseId: item.courseId },
+            });
+          }
+          if (item.bookId) {
+            await tx.book.update({
+              where: { id: item.bookId },
+              data: { totalEarning: { increment: item.price } },
+            });
+            await tx.wishlist.deleteMany({
+              where: { userId: localPayment.userId, bookId: item.bookId },
+            });
+          }
+        }
+
+        return tx.order.findUniqueOrThrow({ where: { id: localPayment.order?.id } });
+      })
+    );
+
+    await createCourierConsignmentForOrder(localPayment.order.id);
+    return {
+      paymentStatus: 'PAID' as const,
+      orderId: completedOrder.id,
+      orderStatus: completedOrder.status,
+      amount: Number(completedOrder.totalAmount),
+      currency: completedOrder.currency,
+    };
+  }
+
+  if (failedStatuses.has(epsStatus) || cancelledStatuses.has(epsStatus)) {
+    const finalStatus = cancelledStatuses.has(epsStatus)
+      ? OrderStatus.CANCELLED
+      : OrderStatus.FAILED;
+    await releasePhysicalStockForFailedOrder(localPayment.order.id, finalStatus);
+    await executeDbOperation(prisma =>
+      prisma.paymentTransaction.updateMany({
+        where: {
+          providerTransactionId: merchantTransactionId,
+          status: TransactionStatus.PENDING,
+        },
+        data: { status: TransactionStatus.FAILED },
+      })
+    );
+    return {
+      paymentStatus: finalStatus,
+      orderId: localPayment.order.id,
+      orderStatus: finalStatus,
+      amount: Number(localPayment.order.totalAmount),
+      currency: localPayment.order.currency,
+    };
+  }
+
+  return {
+    paymentStatus: 'PENDING' as const,
+    orderId: localPayment.order.id,
+    orderStatus: localPayment.order.status,
+    amount: Number(localPayment.order.totalAmount),
+    currency: localPayment.order.currency,
+    message:
+      expectedOutcome === 'success'
+        ? 'EPS has not confirmed the payment yet. Please check again shortly.'
+        : 'EPS still reports this transaction as pending.',
+  };
+};
+
+const verifyEPSPayment = async (req: Request) => {
+  const userEmail = req.user?.email;
+  if (!userEmail) {
+    throw new Error('Unauthorized');
+  }
+  return verifyEPSPaymentByTransactionId(
+    String(req.body?.merchantTransactionId ?? '').trim(),
+    String(req.body?.expectedOutcome ?? 'success').toLowerCase(),
+    userEmail
+  );
+};
+
+const reconcilePendingEPSPayments = async () => {
+  const pending = await executeDbOperation(prisma =>
+    prisma.paymentTransaction.findMany({
+      where: {
+        provider: PaymentProviders.EPS,
+        status: TransactionStatus.PENDING,
+        providerTransactionId: { not: null },
+        order: { status: OrderStatus.PENDING },
+        createdAt: { lte: new Date(Date.now() - 30_000) },
+      },
+      select: { providerTransactionId: true },
+      orderBy: { createdAt: 'asc' },
+      take: 20,
+    })
+  );
+  for (const payment of pending) {
+    if (!payment.providerTransactionId) {continue;}
+    try {
+      await verifyEPSPaymentByTransactionId(payment.providerTransactionId);
+    } catch (error) {
+      console.error('EPS reconciliation failed:', {
+        merchantTransactionId: payment.providerTransactionId,
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  return pending.length;
 };
 
 // for EPS payment system End
@@ -1348,4 +1789,6 @@ export const orderService = {
   getShippingQuote,
   retrySteadfastConsignment,
   createOrderWithEPS,
+  verifyEPSPayment,
+  reconcilePendingEPSPayments,
 };
