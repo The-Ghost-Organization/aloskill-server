@@ -134,5 +134,14 @@ export const CreateOrderWithEPS = z.object({
   }),
 });
 
+export const VerifyEPSPayment = z.object({
+  body: z
+    .object({
+      merchantTransactionId: z.string().regex(/^\d{17}$/, 'Invalid EPS transaction ID'),
+      expectedOutcome: z.enum(['success', 'fail', 'cancel']).default('success'),
+    })
+    .strict(),
+});
+
 export type UddoktapayPayload = z.infer<typeof CreateOrderWithUDDOKTAPAY>;
 export type EPSPayload = z.infer<typeof CreateOrderWithEPS>;

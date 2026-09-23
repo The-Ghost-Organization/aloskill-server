@@ -27,6 +27,11 @@ const createOrderWithEPS = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Order Created Successfully!', result);
 });
 
+const verifyEPSPayment = catchAsync(async (req, res): Promise<void> => {
+  const result = await orderService.verifyEPSPayment(req);
+  ResponseHandler.ok(res, 'EPS payment status retrieved successfully.', result);
+});
+
 const getMyOrders = catchAsync(async (req, res): Promise<void> => {
   const result = await orderService.getMyOrders(req);
   ResponseHandler.ok(res, 'Orders retrieved successfully!', result);
@@ -57,6 +62,7 @@ export const orderController = {
   validateIPN,
   createOrderWithUDDOKTAPAY,
   createOrderWithEPS,
+  verifyEPSPayment,
   verifyPayment,
   getMyOrders,
   getMyOrderById,
