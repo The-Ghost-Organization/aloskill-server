@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { createHmac } from 'node:crypto';
 import { type Request } from 'express';
+import { createHmac } from 'node:crypto';
 import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
 
@@ -118,7 +118,9 @@ const getEPSToken = async () => {
     errorCode?: string;
   }>(response);
   if (!result.token) {
-    throw new Error(result.errorMessage ?? `EPS authentication failed (${result.errorCode ?? 'no code'}).`);
+    throw new Error(
+      result.errorMessage ?? `EPS authentication failed (${result.errorCode ?? 'no code'}).`
+    );
   }
   return result.token;
 };
@@ -733,9 +735,7 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
         // The UI sends PHYSICAL + EBOOK for a complimentary e-book bundle.
         const complimentaryEbook =
           !isPhysical &&
-          bookQuantities.some(
-            item => item.bookId === dbBook.id && item.format === 'PHYSICAL'
-          );
+          bookQuantities.some(item => item.bookId === dbBook.id && item.format === 'PHYSICAL');
 
         let unitPrice = 0;
         if (isPhysical) {
@@ -1109,9 +1109,7 @@ const createOrderWithEPS = async (req: Request) => {
 
         const complimentaryEbook =
           !isPhysical &&
-          bookQuantities.some(
-            item => item.bookId === dbBook.id && item.format === 'PHYSICAL'
-          );
+          bookQuantities.some(item => item.bookId === dbBook.id && item.format === 'PHYSICAL');
 
         let unitPrice = 0;
         if (isPhysical) {
@@ -1232,7 +1230,6 @@ const createOrderWithEPS = async (req: Request) => {
     };
   }
 
-
   const merchantTransactionId = generateEPSTransactionId();
   const callbackQuery = new URLSearchParams({
     orderId: createOrder.orderData.id,
@@ -1343,7 +1340,11 @@ const createOrderWithEPS = async (req: Request) => {
 
 const normalizeEPSStatus = (result: EPSVerifyResponse) =>
   String(
-    result.Status ?? result.status ?? result.TransactionStatus ?? result.transactionStatus ?? 'PENDING'
+    result.Status ??
+      result.status ??
+      result.TransactionStatus ??
+      result.transactionStatus ??
+      'PENDING'
   ).toUpperCase();
 
 const verifyEPSPaymentByTransactionId = async (
@@ -1581,7 +1582,9 @@ const reconcilePendingEPSPayments = async () => {
     })
   );
   for (const payment of pending) {
-    if (!payment.providerTransactionId) {continue;}
+    if (!payment.providerTransactionId) {
+      continue;
+    }
     try {
       await verifyEPSPaymentByTransactionId(payment.providerTransactionId);
     } catch (error) {
@@ -1688,11 +1691,16 @@ const getMyOrders = async (req: Request) => {
         status: true,
         provider: true,
         paymentMethod: true,
+        providerOrderId: true,
         courierName: true,
+        courierConsignmentId: true,
         courierTrackingCode: true,
         courierStatus: true,
         courierStatusUpdatedAt: true,
+        courierLastError: true,
         createdAt: true,
+        updatedAt: true,
+        shippingAddress: true,
         orderItems: {
           select: {
             id: true,
@@ -1700,8 +1708,12 @@ const getMyOrders = async (req: Request) => {
             format: true,
             price: true,
             status: true,
-            book: { select: { title: true, author: true, coverImage: true } },
-            course: { select: { title: true, thumbnailUrl: true } },
+            courierName: true,
+            trackingNumber: true,
+            shippedAt: true,
+            deliveredAt: true,
+            book: { select: { id: true, title: true, author: true, coverImage: true } },
+            course: { select: { id: true, title: true, thumbnailUrl: true } },
           },
         },
       },

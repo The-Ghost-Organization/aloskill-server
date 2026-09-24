@@ -622,15 +622,18 @@ const getAllCoursesForInstructor = async (req: Request) => {
 };
 
 const getAllCoursesForStudent = async (req: Request) => {
-  const userId = req.query.userId as string;
-  if (!userId) {
-    throw new Error('User Not Provided');
+  const requestedUserId = req.query.userId as string | undefined;
+  const authenticatedEmail = req.user?.email;
+
+  if (!authenticatedEmail) {
+    throw new Error('Unauthorized: User not authenticated.');
   }
 
-  const userExist = await executeDbOperation(async prisma => {
-    return await prisma.user.findUnique({
+  const user = await executeDbOperation(async prisma => {
+    return await prisma.user.findFirst({
       where: {
-        id: userId,
+        email: authenticatedEmail,
+        ...(requestedUserId ? { id: requestedUserId } : {}),
         deletedAt: null,
         status: UserStatus.ACTIVE,
       },
@@ -644,37 +647,41 @@ const getAllCoursesForStudent = async (req: Request) => {
         },
       },
     });
-  }, 'Find User in GetAllCourses for student');
+  }, 'Find student for enrolled courses');
 
-  if (!userExist) {
-    throw new Error('User Doesnt Exist');
+  if (!user) {
+    throw new Error('User does not exist.');
   }
-  if (userExist.studentProfile === null) {
-    throw new Error('User Is Not An Instructor');
-  }
-  if (userExist.studentProfile.deletedAt !== null) {
-    throw new Error('User Has Been Deleted');
+  if (user.studentProfile?.deletedAt !== null) {
+    throw new Error('Student profile not found.');
   }
 
-  const getCourses = await executeDbOperation(async prisma => {
+  const courses = await executeDbOperation(async prisma => {
     return await prisma.course.findMany({
       where: {
         enrollments: {
           some: {
-            userId: userExist.id,
-            status: EnrollmentStatus.ACTIVE,
+            userId: user.id,
+            status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.COMPLETED] },
           },
         },
         deletedAt: null,
       },
-      orderBy: [{ createdAt: 'desc' }],
+      orderBy: [{ updatedAt: 'desc' }],
       select: {
         id: true,
         title: true,
         thumbnailUrl: true,
+        level: true,
+        language: true,
+        ratingAverage: true,
+        originalPrice: true,
+        discountPrice: true,
+        status: true,
+        createdAt: true,
         LessonProgress: {
           where: {
-            userId: userExist.id,
+            userId: user.id,
           },
           select: {
             completed: true,
@@ -694,40 +701,79 @@ const getAllCoursesForStudent = async (req: Request) => {
             name: true,
           },
         },
+        courseInstructors: {
+          select: {
+            role: true,
+            instructor: {
+              select: {
+                displayName: true,
+                user: { select: { avatarUrl: true } },
+              },
+            },
+          },
+        },
         _count: {
           select: {
             enrollments: true,
             reviews: true,
             LessonProgress: {
               where: {
-                userId: userExist.id,
+                userId: user.id,
               },
             },
             courseInstructors: true,
           },
         },
         modules: {
+          where: { deletedAt: null },
+          orderBy: { position: 'asc' },
           select: {
             lessons: {
+              where: { deletedAt: null },
+              orderBy: { position: 'asc' },
               select: {
                 duration: true,
               },
             },
             _count: {
               select: {
-                lessons: true,
+                lessons: {
+                  where: { deletedAt: null },
+                },
               },
             },
           },
         },
       },
     });
-  }, 'Get All Associated Courses for students');
+  }, 'Get enrolled courses for student');
 
-  if (getCourses.length === 0) {
-    throw new Error('No Courses Found');
-  }
-  return getCourses;
+  return courses.map(course => ({
+    id: course.id,
+    title: course.title,
+    thumbnailUrl: course.thumbnailUrl,
+    level: course.level,
+    language: course.language,
+    ratingAverage: Number(course.ratingAverage ?? 0),
+    originalPrice: Number(course.originalPrice),
+    discountPrice: course.discountPrice === null ? null : Number(course.discountPrice),
+    status: course.status,
+    createdAt: course.createdAt,
+    createdBy: {
+      displayName: course.createdBy?.displayName ?? 'AloSkill Instructor',
+      avatarUrl: course.createdBy?.user.avatarUrl ?? null,
+    },
+    category: course.category,
+    courseInstructors: course.courseInstructors.map(item => ({
+      role: item.role,
+      displayName: item.instructor.displayName,
+      avatarUrl: item.instructor.user.avatarUrl,
+    })),
+    modules: course.modules,
+    _count: course._count,
+    lessonProgress: course.LessonProgress,
+    enrollments: [{ userId: user.id }],
+  }));
 };
 
 const getAllCoursesForPublic = async (req: Request) => {

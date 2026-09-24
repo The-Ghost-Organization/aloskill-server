@@ -21,6 +21,26 @@ const getSingleInstructor = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Instructors Fetched Successfully', result);
 });
 
+const getStudentSettings = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.getStudentSettings(req);
+  ResponseHandler.ok(res, 'Student settings fetched successfully', result);
+});
+
+const updateStudentSettings = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.updateStudentSettings(req);
+  ResponseHandler.ok(res, 'Student profile updated successfully', result);
+});
+
+const changeStudentPassword = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.changeStudentPassword(req);
+  ResponseHandler.ok(res, 'Password changed successfully', result);
+});
+
+const getStudentDashboard = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.getStudentDashboard(req);
+  ResponseHandler.ok(res, 'Student dashboard fetched successfully', result);
+});
+
 const getInstructorSettings = catchAsync(async (req, res): Promise<void> => {
   const result = await userService.getInstructorSettings(req);
   ResponseHandler.ok(res, 'Instructor settings fetched successfully', result);
@@ -58,6 +78,10 @@ export const userController = {
   getUserByEmail,
   getAllInstructors,
   getSingleInstructor,
+  getStudentSettings,
+  updateStudentSettings,
+  changeStudentPassword,
+  getStudentDashboard,
   getInstructorSettings,
   updateInstructorSettings,
   getAllStudentsForAdmin,

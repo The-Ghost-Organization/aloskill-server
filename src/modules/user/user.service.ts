@@ -9,6 +9,7 @@ import {
   UserRole,
   UserStatus,
 } from '../../generated/client.js';
+import { hash, verifyHash } from '../../utils/hashing.js';
 import { decryptPhoneNumber, encryptPhoneNumber } from '../../utils/phoneNumber.js';
 
 type DatabaseClient = Parameters<Parameters<typeof executeDbOperation>[0]>[0];
@@ -541,6 +542,308 @@ const updateAdminInstructor = (req: Request) =>
       }),
     'Update Admin Instructor'
   );
+
+const getStudentSettings = async (req: Request) => {
+  const user = req.user;
+  if (!user?.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const result = await executeDbOperation(async prisma => {
+    return await prisma.user.findUnique({
+      where: { email: user.email, deletedAt: null, status: UserStatus.ACTIVE },
+      select: {
+        id: true,
+        email: true,
+        avatarUrl: true,
+        studentProfile: {
+          select: {
+            displayName: true,
+            encryptedPhone: true,
+            gender: true,
+            bio: true,
+          },
+        },
+      },
+    });
+  }, 'Get Student Settings');
+
+  if (!result?.studentProfile) {
+    throw new Error('Student profile not found.');
+  }
+
+  return {
+    id: result.id,
+    email: result.email,
+    avatarUrl: result.avatarUrl,
+    displayName: result.studentProfile.displayName,
+    phoneNumber: decryptPhoneNumber(result.studentProfile.encryptedPhone),
+    gender: result.studentProfile.gender,
+    bio: result.studentProfile.bio ?? '',
+  };
+};
+
+const updateStudentSettings = async (req: Request) => {
+  const user = req.user;
+  if (!user?.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const data = req.body as {
+    displayName?: string;
+    phoneNumber?: string;
+    gender?: 'MALE' | 'FEMALE';
+    bio?: string | null;
+    avatarUrl?: string | null;
+  };
+
+  await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      const existingUser = await tx.user.findUnique({
+        where: { email: user.email, deletedAt: null, status: UserStatus.ACTIVE },
+        select: { id: true, studentProfile: { select: { id: true } } },
+      });
+
+      if (!existingUser?.studentProfile) {
+        throw new Error('Student profile not found.');
+      }
+
+      const normalizedPhone = data.phoneNumber?.trim();
+
+      await tx.studentProfile.update({
+        where: { id: existingUser.studentProfile.id },
+        data: {
+          ...(data.displayName !== undefined ? { displayName: data.displayName.trim() } : {}),
+          ...(data.gender !== undefined ? { gender: data.gender } : {}),
+          ...(data.bio !== undefined ? { bio: data.bio?.trim() ?? null } : {}),
+          ...(normalizedPhone
+            ? {
+                encryptedPhone: encryptPhoneNumber(normalizedPhone),
+                phoneLastFour: normalizedPhone.slice(-4),
+              }
+            : {}),
+        },
+      });
+
+      if (data.avatarUrl !== undefined) {
+        await tx.user.update({
+          where: { id: existingUser.id },
+          data: { avatarUrl: data.avatarUrl },
+        });
+      }
+    });
+  }, 'Update Student Settings');
+
+  return await getStudentSettings(req);
+};
+
+const changeStudentPassword = async (req: Request) => {
+  const user = req.user;
+  if (!user?.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const { currentPassword, newPassword } = req.body as {
+    currentPassword: string;
+    newPassword: string;
+  };
+
+  const existingUser = await executeDbOperation(async prisma => {
+    return await prisma.user.findUnique({
+      where: { email: user.email, deletedAt: null, status: UserStatus.ACTIVE },
+      select: { id: true, password: true, studentProfile: { select: { id: true } } },
+    });
+  }, 'Get Student for Password Change');
+
+  if (!existingUser?.studentProfile) {
+    throw new Error('Student profile not found.');
+  }
+  if (!existingUser.password) {
+    throw new Error('Password change is not available for this social-login account.');
+  }
+
+  const matches = await verifyHash(currentPassword, existingUser.password);
+  if (!matches) {
+    throw new Error('Current password is incorrect.');
+  }
+
+  const nextPassword = await hash(newPassword);
+  await executeDbOperation(async prisma => {
+    return await prisma.user.update({
+      where: { id: existingUser.id },
+      data: { password: nextPassword, passwordChangedAt: new Date() },
+      select: { id: true },
+    });
+  }, 'Change Student Password');
+
+  return { changed: true };
+};
+
+const getStudentDashboard = async (req: Request) => {
+  const user = req.user;
+  if (!user?.email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  const successfulOrderStatuses = [
+    OrderStatus.PAID,
+    OrderStatus.CONFIRMED,
+    OrderStatus.PROCESSING,
+    OrderStatus.SHIPPED,
+    OrderStatus.OUT_FOR_DELIVERY,
+    OrderStatus.DELIVERED,
+  ];
+
+  return await executeDbOperation(async prisma => {
+    const account = await prisma.user.findUnique({
+      where: { email: user.email, deletedAt: null, status: UserStatus.ACTIVE },
+      select: {
+        id: true,
+        email: true,
+        avatarUrl: true,
+        studentProfile: { select: { displayName: true } },
+      },
+    });
+
+    if (!account?.studentProfile) {
+      throw new Error('Student profile not found.');
+    }
+
+    const [enrollments, purchaseOrders, recentOrders, wishlistCount] = await Promise.all([
+      prisma.enrollment.findMany({
+        where: {
+          userId: account.id,
+          deletedAt: null,
+          status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.COMPLETED] },
+        },
+        orderBy: { updatedAt: 'desc' },
+        select: {
+          id: true,
+          status: true,
+          progress: true,
+          startedAt: true,
+          completedAt: true,
+          course: {
+            select: {
+              id: true,
+              title: true,
+              thumbnailUrl: true,
+              createdBy: { select: { displayName: true } },
+            },
+          },
+        },
+      }),
+      prisma.order.findMany({
+        where: { userId: account.id, status: { in: successfulOrderStatuses } },
+        select: {
+          id: true,
+          totalAmount: true,
+          status: true,
+          orderItems: {
+            select: {
+              quantity: true,
+              format: true,
+              bookId: true,
+              courseId: true,
+            },
+          },
+        },
+      }),
+      prisma.order.findMany({
+        where: { userId: account.id, orderItems: { some: {} } },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          totalAmount: true,
+          status: true,
+          createdAt: true,
+          courierTrackingCode: true,
+          orderItems: {
+            select: {
+              id: true,
+              quantity: true,
+              format: true,
+              book: { select: { title: true } },
+              course: { select: { title: true } },
+            },
+          },
+        },
+      }),
+      prisma.wishlist.count({ where: { userId: account.id } }),
+    ]);
+
+    const bookItems = purchaseOrders.flatMap(order =>
+      order.orderItems.filter(item => item.bookId !== null)
+    );
+    const booksPurchased = bookItems.reduce((sum, item) => sum + item.quantity, 0);
+    const ebookPurchases = bookItems
+      .filter(item => item.format === 'DIGITAL')
+      .reduce((sum, item) => sum + item.quantity, 0);
+    const physicalBookPurchases = bookItems
+      .filter(item => item.format === 'PHYSICAL')
+      .reduce((sum, item) => sum + item.quantity, 0);
+    const totalSpent = purchaseOrders.reduce((sum, order) => sum + Number(order.totalAmount), 0);
+    const completedCourses = enrollments.filter(
+      item => item.status === EnrollmentStatus.COMPLETED || Number(item.progress ?? 0) >= 100
+    ).length;
+    const activeCourses = enrollments.filter(
+      item => item.status === EnrollmentStatus.ACTIVE && Number(item.progress ?? 0) < 100
+    ).length;
+    const inTransitStatuses: OrderStatus[] = [
+      OrderStatus.PROCESSING,
+      OrderStatus.SHIPPED,
+      OrderStatus.OUT_FOR_DELIVERY,
+    ];
+    const inTransitOrders = purchaseOrders.filter(order =>
+      inTransitStatuses.includes(order.status)
+    ).length;
+
+    return {
+      profile: {
+        id: account.id,
+        email: account.email,
+        avatarUrl: account.avatarUrl,
+        displayName: account.studentProfile.displayName,
+      },
+      stats: {
+        totalPurchases: enrollments.length + booksPurchased,
+        coursesPurchased: enrollments.length,
+        booksPurchased,
+        ebookPurchases,
+        physicalBookPurchases,
+        activeCourses,
+        completedCourses,
+        totalOrders: purchaseOrders.length,
+        inTransitOrders,
+        wishlistCount,
+        totalSpent,
+      },
+      recentCourses: enrollments.slice(0, 4).map(enrollment => ({
+        id: enrollment.course.id,
+        title: enrollment.course.title,
+        thumbnailUrl: enrollment.course.thumbnailUrl,
+        instructorName: enrollment.course.createdBy?.displayName ?? 'AloSkill Instructor',
+        status: enrollment.status,
+        progress: Number(enrollment.progress ?? 0),
+        startedAt: enrollment.startedAt,
+        completedAt: enrollment.completedAt,
+      })),
+      recentOrders: recentOrders.map(order => ({
+        ...order,
+        totalAmount: Number(order.totalAmount),
+        itemCount: order.orderItems.reduce((sum, item) => sum + item.quantity, 0),
+        orderItems: order.orderItems.map(item => ({
+          id: item.id,
+          title: item.book?.title ?? item.course?.title ?? 'Purchase item',
+          quantity: item.quantity,
+          format: item.format,
+        })),
+      })),
+    };
+  }, 'Get Student Dashboard');
+};
+
 const getInstructorSettings = async (req: Request) => {
   const user = req.user;
   if (!user?.email) {
@@ -785,6 +1088,10 @@ export const userService = {
   getAllUsers,
   getAllInstructors,
   getSingleInstructor,
+  getStudentSettings,
+  updateStudentSettings,
+  changeStudentPassword,
+  getStudentDashboard,
   getInstructorSettings,
   updateInstructorSettings,
   getAllStudentsForAdmin,

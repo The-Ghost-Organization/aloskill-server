@@ -58,3 +58,32 @@ export const adminInstructorActionSchema = z.object({
       .regex(/^[^<>]*$/),
   }),
 });
+
+export const updateStudentSettingsSchema = z.object({
+  body: z.object({
+    displayName: z.string().trim().min(3).max(60).optional(),
+    phoneNumber: z
+      .string()
+      .trim()
+      .min(11)
+      .max(14)
+      .regex(/^[0-9+]+$/)
+      .optional(),
+    gender: z.enum(['MALE', 'FEMALE']).optional(),
+    bio: z.string().trim().max(150).nullable().optional(),
+    avatarUrl: z.string().url().nullable().optional(),
+  }),
+});
+
+export const changeStudentPasswordSchema = z.object({
+  body: z.object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newPassword: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .max(64, 'Password must be less than 64 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one number'),
+  }),
+});

@@ -926,7 +926,7 @@ const getAllBooksDataforUser = async (req: Request) => {
         order: {
           userId: userProfile.id,
           status: {
-            in: ['PAID', 'DELIVERED'],
+            in: ['PAID', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED'],
           },
         },
         bookId: { not: null },
@@ -974,7 +974,7 @@ const getAllBooksDataforUser = async (req: Request) => {
         orderItemId: item.id,
         createdAt: item.createdAt,
         orderId: item.order.id,
-        orderStatus: item.status,
+        orderStatus: item.order.status,
         shippingAddress: isDigital ? null : item.order.shippingAddress,
         book: {
           id: item.book?.id,
@@ -982,18 +982,29 @@ const getAllBooksDataforUser = async (req: Request) => {
           coverImage: item.book?.coverImage,
           author: item.book?.author,
           format: item.format,
-          price: item.price,
+          price: Number(item.price),
+          readUrl: isDigital
+            ? (item.book?.files.find(file => file.fileType === 'EBOOK')?.url ??
+              item.book?.files.find(file => file.fileType === 'PREVIEW')?.url ??
+              null)
+            : null,
         },
         delivery: isDigital
           ? null
           : {
-              status: item.status,
+              status:
+                item.status === 'PENDING' && item.order.status === 'PAID' ? 'PAID' : item.status,
               courierName: item.courierName,
               trackingNumber: item.trackingNumber,
               shippedAt: item.shippedAt,
               deliveredAt: item.deliveredAt,
             },
-        downloadUrls: isDigital ? (item.book?.files.map(file => file.url) ?? []) : null,
+        downloadUrls: isDigital
+          ? (item.book?.files.map(file => ({
+              url: file.url,
+              action: file.fileType === 'PREVIEW' ? 'READ' : 'DOWNLOAD',
+            })) ?? [])
+          : null,
         // downloadUrl: isDigital ? item.book?.files.find(file => file.fileType === 'EBOOK')?.url ?? null : null,
       };
     });
