@@ -21,42 +21,31 @@ const getSingleInstructor = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Instructors Fetched Successfully', result);
 });
 
-const getStudentSettings = catchAsync(async (req, res): Promise<void> => {
-  const result = await userService.getStudentSettings(req);
-  ResponseHandler.ok(res, 'Student settings fetched successfully', result);
-});
-
-const updateStudentSettings = catchAsync(async (req, res): Promise<void> => {
-  const result = await userService.updateStudentSettings(req);
-  ResponseHandler.ok(res, 'Student profile updated successfully', result);
-});
-
-const changeStudentPassword = catchAsync(async (req, res): Promise<void> => {
-  const result = await userService.changeStudentPassword(req);
-  ResponseHandler.ok(res, 'Password changed successfully', result);
-});
-
-const getStudentDashboard = catchAsync(async (req, res): Promise<void> => {
-  const result = await userService.getStudentDashboard(req);
-  ResponseHandler.ok(res, 'Student dashboard fetched successfully', result);
-});
-
-const getInstructorSettings = catchAsync(async (req, res): Promise<void> => {
-  const result = await userService.getInstructorSettings(req);
-  ResponseHandler.ok(res, 'Instructor settings fetched successfully', result);
-});
-
-const updateInstructorSettings = catchAsync(async (req, res): Promise<void> => {
-  await userService.updateInstructorSettings(req);
-  const result = await userService.getInstructorSettings(req);
-  ResponseHandler.ok(res, 'Instructor profile updated successfully', result);
-});
-
 // Admin Controllers
 
 const getAllStudentsForAdmin = catchAsync(async (req, res): Promise<void> => {
   const result = await userService.getAllStudentsForAdmin();
   ResponseHandler.ok(res, 'Students Fetched Successfully for admin', result);
+});
+
+const getAdminUsers = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.getAdminUsers(req);
+  ResponseHandler.ok(res, 'Users retrieved successfully', result);
+});
+
+const getAdminUserDetails = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.getAdminUserDetails(req);
+  ResponseHandler.ok(res, 'User details retrieved successfully', result);
+});
+
+const createAdminUser = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.createAdminUser(req);
+  ResponseHandler.created(res, 'User created successfully', result);
+});
+
+const updateAdminUser = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.updateAdminUser(req);
+  ResponseHandler.ok(res, 'User updated successfully', result);
 });
 
 const getAdminInstructors = catchAsync(async (req, res): Promise<void> => {
@@ -78,14 +67,12 @@ export const userController = {
   getUserByEmail,
   getAllInstructors,
   getSingleInstructor,
-  getStudentSettings,
-  updateStudentSettings,
-  changeStudentPassword,
-  getStudentDashboard,
-  getInstructorSettings,
-  updateInstructorSettings,
   getAllStudentsForAdmin,
   getAdminInstructors,
   getAdminInstructorDetails,
   updateAdminInstructor,
+  getAdminUsers,
+  getAdminUserDetails,
+  createAdminUser,
+  updateAdminUser,
 };
