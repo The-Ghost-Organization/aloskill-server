@@ -53,4 +53,297 @@ const decideApproval = async (req: Request) => executeDbOperation(async prisma =
   return { id: key, type, decision };
 }), 'Decide Approval');
 
-export const adminService = { allApprovals, approvalDetail, decideApproval };
+const percentageChange = (current: number, previous: number) => {
+  if (previous === 0) return current === 0 ? 0 : 100;
+  return Number((((current - previous) / previous) * 100).toFixed(1));
+};
+
+const startOfDay = (value: Date) => {
+  const date = new Date(value);
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
+const adminDashboard = async (req: Request) => executeDbOperation(async prisma => {
+  await requireAdmin(prisma, req.user.email);
+
+  const now = new Date();
+  const currentPeriodStart = startOfDay(new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000));
+  const previousPeriodStart = startOfDay(new Date(now.getTime() - 13 * 24 * 60 * 60 * 1000));
+  const chartStart = startOfDay(new Date(now.getTime() - 11 * 7 * 24 * 60 * 60 * 1000));
+  const paidOrderStatuses = ['PAID', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED'] as const;
+
+  const [
+    studentCount,
+    newStudents,
+    previousNewStudents,
+    instructorCount,
+    courseCount,
+    bookCount,
+    orderCount,
+    successfulPayments,
+    currentPayments,
+    previousPayments,
+    refundPayments,
+    paidPayouts,
+    pendingPayouts,
+    ratingAggregate,
+    enrollmentCount,
+    completedEnrollmentCount,
+    physicalStock,
+    lowStockCount,
+    outOfStockCount,
+    pendingBooks,
+    pendingCourses,
+    pendingInstructors,
+    paymentHealth,
+    orderHealth,
+    providerMix,
+    chartPayments,
+    currentSoldItems,
+    previousSoldItems,
+    topCourseGroups,
+    topBookGroups,
+    recentTransactions,
+  ] = await Promise.all([
+    prisma.studentProfile.count({ where: { deletedAt: null } }),
+    prisma.studentProfile.count({ where: { deletedAt: null, createdAt: { gte: currentPeriodStart } } }),
+    prisma.studentProfile.count({ where: { deletedAt: null, createdAt: { gte: previousPeriodStart, lt: currentPeriodStart } } }),
+    prisma.instructorProfile.count({ where: { deletedAt: null, status: 'APPROVED' } }),
+    prisma.course.count({ where: { deletedAt: null, status: 'PUBLISHED' } }),
+    prisma.book.count({ where: { deletedAt: null, status: 'APPROVED' } }),
+    prisma.order.count(),
+    prisma.paymentTransaction.aggregate({
+      where: { deletedAt: null, status: 'SUCCEEDED', type: 'PURCHASE' },
+      _sum: { amount: true, providerFee: true },
+      _count: { id: true },
+    }),
+    prisma.paymentTransaction.aggregate({
+      where: { deletedAt: null, status: 'SUCCEEDED', type: 'PURCHASE', createdAt: { gte: currentPeriodStart } },
+      _sum: { amount: true },
+      _count: { id: true },
+    }),
+    prisma.paymentTransaction.aggregate({
+      where: { deletedAt: null, status: 'SUCCEEDED', type: 'PURCHASE', createdAt: { gte: previousPeriodStart, lt: currentPeriodStart } },
+      _sum: { amount: true },
+      _count: { id: true },
+    }),
+    prisma.paymentTransaction.aggregate({
+      where: { deletedAt: null, status: 'REFUNDED' },
+      _sum: { amount: true },
+      _count: { id: true },
+    }),
+    prisma.payout.aggregate({
+      where: { deletedAt: null, status: 'PAID' },
+      _sum: { amount: true, fee: true },
+    }),
+    prisma.payout.aggregate({
+      where: { deletedAt: null, status: 'PENDING' },
+      _sum: { amount: true },
+      _count: { id: true },
+    }),
+    prisma.review.aggregate({ where: { deletedAt: null }, _avg: { rating: true }, _count: { id: true } }),
+    prisma.enrollment.count({ where: { deletedAt: null, status: { in: ['ACTIVE', 'COMPLETED'] } } }),
+    prisma.enrollment.count({ where: { deletedAt: null, status: 'COMPLETED' } }),
+    prisma.book.aggregate({
+      where: { deletedAt: null, status: 'APPROVED', formats: { has: 'HARDCOVER' } },
+      _sum: { stock: true },
+    }),
+    prisma.book.count({
+      where: { deletedAt: null, status: 'APPROVED', formats: { has: 'HARDCOVER' }, stock: { gt: 0, lt: 20 } },
+    }),
+    prisma.book.count({
+      where: { deletedAt: null, status: 'APPROVED', formats: { has: 'HARDCOVER' }, stock: 0 },
+    }),
+    prisma.book.count({ where: { deletedAt: null, status: 'PENDING' } }),
+    prisma.course.count({ where: { deletedAt: null, status: 'PENDING' } }),
+    prisma.instructorProfile.count({ where: { deletedAt: null, status: 'PENDING' } }),
+    prisma.paymentTransaction.groupBy({
+      by: ['status'],
+      where: { deletedAt: null },
+      _count: { id: true },
+      _sum: { amount: true },
+    }),
+    prisma.order.groupBy({ by: ['status'], _count: { id: true } }),
+    prisma.paymentTransaction.groupBy({
+      by: ['provider'],
+      where: { deletedAt: null, status: 'SUCCEEDED', type: 'PURCHASE' },
+      _count: { id: true },
+      _sum: { amount: true },
+    }),
+    prisma.paymentTransaction.findMany({
+      where: { deletedAt: null, status: 'SUCCEEDED', type: 'PURCHASE', createdAt: { gte: chartStart } },
+      select: { amount: true, createdAt: true },
+      orderBy: { createdAt: 'asc' },
+    }),
+    prisma.orderItem.aggregate({
+      where: { order: { status: { in: [...paidOrderStatuses] } }, createdAt: { gte: currentPeriodStart } },
+      _sum: { quantity: true },
+    }),
+    prisma.orderItem.aggregate({
+      where: { order: { status: { in: [...paidOrderStatuses] } }, createdAt: { gte: previousPeriodStart, lt: currentPeriodStart } },
+      _sum: { quantity: true },
+    }),
+    prisma.orderItem.groupBy({
+      by: ['courseId'],
+      where: { courseId: { not: null }, order: { status: { in: [...paidOrderStatuses] } } },
+      _sum: { price: true, quantity: true },
+      orderBy: { _sum: { price: 'desc' } },
+      take: 5,
+    }),
+    prisma.orderItem.groupBy({
+      by: ['bookId'],
+      where: { bookId: { not: null }, order: { status: { in: [...paidOrderStatuses] } } },
+      _sum: { price: true, quantity: true },
+      orderBy: { _sum: { price: 'desc' } },
+      take: 5,
+    }),
+    prisma.paymentTransaction.findMany({
+      where: { deletedAt: null },
+      orderBy: { createdAt: 'desc' },
+      take: 8,
+      select: {
+        id: true,
+        providerTransactionId: true,
+        amount: true,
+        currency: true,
+        provider: true,
+        status: true,
+        type: true,
+        createdAt: true,
+        user: { select: { email: true, studentProfile: { select: { displayName: true } }, instructorProfile: { select: { displayName: true } } } },
+      },
+    }),
+  ]);
+
+  const courseIds = topCourseGroups.flatMap(item => item.courseId ? [item.courseId] : []);
+  const bookIds = topBookGroups.flatMap(item => item.bookId ? [item.bookId] : []);
+  const [topCourses, topBooks, courseRevenueTotal, bookRevenueTotal] = await Promise.all([
+    prisma.course.findMany({
+      where: { id: { in: courseIds } },
+      select: { id: true, title: true, ratingAverage: true, createdBy: { select: { displayName: true } } },
+    }),
+    prisma.book.findMany({
+      where: { id: { in: bookIds } },
+      select: { id: true, title: true, author: true, ratings: true },
+    }),
+    prisma.orderItem.aggregate({
+      where: { courseId: { not: null }, order: { status: { in: [...paidOrderStatuses] } } },
+      _sum: { price: true },
+    }),
+    prisma.orderItem.aggregate({
+      where: { bookId: { not: null }, order: { status: { in: [...paidOrderStatuses] } } },
+      _sum: { price: true },
+    }),
+  ]);
+
+  const weeklyMap = new Map<string, { revenue: number; payments: number }>();
+  for (let index = 0; index < 12; index += 1) {
+    const start = new Date(chartStart.getTime() + index * 7 * 24 * 60 * 60 * 1000);
+    weeklyMap.set(start.toISOString().slice(0, 10), { revenue: 0, payments: 0 });
+  }
+  for (const payment of chartPayments) {
+    const weekIndex = Math.min(11, Math.max(0, Math.floor((payment.createdAt.getTime() - chartStart.getTime()) / (7 * 24 * 60 * 60 * 1000))));
+    const key = new Date(chartStart.getTime() + weekIndex * 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const bucket = weeklyMap.get(key)!;
+    bucket.revenue += Number(payment.amount);
+    bucket.payments += 1;
+  }
+
+  const grossRevenue = Number(successfulPayments._sum.amount ?? 0);
+  const refunds = Number(refundPayments._sum.amount ?? 0);
+  const payouts = Number(paidPayouts._sum.amount ?? 0);
+  const providerFees = Number(successfulPayments._sum.providerFee ?? 0) + Number(paidPayouts._sum.fee ?? 0);
+  const netCash = grossRevenue - refunds - payouts - providerFees;
+  const currentRevenue = Number(currentPayments._sum.amount ?? 0);
+  const previousRevenue = Number(previousPayments._sum.amount ?? 0);
+  const successfulCount = successfulPayments._count.id;
+  const refundedCount = refundPayments._count.id;
+
+  const courseRevenue = Number(courseRevenueTotal._sum.price ?? 0);
+  const bookRevenue = Number(bookRevenueTotal._sum.price ?? 0);
+  const courseMap = new Map(topCourses.map(item => [item.id, item]));
+  const bookMap = new Map(topBooks.map(item => [item.id, item]));
+
+  return {
+    generatedAt: now.toISOString(),
+    overview: {
+      students: studentCount,
+      studentsTrend: percentageChange(newStudents, previousNewStudents),
+      instructors: instructorCount,
+      courses: courseCount,
+      books: bookCount,
+      orders: orderCount,
+      grossRevenue,
+      revenueTrend: percentageChange(currentRevenue, previousRevenue),
+      weeklyRevenue: currentRevenue,
+      weeklySales: Number(currentSoldItems._sum.quantity ?? 0),
+      salesTrend: percentageChange(Number(currentSoldItems._sum.quantity ?? 0), Number(previousSoldItems._sum.quantity ?? 0)),
+      averageOrderValue: successfulCount ? grossRevenue / successfulCount : 0,
+      netCash,
+      refunds,
+      refundRate: successfulCount + refundedCount ? (refundedCount / (successfulCount + refundedCount)) * 100 : 0,
+      platformRating: Number(ratingAggregate._avg.rating ?? 0),
+      reviewCount: ratingAggregate._count.id,
+      completionRate: enrollmentCount ? (completedEnrollmentCount / enrollmentCount) * 100 : 0,
+    },
+    catalog: {
+      physicalStock: Number(physicalStock._sum.stock ?? 0),
+      lowStockCount,
+      outOfStockCount,
+      pendingApprovals: pendingBooks + pendingCourses + pendingInstructors,
+      pendingBooks,
+      pendingCourses,
+      pendingInstructors,
+    },
+    finance: {
+      successfulPayments: successfulCount,
+      pendingPayoutAmount: Number(pendingPayouts._sum.amount ?? 0),
+      pendingPayoutCount: pendingPayouts._count.id,
+      providerFees,
+    },
+    revenueTrend: Array.from(weeklyMap.entries()).map(([week, values]) => ({ week, ...values })),
+    revenueSplit: [
+      { name: 'Courses', value: courseRevenue },
+      { name: 'Books', value: bookRevenue },
+    ],
+    paymentHealth: paymentHealth.map(item => ({ status: item.status, count: item._count.id, amount: Number(item._sum.amount ?? 0) })),
+    orderHealth: orderHealth.map(item => ({ status: item.status, count: item._count.id })),
+    providerMix: providerMix.map(item => ({ provider: item.provider, count: item._count.id, amount: Number(item._sum.amount ?? 0) })),
+    topCourses: topCourseGroups.map(group => {
+      const course = group.courseId ? courseMap.get(group.courseId) : null;
+      return {
+        id: group.courseId,
+        name: course?.title ?? 'Unknown course',
+        owner: course?.createdBy?.displayName ?? 'Unassigned',
+        units: Number(group._sum.quantity ?? 0),
+        revenue: Number(group._sum.price ?? 0),
+        rating: Number(course?.ratingAverage ?? 0),
+      };
+    }),
+    topBooks: topBookGroups.map(group => {
+      const book = group.bookId ? bookMap.get(group.bookId) : null;
+      return {
+        id: group.bookId,
+        name: book?.title ?? 'Unknown book',
+        owner: book?.author ?? 'Unknown author',
+        units: Number(group._sum.quantity ?? 0),
+        revenue: Number(group._sum.price ?? 0),
+        rating: Number(book?.ratings ?? 0),
+      };
+    }),
+    recentTransactions: recentTransactions.map(item => ({
+      id: item.id,
+      reference: item.providerTransactionId,
+      customer: item.user.studentProfile?.displayName ?? item.user.instructorProfile?.displayName ?? item.user.email,
+      amount: Number(item.amount),
+      currency: item.currency,
+      provider: item.provider,
+      status: item.status,
+      type: item.type,
+      createdAt: item.createdAt.toISOString(),
+    })),
+  };
+}, 'Fetch Admin Dashboard');
+
+export const adminService = { allApprovals, approvalDetail, decideApproval, adminDashboard };
