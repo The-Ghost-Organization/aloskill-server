@@ -52,6 +52,11 @@ const getSingleCourseForInstructorEdit = catchAsync(async (req, res): Promise<vo
   ResponseHandler.ok(res, 'Course fetched successfully for instructor edit!', result);
 });
 
+const getSingleCourseForCheckout = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getSingleCourseForCheckout(req);
+  ResponseHandler.ok(res, 'Course fetched successfully for checkout!', result);
+});
+
 
 const getInstructorEarnings = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getInstructorEarnings(req);
@@ -200,4 +205,5 @@ export const courseController = {
   deleteFile,
   getVideo,
   getSecureVideoToken,
+  getSingleCourseForCheckout
 };

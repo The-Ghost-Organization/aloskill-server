@@ -214,7 +214,7 @@ const createCourse = async (req: Request) => {
         moduleCount: modules.length,
         slug: slugify(data.slug),
         categoryId: categoryData.id,
-        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : CourseStatus.PUBLISHED,
+        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : CourseStatus.PENDING,
         createdById: primaryInstructorId,
 
         courseInstructors: {
@@ -403,6 +403,7 @@ const updateCourse = async (req: Request) => {
           title: data.title,
           slug: slugify(data.slug),
           description: data.description,
+          status: CourseStatus.PENDING,
           welcomeMessage: data.welcomeMessage,
           congratulationsMessage: data.congratulationsMessage,
           originalPrice: data.originalPrice,
@@ -1601,6 +1602,44 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
   return formatCourseData(getCourseDetails);
 };
 
+const getSingleCourseForCheckout = async (req: Request) => {
+  const courseId = req.params.courseId as string;
+
+  if (!courseId) {
+    throw new Error('Course ID is required.');
+  }
+  const course = await executeDbOperation(async prisma => {
+    return await prisma.course.findUnique({
+      where: { id: courseId, status: CourseStatus.PUBLISHED, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        thumbnailUrl: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        discountPrice: true,
+        originalPrice: true,
+      },
+    });
+  }, 'Get Single Course for Checkout');
+
+  if (!course) {
+    throw new Error('Course not found or not published.');
+  }
+
+  return {
+    id: course.id,
+    title: course.title,
+    thumbnailUrl: course.thumbnailUrl,
+    category: course.category?.name,
+    originalPrice: course.originalPrice,
+    discountPrice: course.discountPrice,
+  };
+};
+
 const getInstructorEarnings = async (req: Request) => {
   const userId = (req as any).user?.id as string | undefined;
   if (!userId) {
@@ -2357,4 +2396,5 @@ export const courseService = {
   getVideo,
   deleteFile,
   getSecureVideoToken,
+  getSingleCourseForCheckout
 };

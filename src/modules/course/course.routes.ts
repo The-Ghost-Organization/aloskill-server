@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { requireAdmin, requireInstructor, requireStudent } from '../../middleware/auth.js';
+import { requireAdmin, requireAuth, requireInstructor, requireStudent } from '../../middleware/auth.js';
 import { generalLimiter, instructorQueryLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { courseController } from './course.controller.js';
@@ -87,6 +87,8 @@ router.get(
 router.get('/instructorDashboard', requireInstructor, courseController.getInstructorDashboardData);
 
 router.get('/instructor/earnings', requireInstructor, courseController.getInstructorEarnings);
+
+router.get('/user/checkout/:courseId', requireAuth, courseController.getSingleCourseForCheckout);
 
 router.get('/tags', instructorQueryLimiter, requireInstructor, courseController.getCourseTags);
 
