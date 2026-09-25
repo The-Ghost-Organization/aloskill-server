@@ -6,7 +6,14 @@ import { Decimal } from '@prisma/client/runtime/client';
 import { type Request } from 'express';
 import * as XLSX from 'xlsx';
 import { executeDbOperation } from '../../config/database.js';
-import { ApplicationStatus, BookFormat, BookStatus, OrderStatus } from '../../generated/enums.js';
+import {
+  ApplicationStatus,
+  BookFormat,
+  BookStatus,
+  OrderItemStatus,
+  OrderStatus,
+  TransactionStatus,
+} from '../../generated/enums.js';
 import { notificationService } from '../notification/notification.service.js';
 import {
   CreateBookBodySchema,
@@ -764,69 +771,407 @@ const getBookDetailsForPublicView = async (req: Request) => {
   if (!bookId) {
     throw new Error('Book ID is required.');
   }
-  const book = await executeDbOperation(async prisma => {
-    return await prisma.book.findUnique({
-      where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
-      select: {
-        id: true,
-        title: true,
-        author: true,
-        authorProfile: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            photoUrl: true,
-            bio: true,
-            instructorProfileId: true,
+
+  const result = await executeDbOperation(async prisma => {
+    const [book, reviewSummary] = await Promise.all([
+      prisma.book.findUnique({
+        where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+        select: {
+          id: true,
+          title: true,
+          author: true,
+          authorProfile: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              photoUrl: true,
+              bio: true,
+              instructorProfileId: true,
+            },
           },
-        },
-        publisher: true,
-        translator: true,
-        editor: true,
-        description: true,
-        physicalRegularPrice: true,
-        physicalSalePrice: true,
-        digitalRegularPrice: true,
-        digitalSalePrice: true,
-        stock: true,
-        language: true,
-        coverImage: true,
-        isbn: true,
-        edition: true,
-        pages: true,
-        owner: {
-          select: {
-            avatarUrl: true,
-            status: true,
-            instructorProfile: {
-              select: {
-                displayName: true,
-                qualifications: true,
-                expertise: true,
+          publisher: true,
+          translator: true,
+          editor: true,
+          description: true,
+          physicalRegularPrice: true,
+          physicalSalePrice: true,
+          digitalRegularPrice: true,
+          digitalSalePrice: true,
+          stock: true,
+          language: true,
+          coverImage: true,
+          isbn: true,
+          edition: true,
+          pages: true,
+          owner: {
+            select: {
+              avatarUrl: true,
+              status: true,
+              instructorProfile: {
+                select: {
+                  displayName: true,
+                  qualifications: true,
+                  expertise: true,
+                },
               },
             },
           },
-        },
-        formats: true,
-        createdAt: true,
-        category: {
-          select: {
-            name: true,
+          formats: true,
+          createdAt: true,
+          category: {
+            select: {
+              name: true,
+            },
+          },
+          files: {
+            select: {
+              name: true,
+              url: true,
+              fileType: true,
+            },
           },
         },
-        files: {
-          select: {
-            name: true,
-            url: true,
-            fileType: true,
-          },
+      }),
+      prisma.review.aggregate({
+        where: {
+          bookId,
+          deletedAt: null,
+          flagged: false,
         },
-      },
-    });
+        _avg: { rating: true },
+        _count: { _all: true },
+      }),
+    ]);
+
+    return { book, reviewSummary };
   }, 'Get Book Details for Public View');
 
-  return book;
+  if (!result.book) {
+    return null;
+  }
+
+  const average = Number(result.reviewSummary._avg.rating ?? 0);
+
+  return {
+    ...result.book,
+    ratings: Math.round(average * 10) / 10,
+    reviewCount: result.reviewSummary._count._all,
+  };
+};
+
+type ReviewWithUser = {
+  id: string;
+  rating: number;
+  title: string | null;
+  body: string | null;
+  createdAt: Date;
+  user: {
+    avatarUrl: string | null;
+    studentProfile: { displayName: string } | null;
+    instructorProfile: { displayName: string } | null;
+  };
+};
+
+const formatBookReview = (review: ReviewWithUser) => ({
+  id: review.id,
+  rating: review.rating,
+  title: review.title,
+  body: review.body,
+  createdAt: review.createdAt,
+  reviewer: {
+    displayName:
+      review.user.studentProfile?.displayName ??
+      review.user.instructorProfile?.displayName ??
+      'AloSkill User',
+    avatarUrl: review.user.avatarUrl,
+  },
+  verifiedPurchase: true,
+});
+
+const getBookReviews = async (req: Request) => {
+  const bookId = req.params.bookId as string;
+  const requestedPage = Number(req.query.page ?? 1);
+  const requestedLimit = Number(req.query.limit ?? 6);
+  const page = Number.isFinite(requestedPage) && requestedPage > 0 ? Math.floor(requestedPage) : 1;
+  const limit =
+    Number.isFinite(requestedLimit) && requestedLimit > 0
+      ? Math.min(Math.floor(requestedLimit), 20)
+      : 6;
+
+  if (!bookId) {
+    throw new Error('Book ID is required.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const book = await prisma.book.findUnique({
+      where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+      select: { id: true },
+    });
+
+    if (!book) {
+      throw new Error('Book not found or not approved.');
+    }
+
+    const where = {
+      bookId,
+      deletedAt: null,
+      flagged: false,
+    } as const;
+
+    const [reviews, aggregate] = await Promise.all([
+      prisma.review.findMany({
+        where,
+        orderBy: [{ createdAt: 'desc' }],
+        skip: (page - 1) * limit,
+        take: limit,
+        select: {
+          id: true,
+          rating: true,
+          title: true,
+          body: true,
+          createdAt: true,
+          user: {
+            select: {
+              avatarUrl: true,
+              studentProfile: { select: { displayName: true } },
+              instructorProfile: { select: { displayName: true } },
+            },
+          },
+        },
+      }),
+      prisma.review.aggregate({
+        where,
+        _avg: { rating: true },
+        _count: { _all: true },
+      }),
+    ]);
+
+    const average = Number(aggregate._avg.rating ?? 0);
+    const total = aggregate._count._all;
+
+    return {
+      items: reviews.map(review => formatBookReview(review)),
+      summary: {
+        average: Math.round(average * 10) / 10,
+        count: total,
+      },
+      pagination: {
+        page,
+        limit,
+        total,
+        hasMore: page * limit < total,
+      },
+    };
+  }, 'Get Book Reviews');
+};
+
+const getBookReviewStatus = async (req: Request) => {
+  const bookId = req.params.bookId as string;
+  const email = req.user?.email;
+
+  if (!email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const user = await prisma.user.findUnique({
+      where: { email, deletedAt: null, status: 'ACTIVE' },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw new Error('Unauthorized: User profile not found.');
+    }
+
+    const [book, purchase, existingReview] = await Promise.all([
+      prisma.book.findUnique({
+        where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+        select: { id: true },
+      }),
+      prisma.orderItem.findFirst({
+        where: {
+          bookId,
+          status: { not: OrderItemStatus.REFUNDED },
+          order: {
+            userId: user.id,
+            OR: [
+              { status: OrderStatus.PAID },
+              { status: OrderStatus.DELIVERED },
+              {
+                paymentTransactions: {
+                  some: {
+                    status: TransactionStatus.SUCCEEDED,
+                    deletedAt: null,
+                  },
+                },
+              },
+            ],
+          },
+        },
+        select: { id: true },
+      }),
+      prisma.review.findFirst({
+        where: { userId: user.id, bookId, deletedAt: null },
+        select: {
+          id: true,
+          rating: true,
+          title: true,
+          body: true,
+          createdAt: true,
+          flagged: true,
+        },
+      }),
+    ]);
+
+    if (!book) {
+      throw new Error('Book not found or not approved.');
+    }
+
+    return {
+      canReview: Boolean(purchase),
+      hasPurchased: Boolean(purchase),
+      existingReview,
+    };
+  }, 'Get Book Review Status');
+};
+
+const submitBookReview = async (req: Request) => {
+  const bookId = req.params.bookId as string;
+  const email = req.user?.email;
+  const { rating, title, body } = req.body as {
+    rating: number;
+    title?: string;
+    body: string;
+  };
+
+  if (!email) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      const user = await tx.user.findUnique({
+        where: { email, deletedAt: null, status: 'ACTIVE' },
+        select: { id: true },
+      });
+
+      if (!user) {
+        throw new Error('Unauthorized: User profile not found.');
+      }
+
+      const book = await tx.book.findUnique({
+        where: { id: bookId, status: BookStatus.APPROVED, deletedAt: null },
+        select: { id: true },
+      });
+
+      if (!book) {
+        throw new Error('Book not found or not approved.');
+      }
+
+      const purchase = await tx.orderItem.findFirst({
+        where: {
+          bookId,
+          status: { not: OrderItemStatus.REFUNDED },
+          order: {
+            userId: user.id,
+            OR: [
+              { status: OrderStatus.PAID },
+              { status: OrderStatus.DELIVERED },
+              {
+                paymentTransactions: {
+                  some: {
+                    status: TransactionStatus.SUCCEEDED,
+                    deletedAt: null,
+                  },
+                },
+              },
+            ],
+          },
+        },
+        select: { id: true },
+      });
+
+      if (!purchase) {
+        throw new Error('Only users who purchased this book can review it.');
+      }
+
+      const existingReview = await tx.review.findFirst({
+        where: { userId: user.id, bookId, deletedAt: null },
+        select: { id: true },
+      });
+
+      const reviewSelect = {
+        id: true,
+        rating: true,
+        title: true,
+        body: true,
+        createdAt: true,
+        user: {
+          select: {
+            avatarUrl: true,
+            studentProfile: { select: { displayName: true } },
+            instructorProfile: { select: { displayName: true } },
+          },
+        },
+      } as const;
+
+      const review = existingReview
+        ? await tx.review.update({
+            where: { id: existingReview.id },
+            data: {
+              rating,
+              title: title?.trim() ?? null,
+              body: body.trim(),
+            },
+            select: reviewSelect,
+          })
+        : await tx.review.create({
+            data: {
+              userId: user.id,
+              bookId,
+              rating,
+              title: title?.trim() ?? null,
+              body: body.trim(),
+            },
+            select: reviewSelect,
+          });
+
+      if (!existingReview) {
+        await tx.user.update({
+          where: { id: user.id },
+          data: { reviewCount: { increment: 1 } },
+        });
+      }
+
+      const aggregate = await tx.review.aggregate({
+        where: {
+          bookId,
+          deletedAt: null,
+          flagged: false,
+        },
+        _avg: { rating: true },
+        _count: { _all: true },
+      });
+
+      const average = Number(aggregate._avg.rating ?? 0);
+      const roundedAverage = Math.round(average * 10) / 10;
+
+      await tx.book.update({
+        where: { id: bookId },
+        data: { ratings: new Decimal(roundedAverage.toFixed(1)) },
+      });
+
+      return {
+        review: formatBookReview(review),
+        summary: {
+          average: roundedAverage,
+          count: aggregate._count._all,
+        },
+        updated: Boolean(existingReview),
+      };
+    });
+  }, 'Submit Book Review');
 };
 
 const getSingleBookForCheckout = async (req: Request) => {
@@ -1260,7 +1605,14 @@ const approveBook = async (req: Request) => {
     });
   }, 'Approve Book');
 
-  await notificationService.create({ userId: approvedBook.ownerId, type: 'APPROVAL_UPDATE', title: `${approvedBook.title} approved`, entityType: 'BOOK', entityId: approvedBook.id, actionUrl: '/dashboard/instructor/books' });
+  await notificationService.create({
+    userId: approvedBook.ownerId,
+    type: 'APPROVAL_UPDATE',
+    title: `${approvedBook.title} approved`,
+    entityType: 'BOOK',
+    entityId: approvedBook.id,
+    actionUrl: '/dashboard/instructor/books',
+  });
 
   return approvedBook.id;
 };
@@ -1314,7 +1666,16 @@ const updateBookSelling = async (req: Request) => {
       }),
     'Update Book Selling State'
   );
-  await notificationService.create({ userId: result.ownerId, type: 'APPROVAL_UPDATE', title: action === 'STOP' ? `${result.title} selling suspended` : `${result.title} selling resumed`, message: note, entityType: 'BOOK', entityId: result.id, actionUrl: '/dashboard/instructor/books' });
+  await notificationService.create({
+    userId: result.ownerId,
+    type: 'APPROVAL_UPDATE',
+    title:
+      action === 'STOP' ? `${result.title} selling suspended` : `${result.title} selling resumed`,
+    message: note,
+    entityType: 'BOOK',
+    entityId: result.id,
+    actionUrl: '/dashboard/instructor/books',
+  });
   return result;
 };
 
@@ -1947,6 +2308,9 @@ export const bookService = {
   getPublicAuthorProfile,
   getAllBooksForPublicView,
   getBookDetailsForPublicView,
+  getBookReviews,
+  getBookReviewStatus,
+  submitBookReview,
   getAllBooksDataforUser,
   getSingleBookForCheckout,
   getAllBooksDataForInstructor,

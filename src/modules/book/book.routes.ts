@@ -6,10 +6,11 @@ import { validate } from '../../middleware/validation.js';
 import { bookController } from './book.controller.js';
 import {
   CreateBookAuthorSchema,
-  UpdateBookAuthorSchema,
   CreateBookCategorySchema,
+  CreateBookReviewSchema,
   CreateBookSchema,
   DeleteBookSchema,
+  UpdateBookAuthorSchema,
   UpdateBookSellingSchema,
   UpdateBookStockSchema,
 } from './book.validation.js';
@@ -44,6 +45,15 @@ router.get('/public/all-books', bookController.getAllBooksForPublicView);
 router.get('/instructor/:instructorId/books', bookController.getPublishedBooksByInstructor);
 
 router.get('/public/book-details/:bookId', bookController.getBookDetailsForPublicView);
+
+router.get('/public/book-details/:bookId/reviews', bookController.getBookReviews);
+router.get('/user/books/:bookId/review-status', requireStudent, bookController.getBookReviewStatus);
+router.post(
+  '/user/books/:bookId/reviews',
+  requireStudent,
+  validate(CreateBookReviewSchema),
+  bookController.submitBookReview
+);
 
 router.get('/user/checkout/:bookId', requireStudent, bookController.getSingleBookForCheckout);
 
@@ -108,7 +118,12 @@ router.post(
 
 router.get('/admin/authors', requireAdmin, bookController.getAdminBookAuthors);
 router.get('/admin/authors/:authorId', requireAdmin, bookController.getAdminBookAuthorDetails);
-router.patch('/admin/authors/:authorId', requireAdmin, validate(UpdateBookAuthorSchema), bookController.updateBookAuthor);
+router.patch(
+  '/admin/authors/:authorId',
+  requireAdmin,
+  validate(UpdateBookAuthorSchema),
+  bookController.updateBookAuthor
+);
 router.get('/admin/author-candidates', requireAdmin, bookController.getAuthorCandidates);
 
 router.post(

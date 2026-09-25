@@ -44,7 +44,10 @@ export const CreateBookSchema = z.object({
         .regex(/^[^<>]*$/, 'Description must not contain any opening or closing HTML tags'),
 
       purchaseCost: z.coerce.number().min(0, 'Purchase Cost cannot be negative').optional(),
-      physicalRegularPrice: z.coerce.number().min(0, 'Physical Regular Price cannot be negative').optional(),
+      physicalRegularPrice: z.coerce
+        .number()
+        .min(0, 'Physical Regular Price cannot be negative')
+        .optional(),
       physicalSalePrice: z.coerce
         .number()
         .min(0, 'Physical Sale Price cannot be negative')
@@ -100,14 +103,14 @@ export const CreateBookSchema = z.object({
     })
     .refine(
       data => {
-        if (data.formats.includes("Hardcover") && !data.physicalRegularPrice) {
+        if (data.formats.includes('Hardcover') && !data.physicalRegularPrice) {
           return false;
         }
         return true;
       },
       {
-        message: "Physical Prices are required when Hardcover format is selected",
-        path: ["physicalRegularPrice"],
+        message: 'Physical Prices are required when Hardcover format is selected',
+        path: ['physicalRegularPrice'],
       }
     )
     .refine(
@@ -191,7 +194,12 @@ export const DeleteBookSchema = z.object({
 
 export const CreateBookCategorySchema = z.object({
   body: z.object({
-    name: z.string().trim().min(2).max(80).regex(/^[^<>]*$/),
+    name: z
+      .string()
+      .trim()
+      .min(2)
+      .max(80)
+      .regex(/^[^<>]*$/),
     parentId: z.uuid().nullable().optional(),
   }),
 });
@@ -199,9 +207,20 @@ export const CreateBookCategorySchema = z.object({
 export const CreateBookAuthorSchema = z.object({
   body: z
     .object({
-      name: z.string().trim().min(2).max(120).regex(/^[^<>]*$/).optional(),
+      name: z
+        .string()
+        .trim()
+        .min(2)
+        .max(120)
+        .regex(/^[^<>]*$/)
+        .optional(),
       instructorProfileId: z.uuid().optional(),
-      bio: z.string().trim().max(3000).regex(/^[^<>]*$/).optional(),
+      bio: z
+        .string()
+        .trim()
+        .max(3000)
+        .regex(/^[^<>]*$/)
+        .optional(),
       photoUrl: z.url().optional().or(z.literal('')),
       websiteUrl: z.url().optional().or(z.literal('')),
     })
@@ -212,11 +231,51 @@ export const CreateBookAuthorSchema = z.object({
 });
 
 export const UpdateBookAuthorSchema = z.object({
+  body: z
+    .object({
+      name: z
+        .string()
+        .trim()
+        .min(2)
+        .max(120)
+        .regex(/^[^<>]*$/)
+        .optional(),
+      bio: z
+        .string()
+        .trim()
+        .max(3000)
+        .regex(/^[^<>]*$/)
+        .nullable()
+        .optional(),
+      photoUrl: z.url().nullable().optional(),
+      websiteUrl: z.url().nullable().optional(),
+      isActive: z.boolean().optional(),
+    })
+    .refine(data => Object.keys(data).length > 0, 'At least one change is required.'),
+});
+
+export const CreateBookReviewSchema = z.object({
+  params: z.object({
+    bookId: z.uuid(),
+  }),
   body: z.object({
-    name: z.string().trim().min(2).max(120).regex(/^[^<>]*$/).optional(),
-    bio: z.string().trim().max(3000).regex(/^[^<>]*$/).nullable().optional(),
-    photoUrl: z.url().nullable().optional(),
-    websiteUrl: z.url().nullable().optional(),
-    isActive: z.boolean().optional(),
-  }).refine(data => Object.keys(data).length > 0, 'At least one change is required.'),
+    rating: z.coerce
+      .number()
+      .int()
+      .min(1, 'Rating must be at least 1')
+      .max(5, 'Rating cannot exceed 5'),
+    title: z
+      .string()
+      .trim()
+      .max(120, 'Review title cannot exceed 120 characters')
+      .regex(/^[^<>]*$/, 'Review title cannot contain HTML tags')
+      .optional()
+      .or(z.literal('')),
+    body: z
+      .string()
+      .trim()
+      .min(5, 'Review must be at least 5 characters')
+      .max(2000, 'Review cannot exceed 2000 characters')
+      .regex(/^[^<>]*$/, 'Review cannot contain HTML tags'),
+  }),
 });
