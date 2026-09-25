@@ -89,6 +89,9 @@ export const ModelName = {
   CourseTag: 'CourseTag',
   Certificate: 'Certificate',
   Notification: 'Notification',
+  Conversation: 'Conversation',
+  ConversationParticipant: 'ConversationParticipant',
+  Message: 'Message',
   Quiz: 'Quiz',
   QuizQuestion: 'QuizQuestion',
   QuestionOption: 'QuestionOption',
@@ -774,12 +777,58 @@ export const NotificationScalarFieldEnum = {
   type: 'type',
   title: 'title',
   message: 'message',
+  actorId: 'actorId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  actionUrl: 'actionUrl',
+  metadata: 'metadata',
   isRead: 'isRead',
   isArchived: 'isArchived',
+  readAt: 'readAt',
   createdAt: 'createdAt'
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const ConversationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  directKey: 'directKey',
+  lastMessageAt: 'lastMessageAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConversationScalarFieldEnum = (typeof ConversationScalarFieldEnum)[keyof typeof ConversationScalarFieldEnum]
+
+
+export const ConversationParticipantScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  userId: 'userId',
+  lastReadAt: 'lastReadAt',
+  isMuted: 'isMuted',
+  isArchived: 'isArchived',
+  joinedAt: 'joinedAt'
+} as const
+
+export type ConversationParticipantScalarFieldEnum = (typeof ConversationParticipantScalarFieldEnum)[keyof typeof ConversationParticipantScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  clientId: 'clientId',
+  type: 'type',
+  content: 'content',
+  editedAt: 'editedAt',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const QuizScalarFieldEnum = {

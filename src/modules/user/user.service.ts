@@ -6,6 +6,8 @@ import { executeDbOperation } from '../../config/database.js';
 import { ApplicationStatus, EnrollmentStatus, OrderStatus, TransactionStatus, UserRole, UserStatus } from '../../generated/client.js';
 import { hash } from '../../utils/hashing.js';
 import { decryptPhoneNumber, encryptPhoneNumber } from '../../utils/phoneNumber.js';
+import { notificationService } from '../notification/notification.service.js';
+import { realtimeService } from '../../realtime/realtime.service.js';
 
 type DatabaseClient = Parameters<Parameters<typeof executeDbOperation>[0]>[0];
 type TransactionArgument = Parameters<DatabaseClient['$transaction']>[0];
@@ -395,7 +397,8 @@ const getAdminInstructorDetails = async (req: Request) => await executeDbOperati
     };
   }), 'Get Admin Instructor Details');
 
-const updateAdminInstructor = async (req: Request) => await executeDbOperation(async prisma =>
+const updateAdminInstructor = async (req: Request) => {
+  const result = await executeDbOperation(async prisma =>
   await prisma.$transaction(async tx => {
     const admin = await requireInstructorAdmin(tx, req.user.email);
     const { action, note } = req.body as {
@@ -448,8 +451,17 @@ const updateAdminInstructor = async (req: Request) => await executeDbOperation(a
         ipAddress: req.ip, userAgent: req.get('user-agent'),
       },
     });
-    return { id: profile.id, action };
+    return { id: profile.id, userId: profile.userId, action, note, adminId: admin.id };
   }), 'Update Admin Instructor');
+  await notificationService.create({
+    userId: result.userId, actorId: result.adminId,
+    type: result.action === 'SUSPEND' || result.action === 'REACTIVATE' ? 'ACCOUNT_UPDATE' : 'APPROVAL_UPDATE',
+    title: result.action === 'APPROVE' ? 'Instructor application approved' : result.action === 'REJECT' ? 'Instructor application rejected' : result.action === 'SUSPEND' ? 'Instructor account suspended' : 'Instructor account reactivated',
+    message: result.note, entityType: 'INSTRUCTOR_PROFILE', entityId: result.id, actionUrl: '/dashboard/instructor/settings',
+  });
+  if (result.action === 'SUSPEND') {realtimeService.disconnectUser(result.userId);}
+  return { id: result.id, action: result.action };
+};
 
 // For Admin Use Only
 
@@ -668,7 +680,8 @@ const createAdminUser = async (req: Request) => await executeDbOperation(async p
     return user;
   }), 'Admin Create User');
 
-const updateAdminUser = async (req: Request) => await executeDbOperation(async prisma =>
+const updateAdminUser = async (req: Request) => {
+  const result = await executeDbOperation(async prisma =>
   await prisma.$transaction(async tx => {
     const admin = await requireInstructorAdmin(tx, req.user.email);
     const target = await tx.user.findFirst({
@@ -704,8 +717,17 @@ const updateAdminUser = async (req: Request) => await executeDbOperation(async p
       changesBefore: JSON.parse(JSON.stringify({ status: target.status, verified: target.isEmailVerified, instructorStatus: target.instructorProfile?.status })),
       changesAfter: JSON.parse(JSON.stringify({ action, note })), ipAddress: req.ip, userAgent: req.get('user-agent'),
     } });
-    return { id: target.id, action };
+    return { id: target.id, action, note, adminId: admin.id };
   }), 'Admin Update User');
+  await notificationService.create({
+    userId: result.id, actorId: result.adminId, type: 'ACCOUNT_UPDATE',
+    title: result.action === 'SUSPEND' ? 'Your account has been suspended' : result.action === 'REACTIVATE' ? 'Your account has been reactivated' : result.action === 'VERIFY_EMAIL' ? 'Your email was verified' : result.action === 'APPROVE_INSTRUCTOR' ? 'Your instructor application was approved' : 'Your instructor application was rejected',
+    message: result.note || null, entityType: 'USER', entityId: result.id,
+    actionUrl: '/dashboard',
+  });
+  if (result.action === 'SUSPEND') {realtimeService.disconnectUser(result.id);}
+  return { id: result.id, action: result.action };
+};
 
 export const userService = {
   getSingleUser,

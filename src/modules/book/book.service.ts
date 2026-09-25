@@ -7,6 +7,7 @@ import { type Request } from 'express';
 import * as XLSX from 'xlsx';
 import { executeDbOperation } from '../../config/database.js';
 import { ApplicationStatus, BookFormat, BookStatus, OrderStatus } from '../../generated/enums.js';
+import { notificationService } from '../notification/notification.service.js';
 import {
   CreateBookBodySchema,
   type CreateBookInput,
@@ -1259,6 +1260,8 @@ const approveBook = async (req: Request) => {
     });
   }, 'Approve Book');
 
+  await notificationService.create({ userId: approvedBook.ownerId, type: 'APPROVAL_UPDATE', title: `${approvedBook.title} approved`, entityType: 'BOOK', entityId: approvedBook.id, actionUrl: '/dashboard/instructor/books' });
+
   return approvedBook.id;
 };
 
@@ -1266,7 +1269,7 @@ const updateBookSelling = async (req: Request) => {
   const { bookId } = req.params as { bookId: string };
   const { action, note } = req.body as { action: 'STOP' | 'RESUME'; note: string };
 
-  return await executeDbOperation(
+  const result = await executeDbOperation(
     prisma =>
       prisma.$transaction(async tx => {
         const admin = await getAuthorizedAdmin(tx, req.user.email);
@@ -1311,6 +1314,8 @@ const updateBookSelling = async (req: Request) => {
       }),
     'Update Book Selling State'
   );
+  await notificationService.create({ userId: result.ownerId, type: 'APPROVAL_UPDATE', title: action === 'STOP' ? `${result.title} selling suspended` : `${result.title} selling resumed`, message: note, entityType: 'BOOK', entityId: result.id, actionUrl: '/dashboard/instructor/books' });
+  return result;
 };
 
 const updateBookStock = async (req: Request) => {

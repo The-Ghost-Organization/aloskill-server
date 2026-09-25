@@ -2232,7 +2232,7 @@ const createFileToBunny = async (req: Request) => {
       AccessKey: accessKey,
       'Content-Type': 'application/octet-stream',
     },
-    body: req.file?.buffer,
+    body: req.file?.buffer ? new Uint8Array(req.file.buffer) : undefined,
   });
   if (!uploadfile.ok) {
     const errorText = await uploadfile.text();

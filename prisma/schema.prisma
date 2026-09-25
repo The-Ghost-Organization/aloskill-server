@@ -11,7 +11,6 @@ generator client {
   // previewFeatures = ["fullTextSearchPostgres", "driverAdapters"]
 }
 
-
 /// Enums
 enum UserRole {
   STUDENT
@@ -95,7 +94,19 @@ enum NotificationType {
   COURSE_UPDATE
   NEW_MESSAGE
   PAYMENT_SUCCESS
+  ORDER_UPDATE
+  APPROVAL_UPDATE
+  ACCOUNT_UPDATE
   SYSTEM_ALERT
+}
+
+enum ConversationType {
+  DIRECT
+}
+
+enum MessageType {
+  TEXT
+  SYSTEM
 }
 
 enum PaymentStatus {
@@ -118,7 +129,7 @@ enum TransactionType {
 }
 
 enum PaymentProviders {
-   SSLCommerce
+  SSLCommerce
   UDDOKTAPAY
   CASH_ON_DELIVERY
   STRIPE
@@ -137,11 +148,11 @@ enum PaymentMethod {
 }
 
 enum MobileBanking {
-    BKASH
-    ROCKET
-    NAGAD
-    UPAY
-    QCASH
+  BKASH
+  ROCKET
+  NAGAD
+  UPAY
+  QCASH
 }
 
 enum OrderStatus {
@@ -289,20 +300,23 @@ model User {
   sessions UserSession[]
 
   // Others Relations
-  enrollments      Enrollment[]
-  reviews          Review[]
-  payments         PaymentTransaction[]
-  lessonProgresses LessonProgress[]
-  notifications    Notification[]
-  wishlists        Wishlist[]
-  orders           Order[]
-  books            Book[]
-  LessonDiscussion LessonDiscussion[]
-  LessonComment    LessonComment[]
-  QuizResult       QuizResult[]
-  AuditLog         AuditLog[]
-  paymentMethod    PayoutMethod[]
-  payouts          Payout[]
+  enrollments              Enrollment[]
+  reviews                  Review[]
+  payments                 PaymentTransaction[]
+  lessonProgresses         LessonProgress[]
+  notifications            Notification[]
+  actedNotifications       Notification[]            @relation("NotificationActor")
+  conversationParticipants ConversationParticipant[]
+  sentMessages             Message[]                 @relation("MessageSender")
+  wishlists                Wishlist[]
+  orders                   Order[]
+  books                    Book[]
+  LessonDiscussion         LessonDiscussion[]
+  LessonComment            LessonComment[]
+  QuizResult               QuizResult[]
+  AuditLog                 AuditLog[]
+  paymentMethod            PayoutMethod[]
+  payouts                  Payout[]
 
   @@index([id])
   @@index([email])
@@ -484,7 +498,7 @@ model InstructorProfile {
   courseType             CourseType
 
   //== Content & Teaching Skills
-  teachingExperience   Decimal?     @default(0) @db.Decimal(5, 2)
+  teachingExperience   Decimal?         @default(0) @db.Decimal(5, 2)
   prevTeachingApproach TeachingApproach
   language             TeachingLanguage
   demoVideo            String?
@@ -547,10 +561,10 @@ model SocialLink {
 
 /// Courses & content
 model Course {
-  id          String @id @default(uuid())
-  title       String
-  slug        String @unique
-  description String
+  id                     String  @id @default(uuid())
+  title                  String
+  slug                   String  @unique
+  description            String
   welcomeMessage         String?
   congratulationsMessage String?
 
@@ -567,26 +581,26 @@ model Course {
   totalRevenueAmount Decimal @default(0) @db.Decimal(15, 2)
   moduleCount        Int     @default(0)
 
-  status       CourseStatus @default(DRAFT)
-  suspendReason   String?
-  adminNote       String?
-  language     Language     @default(BANGLA)
-  level        CourseLevel  @default(BEGINNER)
-  thumbnailUrl String?
-  trailerUrl   String?
+  status        CourseStatus @default(DRAFT)
+  suspendReason String?
+  adminNote     String?
+  language      Language     @default(BANGLA)
+  level         CourseLevel  @default(BEGINNER)
+  thumbnailUrl  String?
+  trailerUrl    String?
 
   categoryId  String?
   category    Category?          @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   createdById String?
   createdBy   InstructorProfile? @relation("CourseOwner", fields: [createdById], references: [id], onDelete: SetNull)
 
-  ratingAverage Decimal?  @default(0) @db.Decimal(2, 1)
-  ratingCount   Int       @default(0)
-  views         Int       @default(0)
-  deletedAt     DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  updatedContent          Json?
+  ratingAverage  Decimal?  @default(0) @db.Decimal(2, 1)
+  ratingCount    Int       @default(0)
+  views          Int       @default(0)
+  deletedAt      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  updatedContent Json?
 
   courseInstructors  CourseInstructor[]
   LessonProgress     LessonProgress[]
@@ -606,7 +620,6 @@ model Course {
   @@index([ratingAverage])
   @@index([categoryId])
   @@index([createdById, status, deletedAt, createdAt])
-
   @@map("courses")
 }
 
@@ -622,7 +635,6 @@ model CourseInstructor {
   @@unique([courseId, instructorId])
   @@index([courseId])
   @@index([instructorId])
-
   @@map("course_instructors")
 }
 
@@ -640,30 +652,29 @@ model Module {
 
   @@index([courseId])
   @@index([courseId, position])
-
   @@map("modules")
 }
 
 model Lesson {
-  id         String     @id @default(uuid())
-  module     Module     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  moduleId   String
-  position   Int
-  title      String
-  description String?
-  notes      String?
-  type       LessonType
-  contentUrl  String?
-  contentName String?
-  files      LessonFile[]
-  duration   Int?
-  deletedAt  DateTime?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  isNew      Boolean    @default(false)
-  isUpdated  Boolean    @default(false)
-  suspendReason   String?
-  adminNote       String?
+  id            String       @id @default(uuid())
+  module        Module       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  moduleId      String
+  position      Int
+  title         String
+  description   String?
+  notes         String?
+  type          LessonType
+  contentUrl    String?
+  contentName   String?
+  files         LessonFile[]
+  duration      Int?
+  deletedAt     DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  isNew         Boolean      @default(false)
+  isUpdated     Boolean      @default(false)
+  suspendReason String?
+  adminNote     String?
 
   progressRecords LessonProgress[]
   discussions     LessonDiscussion[]
@@ -671,7 +682,6 @@ model Lesson {
 
   @@index([moduleId])
   @@index([moduleId, position])
-
   @@map("lessons")
 }
 
@@ -706,7 +716,6 @@ model LessonDiscussion {
   @@index([lessonId])
   @@index([createdById])
   @@index([lessonId, createdAt])
-
   @@map("lesson_discussions")
 }
 
@@ -738,7 +747,6 @@ model LessonComment {
   @@index([authorId])
   @@index([parentCommentId])
   @@index([discussionId, createdAt])
-
   @@map("lesson_comments")
 }
 
@@ -773,7 +781,6 @@ model Enrollment {
   @@index([status])
   @@index([startedAt])
   @@index([status, startedAt])
-
   @@map("enrollments")
 }
 
@@ -789,7 +796,7 @@ model LessonProgress {
 
   completed     Boolean   @default(false)
   progressValue Int       @default(0)
-  lastPosition  Decimal   @db.Decimal(10,2)
+  lastPosition  Decimal   @db.Decimal(10, 2)
   lastViewedAt  DateTime?
   attempts      Int?      @default(0)
   completedAt   DateTime?
@@ -800,7 +807,6 @@ model LessonProgress {
   @@index([completed])
   @@index([userId, courseId])
   @@index([userId, completed, updatedAt])
-
   @@map("lesson_progresses")
 }
 
@@ -809,7 +815,7 @@ model Review {
   id        String    @id @default(uuid())
   user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId    String
-  course    Course?    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course    Course?   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId  String?
   bookId    String?
   book      Book?     @relation(fields: [bookId], references: [id], onDelete: Cascade)
@@ -827,12 +833,11 @@ model Review {
   @@index([createdAt])
   @@index([courseId, rating, createdAt])
   @@index([bookId, rating, createdAt])
-
   @@map("reviews")
 }
 
 model Book {
-  id              String   @id @default(uuid())
+  id              String      @id @default(uuid())
   title           String
   author          String
   authorProfileId String?
@@ -840,76 +845,76 @@ model Book {
   translator      String?
   editor          String?
   publisher       String
-  publishYear     Int @default(0)
-  ratings         Decimal @db.Decimal(2, 1) @default(0.0)
-  description     String   @db.Text
+  publishYear     Int         @default(0)
+  ratings         Decimal     @default(0.0) @db.Decimal(2, 1)
+  description     String      @db.Text
 
-  purchaseCost         Decimal?  @db.Decimal(10, 2) @default(0.0)
-  physicalRegularPrice Decimal?  @db.Decimal(10, 2)
-  physicalSalePrice    Decimal?  @db.Decimal(10, 2)
-  digitalRegularPrice  Decimal?  @db.Decimal(10, 2)
-  digitalSalePrice     Decimal?  @db.Decimal(10, 2)
+  purchaseCost         Decimal? @default(0.0) @db.Decimal(10, 2)
+  physicalRegularPrice Decimal? @db.Decimal(10, 2)
+  physicalSalePrice    Decimal? @db.Decimal(10, 2)
+  digitalRegularPrice  Decimal? @db.Decimal(10, 2)
+  digitalSalePrice     Decimal? @db.Decimal(10, 2)
 
   // isDiscountActive field is required
 
-  stock           Int      @default(0)
+  stock Int @default(0)
 
-  isbn            String?  @unique
-  edition         String?
-  pages           Int?
-  weight          Decimal @db.Decimal(10, 2) @default(0.0)
-  language        String
-  formats         BookFormat[]
-  totalEarning    Decimal   @default(0) @db.Decimal(15, 2)
-  viewCount       Int       @default(0)
-  status          BookStatus  @default(PENDING)
-  suspendReason   String?
-  adminNote       String?
-  updatedContent  Json?
+  isbn           String?      @unique
+  edition        String?
+  pages          Int?
+  weight         Decimal      @default(0.0) @db.Decimal(10, 2)
+  language       String
+  formats        BookFormat[]
+  totalEarning   Decimal      @default(0) @db.Decimal(15, 2)
+  viewCount      Int          @default(0)
+  status         BookStatus   @default(PENDING)
+  suspendReason  String?
+  adminNote      String?
+  updatedContent Json?
 
   // tags are not listing yet for showing related book or course
 
   metaKeywords    String?
   metaDescription String?
 
-  coverImage      String
-  files           BookFile[]
+  coverImage String
+  files      BookFile[]
 
-  ownerId         String
-  owner           User    @relation(fields: [ownerId], references: [id])
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
 
-  categoryId      String?
-  category        BookCategory?    @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  category   BookCategory? @relation(fields: [categoryId], references: [id])
 
-  orderItem       OrderItem[]
-  reviews         Review[]
+  orderItem          OrderItem[]
+  reviews            Review[]
   PaymentTransaction PaymentTransaction[]
   wishlistedBy       Wishlist[]
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  deletedAt       DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
-  @@map("books")
   @@index([isbn])
   @@index([isbn, ownerId])
   @@index([authorProfileId])
+  @@map("books")
 }
 
 model BookAuthor {
-  id          String   @id @default(uuid())
-  instructorProfileId String? @unique
+  id                  String             @id @default(uuid())
+  instructorProfileId String?            @unique
   instructorProfile   InstructorProfile? @relation(fields: [instructorProfileId], references: [id], onDelete: SetNull)
-  name        String
-  slug        String   @unique
-  bio         String?  @db.Text
-  photoUrl    String?
-  websiteUrl  String?
-  isActive    Boolean  @default(true)
-  books       Book[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
+  name                String
+  slug                String             @unique
+  bio                 String?            @db.Text
+  photoUrl            String?
+  websiteUrl          String?
+  isActive            Boolean            @default(true)
+  books               Book[]
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  deletedAt           DateTime?
 
   @@index([name])
   @@index([instructorProfileId])
@@ -918,27 +923,27 @@ model BookAuthor {
 }
 
 model BookFile {
-  id         String   @id @default(uuid())
-  name       String
-  url        String
-  fileType   BookFileType
+  id       String       @id @default(uuid())
+  name     String
+  url      String
+  fileType BookFileType
 
-  bookId     String
-  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId String
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@map("book_files")
 }
 
 model ViewLog {
-  id          String   @id @default(uuid())
-  entityId    String   // ID of the Course, Book, or InstructorProfile
-  entityType  ViewEntityType
-  viewerId    String?
-  viewedAt    DateTime @default(now())
-  ipAddress   String?
-  createdAt   DateTime @default(now())
+  id         String         @id @default(uuid())
+  entityId   String // ID of the Course, Book, or InstructorProfile
+  entityType ViewEntityType
+  viewerId   String?
+  viewedAt   DateTime       @default(now())
+  ipAddress  String?
+  createdAt  DateTime       @default(now())
 
   @@index([entityId, entityType])
   @@map("view_logs")
@@ -953,84 +958,81 @@ model Wishlist {
   course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId String?
 
-  book      Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  bookId    String?
+  book   Book?   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId String?
 
   createdAt DateTime @default(now())
 
   @@unique([userId, courseId])
-
   @@map("wishlists")
 }
 
 //== ORDER ==//
 model Order {
-  id                  String               @id @default(uuid())
-  user                User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
-  userId              String
-  totalAmount         Decimal              @db.Decimal(15, 2)
-  shippingCost       Decimal              @default(0) @db.Decimal(10, 2)
-  totalWeight        Decimal              @default(0) @db.Decimal(10, 2)
-  paymentMethod      PaymentMethod?
-  currency            String               @default("BDT")
-  status              OrderStatus          @default(PENDING)
-  provider            PaymentProviders?
-  providerOrderId     String?
-  courierName         Courier?
-  courierConsignmentId String?              @unique
-  courierTrackingCode String?               @unique
-  courierStatus       String?
-  courierStatusUpdatedAt DateTime?
-  courierLastError    String?
+  id                        String               @id @default(uuid())
+  user                      User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId                    String
+  totalAmount               Decimal              @db.Decimal(15, 2)
+  shippingCost              Decimal              @default(0) @db.Decimal(10, 2)
+  totalWeight               Decimal              @default(0) @db.Decimal(10, 2)
+  paymentMethod             PaymentMethod?
+  currency                  String               @default("BDT")
+  status                    OrderStatus          @default(PENDING)
+  provider                  PaymentProviders?
+  providerOrderId           String?
+  courierName               Courier?
+  courierConsignmentId      String?              @unique
+  courierTrackingCode       String?              @unique
+  courierStatus             String?
+  courierStatusUpdatedAt    DateTime?
+  courierLastError          String?
   stockReservationExpiresAt DateTime?
-  paymentTransactions PaymentTransaction[]
-  orderItems          OrderItem[]
+  paymentTransactions       PaymentTransaction[]
+  orderItems                OrderItem[]
 
   shippingAddressId String?
   shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id], onDelete: Cascade)
 
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, status])
   @@index([status, createdAt])
   @@index([userId, createdAt, status])
   @@index([totalAmount])
   @@index([stockReservationExpiresAt, status])
-
   @@map("orders")
 }
 
 model OrderItem {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   // Relations
-  order    Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order    Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId  String
   course   Course? @relation(fields: [courseId], references: [id], onDelete: Restrict)
   courseId String?
-  book     Book?  @relation(fields: [bookId], references: [id], onDelete: Restrict)
+  book     Book?   @relation(fields: [bookId], references: [id], onDelete: Restrict)
   bookId   String?
 
-  format    PurchaseFormat @default(DIGITAL)
+  format PurchaseFormat @default(DIGITAL)
 
-  price     Decimal         @db.Decimal(15, 2)
-  quantity  Int             @default(1)
-  currency  String?         @default("BDT")
-  status    OrderItemStatus @default(PENDING)
-  courierName     Courier?
-  trackingNumber  String?
-  shippedAt       DateTime?
-  deliveredAt     DateTime?
-  createdAt DateTime        @default(now())
+  price          Decimal         @db.Decimal(15, 2)
+  quantity       Int             @default(1)
+  currency       String?         @default("BDT")
+  status         OrderItemStatus @default(PENDING)
+  courierName    Courier?
+  trackingNumber String?
+  shippedAt      DateTime?
+  deliveredAt    DateTime?
+  createdAt      DateTime        @default(now())
 
   @@index([orderId])
   @@index([courseId])
-
   @@map("order_items")
 }
 
 model ShippingAddress {
-  id           String  @id @default(uuid())
+  id           String        @id @default(uuid())
   fullName     String
   addressLine  String
   city         String
@@ -1048,7 +1050,6 @@ enum DeliveryArea {
   DHAKA_SUBURBAN
   OUTSIDE_DHAKA
 }
-
 
 /// Payments & payouts
 model PaymentTransaction {
@@ -1079,14 +1080,13 @@ model PaymentTransaction {
 
   @@index([courseId])
   @@index([userId, status, createdAt])
-
   @@map("payment_transactions")
 }
 
 model Payout {
-  id           String            @id @default(uuid())
+  id           String @id @default(uuid())
   // Relations
-  instructor   User @relation(fields: [instructorId], references: [id], onDelete: Restrict)
+  instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Restrict)
   instructorId String
 
   amount           Decimal       @db.Decimal(10, 2)
@@ -1115,32 +1115,31 @@ model Payout {
   @@index([payoutDate])
   @@index([instructorId, status])
   @@index([status, payoutDate])
-
   @@map("payouts")
 }
 
 model PayoutMethod {
-  id           String            @id @default(uuid())
+  id           String @id @default(uuid())
   instructorId String
   instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
 
-  type           PaymentMethod
-  bankName       String?
-  mobileBankingName     MobileBanking?
-  accHolderName  String
-  accountNumber  String
-  branchName     String?
-  routingNumber  String?
+  type              PaymentMethod
+  bankName          String?
+  mobileBankingName MobileBanking?
+  accHolderName     String
+  accountNumber     String
+  branchName        String?
+  routingNumber     String?
 
-  isDefault    Boolean           @default(false)
-  createdAt    DateTime          @default(now())
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
 
   @@map("payout_methods")
 }
 
 model BankName {
-  id    String @id @default(uuid())
-  name  String @unique
+  id   String @id @default(uuid())
+  name String @unique
 
   @@map("bank_names")
 }
@@ -1160,7 +1159,6 @@ model Category {
   @@index([slug])
   @@index([name])
   @@index([parentId])
-
   @@map("categories")
 }
 
@@ -1178,7 +1176,6 @@ model BookCategory {
   @@index([slug])
   @@index([name])
   @@index([parentId])
-
   @@map("book_categories")
 }
 
@@ -1190,7 +1187,6 @@ model Tag {
 
   @@index([slug])
   @@index([name])
-
   @@map("tags")
 }
 
@@ -1205,7 +1201,6 @@ model CourseTag {
   @@unique([courseId, tagId])
   @@index([courseId])
   @@index([tagId])
-
   @@map("course_tags")
 }
 
@@ -1229,7 +1224,6 @@ model Certificate {
   revokedAt     DateTime?
 
   @@index([issuedAt])
-
   @@map("certificates")
 }
 
@@ -1241,15 +1235,72 @@ model Notification {
   type       NotificationType
   title      String
   message    String?
+  actor      User?            @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actorId    String?
+  entityType String?
+  entityId   String?
+  actionUrl  String?
+  metadata   Json?
   isRead     Boolean          @default(false)
   isArchived Boolean          @default(false)
+  readAt     DateTime?
   createdAt  DateTime         @default(now())
 
   @@index([userId, isRead, isArchived])
   @@index([userId, isArchived, createdAt])
   @@index([createdAt])
-
+  @@index([entityType, entityId])
   @@map("notifications")
+}
+
+model Conversation {
+  id            String                    @id @default(uuid())
+  type          ConversationType          @default(DIRECT)
+  directKey     String?                   @unique
+  participants  ConversationParticipant[]
+  messages      Message[]
+  lastMessageAt DateTime?
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+
+  @@index([lastMessageAt])
+  @@map("conversations")
+}
+
+model ConversationParticipant {
+  id             String       @id @default(uuid())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  lastReadAt     DateTime?
+  isMuted        Boolean      @default(false)
+  isArchived     Boolean      @default(false)
+  joinedAt       DateTime     @default(now())
+
+  @@unique([conversationId, userId])
+  @@index([userId, isArchived])
+  @@index([conversationId, lastReadAt])
+  @@map("conversation_participants")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Restrict)
+  senderId       String
+  clientId       String?
+  type           MessageType  @default(TEXT)
+  content        String       @db.Text
+  editedAt       DateTime?
+  deletedAt      DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@unique([senderId, clientId])
+  @@index([conversationId, createdAt])
+  @@index([senderId, createdAt])
+  @@map("messages")
 }
 
 // Quizzes
@@ -1262,8 +1313,8 @@ model Quiz {
 
   // Quiz Rules
   duration        Int?
-  passingScore    Int     @default(0) @db.SmallInt()
-  attemptsAllowed Int     @default(1) @db.SmallInt()
+  passingScore    Int  @default(0) @db.SmallInt()
+  attemptsAllowed Int  @default(1) @db.SmallInt()
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1273,7 +1324,6 @@ model Quiz {
   results   QuizResult[]
 
   @@index([lessonId])
-
   @@map("quizzes")
 }
 
@@ -1295,7 +1345,6 @@ model QuizQuestion {
 
   @@index([quizId])
   @@index([quizId, position])
-
   @@map("quiz_questions")
 }
 
@@ -1312,7 +1361,6 @@ model QuestionOption {
   createdAt        DateTime @default(now())
 
   @@index([questionId])
-
   @@map("question_options")
 }
 
@@ -1334,7 +1382,6 @@ model QuizResult {
   @@index([quizId, userId])
   @@index([userId, isPassed])
   @@index([submittedAt])
-
   @@map("quiz_results")
 }
 
@@ -1362,7 +1409,6 @@ model AuditLog {
   @@index([userId, timestamp])
   @@index([entityType, entityId, timestamp])
   @@index([action, timestamp])
-
   @@map("audit_logs")
 }
 

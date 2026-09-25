@@ -127,10 +127,28 @@ export const NotificationType = {
   COURSE_UPDATE: 'COURSE_UPDATE',
   NEW_MESSAGE: 'NEW_MESSAGE',
   PAYMENT_SUCCESS: 'PAYMENT_SUCCESS',
+  ORDER_UPDATE: 'ORDER_UPDATE',
+  APPROVAL_UPDATE: 'APPROVAL_UPDATE',
+  ACCOUNT_UPDATE: 'ACCOUNT_UPDATE',
   SYSTEM_ALERT: 'SYSTEM_ALERT'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const ConversationType = {
+  DIRECT: 'DIRECT'
+} as const
+
+export type ConversationType = (typeof ConversationType)[keyof typeof ConversationType]
+
+
+export const MessageType = {
+  TEXT: 'TEXT',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type MessageType = (typeof MessageType)[keyof typeof MessageType]
 
 
 export const PaymentStatus = {

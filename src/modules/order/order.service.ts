@@ -29,6 +29,13 @@ import {
 } from '../../services/steadfastCourier.service.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
 import type { EPSPayload, UddoktapayPayload } from './order.validation.js';
+import { notificationService } from '../notification/notification.service.js';
+
+const notifyOrder = async (orderId: string, type: 'PAYMENT_SUCCESS' | 'ORDER_UPDATE', title: string, message: string) => {
+  const order = await executeDbOperation(prisma => prisma.order.findUnique({ where: { id: orderId }, select: { userId: true } }), 'Resolve order notification recipient');
+  if (!order) return;
+  await notificationService.create({ userId: order.userId, type, title, message, entityType: 'ORDER', entityId: orderId, actionUrl: `/dashboard/student/purchase/${orderId}` });
+};
 
 const courierOrderStatus: Partial<Record<SteadfastDeliveryStatus, OrderStatus>> = {
   in_review: OrderStatus.PROCESSING,
@@ -578,6 +585,9 @@ const validateIPN = async (req: Request) => {
   });
 
   console.log('Update Order Status: ', updateOrderStatus);
+  if (status === 'VALID' || status === 'VALIDATED') {
+    await notifyOrder(tran_id, 'PAYMENT_SUCCESS', 'Payment confirmed', `Your payment for order #${tran_id.slice(0, 8)} was successful.`);
+  }
 };
 
 // for uddoktapay payment gateway Start
@@ -935,7 +945,7 @@ const verifyPayment = async (req: Request) => {
 
   const orderId = uddoktaPayData.metadata?.order_id;
   if (uddoktaPayData.status === 'COMPLETED' && orderId) {
-    await executeDbOperation(prisma =>
+    const changed = await executeDbOperation(prisma =>
       prisma.order.updateMany({
         where: { id: orderId, status: { in: [OrderStatus.PENDING, OrderStatus.CONFIRMED] } },
         data: {
@@ -946,6 +956,7 @@ const verifyPayment = async (req: Request) => {
       })
     );
     await createCourierConsignmentForOrder(orderId);
+    if (changed.count) await notifyOrder(orderId, 'PAYMENT_SUCCESS', 'Payment confirmed', `Your payment for order #${orderId.slice(0, 8)} was successful.`);
   }
 
   return { orderStatus: uddoktaPayData.status, orderId: orderId ?? null };
@@ -1509,6 +1520,7 @@ const verifyEPSPaymentByTransactionId = async (
     );
 
     await createCourierConsignmentForOrder(localPayment.order.id);
+    await notifyOrder(localPayment.order.id, 'PAYMENT_SUCCESS', 'Payment confirmed', `Your EPS payment for order #${localPayment.order.id.slice(0, 8)} was successful.`);
     return {
       paymentStatus: 'PAID' as const,
       orderId: completedOrder.id,
@@ -1609,7 +1621,7 @@ const refreshMyOrderTracking = async (req: Request) => {
   const order = await executeDbOperation(prisma =>
     prisma.order.findFirst({
       where: { id: orderId, user: { email: userEmail } },
-      select: { id: true, courierTrackingCode: true },
+      select: { id: true, courierTrackingCode: true, courierStatus: true },
     })
   );
   if (!order) {
@@ -1647,6 +1659,10 @@ const refreshMyOrderTracking = async (req: Request) => {
       }),
     ])
   );
+
+  if (order.courierStatus !== courierStatus) {
+    await notifyOrder(order.id, 'ORDER_UPDATE', 'Delivery status updated', `Order #${order.id.slice(0, 8)} is now ${courierStatus.replaceAll('_', ' ')}.`);
+  }
 
   return { trackingAvailable: true, courierStatus };
 };

@@ -1,71 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
-    "lib": ["ES2023"],
-
-    // "module": "ESNext",
-    // "moduleResolution": "bundler",
-
+    "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-
-    "outDir": "dist",
     "rootDir": "src",
-    // "rootDir": ".",
-    // "include": ["src", "prisma"],
-    "removeComments": true,
-    "declaration": true,
-    "sourceMap": true,
-
-    "strict": true,
-    "skipLibCheck": true,
+    "outDir": "dist",
+    "strict": false,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "types": ["node"],
-    "baseUrl": ".",
-    // "baseUrl": ".",
-    "paths": {
-      // "@/*": ["*"],
-      "@/*": ["src/*"],
-      "@/middlewares/*": ["middlewares/*"],
-      "@/config/*": ["config/*"],
-      "@/utils/*": ["utils/*"],
-      "@/types/*": ["types/*"],
-      "@/validations/*": ["validations/*"]
-    },
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "sourceMap": true,
+    "jsx": "preserve",
+    "types": ["node"]
   },
-  // "include": ["src/**/*"],
-  // "exclude": [
-  //   "node_modules",
-  //   "dist",
-  //   "logs",
-  //   "**/*.test.ts",
-  //   "**/*.spec.ts",
-  //   "prisma/**/*",
-  //   "prisma.config.ts"
-  // ],
-  // "include": ["src/**/*", "src", "src/types", "**/*.ts", "**/*.tsx"],
-  // "exclude": ["node_modules", "dist", "logs", "**/*.test.ts"],
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "logs", "**/*.test.ts", "prisma.config.ts"],
-  "ts-node": {
-    "require": ["tsconfig-paths/register"],
-    "files": true,
-    "transpileOnly": true,
-    "compilerOptions": {
-      "module": "NodeNext",
-      "moduleResolution": "NodeNext",
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["src/*"]
-      }
-    }
-  }
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }

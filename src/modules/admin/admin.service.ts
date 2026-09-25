@@ -1,5 +1,6 @@
 import { type Request } from 'express';
 import { executeDbOperation } from '../../config/database.js';
+import { notificationService } from '../notification/notification.service.js';
 
 const requireAdmin = async (tx: any, email: string | undefined) => {
   if (!email) throw new Error('Admin access required.');
@@ -28,30 +29,48 @@ const approvalDetail = async (req: Request) => executeDbOperation(async prisma =
   throw new Error('Unknown approval type.');
 }, 'Fetch Approval Details');
 
-const decideApproval = async (req: Request) => executeDbOperation(async prisma => prisma.$transaction(async tx => {
-  const admin = await requireAdmin(tx, req.user.email);
-  const { type, id } = req.params;
-  const { decision, note } = req.body as { decision: 'APPROVE' | 'REJECT'; note: string };
-  if (!['book', 'course', 'instructor'].includes(type as string) || !['APPROVE', 'REJECT'].includes(decision) || (decision === 'REJECT' && (!note?.trim() || note.trim().length < 5))) throw new Error('A valid decision and rejection reason (at least 5 characters) are required.');
-  const key = id as string;
-  if (!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(key) || (note && (typeof note !== 'string' || note.length > 500))) throw new Error('Invalid approval request.');
-  if (type === 'book') {
-    const changed = await tx.book.updateMany({ where: { id: key, status: 'PENDING', deletedAt: null }, data: { status: decision === 'APPROVE' ? 'APPROVED' : 'DRAFT', adminNote: note?.trim() || null } });
-    if (!changed.count) throw new Error('Book is no longer pending.');
-  } else if (type === 'course') {
-    // CourseStatus has no REJECTED state: return rejected submissions to DRAFT.
-    const changed = await tx.course.updateMany({ where: { id: key, status: 'PENDING', deletedAt: null }, data: { status: decision === 'APPROVE' ? 'PUBLISHED' : 'DRAFT', adminNote: note?.trim() || null } });
-    if (!changed.count) throw new Error('Course is no longer pending.');
-  } else {
-    const profile = await tx.instructorProfile.findFirst({ where: { id: key, status: 'PENDING', deletedAt: null } });
-    if (!profile) throw new Error('Instructor is no longer pending.');
-    const changed = await tx.instructorProfile.updateMany({ where: { id: key, status: 'PENDING', deletedAt: null }, data: { status: decision === 'APPROVE' ? 'APPROVED' : 'REJECTED', adminNote: note?.trim() || null } });
-    if (!changed.count) throw new Error('Instructor is no longer pending.');
-    if (decision === 'APPROVE') await tx.userRoleAssignment.createMany({ data: [{ userId: profile.userId, role: 'INSTRUCTOR', grantedById: admin.id }], skipDuplicates: true });
-  }
-  await tx.auditLog.create({ data: { userId: admin.id, action: `${type.toUpperCase()}_${decision}`, entityType: type.toUpperCase(), entityId: key, changesAfter: { decision, note: note?.trim() || null }, ipAddress: req.ip, userAgent: req.get('user-agent') } });
-  return { id: key, type, decision };
-}), 'Decide Approval');
+const decideApproval = async (req: Request) => {
+  const result = await executeDbOperation(async prisma => prisma.$transaction(async tx => {
+    const admin = await requireAdmin(tx, req.user.email);
+    const { type, id } = req.params;
+    const approvalType = String(type);
+    const { decision, note } = req.body as { decision: 'APPROVE' | 'REJECT'; note: string };
+    if (!['book', 'course', 'instructor'].includes(approvalType) || !['APPROVE', 'REJECT'].includes(decision) || (decision === 'REJECT' && (!note?.trim() || note.trim().length < 5))) throw new Error('A valid decision and rejection reason (at least 5 characters) are required.');
+    const key = id as string;
+    if (!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(key) || (note && (typeof note !== 'string' || note.length > 500))) throw new Error('Invalid approval request.');
+    let recipientId = '';
+    let subject = String(type);
+    if (approvalType === 'book') {
+      const book = await tx.book.findFirst({ where: { id: key, status: 'PENDING', deletedAt: null }, select: { ownerId: true, title: true } });
+      if (!book) throw new Error('Book is no longer pending.');
+      recipientId = book.ownerId;
+      subject = book.title;
+      await tx.book.update({ where: { id: key }, data: { status: decision === 'APPROVE' ? 'APPROVED' : 'DRAFT', adminNote: note?.trim() || null } });
+    } else if (approvalType === 'course') {
+      const course = await tx.course.findFirst({ where: { id: key, status: 'PENDING', deletedAt: null }, select: { title: true, createdBy: { select: { userId: true } } } });
+      if (!course?.createdBy) throw new Error('Course is no longer pending.');
+      recipientId = course.createdBy.userId;
+      subject = course.title;
+      await tx.course.update({ where: { id: key }, data: { status: decision === 'APPROVE' ? 'PUBLISHED' : 'DRAFT', adminNote: note?.trim() || null } });
+    } else {
+      const profile = await tx.instructorProfile.findFirst({ where: { id: key, status: 'PENDING', deletedAt: null } });
+      if (!profile) throw new Error('Instructor is no longer pending.');
+      recipientId = profile.userId;
+      subject = 'Instructor application';
+      await tx.instructorProfile.update({ where: { id: key }, data: { status: decision === 'APPROVE' ? 'APPROVED' : 'REJECTED', adminNote: note?.trim() || null } });
+      if (decision === 'APPROVE') await tx.userRoleAssignment.createMany({ data: [{ userId: profile.userId, role: 'INSTRUCTOR', grantedById: admin.id }], skipDuplicates: true });
+    }
+    await tx.auditLog.create({ data: { userId: admin.id, action: `${approvalType.toUpperCase()}_${decision}`, entityType: approvalType.toUpperCase(), entityId: key, changesAfter: { decision, note: note?.trim() || null }, ipAddress: req.ip, userAgent: req.get('user-agent') } });
+    return { id: key, type: approvalType, decision, recipientId, subject, adminId: admin.id, note: note?.trim() || null };
+  }), 'Decide Approval');
+  await notificationService.create({
+    userId: result.recipientId, actorId: result.adminId, type: 'APPROVAL_UPDATE',
+    title: `${result.subject} ${result.decision === 'APPROVE' ? 'approved' : 'rejected'}`,
+    message: result.note, entityType: result.type.toUpperCase(), entityId: result.id,
+    actionUrl: result.type === 'book' ? '/dashboard/instructor/books' : result.type === 'course' ? '/dashboard/instructor/course' : '/dashboard/instructor/settings',
+  });
+  return { id: result.id, type: result.type, decision: result.decision };
+};
 
 const percentageChange = (current: number, previous: number) => {
   if (previous === 0) return current === 0 ? 0 : 100;
@@ -73,44 +92,19 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
   const chartStart = startOfDay(new Date(now.getTime() - 11 * 7 * 24 * 60 * 60 * 1000));
   const paidOrderStatuses = ['PAID', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED'] as const;
 
-  const [
-    studentCount,
-    newStudents,
-    previousNewStudents,
-    instructorCount,
-    courseCount,
-    bookCount,
-    orderCount,
-    successfulPayments,
-    currentPayments,
-    previousPayments,
-    refundPayments,
-    paidPayouts,
-    pendingPayouts,
-    ratingAggregate,
-    enrollmentCount,
-    completedEnrollmentCount,
-    physicalStock,
-    lowStockCount,
-    outOfStockCount,
-    pendingBooks,
-    pendingCourses,
-    pendingInstructors,
-    paymentHealth,
-    orderHealth,
-    providerMix,
-    chartPayments,
-    currentSoldItems,
-    previousSoldItems,
-    topCourseGroups,
-    topBookGroups,
-    recentTransactions,
-  ] = await Promise.all([
+  // Keep each batch small. Starting every dashboard query in one Promise.all
+  // can exhaust a small/remote PostgreSQL connection pool and cause P1008.
+  const [studentCount, newStudents, previousNewStudents, instructorCount, courseCount] =
+    await Promise.all([
     prisma.studentProfile.count({ where: { deletedAt: null } }),
     prisma.studentProfile.count({ where: { deletedAt: null, createdAt: { gte: currentPeriodStart } } }),
     prisma.studentProfile.count({ where: { deletedAt: null, createdAt: { gte: previousPeriodStart, lt: currentPeriodStart } } }),
     prisma.instructorProfile.count({ where: { deletedAt: null, status: 'APPROVED' } }),
     prisma.course.count({ where: { deletedAt: null, status: 'PUBLISHED' } }),
+  ]);
+
+  const [bookCount, orderCount, successfulPayments, currentPayments, previousPayments, refundPayments] =
+    await Promise.all([
     prisma.book.count({ where: { deletedAt: null, status: 'APPROVED' } }),
     prisma.order.count(),
     prisma.paymentTransaction.aggregate({
@@ -133,6 +127,10 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
       _sum: { amount: true },
       _count: { id: true },
     }),
+  ]);
+
+  const [paidPayouts, pendingPayouts, ratingAggregate, enrollmentCount, completedEnrollmentCount, physicalStock] =
+    await Promise.all([
     prisma.payout.aggregate({
       where: { deletedAt: null, status: 'PAID' },
       _sum: { amount: true, fee: true },
@@ -149,6 +147,10 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
       where: { deletedAt: null, status: 'APPROVED', formats: { has: 'HARDCOVER' } },
       _sum: { stock: true },
     }),
+  ]);
+
+  const [lowStockCount, outOfStockCount, pendingBooks, pendingCourses, pendingInstructors, paymentHealth] =
+    await Promise.all([
     prisma.book.count({
       where: { deletedAt: null, status: 'APPROVED', formats: { has: 'HARDCOVER' }, stock: { gt: 0, lt: 20 } },
     }),
@@ -164,6 +166,10 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
       _count: { id: true },
       _sum: { amount: true },
     }),
+  ]);
+
+  const [orderHealth, providerMix, chartPayments, currentSoldItems, previousSoldItems] =
+    await Promise.all([
     prisma.order.groupBy({ by: ['status'], _count: { id: true } }),
     prisma.paymentTransaction.groupBy({
       by: ['provider'],
@@ -184,6 +190,9 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
       where: { order: { status: { in: [...paidOrderStatuses] } }, createdAt: { gte: previousPeriodStart, lt: currentPeriodStart } },
       _sum: { quantity: true },
     }),
+  ]);
+
+  const [topCourseGroups, topBookGroups, recentTransactions] = await Promise.all([
     prisma.orderItem.groupBy({
       by: ['courseId'],
       where: { courseId: { not: null }, order: { status: { in: [...paidOrderStatuses] } } },

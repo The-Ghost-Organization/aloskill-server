@@ -6,6 +6,8 @@ import { OrderRoutes } from '../modules/order/order.routes.js';
 import { BookRoutes } from '../modules/book/book.routes.js';
 import { AdminRoutes } from '../modules/admin/admin.routes.js';
 import { CartRoutes } from '../modules/cart/cart.routes.js';
+import { ChatRoutes } from '../modules/chat/chat.routes.js';
+import { NotificationRoutes } from '../modules/notification/notification.routes.js';
 
 const router = express.Router({ caseSensitive: true });
 
@@ -17,6 +19,8 @@ const moduleRoutes = [
   { path: '/book', route: BookRoutes },
   { path: '/admin', route: AdminRoutes },
   { path: '/cart', route: CartRoutes },
+  { path: '/chat', route: ChatRoutes },
+  { path: '/notifications', route: NotificationRoutes },
 ];
 
 moduleRoutes.forEach(route => router.use(route.path, route.route));

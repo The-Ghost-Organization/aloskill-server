@@ -5,6 +5,7 @@
 import 'dotenv/config';
 import type { Express } from 'express';
 import { type Server } from 'http';
+import { createServer } from 'node:http';
 import app from './app.js';
 import {
   connectDatabase,
@@ -12,6 +13,7 @@ import {
 } from './config/database.js';
 import { config } from './config/env.js';
 import './utils/cron.js';
+import { realtimeService } from './realtime/realtime.service.js';
 
 // Server state management
 let server: Server | null = null;
@@ -75,7 +77,9 @@ const startHttpServer = async (): Promise<void> => {
     try {
       const expressApp = app as unknown as Express;
 
-      server = expressApp.listen(parseInt(config.PORT), '0.0.0.0', () => {
+      server = createServer(expressApp);
+      realtimeService.initialize(server);
+      server.listen(parseInt(config.PORT), '0.0.0.0', () => {
         console.log(`  ✅ HTTP Server listening at http://0.0.0.0:${config.PORT}`);
         resolve();
       });
@@ -176,17 +180,10 @@ const stopHealthMonitoring = (): void => {
  * Close HTTP server
  */
 const closeHttpServer = async (): Promise<void> => {
-  return new Promise<void>(resolve => {
-    if (server) {
-      server.close(() => {
-        console.log('🔒 HTTP server closed');
-        server = null;
-        resolve();
-      });
-    } else {
-      resolve();
-    }
-  });
+  if (!server) return;
+  await realtimeService.close();
+  console.log('🔒 HTTP and Socket.IO servers closed');
+  server = null;
 };
 
 /**
