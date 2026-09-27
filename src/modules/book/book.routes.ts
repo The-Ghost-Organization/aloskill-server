@@ -81,6 +81,11 @@ router.put(
 );
 
 router.get('/user/all-books-data', requireStudent, bookController.getAllBooksDataforUser);
+router.get(
+  '/user/library/:orderItemId/ebook-file',
+  requireStudent,
+  bookController.getPurchasedEbookFile
+);
 
 router.get('/admin/all-books-data', requireAdmin, bookController.getAllBooksDataforAdmin);
 

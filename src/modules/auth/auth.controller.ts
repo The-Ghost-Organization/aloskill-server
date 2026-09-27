@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { type Request, type Response } from 'express';
+import { MailService } from '../../emails/mailService.js';
 import resetPasswordTemplate from '../../emails/templates/resetPassword.js';
 import signupWelcomeTemplate from '../../emails/templates/signupWelcome.js';
 import catchAsync from '../../utils/asyncHandler.js';
 import JwtService from '../../utils/jwt.js';
 import ResponseHandler from '../../utils/response.js';
-import { type Request, type Response } from 'express';
-import { MailService } from '../../emails/mailService.js';
 import { authService } from './auth.service.js';
 
 const loginUser = catchAsync(async (req, res): Promise<void> => {
@@ -26,7 +26,7 @@ const loginUser = catchAsync(async (req, res): Promise<void> => {
   };
 
   const accessToken = JwtService.generateToken(
-    { email: user.email, role: user.role },
+    { id: user.id, email: user.email, role: user.role },
     { expiresIn: '15m', type: 'ACCESS' }
   );
 
@@ -55,7 +55,7 @@ const loginAdmin = catchAsync(async (req, res): Promise<void> => {
   };
 
   const accessToken = JwtService.generateToken(
-    { email: user.email, role: user.role },
+    { id: user.id, email: user.email, role: user.role },
     { expiresIn: '15m', type: 'ACCESS' }
   );
 
@@ -85,7 +85,7 @@ const registerStudent = catchAsync(async (req, res): Promise<void> => {
   };
 
   const accessToken = JwtService.generateToken(
-    { email: user.email, role: user.role },
+    { id: user.id, email: user.email, role: user.role },
     { expiresIn: '15m', type: 'ACCESS' }
   );
 
@@ -238,7 +238,7 @@ const refreshAccessToken = catchAsync(async (req, res): Promise<void> => {
     refreshToken: string;
   };
   const accessToken = JwtService.generateToken(
-    { email: user.email, role: user.role },
+    { id: user.id, email: user.email, role: user.role },
     { expiresIn: '150m', type: 'ACCESS' }
   );
 

@@ -3,6 +3,7 @@ export interface EmailOptions {
   subject: string;
   html: string;
   from?: string;
+  replyTo?: string;
 }
 
 export interface EmailJobData extends EmailOptions {

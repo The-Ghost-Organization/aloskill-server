@@ -8,10 +8,12 @@ import * as XLSX from 'xlsx';
 import { executeDbOperation } from '../../config/database.js';
 import {
   ApplicationStatus,
+  BookFileType,
   BookFormat,
   BookStatus,
   OrderItemStatus,
   OrderStatus,
+  PurchaseFormat,
   TransactionStatus,
 } from '../../generated/enums.js';
 import { notificationService } from '../notification/notification.service.js';
@@ -1270,13 +1272,41 @@ const getAllBooksDataforUser = async (req: Request) => {
     // 2. Query purchased books via OrderItems where the Order status is successful
     const purchasedBookItems = await prisma.orderItem.findMany({
       where: {
-        order: {
-          userId: userProfile.id,
-          status: {
-            in: ['PAID', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED'],
-          },
-        },
         bookId: { not: null },
+        status: { not: OrderItemStatus.REFUNDED },
+        OR: [
+          {
+            format: PurchaseFormat.PHYSICAL,
+            order: {
+              userId: userProfile.id,
+              status: {
+                in: [
+                  OrderStatus.PAID,
+                  OrderStatus.CONFIRMED,
+                  OrderStatus.PROCESSING,
+                  OrderStatus.SHIPPED,
+                  OrderStatus.OUT_FOR_DELIVERY,
+                  OrderStatus.DELIVERED,
+                ],
+              },
+            },
+          },
+          {
+            format: PurchaseFormat.DIGITAL,
+            order: {
+              userId: userProfile.id,
+              status: {
+                in: [
+                  OrderStatus.PAID,
+                  OrderStatus.PROCESSING,
+                  OrderStatus.SHIPPED,
+                  OrderStatus.OUT_FOR_DELIVERY,
+                  OrderStatus.DELIVERED,
+                ],
+              },
+            },
+          },
+        ],
       },
       select: {
         id: true,
@@ -1304,6 +1334,7 @@ const getAllBooksDataforUser = async (req: Request) => {
             files: {
               select: {
                 id: true,
+                name: true,
                 url: true,
                 fileType: true,
               },
@@ -1315,7 +1346,10 @@ const getAllBooksDataforUser = async (req: Request) => {
     });
 
     return purchasedBookItems.map(item => {
-      const isDigital = item.format === 'DIGITAL';
+      const isDigital = item.format === PurchaseFormat.DIGITAL;
+      const ebookFile = isDigital
+        ? item.book?.files.find(file => file.fileType === BookFileType.EBOOK)
+        : undefined;
 
       return {
         orderItemId: item.id,
@@ -1330,10 +1364,11 @@ const getAllBooksDataforUser = async (req: Request) => {
           author: item.book?.author,
           format: item.format,
           price: Number(item.price),
-          readUrl: isDigital
-            ? (item.book?.files.find(file => file.fileType === 'EBOOK')?.url ??
-              item.book?.files.find(file => file.fileType === 'PREVIEW')?.url ??
-              null)
+          ebookAccess: isDigital
+            ? {
+                available: Boolean(ebookFile),
+                fileName: ebookFile?.name ?? null,
+              }
             : null,
         },
         delivery: isDigital
@@ -1346,18 +1381,78 @@ const getAllBooksDataforUser = async (req: Request) => {
               shippedAt: item.shippedAt,
               deliveredAt: item.deliveredAt,
             },
-        downloadUrls: isDigital
-          ? (item.book?.files.map(file => ({
-              url: file.url,
-              action: file.fileType === 'PREVIEW' ? 'READ' : 'DOWNLOAD',
-            })) ?? [])
-          : null,
-        // downloadUrl: isDigital ? item.book?.files.find(file => file.fileType === 'EBOOK')?.url ?? null : null,
       };
     });
   }, 'Get All Purchased Books for Student');
 
   return booksData;
+};
+
+const getPurchasedEbookFile = async (req: Request) => {
+  const userEmail = req.user?.email;
+  const orderItemId = req.params.orderItemId as string | undefined;
+
+  if (!userEmail) {
+    throw new Error('Unauthorized: User not authenticated.');
+  }
+  if (!orderItemId) {
+    throw new Error('Order item ID is required.');
+  }
+
+  const purchasedItem = await executeDbOperation(async prisma => {
+    return await prisma.orderItem.findFirst({
+      where: {
+        id: orderItemId,
+        format: PurchaseFormat.DIGITAL,
+        status: { not: OrderItemStatus.REFUNDED },
+        bookId: { not: null },
+        order: {
+          user: { email: userEmail, deletedAt: null, status: 'ACTIVE' },
+          status: {
+            in: [
+              OrderStatus.PAID,
+              OrderStatus.PROCESSING,
+              OrderStatus.SHIPPED,
+              OrderStatus.OUT_FOR_DELIVERY,
+              OrderStatus.DELIVERED,
+            ],
+          },
+        },
+      },
+      select: {
+        id: true,
+        book: {
+          select: {
+            id: true,
+            title: true,
+            files: {
+              where: { fileType: BookFileType.EBOOK },
+              select: { id: true, name: true, url: true, fileType: true },
+              orderBy: { createdAt: 'desc' },
+              take: 1,
+            },
+          },
+        },
+      },
+    });
+  }, 'Resolve Purchased Ebook File');
+
+  if (!purchasedItem?.book) {
+    throw new Error('Purchased eBook not found.');
+  }
+
+  const ebookFile = purchasedItem.book.files[0];
+  if (!ebookFile) {
+    throw new Error('The full eBook file is not available for this purchase.');
+  }
+
+  return {
+    orderItemId: purchasedItem.id,
+    bookId: purchasedItem.book.id,
+    title: purchasedItem.book.title,
+    fileName: ebookFile.name || `${purchasedItem.book.title}.pdf`,
+    url: ebookFile.url,
+  };
 };
 
 // Admin Dashboard
@@ -2312,6 +2407,7 @@ export const bookService = {
   getBookReviewStatus,
   submitBookReview,
   getAllBooksDataforUser,
+  getPurchasedEbookFile,
   getSingleBookForCheckout,
   getAllBooksDataForInstructor,
   getSingleBookDataForInstructorEdit,
