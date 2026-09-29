@@ -10,6 +10,7 @@ import { generalLimiter, instructorQueryLimiter } from '../../middleware/securit
 import { validate } from '../../middleware/validation.js';
 import { courseController } from './course.controller.js';
 import {
+  CreateCourseReviewSchema,
   CreateCourseSchema,
   GetAndDeleteFileSchema,
   GetAndDeleteVideoSchema,
@@ -65,6 +66,15 @@ router.get(
 );
 
 router.get('/public/viewCourse/:courseId', courseController.getSingleCourseForPublicView);
+router.get('/public/viewCourse/:courseId/reviews', courseController.getCourseReviews);
+router.get('/public/testimonials', courseController.getCourseTestimonials);
+router.get('/user/:courseId/review-status', requireStudent, courseController.getCourseReviewStatus);
+router.post(
+  '/user/:courseId/reviews',
+  requireStudent,
+  validate(CreateCourseReviewSchema),
+  courseController.submitCourseReview
+);
 
 router.get(
   '/private/viewCourse/:courseId/:userId',

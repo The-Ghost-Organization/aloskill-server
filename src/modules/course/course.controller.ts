@@ -29,7 +29,11 @@ const getAllCoursesForPublic = catchAsync(async (req, res): Promise<void> => {
 
 const getAllCoursesForAdminDashboardStudentView = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getAllCoursesForAdminDashboardStudentView(req);
-  ResponseHandler.ok(res, 'All Courses Fetched Successfully for Admin Dashboard Student View!', result);
+  ResponseHandler.ok(
+    res,
+    'All Courses Fetched Successfully for Admin Dashboard Student View!',
+    result
+  );
 });
 
 const getSingleCourseForInstructorView = catchAsync(async (req, res): Promise<void> => {
@@ -40,6 +44,26 @@ const getSingleCourseForInstructorView = catchAsync(async (req, res): Promise<vo
 const getSingleCourseForPublicView = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getSingleCourseForPublicView(req);
   ResponseHandler.ok(res, 'Course fetched successfully for Public view!', result);
+});
+
+const getCourseReviews = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getCourseReviews(req);
+  ResponseHandler.ok(res, 'Course reviews retrieved successfully!', result);
+});
+
+const getCourseReviewStatus = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getCourseReviewStatus(req);
+  ResponseHandler.ok(res, 'Course review status retrieved successfully!', result);
+});
+
+const submitCourseReview = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.submitCourseReview(req);
+  ResponseHandler.ok(res, 'Course review saved successfully!', result);
+});
+
+const getCourseTestimonials = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getCourseTestimonials(req);
+  ResponseHandler.ok(res, 'Course testimonials retrieved successfully!', result);
 });
 
 const getSingleCourseForPaidView = catchAsync(async (req, res): Promise<void> => {
@@ -56,7 +80,6 @@ const getSingleCourseForCheckout = catchAsync(async (req, res): Promise<void> =>
   const result = await courseService.getSingleCourseForCheckout(req);
   ResponseHandler.ok(res, 'Course fetched successfully for checkout!', result);
 });
-
 
 const getInstructorEarnings = catchAsync(async (req, res): Promise<void> => {
   const result = await courseService.getInstructorEarnings(req);
@@ -199,11 +222,15 @@ export const courseController = {
   createFileToBunny,
   getSingleCourseForInstructorView,
   getSingleCourseForPublicView,
+  getCourseReviews,
+  getCourseReviewStatus,
+  submitCourseReview,
+  getCourseTestimonials,
   getSingleCourseForPaidView,
   getSingleCourseForInstructorEdit,
   deleteVideo,
   deleteFile,
   getVideo,
   getSecureVideoToken,
-  getSingleCourseForCheckout
+  getSingleCourseForCheckout,
 };

@@ -985,13 +985,18 @@ const getSingleCourseForPublicView = async (req: Request) => {
         },
 
         reviews: {
+          where: { deletedAt: null, flagged: false },
+          orderBy: { createdAt: 'desc' },
           select: {
+            id: true,
             rating: true,
+            title: true,
             body: true,
             createdAt: true,
             user: {
               select: {
                 studentProfile: { select: { displayName: true } },
+                instructorProfile: { select: { displayName: true } },
                 avatarUrl: true,
               },
             },
@@ -1058,7 +1063,7 @@ const getSingleCourseForPublicView = async (req: Request) => {
       return {
         star: starNum,
         count: distribution[starNum],
-        percentage: `${((distribution[starNum] / totalReviews) * 100).toFixed(0)}%`,
+        percentage: `${(totalReviews > 0 ? (distribution[starNum] / totalReviews) * 100 : 0).toFixed(0)}%`,
       };
     });
     const hours = Math.floor(totalDuration / 3600);
@@ -1078,8 +1083,13 @@ const getSingleCourseForPublicView = async (req: Request) => {
       isDiscountActive: course.isDiscountActive,
       language: course.language,
       level: course.level,
-      ratingAverage: course.ratingAverage,
-      ratingCount: course.ratingCount,
+      ratingAverage:
+        totalReviews > 0
+          ? Math.round(
+              (course.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews) * 10
+            ) / 10
+          : 0,
+      ratingCount: totalReviews,
       enrollmentCount: course.enrollmentCount,
       createdAt: course.createdAt,
       updatedAt: course.updatedAt,
@@ -1099,11 +1109,17 @@ const getSingleCourseForPublicView = async (req: Request) => {
         avatarUrl: i.instructor.user.avatarUrl,
       })),
       reviews: course.reviews.map(review => ({
+        id: review.id,
         rating: review.rating,
+        title: review.title,
         body: review.body,
         createdAt: review.createdAt,
-        userDisplayName: review.user.studentProfile?.displayName,
+        userDisplayName:
+          review.user.studentProfile?.displayName ??
+          review.user.instructorProfile?.displayName ??
+          'AloSkill Learner',
         avatarUrl: review.user.avatarUrl,
+        verifiedEnrollment: true,
       })),
       content: {
         totalModules: course.moduleCount,
@@ -1142,6 +1158,363 @@ const getSingleCourseForPublicView = async (req: Request) => {
     };
   };
   return formatCourseData(getCourseDetails);
+};
+
+type CourseReviewRow = {
+  id: string;
+  rating: number;
+  title: string | null;
+  body: string | null;
+  createdAt: Date;
+  course?: { id: string; title: string } | null;
+  user: {
+    avatarUrl: string | null;
+    studentProfile: { displayName: string } | null;
+    instructorProfile: { displayName: string } | null;
+  };
+};
+
+const formatCourseReview = (review: CourseReviewRow) => ({
+  id: review.id,
+  courseId: review.course?.id ?? null,
+  courseTitle: review.course?.title ?? null,
+  rating: review.rating,
+  title: review.title,
+  body: review.body,
+  createdAt: review.createdAt,
+  userDisplayName:
+    review.user.studentProfile?.displayName ??
+    review.user.instructorProfile?.displayName ??
+    'AloSkill Learner',
+  avatarUrl: review.user.avatarUrl,
+  verifiedEnrollment: true,
+});
+
+const refreshInstructorCourseRatings = async (
+  tx: Prisma.TransactionClient,
+  instructorIds: string[]
+) => {
+  for (const instructorId of [...new Set(instructorIds.filter(Boolean))]) {
+    const aggregate = await tx.review.aggregate({
+      where: {
+        deletedAt: null,
+        flagged: false,
+        course: {
+          is: {
+            deletedAt: null,
+            OR: [{ createdById: instructorId }, { courseInstructors: { some: { instructorId } } }],
+          },
+        },
+      },
+      _avg: { rating: true },
+      _count: { _all: true },
+    });
+
+    const average = Number(aggregate._avg.rating ?? 0);
+    await tx.instructorProfile.update({
+      where: { id: instructorId },
+      data: {
+        ratingAverage: Math.round(average * 10) / 10,
+        ratingCount: aggregate._count._all,
+      },
+    });
+  }
+};
+
+const getCourseReviews = async (req: Request) => {
+  const courseId = req.params.courseId as string;
+  const requestedPage = Number(req.query.page ?? 1);
+  const requestedLimit = Number(req.query.limit ?? 10);
+  const page = Number.isFinite(requestedPage) && requestedPage > 0 ? Math.floor(requestedPage) : 1;
+  const limit =
+    Number.isFinite(requestedLimit) && requestedLimit > 0
+      ? Math.min(Math.floor(requestedLimit), 30)
+      : 10;
+
+  if (!courseId) {
+    throw new Error('Course ID is required.');
+  }
+
+  return await executeDbOperation(async prisma => {
+    const course = await prisma.course.findFirst({
+      where: { id: courseId, status: CourseStatus.PUBLISHED, deletedAt: null },
+      select: { id: true },
+    });
+
+    if (!course) {
+      throw new Error('Course not found or not published.');
+    }
+
+    const where: Prisma.ReviewWhereInput = {
+      courseId,
+      deletedAt: null,
+      flagged: false,
+    };
+
+    const [reviews, aggregate] = await Promise.all([
+      prisma.review.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+        select: {
+          id: true,
+          rating: true,
+          title: true,
+          body: true,
+          createdAt: true,
+          course: { select: { id: true, title: true } },
+          user: {
+            select: {
+              avatarUrl: true,
+              studentProfile: { select: { displayName: true } },
+              instructorProfile: { select: { displayName: true } },
+            },
+          },
+        },
+      }),
+      prisma.review.aggregate({
+        where,
+        _avg: { rating: true },
+        _count: { _all: true },
+      }),
+    ]);
+
+    const average = Number(aggregate._avg.rating ?? 0);
+    const total = aggregate._count._all;
+
+    return {
+      items: reviews.map(review => formatCourseReview(review)),
+      summary: { average: Math.round(average * 10) / 10, count: total },
+      pagination: { page, limit, total, hasMore: page * limit < total },
+    };
+  }, 'Get Course Reviews');
+};
+
+const getCourseReviewStatus = async (req: Request) => {
+  const courseId = req.params.courseId as string;
+  const userId = await getAuthenticatedUserId(req);
+
+  return await executeDbOperation(async prisma => {
+    const [user, course, enrollment, existingReview] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId, deletedAt: null, status: UserStatus.ACTIVE },
+        select: { id: true, instructorProfile: { select: { id: true } } },
+      }),
+      prisma.course.findFirst({
+        where: { id: courseId, status: CourseStatus.PUBLISHED, deletedAt: null },
+        select: {
+          id: true,
+          createdById: true,
+          courseInstructors: { select: { instructorId: true } },
+        },
+      }),
+      prisma.enrollment.findFirst({
+        where: {
+          userId,
+          courseId,
+          deletedAt: null,
+          status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.COMPLETED] },
+        },
+        select: { id: true },
+      }),
+      prisma.review.findFirst({
+        where: { userId, courseId, deletedAt: null },
+        select: { id: true, rating: true, title: true, body: true, createdAt: true, flagged: true },
+      }),
+    ]);
+
+    if (!user) {
+      throw new Error('Unauthorized: User profile not found.');
+    }
+    if (!course) {
+      throw new Error('Course not found or not published.');
+    }
+
+    const instructorId = user.instructorProfile?.id;
+    const teachesCourse = Boolean(
+      instructorId &&
+      (course.createdById === instructorId ||
+        course.courseInstructors.some(item => item.instructorId === instructorId))
+    );
+
+    return {
+      canReview: Boolean(enrollment) && !teachesCourse,
+      hasEnrollment: Boolean(enrollment),
+      teachesCourse,
+      existingReview,
+      reason: teachesCourse
+        ? 'Instructors cannot review a course they teach.'
+        : !enrollment
+          ? 'Only enrolled learners can review this course.'
+          : null,
+    };
+  }, 'Get Course Review Status');
+};
+
+const submitCourseReview = async (req: Request) => {
+  const courseId = req.params.courseId as string;
+  const userId = await getAuthenticatedUserId(req);
+  const { rating, title, body } = req.body as { rating: number; title?: string; body: string };
+
+  return await executeDbOperation(async prisma => {
+    return await prisma.$transaction(async tx => {
+      const user = await tx.user.findUnique({
+        where: { id: userId, deletedAt: null, status: UserStatus.ACTIVE },
+        select: { id: true, instructorProfile: { select: { id: true } } },
+      });
+      if (!user) {
+        throw new Error('Unauthorized: User profile not found.');
+      }
+
+      const course = await tx.course.findFirst({
+        where: { id: courseId, status: CourseStatus.PUBLISHED, deletedAt: null },
+        select: {
+          id: true,
+          title: true,
+          createdById: true,
+          courseInstructors: { select: { instructorId: true } },
+        },
+      });
+      if (!course) {
+        throw new Error('Course not found or not published.');
+      }
+
+      const instructorId = user.instructorProfile?.id;
+      const teachesCourse = Boolean(
+        instructorId &&
+        (course.createdById === instructorId ||
+          course.courseInstructors.some(item => item.instructorId === instructorId))
+      );
+      if (teachesCourse) {
+        throw new Error('Instructors cannot review a course they teach.');
+      }
+
+      const enrollment = await tx.enrollment.findFirst({
+        where: {
+          userId,
+          courseId,
+          deletedAt: null,
+          status: { in: [EnrollmentStatus.ACTIVE, EnrollmentStatus.COMPLETED] },
+        },
+        select: { id: true },
+      });
+      if (!enrollment) {
+        throw new Error('Only enrolled learners can review this course.');
+      }
+
+      const existingReview = await tx.review.findFirst({
+        where: { userId, courseId, deletedAt: null },
+        select: { id: true },
+      });
+
+      const reviewSelect = {
+        id: true,
+        rating: true,
+        title: true,
+        body: true,
+        createdAt: true,
+        course: { select: { id: true, title: true } },
+        user: {
+          select: {
+            avatarUrl: true,
+            studentProfile: { select: { displayName: true } },
+            instructorProfile: { select: { displayName: true } },
+          },
+        },
+      } as const;
+
+      const review = existingReview
+        ? await tx.review.update({
+            where: { id: existingReview.id },
+            data: { rating, title: title?.trim() ?? null, body: body.trim() },
+            select: reviewSelect,
+          })
+        : await tx.review.create({
+            data: {
+              userId,
+              courseId,
+              rating,
+              title: title?.trim() ?? null,
+              body: body.trim(),
+            },
+            select: reviewSelect,
+          });
+
+      if (!existingReview) {
+        await tx.user.update({
+          where: { id: userId },
+          data: { reviewCount: { increment: 1 } },
+        });
+      }
+
+      const aggregate = await tx.review.aggregate({
+        where: { courseId, deletedAt: null, flagged: false },
+        _avg: { rating: true },
+        _count: { _all: true },
+      });
+      const average = Math.round(Number(aggregate._avg.rating ?? 0) * 10) / 10;
+
+      await tx.course.update({
+        where: { id: courseId },
+        data: {
+          ratingAverage: average,
+          ratingCount: aggregate._count._all,
+          reviewCount: aggregate._count._all,
+        },
+      });
+
+      await refreshInstructorCourseRatings(tx, [
+        course.createdById ?? '',
+        ...course.courseInstructors.map(item => item.instructorId),
+      ]);
+
+      return {
+        review: formatCourseReview(review),
+        summary: { average, count: aggregate._count._all },
+        updated: Boolean(existingReview),
+      };
+    });
+  }, 'Submit Course Review');
+};
+
+const getCourseTestimonials = async (req: Request) => {
+  const requestedLimit = Number(req.query.limit ?? 6);
+  const limit =
+    Number.isFinite(requestedLimit) && requestedLimit > 0
+      ? Math.min(Math.floor(requestedLimit), 12)
+      : 6;
+
+  return await executeDbOperation(async prisma => {
+    const reviews = await prisma.review.findMany({
+      where: {
+        courseId: { not: null },
+        deletedAt: null,
+        flagged: false,
+        body: { not: null },
+        course: { is: { status: CourseStatus.PUBLISHED, deletedAt: null } },
+      },
+      orderBy: [{ createdAt: 'desc' }],
+      take: limit,
+      select: {
+        id: true,
+        rating: true,
+        title: true,
+        body: true,
+        createdAt: true,
+        course: { select: { id: true, title: true } },
+        user: {
+          select: {
+            avatarUrl: true,
+            studentProfile: { select: { displayName: true } },
+            instructorProfile: { select: { displayName: true } },
+          },
+        },
+      },
+    });
+
+    return reviews.map(review => formatCourseReview(review));
+  }, 'Get Course Testimonials');
 };
 
 const getSingleCourseForPaidView = async (req: Request) => {
@@ -2557,6 +2930,10 @@ export const courseService = {
   createFileToBunny,
   getSingleCourseForInstructorView,
   getSingleCourseForPublicView,
+  getCourseReviews,
+  getCourseReviewStatus,
+  submitCourseReview,
+  getCourseTestimonials,
   getSingleCourseForPaidView,
   getSingleCourseForInstructorEdit,
   updateLessonProgress,

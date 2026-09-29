@@ -403,13 +403,14 @@ const getSingleInstructor = async (req: Request) => {
   }
 
   const instructor = await executeDbOperation(async prisma => {
-    return await prisma.instructorProfile.findFirst({
+    const profile = await prisma.instructorProfile.findFirst({
       where: {
         userId: id,
         status: ApplicationStatus.APPROVED,
         deletedAt: null,
       },
       select: {
+        id: true,
         user: {
           select: {
             id: true,
@@ -429,6 +430,17 @@ const getSingleInstructor = async (req: Request) => {
           },
         },
         website: true,
+        authorProfile: {
+          where: {
+            deletedAt: null,
+            isActive: true,
+          },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
         ownedCourses: {
           select: {
             id: true,
@@ -491,6 +503,54 @@ const getSingleInstructor = async (req: Request) => {
         },
       },
     });
+
+    if (!profile) {
+      return null;
+    }
+
+    const courseReviewWhere = {
+      deletedAt: null,
+      flagged: false,
+      course: {
+        is: {
+          deletedAt: null,
+          OR: [
+            { createdById: profile.id },
+            { courseInstructors: { some: { instructorId: profile.id } } },
+          ],
+        },
+      },
+    };
+
+    const [courseReviews, courseReviewAggregate] = await Promise.all([
+      prisma.review.findMany({
+        where: courseReviewWhere,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          rating: true,
+          title: true,
+          body: true,
+          createdAt: true,
+          course: { select: { id: true, title: true } },
+          user: {
+            select: {
+              avatarUrl: true,
+              studentProfile: { select: { displayName: true } },
+              instructorProfile: { select: { displayName: true } },
+            },
+          },
+        },
+        take: 50,
+      }),
+      prisma.review.aggregate({
+        where: courseReviewWhere,
+        _avg: { rating: true },
+        _count: { _all: true },
+      }),
+    ]);
+
+    return { ...profile, courseReviews, courseReviewAggregate };
   });
 
   if (!instructor) {
@@ -503,7 +563,13 @@ const getSingleInstructor = async (req: Request) => {
 
     // Instructor Profile fields (flat)
     displayName: instructor.displayName,
-    ratingAverage: instructor.ratingAverage ? parseFloat(instructor.ratingAverage.toString()) : 0,
+    ratingAverage:
+      instructor.courseReviewAggregate._count._all > 0
+        ? Math.round(Number(instructor.courseReviewAggregate._avg.rating ?? 0) * 10) / 10
+        : instructor.ratingAverage
+          ? parseFloat(instructor.ratingAverage.toString())
+          : 0,
+    ratingCount: instructor.courseReviewAggregate._count._all,
     totalCourses: instructor.totalCourses,
     totalStudents: instructor.totalStudents,
     expertise: instructor.expertise,
@@ -511,6 +577,22 @@ const getSingleInstructor = async (req: Request) => {
     website: instructor.website,
     skills: instructor.skills.map(skillObj => skillObj.skill),
     socialAccounts: instructor.socialAccount,
+    authorProfile: instructor.authorProfile,
+    reviews: instructor.courseReviews.map(review => ({
+      id: review.id,
+      courseId: review.course?.id ?? null,
+      courseTitle: review.course?.title ?? 'Course',
+      rating: review.rating,
+      title: review.title,
+      body: review.body,
+      createdAt: review.createdAt,
+      userDisplayName:
+        review.user.studentProfile?.displayName ??
+        review.user.instructorProfile?.displayName ??
+        'AloSkill Learner',
+      avatarUrl: review.user.avatarUrl,
+      verifiedEnrollment: true,
+    })),
 
     // Courses
     // ownedCourses: instructor.ownedCourses.map(course => {
