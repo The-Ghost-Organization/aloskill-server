@@ -127,7 +127,7 @@ const getCourseTags = async (req: Request) => {
 
 const createCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  const instructorEmail = req.query.user as string;
+  const selectedPrimaryInstructorId = data.courseInstructors?.find(item => item.role === 'PRIMARY')?.instructorId;
 
   if (data.modules.length === 0) {
     throw new Error('Invalid course data provided');
@@ -135,26 +135,28 @@ const createCourse = async (req: Request) => {
   if (data.modules[0]?.lessons.length === 0) {
     throw new Error('Lessons not provided');
   }
-  if (!instructorEmail) {
-    throw new Error('No instructor found in request');
-  }
-
-  const instructorExists = await executeDbOperation(async prisma => {
-    return await prisma.user.findUnique({
-      where: {
-        email: instructorEmail,
-        status: UserStatus.ACTIVE,
-        instructorProfile: { status: ApplicationStatus.APPROVED },
-      },
-      select: { instructorProfile: { select: { id: true } } },
+  const courseActor = await executeDbOperation(async prisma => {
+    const requester = await prisma.user.findUnique({
+      where: { email: req.user.email, status: UserStatus.ACTIVE },
+      select: { assignedRole: { select: { role: true } }, instructorProfile: { select: { id: true, status: true, deletedAt: true } } },
     });
+    if (!requester) {throw new Error('Authenticated user not found');}
+    const isAdmin = requester.assignedRole.some(item => item.role === 'ADMIN');
+    if (isAdmin) {
+      if (!selectedPrimaryInstructorId) {throw new Error('Select an approved primary instructor for this course');}
+      const profile = await prisma.instructorProfile.findFirst({
+        where: { id: selectedPrimaryInstructorId, status: ApplicationStatus.APPROVED, deletedAt: null },
+        select: { id: true },
+      });
+      if (!profile) {throw new Error('Selected primary instructor is not approved');}
+      return { isAdmin, primaryInstructorId: profile.id };
+    }
+    if (requester.instructorProfile?.status !== ApplicationStatus.APPROVED || requester.instructorProfile.deletedAt) {
+      throw new Error('Instructor profile not found or not approved');
+    }
+    return { isAdmin, primaryInstructorId: requester.instructorProfile.id };
   });
-
-  if (!instructorExists?.instructorProfile) {
-    throw new Error(`Instructor profile not found or not approvedAt`);
-  }
-
-  const primaryInstructorId = instructorExists.instructorProfile.id;
+  const { isAdmin, primaryInstructorId } = courseActor;
 
   const { id: _id, modules, courseInstructors, ...restData } = data;
   const { category, subCategory, tags, ...courseData } = restData;
@@ -214,7 +216,7 @@ const createCourse = async (req: Request) => {
         moduleCount: modules.length,
         slug: slugify(data.slug),
         categoryId: categoryData.id,
-        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : CourseStatus.PENDING,
+        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : isAdmin ? CourseStatus.PUBLISHED : CourseStatus.PENDING,
         createdById: primaryInstructorId,
 
         courseInstructors: {
@@ -310,7 +312,7 @@ const createCourse = async (req: Request) => {
 
 const updateCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  const instructorEmail = req.query.user as string;
+  const selectedPrimaryInstructorId = data.courseInstructors?.find(item => item.role === 'PRIMARY')?.instructorId;
 
   if (!data.id) {
     throw new Error('Course ID Not found');
@@ -322,22 +324,29 @@ const updateCourse = async (req: Request) => {
     throw new Error('Lessons not provided');
   }
 
-  const instructorExists = await executeDbOperation(async prisma => {
-    return await prisma.user.findUnique({
-      where: {
-        email: instructorEmail,
-        status: UserStatus.ACTIVE,
-        instructorProfile: { status: ApplicationStatus.APPROVED },
-      },
-      select: { instructorProfile: { select: { id: true } } },
+  const courseActor = await executeDbOperation(async prisma => {
+    const requester = await prisma.user.findUnique({
+      where: { email: req.user.email, status: UserStatus.ACTIVE },
+      select: { assignedRole: { select: { role: true } }, instructorProfile: { select: { id: true, status: true, deletedAt: true } } },
     });
+    if (!requester) {throw new Error('Authenticated user not found');}
+    const isAdmin = requester.assignedRole.some(item => item.role === 'ADMIN');
+    if (isAdmin) {
+      const existing = await prisma.course.findUnique({ where: { id: data.id as string }, select: { createdById: true } });
+      const profileId = selectedPrimaryInstructorId ?? existing?.createdById;
+      const profile = await prisma.instructorProfile.findFirst({
+        where: { id: profileId ?? undefined, status: ApplicationStatus.APPROVED, deletedAt: null },
+        select: { id: true },
+      });
+      if (!profile) {throw new Error('Select an approved primary instructor for this course');}
+      return { isAdmin, primaryInstructorId: profile.id };
+    }
+    if (requester.instructorProfile?.status !== ApplicationStatus.APPROVED || requester.instructorProfile.deletedAt) {
+      throw new Error('Instructor profile not found or not approved');
+    }
+    return { isAdmin, primaryInstructorId: requester.instructorProfile.id };
   });
-
-  if (!instructorExists?.instructorProfile) {
-    throw new Error(`Instructor profile not found for Editing the course`);
-  }
-
-  const primaryInstructorId = instructorExists.instructorProfile.id;
+  const { isAdmin, primaryInstructorId } = courseActor;
 
   const { id, modules, courseInstructors, ...restData } = data;
   const { category, subCategory, tags, ...courseData } = restData;
@@ -403,7 +412,7 @@ const updateCourse = async (req: Request) => {
           title: data.title,
           slug: slugify(data.slug),
           description: data.description,
-          status: CourseStatus.PENDING,
+          status: data.status === 'DRAFT' ? CourseStatus.DRAFT : isAdmin ? CourseStatus.PUBLISHED : CourseStatus.PENDING,
           welcomeMessage: data.welcomeMessage,
           congratulationsMessage: data.congratulationsMessage,
           originalPrice: data.originalPrice,

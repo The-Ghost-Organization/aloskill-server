@@ -6,4 +6,6 @@ const allApprovals = catchAsync(async (req, res): Promise<void> => { ResponseHan
 const approvalDetail = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Approval details retrieved', await adminService.approvalDetail(req)); });
 const decideApproval = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Approval decision saved', await adminService.decideApproval(req)); });
 const adminDashboard = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Admin dashboard retrieved', await adminService.adminDashboard(req)); });
-export const adminController = { allApprovals, approvalDetail, decideApproval, adminDashboard };
+const adminCourses = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Admin courses retrieved', await adminService.adminCourses(req)); });
+const adminCourseAction = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Course action completed', await adminService.adminCourseAction(req)); });
+export const adminController = { allApprovals, approvalDetail, decideApproval, adminDashboard, adminCourses, adminCourseAction };
