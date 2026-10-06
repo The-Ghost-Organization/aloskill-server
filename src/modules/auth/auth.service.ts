@@ -114,9 +114,7 @@ const loginUser = async (req: Request) => {
     throw new Error('Your account has been deactivated or Suspended');
   }
 
-  const hasAdminRole = user.assignedRole.some(
-    (role) => role.role === UserRole.ADMIN
-  );
+  const hasAdminRole = user.assignedRole.some(role => role.role === UserRole.ADMIN);
 
   if (hasAdminRole) {
     throw new Error('You are not authorized to login through this endpoint');
@@ -445,9 +443,7 @@ const loginAdmin = async (req: Request) => {
     throw new Error('Your account has been deactivated or Suspended');
   }
 
-  const hasAdminRole = user.assignedRole.some(
-    (role) => role.role === UserRole.ADMIN
-  );
+  const hasAdminRole = user.assignedRole.some(role => role.role === UserRole.ADMIN);
 
   if (!hasAdminRole) {
     throw new Error('You are not authorized to login through this endpoint');
@@ -620,7 +616,6 @@ const loginAdmin = async (req: Request) => {
     user: buildUserProfile(updatedUser),
     refreshToken,
   };
-
 };
 
 const registerStudent = async (req: Request) => {
@@ -839,6 +834,20 @@ const registerInstructor = async (req: Request) => {
           avatarUrl: profileImage,
           emailVerificationTokenHash: crypto.randomBytes(64).toString('hex'),
           emailVerificationExpires: new Date(Date.now() + 6 * 60 * 60 * 1000),
+          studentProfile: {
+            create: {
+              displayName: restData.displayName,
+              encryptedPhone: restData.encryptedPhone,
+              phoneLastFour: restData.phoneLastFour,
+              gender: restData.gender,
+              bio: restData.bio,
+            },
+          },
+          assignedRole: {
+            create: {
+              role: UserRole.STUDENT,
+            },
+          },
           instructorProfile: {
             create: {
               ...restData,

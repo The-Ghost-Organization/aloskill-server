@@ -1,10 +1,16 @@
 import express from 'express';
 import multer from 'multer';
-import { requireAdmin, requireAuth, requireInstructor, requireStudent } from '../../middleware/auth.js';
+import {
+  requireAdmin,
+  requireAuth,
+  requireInstructor,
+  requireStudent,
+} from '../../middleware/auth.js';
 import { generalLimiter, instructorQueryLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { courseController } from './course.controller.js';
 import {
+  CreateCourseReviewSchema,
   CreateCourseSchema,
   GetAndDeleteFileSchema,
   GetAndDeleteVideoSchema,
@@ -60,6 +66,15 @@ router.get(
 );
 
 router.get('/public/viewCourse/:courseId', courseController.getSingleCourseForPublicView);
+router.get('/public/viewCourse/:courseId/reviews', courseController.getCourseReviews);
+router.get('/public/testimonials', courseController.getCourseTestimonials);
+router.get('/user/:courseId/review-status', requireStudent, courseController.getCourseReviewStatus);
+router.post(
+  '/user/:courseId/reviews',
+  requireStudent,
+  validate(CreateCourseReviewSchema),
+  courseController.submitCourseReview
+);
 
 router.get(
   '/private/viewCourse/:courseId/:userId',
@@ -84,6 +99,8 @@ router.get(
   courseController.getCourseInstructors
 );
 
+router.get('/instructor/dashboard', requireInstructor, courseController.getInstructorDashboardData);
+// Backward-compatible alias for older frontend builds.
 router.get('/instructorDashboard', requireInstructor, courseController.getInstructorDashboardData);
 
 router.get('/instructor/earnings', requireInstructor, courseController.getInstructorEarnings);

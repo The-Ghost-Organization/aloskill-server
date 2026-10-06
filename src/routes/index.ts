@@ -1,13 +1,14 @@
-import { AuthRoutes } from '../modules/auth/auth.routes.js';
-import { CourseRoutes } from '../modules/course/course.routes.js';
-import { UserRoutes } from '../modules/user/user.routes.js';
 import express from 'express';
-import { OrderRoutes } from '../modules/order/order.routes.js';
-import { BookRoutes } from '../modules/book/book.routes.js';
 import { AdminRoutes } from '../modules/admin/admin.routes.js';
+import { AuthRoutes } from '../modules/auth/auth.routes.js';
+import { BookRoutes } from '../modules/book/book.routes.js';
 import { CartRoutes } from '../modules/cart/cart.routes.js';
 import { ChatRoutes } from '../modules/chat/chat.routes.js';
+import { ContactRoutes } from '../modules/contact/contact.routes.js';
+import { CourseRoutes } from '../modules/course/course.routes.js';
 import { NotificationRoutes } from '../modules/notification/notification.routes.js';
+import { OrderRoutes } from '../modules/order/order.routes.js';
+import { UserRoutes } from '../modules/user/user.routes.js';
 
 const router = express.Router({ caseSensitive: true });
 
@@ -21,6 +22,7 @@ const moduleRoutes = [
   { path: '/cart', route: CartRoutes },
   { path: '/chat', route: ChatRoutes },
   { path: '/notifications', route: NotificationRoutes },
+  { path: '/contact', route: ContactRoutes },
 ];
 
 moduleRoutes.forEach(route => router.use(route.path, route.route));

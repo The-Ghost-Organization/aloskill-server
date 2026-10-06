@@ -32,6 +32,11 @@ const getAllBooksDataforUser = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Books Data Retrieved Successfully!', result);
 });
 
+const getPurchasedEbookFile = catchAsync(async (req, res): Promise<void> => {
+  const result = await bookService.getPurchasedEbookFile(req);
+  ResponseHandler.ok(res, 'Purchased eBook file access granted.', result);
+});
+
 const getPublishedBooksByInstructor = catchAsync(async (req, res): Promise<void> => {
   const result = await bookService.getPublishedBooksByInstructor(req);
   ResponseHandler.ok(res, 'Instructor books retrieved successfully!', result);
@@ -168,6 +173,7 @@ export const bookController = {
   getBookReviewStatus,
   submitBookReview,
   getAllBooksDataforUser,
+  getPurchasedEbookFile,
   getSingleBookForCheckout,
   getAllBooksDataForInstructor,
   getSingleBookDataForInstructorEdit,

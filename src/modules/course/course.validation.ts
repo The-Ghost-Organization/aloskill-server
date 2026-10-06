@@ -314,3 +314,29 @@ export const GetSecureVideoToken = z.object({
 });
 
 export type CreateCoursePayload = z.infer<typeof CreateCourseSchema>;
+
+export const CreateCourseReviewSchema = z.object({
+  params: z.object({
+    courseId: z.uuid(),
+  }),
+  body: z.object({
+    rating: z.coerce
+      .number()
+      .int()
+      .min(1, 'Rating must be at least 1')
+      .max(5, 'Rating cannot exceed 5'),
+    title: z
+      .string()
+      .trim()
+      .max(120, 'Review title cannot exceed 120 characters')
+      .regex(/^[^<>]*$/, 'Review title cannot contain HTML tags')
+      .optional()
+      .or(z.literal('')),
+    body: z
+      .string()
+      .trim()
+      .min(5, 'Review must be at least 5 characters')
+      .max(2000, 'Review cannot exceed 2000 characters')
+      .regex(/^[^<>]*$/, 'Review cannot contain HTML tags'),
+  }),
+});

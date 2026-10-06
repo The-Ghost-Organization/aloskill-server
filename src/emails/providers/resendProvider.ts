@@ -11,6 +11,7 @@ export class ResendProvider implements IMailProvider {
     subject,
     html,
     from,
+    replyTo,
     idempotencyKey,
   }: EmailJobData): Promise<MailProviderResult> {
     const { data, error } = await resendClient.emails.send(
@@ -19,6 +20,7 @@ export class ResendProvider implements IMailProvider {
         to: [to],
         subject,
         html,
+        ...(replyTo ? { replyTo } : {}),
       },
       {
         idempotencyKey,

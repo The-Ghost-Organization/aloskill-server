@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable require-await */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
@@ -20,6 +21,7 @@ import {
   PurchaseFormat,
   TransactionStatus,
   TransactionType,
+  type Prisma,
 } from '../../generated/client.js';
 import { calculateShippingCost, getDeliveryArea } from '../../services/shipping.service.js';
 import {
@@ -28,13 +30,98 @@ import {
   type SteadfastDeliveryStatus,
 } from '../../services/steadfastCourier.service.js';
 import { decryptPhoneNumber } from '../../utils/phoneNumber.js';
-import type { EPSPayload, UddoktapayPayload } from './order.validation.js';
 import { notificationService } from '../notification/notification.service.js';
+import type { EPSPayload, UddoktapayPayload } from './order.validation.js';
 
-const notifyOrder = async (orderId: string, type: 'PAYMENT_SUCCESS' | 'ORDER_UPDATE', title: string, message: string) => {
-  const order = await executeDbOperation(prisma => prisma.order.findUnique({ where: { id: orderId }, select: { userId: true } }), 'Resolve order notification recipient');
-  if (!order) return;
-  await notificationService.create({ userId: order.userId, type, title, message, entityType: 'ORDER', entityId: orderId, actionUrl: `/dashboard/student/purchase/${orderId}` });
+const notifyOrder = async (
+  orderId: string,
+  type: 'PAYMENT_SUCCESS' | 'ORDER_UPDATE',
+  title: string,
+  message: string
+) => {
+  const order = await executeDbOperation(
+    prisma => prisma.order.findUnique({ where: { id: orderId }, select: { userId: true } }),
+    'Resolve order notification recipient'
+  );
+  if (!order) {
+    return;
+  }
+  await notificationService.create({
+    userId: order.userId,
+    type,
+    title,
+    message,
+    entityType: 'ORDER',
+    entityId: orderId,
+    actionUrl: `/dashboard/student/purchase/${orderId}`,
+  });
+};
+
+/**
+ * Prevent an instructor from purchasing any course they teach.
+ *
+ * A course belongs to the instructor for purchase-protection purposes when:
+ * - Course.createdById is their InstructorProfile id, or
+ * - they are listed in CourseInstructor as PRIMARY/CO_INSTRUCTOR.
+ *
+ * This guard lives in the order service so direct payment API requests cannot
+ * bypass the frontend/checkout restriction.
+ */
+const assertInstructorCanPurchaseCourses = async (
+  tx: Prisma.TransactionClient,
+  userId: string,
+  courseIds: string[]
+) => {
+  const uniqueCourseIds = [...new Set(courseIds.filter(Boolean))];
+
+  if (uniqueCourseIds.length === 0) {
+    return;
+  }
+
+  const instructorProfile = await tx.instructorProfile.findFirst({
+    where: {
+      userId,
+      deletedAt: null,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!instructorProfile) {
+    return;
+  }
+
+  const ownedOrAssignedCourses = await tx.course.findMany({
+    where: {
+      id: { in: uniqueCourseIds },
+      deletedAt: null,
+      OR: [
+        { createdById: instructorProfile.id },
+        {
+          courseInstructors: {
+            some: {
+              instructorId: instructorProfile.id,
+            },
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+      title: true,
+    },
+  });
+
+  if (ownedOrAssignedCourses.length > 0) {
+    const courseTitles = ownedOrAssignedCourses.map(course => course.title).join(', ');
+
+    throw new Error(
+      ownedOrAssignedCourses.length === 1
+        ? `You cannot purchase your own course: ${courseTitles}.`
+        : `You cannot purchase courses that you teach: ${courseTitles}.`
+    );
+  }
 };
 
 const courierOrderStatus: Partial<Record<SteadfastDeliveryStatus, OrderStatus>> = {
@@ -331,6 +418,9 @@ const createPayment = async (req: Request) => {
       if (!userData.studentProfile && !userData.instructorProfile) {
         throw new Error('User profile not found');
       }
+
+      await assertInstructorCanPurchaseCourses(tx, userData.id, courseIds);
+
       const encryptedStudentPhone = userData.studentProfile
         ? userData.studentProfile.encryptedPhone
         : '';
@@ -586,7 +676,12 @@ const validateIPN = async (req: Request) => {
 
   console.log('Update Order Status: ', updateOrderStatus);
   if (status === 'VALID' || status === 'VALIDATED') {
-    await notifyOrder(tran_id, 'PAYMENT_SUCCESS', 'Payment confirmed', `Your payment for order #${tran_id.slice(0, 8)} was successful.`);
+    await notifyOrder(
+      tran_id,
+      'PAYMENT_SUCCESS',
+      'Payment confirmed',
+      `Your payment for order #${tran_id.slice(0, 8)} was successful.`
+    );
   }
 };
 
@@ -644,6 +739,12 @@ const createOrderWithUDDOKTAPAY = async (req: Request) => {
       const sessionCourses = data.orderSummary.items.courses;
       const sessionBooks = data.orderSummary.items.books;
       const bookQuantities = data.orderSummary.quantities.books;
+
+      await assertInstructorCanPurchaseCourses(
+        tx,
+        userData.id,
+        sessionCourses.map(course => course.id)
+      );
 
       // 2. Fetch courses and books from Database
       const dbCourses = await tx.course.findMany({
@@ -956,7 +1057,14 @@ const verifyPayment = async (req: Request) => {
       })
     );
     await createCourierConsignmentForOrder(orderId);
-    if (changed.count) await notifyOrder(orderId, 'PAYMENT_SUCCESS', 'Payment confirmed', `Your payment for order #${orderId.slice(0, 8)} was successful.`);
+    if (changed.count) {
+      await notifyOrder(
+        orderId,
+        'PAYMENT_SUCCESS',
+        'Payment confirmed',
+        `Your payment for order #${orderId.slice(0, 8)} was successful.`
+      );
+    }
   }
 
   return { orderStatus: uddoktaPayData.status, orderId: orderId ?? null };
@@ -1020,6 +1128,12 @@ const createOrderWithEPS = async (req: Request) => {
       const sessionCourses = data.orderSummary.items.courses;
       const sessionBooks = data.orderSummary.items.books;
       const bookQuantities = data.orderSummary.quantities.books;
+
+      await assertInstructorCanPurchaseCourses(
+        tx,
+        userData.id,
+        sessionCourses.map(course => course.id)
+      );
 
       // 2. Fetch courses and books from Database
       const dbCourses = await tx.course.findMany({
@@ -1520,7 +1634,12 @@ const verifyEPSPaymentByTransactionId = async (
     );
 
     await createCourierConsignmentForOrder(localPayment.order.id);
-    await notifyOrder(localPayment.order.id, 'PAYMENT_SUCCESS', 'Payment confirmed', `Your EPS payment for order #${localPayment.order.id.slice(0, 8)} was successful.`);
+    await notifyOrder(
+      localPayment.order.id,
+      'PAYMENT_SUCCESS',
+      'Payment confirmed',
+      `Your EPS payment for order #${localPayment.order.id.slice(0, 8)} was successful.`
+    );
     return {
       paymentStatus: 'PAID' as const,
       orderId: completedOrder.id,
@@ -1661,7 +1780,12 @@ const refreshMyOrderTracking = async (req: Request) => {
   );
 
   if (order.courierStatus !== courierStatus) {
-    await notifyOrder(order.id, 'ORDER_UPDATE', 'Delivery status updated', `Order #${order.id.slice(0, 8)} is now ${courierStatus.replaceAll('_', ' ')}.`);
+    await notifyOrder(
+      order.id,
+      'ORDER_UPDATE',
+      'Delivery status updated',
+      `Order #${order.id.slice(0, 8)} is now ${courierStatus.replaceAll('_', ' ')}.`
+    );
   }
 
   return { trackingAvailable: true, courierStatus };
