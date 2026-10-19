@@ -1,4 +1,10 @@
 import cron from 'node-cron';
+import { releaseMaturedEarnings } from '../modules/finance/finance.service.js';
+
+// Independent job: an EPS/courier failure must not prevent balance maturity.
+cron.schedule('* * * * *', () => {
+  runCronDbOperation(prisma => releaseMaturedEarnings(prisma), 'Release held earnings').catch(error => console.error('Finance maturity job failed', error));
+}, { timezone: 'Asia/Dhaka' });
 import { connectCronDatabase, disconnectCronDatabase } from '../config/cronDatabase.js';
 import { orderService } from '../modules/order/order.service.js';
 

@@ -25,6 +25,8 @@ export type AggregatePayoutMethod = {
 }
 
 export type PayoutMethodMinAggregateOutputType = {
+  encryptedAccount: string | null
+  accountLastFour: string | null
   id: string | null
   instructorId: string | null
   type: $Enums.PaymentMethod | null
@@ -39,6 +41,8 @@ export type PayoutMethodMinAggregateOutputType = {
 }
 
 export type PayoutMethodMaxAggregateOutputType = {
+  encryptedAccount: string | null
+  accountLastFour: string | null
   id: string | null
   instructorId: string | null
   type: $Enums.PaymentMethod | null
@@ -53,6 +57,8 @@ export type PayoutMethodMaxAggregateOutputType = {
 }
 
 export type PayoutMethodCountAggregateOutputType = {
+  encryptedAccount: number
+  accountLastFour: number
   id: number
   instructorId: number
   type: number
@@ -69,6 +75,8 @@ export type PayoutMethodCountAggregateOutputType = {
 
 
 export type PayoutMethodMinAggregateInputType = {
+  encryptedAccount?: true
+  accountLastFour?: true
   id?: true
   instructorId?: true
   type?: true
@@ -83,6 +91,8 @@ export type PayoutMethodMinAggregateInputType = {
 }
 
 export type PayoutMethodMaxAggregateInputType = {
+  encryptedAccount?: true
+  accountLastFour?: true
   id?: true
   instructorId?: true
   type?: true
@@ -97,6 +107,8 @@ export type PayoutMethodMaxAggregateInputType = {
 }
 
 export type PayoutMethodCountAggregateInputType = {
+  encryptedAccount?: true
+  accountLastFour?: true
   id?: true
   instructorId?: true
   type?: true
@@ -184,6 +196,8 @@ export type PayoutMethodGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 export type PayoutMethodGroupByOutputType = {
+  encryptedAccount: string | null
+  accountLastFour: string | null
   id: string
   instructorId: string
   type: $Enums.PaymentMethod
@@ -219,6 +233,8 @@ export type PayoutMethodWhereInput = {
   AND?: Prisma.PayoutMethodWhereInput | Prisma.PayoutMethodWhereInput[]
   OR?: Prisma.PayoutMethodWhereInput[]
   NOT?: Prisma.PayoutMethodWhereInput | Prisma.PayoutMethodWhereInput[]
+  encryptedAccount?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
+  accountLastFour?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
   id?: Prisma.StringFilter<"PayoutMethod"> | string
   instructorId?: Prisma.StringFilter<"PayoutMethod"> | string
   type?: Prisma.EnumPaymentMethodFilter<"PayoutMethod"> | $Enums.PaymentMethod
@@ -230,10 +246,13 @@ export type PayoutMethodWhereInput = {
   routingNumber?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
   isDefault?: Prisma.BoolFilter<"PayoutMethod"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PayoutMethod"> | Date | string
+  payouts?: Prisma.PayoutListRelationFilter
   instructor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type PayoutMethodOrderByWithRelationInput = {
+  encryptedAccount?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -245,6 +264,7 @@ export type PayoutMethodOrderByWithRelationInput = {
   routingNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  payouts?: Prisma.PayoutOrderByRelationAggregateInput
   instructor?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -253,6 +273,8 @@ export type PayoutMethodWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PayoutMethodWhereInput | Prisma.PayoutMethodWhereInput[]
   OR?: Prisma.PayoutMethodWhereInput[]
   NOT?: Prisma.PayoutMethodWhereInput | Prisma.PayoutMethodWhereInput[]
+  encryptedAccount?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
+  accountLastFour?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
   instructorId?: Prisma.StringFilter<"PayoutMethod"> | string
   type?: Prisma.EnumPaymentMethodFilter<"PayoutMethod"> | $Enums.PaymentMethod
   bankName?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
@@ -263,10 +285,13 @@ export type PayoutMethodWhereUniqueInput = Prisma.AtLeast<{
   routingNumber?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
   isDefault?: Prisma.BoolFilter<"PayoutMethod"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PayoutMethod"> | Date | string
+  payouts?: Prisma.PayoutListRelationFilter
   instructor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type PayoutMethodOrderByWithAggregationInput = {
+  encryptedAccount?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -287,6 +312,8 @@ export type PayoutMethodScalarWhereWithAggregatesInput = {
   AND?: Prisma.PayoutMethodScalarWhereWithAggregatesInput | Prisma.PayoutMethodScalarWhereWithAggregatesInput[]
   OR?: Prisma.PayoutMethodScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PayoutMethodScalarWhereWithAggregatesInput | Prisma.PayoutMethodScalarWhereWithAggregatesInput[]
+  encryptedAccount?: Prisma.StringNullableWithAggregatesFilter<"PayoutMethod"> | string | null
+  accountLastFour?: Prisma.StringNullableWithAggregatesFilter<"PayoutMethod"> | string | null
   id?: Prisma.StringWithAggregatesFilter<"PayoutMethod"> | string
   instructorId?: Prisma.StringWithAggregatesFilter<"PayoutMethod"> | string
   type?: Prisma.EnumPaymentMethodWithAggregatesFilter<"PayoutMethod"> | $Enums.PaymentMethod
@@ -301,6 +328,8 @@ export type PayoutMethodScalarWhereWithAggregatesInput = {
 }
 
 export type PayoutMethodCreateInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
   id?: string
   type: $Enums.PaymentMethod
   bankName?: string | null
@@ -311,10 +340,13 @@ export type PayoutMethodCreateInput = {
   routingNumber?: string | null
   isDefault?: boolean
   createdAt?: Date | string
+  payouts?: Prisma.PayoutCreateNestedManyWithoutMethodInput
   instructor: Prisma.UserCreateNestedOneWithoutPaymentMethodInput
 }
 
 export type PayoutMethodUncheckedCreateInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
   id?: string
   instructorId: string
   type: $Enums.PaymentMethod
@@ -326,9 +358,12 @@ export type PayoutMethodUncheckedCreateInput = {
   routingNumber?: string | null
   isDefault?: boolean
   createdAt?: Date | string
+  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutMethodInput
 }
 
 export type PayoutMethodUpdateInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -339,10 +374,13 @@ export type PayoutMethodUpdateInput = {
   routingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payouts?: Prisma.PayoutUpdateManyWithoutMethodNestedInput
   instructor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodNestedInput
 }
 
 export type PayoutMethodUncheckedUpdateInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   instructorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
@@ -354,9 +392,12 @@ export type PayoutMethodUncheckedUpdateInput = {
   routingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutMethodNestedInput
 }
 
 export type PayoutMethodCreateManyInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
   id?: string
   instructorId: string
   type: $Enums.PaymentMethod
@@ -371,6 +412,8 @@ export type PayoutMethodCreateManyInput = {
 }
 
 export type PayoutMethodUpdateManyMutationInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -384,6 +427,8 @@ export type PayoutMethodUpdateManyMutationInput = {
 }
 
 export type PayoutMethodUncheckedUpdateManyInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   instructorId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
@@ -407,7 +452,14 @@ export type PayoutMethodOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type PayoutMethodNullableScalarRelationFilter = {
+  is?: Prisma.PayoutMethodWhereInput | null
+  isNot?: Prisma.PayoutMethodWhereInput | null
+}
+
 export type PayoutMethodCountOrderByAggregateInput = {
+  encryptedAccount?: Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -422,6 +474,8 @@ export type PayoutMethodCountOrderByAggregateInput = {
 }
 
 export type PayoutMethodMaxOrderByAggregateInput = {
+  encryptedAccount?: Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -436,6 +490,8 @@ export type PayoutMethodMaxOrderByAggregateInput = {
 }
 
 export type PayoutMethodMinOrderByAggregateInput = {
+  encryptedAccount?: Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -491,6 +547,22 @@ export type PayoutMethodUncheckedUpdateManyWithoutInstructorNestedInput = {
   deleteMany?: Prisma.PayoutMethodScalarWhereInput | Prisma.PayoutMethodScalarWhereInput[]
 }
 
+export type PayoutMethodCreateNestedOneWithoutPayoutsInput = {
+  create?: Prisma.XOR<Prisma.PayoutMethodCreateWithoutPayoutsInput, Prisma.PayoutMethodUncheckedCreateWithoutPayoutsInput>
+  connectOrCreate?: Prisma.PayoutMethodCreateOrConnectWithoutPayoutsInput
+  connect?: Prisma.PayoutMethodWhereUniqueInput
+}
+
+export type PayoutMethodUpdateOneWithoutPayoutsNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutMethodCreateWithoutPayoutsInput, Prisma.PayoutMethodUncheckedCreateWithoutPayoutsInput>
+  connectOrCreate?: Prisma.PayoutMethodCreateOrConnectWithoutPayoutsInput
+  upsert?: Prisma.PayoutMethodUpsertWithoutPayoutsInput
+  disconnect?: Prisma.PayoutMethodWhereInput | boolean
+  delete?: Prisma.PayoutMethodWhereInput | boolean
+  connect?: Prisma.PayoutMethodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayoutMethodUpdateToOneWithWhereWithoutPayoutsInput, Prisma.PayoutMethodUpdateWithoutPayoutsInput>, Prisma.PayoutMethodUncheckedUpdateWithoutPayoutsInput>
+}
+
 export type EnumPaymentMethodFieldUpdateOperationsInput = {
   set?: $Enums.PaymentMethod
 }
@@ -500,6 +572,8 @@ export type NullableEnumMobileBankingFieldUpdateOperationsInput = {
 }
 
 export type PayoutMethodCreateWithoutInstructorInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
   id?: string
   type: $Enums.PaymentMethod
   bankName?: string | null
@@ -510,9 +584,12 @@ export type PayoutMethodCreateWithoutInstructorInput = {
   routingNumber?: string | null
   isDefault?: boolean
   createdAt?: Date | string
+  payouts?: Prisma.PayoutCreateNestedManyWithoutMethodInput
 }
 
 export type PayoutMethodUncheckedCreateWithoutInstructorInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
   id?: string
   type: $Enums.PaymentMethod
   bankName?: string | null
@@ -523,6 +600,7 @@ export type PayoutMethodUncheckedCreateWithoutInstructorInput = {
   routingNumber?: string | null
   isDefault?: boolean
   createdAt?: Date | string
+  payouts?: Prisma.PayoutUncheckedCreateNestedManyWithoutMethodInput
 }
 
 export type PayoutMethodCreateOrConnectWithoutInstructorInput = {
@@ -555,6 +633,8 @@ export type PayoutMethodScalarWhereInput = {
   AND?: Prisma.PayoutMethodScalarWhereInput | Prisma.PayoutMethodScalarWhereInput[]
   OR?: Prisma.PayoutMethodScalarWhereInput[]
   NOT?: Prisma.PayoutMethodScalarWhereInput | Prisma.PayoutMethodScalarWhereInput[]
+  encryptedAccount?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
+  accountLastFour?: Prisma.StringNullableFilter<"PayoutMethod"> | string | null
   id?: Prisma.StringFilter<"PayoutMethod"> | string
   instructorId?: Prisma.StringFilter<"PayoutMethod"> | string
   type?: Prisma.EnumPaymentMethodFilter<"PayoutMethod"> | $Enums.PaymentMethod
@@ -568,7 +648,89 @@ export type PayoutMethodScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"PayoutMethod"> | Date | string
 }
 
+export type PayoutMethodCreateWithoutPayoutsInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
+  id?: string
+  type: $Enums.PaymentMethod
+  bankName?: string | null
+  mobileBankingName?: $Enums.MobileBanking | null
+  accHolderName: string
+  accountNumber: string
+  branchName?: string | null
+  routingNumber?: string | null
+  isDefault?: boolean
+  createdAt?: Date | string
+  instructor: Prisma.UserCreateNestedOneWithoutPaymentMethodInput
+}
+
+export type PayoutMethodUncheckedCreateWithoutPayoutsInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
+  id?: string
+  instructorId: string
+  type: $Enums.PaymentMethod
+  bankName?: string | null
+  mobileBankingName?: $Enums.MobileBanking | null
+  accHolderName: string
+  accountNumber: string
+  branchName?: string | null
+  routingNumber?: string | null
+  isDefault?: boolean
+  createdAt?: Date | string
+}
+
+export type PayoutMethodCreateOrConnectWithoutPayoutsInput = {
+  where: Prisma.PayoutMethodWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayoutMethodCreateWithoutPayoutsInput, Prisma.PayoutMethodUncheckedCreateWithoutPayoutsInput>
+}
+
+export type PayoutMethodUpsertWithoutPayoutsInput = {
+  update: Prisma.XOR<Prisma.PayoutMethodUpdateWithoutPayoutsInput, Prisma.PayoutMethodUncheckedUpdateWithoutPayoutsInput>
+  create: Prisma.XOR<Prisma.PayoutMethodCreateWithoutPayoutsInput, Prisma.PayoutMethodUncheckedCreateWithoutPayoutsInput>
+  where?: Prisma.PayoutMethodWhereInput
+}
+
+export type PayoutMethodUpdateToOneWithWhereWithoutPayoutsInput = {
+  where?: Prisma.PayoutMethodWhereInput
+  data: Prisma.XOR<Prisma.PayoutMethodUpdateWithoutPayoutsInput, Prisma.PayoutMethodUncheckedUpdateWithoutPayoutsInput>
+}
+
+export type PayoutMethodUpdateWithoutPayoutsInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileBankingName?: Prisma.NullableEnumMobileBankingFieldUpdateOperationsInput | $Enums.MobileBanking | null
+  accHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  branchName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  routingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  instructor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodNestedInput
+}
+
+export type PayoutMethodUncheckedUpdateWithoutPayoutsInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileBankingName?: Prisma.NullableEnumMobileBankingFieldUpdateOperationsInput | $Enums.MobileBanking | null
+  accHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  branchName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  routingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PayoutMethodCreateManyInstructorInput = {
+  encryptedAccount?: string | null
+  accountLastFour?: string | null
   id?: string
   type: $Enums.PaymentMethod
   bankName?: string | null
@@ -582,6 +744,8 @@ export type PayoutMethodCreateManyInstructorInput = {
 }
 
 export type PayoutMethodUpdateWithoutInstructorInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -592,9 +756,12 @@ export type PayoutMethodUpdateWithoutInstructorInput = {
   routingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payouts?: Prisma.PayoutUpdateManyWithoutMethodNestedInput
 }
 
 export type PayoutMethodUncheckedUpdateWithoutInstructorInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -605,9 +772,12 @@ export type PayoutMethodUncheckedUpdateWithoutInstructorInput = {
   routingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payouts?: Prisma.PayoutUncheckedUpdateManyWithoutMethodNestedInput
 }
 
 export type PayoutMethodUncheckedUpdateManyWithoutInstructorInput = {
+  encryptedAccount?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -621,8 +791,39 @@ export type PayoutMethodUncheckedUpdateManyWithoutInstructorInput = {
 }
 
 
+/**
+ * Count Type PayoutMethodCountOutputType
+ */
+
+export type PayoutMethodCountOutputType = {
+  payouts: number
+}
+
+export type PayoutMethodCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  payouts?: boolean | PayoutMethodCountOutputTypeCountPayoutsArgs
+}
+
+/**
+ * PayoutMethodCountOutputType without action
+ */
+export type PayoutMethodCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayoutMethodCountOutputType
+   */
+  select?: Prisma.PayoutMethodCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PayoutMethodCountOutputType without action
+ */
+export type PayoutMethodCountOutputTypeCountPayoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayoutWhereInput
+}
+
 
 export type PayoutMethodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  encryptedAccount?: boolean
+  accountLastFour?: boolean
   id?: boolean
   instructorId?: boolean
   type?: boolean
@@ -634,10 +835,14 @@ export type PayoutMethodSelect<ExtArgs extends runtime.Types.Extensions.Internal
   routingNumber?: boolean
   isDefault?: boolean
   createdAt?: boolean
+  payouts?: boolean | Prisma.PayoutMethod$payoutsArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.PayoutMethodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payoutMethod"]>
 
 export type PayoutMethodSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  encryptedAccount?: boolean
+  accountLastFour?: boolean
   id?: boolean
   instructorId?: boolean
   type?: boolean
@@ -653,6 +858,8 @@ export type PayoutMethodSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
 }, ExtArgs["result"]["payoutMethod"]>
 
 export type PayoutMethodSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  encryptedAccount?: boolean
+  accountLastFour?: boolean
   id?: boolean
   instructorId?: boolean
   type?: boolean
@@ -668,6 +875,8 @@ export type PayoutMethodSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
 }, ExtArgs["result"]["payoutMethod"]>
 
 export type PayoutMethodSelectScalar = {
+  encryptedAccount?: boolean
+  accountLastFour?: boolean
   id?: boolean
   instructorId?: boolean
   type?: boolean
@@ -681,9 +890,11 @@ export type PayoutMethodSelectScalar = {
   createdAt?: boolean
 }
 
-export type PayoutMethodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "instructorId" | "type" | "bankName" | "mobileBankingName" | "accHolderName" | "accountNumber" | "branchName" | "routingNumber" | "isDefault" | "createdAt", ExtArgs["result"]["payoutMethod"]>
+export type PayoutMethodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"encryptedAccount" | "accountLastFour" | "id" | "instructorId" | "type" | "bankName" | "mobileBankingName" | "accHolderName" | "accountNumber" | "branchName" | "routingNumber" | "isDefault" | "createdAt", ExtArgs["result"]["payoutMethod"]>
 export type PayoutMethodInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  payouts?: boolean | Prisma.PayoutMethod$payoutsArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.PayoutMethodCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PayoutMethodIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -695,9 +906,12 @@ export type PayoutMethodIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type $PayoutMethodPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PayoutMethod"
   objects: {
+    payouts: Prisma.$PayoutPayload<ExtArgs>[]
     instructor: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    encryptedAccount: string | null
+    accountLastFour: string | null
     id: string
     instructorId: string
     type: $Enums.PaymentMethod
@@ -792,8 +1006,8 @@ export interface PayoutMethodDelegate<ExtArgs extends runtime.Types.Extensions.I
    * // Get first 10 PayoutMethods
    * const payoutMethods = await prisma.payoutMethod.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const payoutMethodWithIdOnly = await prisma.payoutMethod.findMany({ select: { id: true } })
+   * // Only select the `encryptedAccount`
+   * const payoutMethodWithEncryptedAccountOnly = await prisma.payoutMethod.findMany({ select: { encryptedAccount: true } })
    * 
    */
   findMany<T extends PayoutMethodFindManyArgs>(args?: Prisma.SelectSubset<T, PayoutMethodFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -837,9 +1051,9 @@ export interface PayoutMethodDelegate<ExtArgs extends runtime.Types.Extensions.I
    *   ]
    * })
    * 
-   * // Create many PayoutMethods and only return the `id`
-   * const payoutMethodWithIdOnly = await prisma.payoutMethod.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many PayoutMethods and only return the `encryptedAccount`
+   * const payoutMethodWithEncryptedAccountOnly = await prisma.payoutMethod.createManyAndReturn({
+   *   select: { encryptedAccount: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -928,9 +1142,9 @@ export interface PayoutMethodDelegate<ExtArgs extends runtime.Types.Extensions.I
    *   ]
    * })
    * 
-   * // Update zero or more PayoutMethods and only return the `id`
-   * const payoutMethodWithIdOnly = await prisma.payoutMethod.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more PayoutMethods and only return the `encryptedAccount`
+   * const payoutMethodWithEncryptedAccountOnly = await prisma.payoutMethod.updateManyAndReturn({
+   *   select: { encryptedAccount: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1103,6 +1317,7 @@ readonly fields: PayoutMethodFieldRefs;
  */
 export interface Prisma__PayoutMethodClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  payouts<T extends Prisma.PayoutMethod$payoutsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayoutMethod$payoutsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   instructor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1133,6 +1348,8 @@ export interface Prisma__PayoutMethodClient<T, Null = never, ExtArgs extends run
  * Fields of the PayoutMethod model
  */
 export interface PayoutMethodFieldRefs {
+  readonly encryptedAccount: Prisma.FieldRef<"PayoutMethod", 'String'>
+  readonly accountLastFour: Prisma.FieldRef<"PayoutMethod", 'String'>
   readonly id: Prisma.FieldRef<"PayoutMethod", 'String'>
   readonly instructorId: Prisma.FieldRef<"PayoutMethod", 'String'>
   readonly type: Prisma.FieldRef<"PayoutMethod", 'PaymentMethod'>
@@ -1537,6 +1754,30 @@ export type PayoutMethodDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many PayoutMethods to delete.
    */
   limit?: number
+}
+
+/**
+ * PayoutMethod.payouts
+ */
+export type PayoutMethod$payoutsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payout
+   */
+  select?: Prisma.PayoutSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payout
+   */
+  omit?: Prisma.PayoutOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayoutInclude<ExtArgs> | null
+  where?: Prisma.PayoutWhereInput
+  orderBy?: Prisma.PayoutOrderByWithRelationInput | Prisma.PayoutOrderByWithRelationInput[]
+  cursor?: Prisma.PayoutWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayoutScalarFieldEnum | Prisma.PayoutScalarFieldEnum[]
 }
 
 /**

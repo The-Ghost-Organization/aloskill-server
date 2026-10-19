@@ -5,6 +5,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { type Request } from 'express';
+import { settleVerifiedOrder } from '../finance/finance.service.js';
+import { scaled } from '../finance/finance.math.js';
 import { createHmac } from 'node:crypto';
 import { executeDbOperation } from '../../config/database.js';
 import { config } from '../../config/env.js';
@@ -602,6 +604,7 @@ const validateIPN = async (req: Request) => {
   const updateOrderStatus = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
       if (status === 'VALID' || status === 'VALIDATED') {
+        await tx.$queryRaw`SELECT id FROM orders WHERE id = ${tran_id} FOR UPDATE`;
         const order = await tx.order.findUnique({
           where: { id: tran_id },
           include: { orderItems: true, user: true },
@@ -610,9 +613,10 @@ const validateIPN = async (req: Request) => {
           throw new Error('Order not found');
         }
         if (order.status === 'PAID') {
-          throw new Error('Order already paid');
+          return;
         }
 
+        if (scaled(order.totalAmount.toFixed(2)) !== scaled(String(amount))) throw new Error('Verified payment amount mismatch.');
         await tx.order.update({
           where: { id: tran_id },
           data: {
@@ -623,7 +627,7 @@ const validateIPN = async (req: Request) => {
         // need to update payment method in schema
         // payment method update properly
         // payment method transction id update properly
-        await tx.paymentTransaction.create({
+        const verifiedPayment = await tx.paymentTransaction.create({
           data: {
             userId: order.userId,
             orderId: order.id,
@@ -636,6 +640,7 @@ const validateIPN = async (req: Request) => {
           },
         });
 
+        await settleVerifiedOrder(tx, order.id, verifiedPayment.id);
         // need to update originalPriceAtTime properly
         // need to update discount at time properly
         for (const item of order.orderItems) {
@@ -1046,16 +1051,19 @@ const verifyPayment = async (req: Request) => {
 
   const orderId = uddoktaPayData.metadata?.order_id;
   if (uddoktaPayData.status === 'COMPLETED' && orderId) {
-    const changed = await executeDbOperation(prisma =>
-      prisma.order.updateMany({
-        where: { id: orderId, status: { in: [OrderStatus.PENDING, OrderStatus.CONFIRMED] } },
-        data: {
-          status: OrderStatus.PAID,
-          providerOrderId: uddoktaPayData.transaction_id ?? invoice_id,
-          stockReservationExpiresAt: null,
-        },
-      })
-    );
+    const changed = await executeDbOperation(prisma => prisma.$transaction(async tx => {
+      await tx.$queryRaw`SELECT id FROM orders WHERE id = ${orderId} FOR UPDATE`;
+      const order = await tx.order.findUniqueOrThrow({where:{id:orderId}});
+      if (order.financeSettledAt || order.status === OrderStatus.REFUNDED || order.status === OrderStatus.PAID) return {count:0};
+      if (!new Set<OrderStatus>([OrderStatus.PENDING, OrderStatus.CONFIRMED]).has(order.status)) throw new Error('Order cannot be paid.');
+      const providerAmount=(uddoktaPayData as {amount?:string|number}).amount;
+      if (providerAmount === undefined || String(providerAmount) === '' || scaled(String(providerAmount))!==scaled(order.totalAmount.toFixed(2))) throw new Error('Verified payment amount mismatch or missing amount.');
+      await tx.order.update({where:{id:orderId},data:{status:OrderStatus.PAID,providerOrderId:uddoktaPayData.transaction_id??invoice_id,stockReservationExpiresAt:null}});
+      const payment=await tx.paymentTransaction.create({data:{userId:order.userId,orderId,amount:order.totalAmount,provider:PaymentProviders.UDDOKTAPAY,providerTransactionId:uddoktaPayData.transaction_id??invoice_id,type:TransactionType.PURCHASE,status:TransactionStatus.SUCCEEDED}});
+      await tx.orderItem.updateMany({where:{orderId,status:OrderItemStatus.PENDING},data:{status:OrderItemStatus.COMPLETED}});
+      for(const item of await tx.orderItem.findMany({where:{orderId,courseId:{not:null}}})) await tx.enrollment.createMany({data:[{userId:order.userId,courseId:item.courseId!,pricePaid:item.price,originalPriceAtTime:item.price,status:EnrollmentStatus.ACTIVE}],skipDuplicates:true});
+      await settleVerifiedOrder(tx,orderId,payment.id);return {count:1};
+    }));
     await createCourierConsignmentForOrder(orderId);
     if (changed.count) {
       await notifyOrder(
@@ -1500,6 +1508,10 @@ const verifyEPSPaymentByTransactionId = async (
   if (userEmail && localPayment.order.user.email !== userEmail) {
     throw new Error('You cannot verify another user’s order.');
   }
+  if (localPayment.order.financeSettledAt || localPayment.status === TransactionStatus.REFUNDED) {
+    if (localPayment.status !== TransactionStatus.REFUNDED) await createCourierConsignmentForOrder(localPayment.order.id);
+    return { paymentStatus: localPayment.status === TransactionStatus.REFUNDED ? 'REFUNDED' as const : 'PAID' as const, orderId: localPayment.order.id, orderStatus: localPayment.order.status, amount: Number(localPayment.order.totalAmount), currency: localPayment.order.currency };
+  }
   if (localPayment.order.status === OrderStatus.PAID) {
     // Also repairs orders paid by an older version that completed only
     // DIGITAL items and left PHYSICAL items pending.
@@ -1530,8 +1542,7 @@ const verifyEPSPaymentByTransactionId = async (
   }
   const epsAmountValue = epsResult.TotalAmount ?? epsResult.totalAmount;
   if (epsAmountValue !== undefined) {
-    const epsAmount = Number(epsAmountValue);
-    if (!Number.isFinite(epsAmount) || Math.abs(epsAmount - Number(localPayment.amount)) > 0.01) {
+    if (scaled(String(epsAmountValue)) !== scaled(localPayment.amount.toFixed(2))) {
       throw new Error('EPS transaction amount does not match the order amount.');
     }
   }
@@ -1629,6 +1640,7 @@ const verifyEPSPaymentByTransactionId = async (
           }
         }
 
+        await settleVerifiedOrder(tx, localPayment.order!.id, localPayment.id);
         return tx.order.findUniqueOrThrow({ where: { id: localPayment.order?.id } });
       })
     );

@@ -39,6 +39,17 @@ export type PayoutSumAggregateOutputType = {
 }
 
 export type PayoutMinAggregateOutputType = {
+  workflowStatus: $Enums.PayoutWorkflowStatus | null
+  methodId: string | null
+  methodType: string | null
+  encryptedAccountSnapshot: string | null
+  accountLastFour: string | null
+  requestedAt: Date | null
+  processedAt: Date | null
+  paidAt: Date | null
+  transactionReference: string | null
+  adminNote: string | null
+  requestKey: string | null
   id: string | null
   instructorId: string | null
   amount: runtime.Decimal | null
@@ -59,6 +70,17 @@ export type PayoutMinAggregateOutputType = {
 }
 
 export type PayoutMaxAggregateOutputType = {
+  workflowStatus: $Enums.PayoutWorkflowStatus | null
+  methodId: string | null
+  methodType: string | null
+  encryptedAccountSnapshot: string | null
+  accountLastFour: string | null
+  requestedAt: Date | null
+  processedAt: Date | null
+  paidAt: Date | null
+  transactionReference: string | null
+  adminNote: string | null
+  requestKey: string | null
   id: string | null
   instructorId: string | null
   amount: runtime.Decimal | null
@@ -79,6 +101,17 @@ export type PayoutMaxAggregateOutputType = {
 }
 
 export type PayoutCountAggregateOutputType = {
+  workflowStatus: number
+  methodId: number
+  methodType: number
+  encryptedAccountSnapshot: number
+  accountLastFour: number
+  requestedAt: number
+  processedAt: number
+  paidAt: number
+  transactionReference: number
+  adminNote: number
+  requestKey: number
   id: number
   instructorId: number
   amount: number
@@ -113,6 +146,17 @@ export type PayoutSumAggregateInputType = {
 }
 
 export type PayoutMinAggregateInputType = {
+  workflowStatus?: true
+  methodId?: true
+  methodType?: true
+  encryptedAccountSnapshot?: true
+  accountLastFour?: true
+  requestedAt?: true
+  processedAt?: true
+  paidAt?: true
+  transactionReference?: true
+  adminNote?: true
+  requestKey?: true
   id?: true
   instructorId?: true
   amount?: true
@@ -133,6 +177,17 @@ export type PayoutMinAggregateInputType = {
 }
 
 export type PayoutMaxAggregateInputType = {
+  workflowStatus?: true
+  methodId?: true
+  methodType?: true
+  encryptedAccountSnapshot?: true
+  accountLastFour?: true
+  requestedAt?: true
+  processedAt?: true
+  paidAt?: true
+  transactionReference?: true
+  adminNote?: true
+  requestKey?: true
   id?: true
   instructorId?: true
   amount?: true
@@ -153,6 +208,17 @@ export type PayoutMaxAggregateInputType = {
 }
 
 export type PayoutCountAggregateInputType = {
+  workflowStatus?: true
+  methodId?: true
+  methodType?: true
+  encryptedAccountSnapshot?: true
+  accountLastFour?: true
+  requestedAt?: true
+  processedAt?: true
+  paidAt?: true
+  transactionReference?: true
+  adminNote?: true
+  requestKey?: true
   id?: true
   instructorId?: true
   amount?: true
@@ -260,6 +326,17 @@ export type PayoutGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 export type PayoutGroupByOutputType = {
+  workflowStatus: $Enums.PayoutWorkflowStatus | null
+  methodId: string | null
+  methodType: string | null
+  encryptedAccountSnapshot: string | null
+  accountLastFour: string | null
+  requestedAt: Date
+  processedAt: Date | null
+  paidAt: Date | null
+  transactionReference: string | null
+  adminNote: string | null
+  requestKey: string | null
   id: string
   instructorId: string
   amount: runtime.Decimal
@@ -303,6 +380,17 @@ export type PayoutWhereInput = {
   AND?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   OR?: Prisma.PayoutWhereInput[]
   NOT?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
+  workflowStatus?: Prisma.EnumPayoutWorkflowStatusNullableFilter<"Payout"> | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.StringNullableFilter<"Payout"> | string | null
+  methodType?: Prisma.StringNullableFilter<"Payout"> | string | null
+  encryptedAccountSnapshot?: Prisma.StringNullableFilter<"Payout"> | string | null
+  accountLastFour?: Prisma.StringNullableFilter<"Payout"> | string | null
+  requestedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
+  processedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  transactionReference?: Prisma.StringNullableFilter<"Payout"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Payout"> | string | null
+  requestKey?: Prisma.StringNullableFilter<"Payout"> | string | null
   id?: Prisma.StringFilter<"Payout"> | string
   instructorId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -320,10 +408,23 @@ export type PayoutWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  method?: Prisma.XOR<Prisma.PayoutMethodNullableScalarRelationFilter, Prisma.PayoutMethodWhereInput> | null
+  items?: Prisma.PayoutItemListRelationFilter
   instructor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type PayoutOrderByWithRelationInput = {
+  workflowStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  methodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  methodType?: Prisma.SortOrderInput | Prisma.SortOrder
+  encryptedAccountSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestedAt?: Prisma.SortOrder
+  processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  transactionReference?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestKey?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -341,15 +442,28 @@ export type PayoutOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  method?: Prisma.PayoutMethodOrderByWithRelationInput
+  items?: Prisma.PayoutItemOrderByRelationAggregateInput
   instructor?: Prisma.UserOrderByWithRelationInput
 }
 
 export type PayoutWhereUniqueInput = Prisma.AtLeast<{
+  requestKey?: string
   id?: string
   providerPayoutId?: string
   AND?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   OR?: Prisma.PayoutWhereInput[]
   NOT?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
+  workflowStatus?: Prisma.EnumPayoutWorkflowStatusNullableFilter<"Payout"> | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.StringNullableFilter<"Payout"> | string | null
+  methodType?: Prisma.StringNullableFilter<"Payout"> | string | null
+  encryptedAccountSnapshot?: Prisma.StringNullableFilter<"Payout"> | string | null
+  accountLastFour?: Prisma.StringNullableFilter<"Payout"> | string | null
+  requestedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
+  processedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  transactionReference?: Prisma.StringNullableFilter<"Payout"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Payout"> | string | null
   instructorId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.DecimalNullableFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -365,10 +479,23 @@ export type PayoutWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  method?: Prisma.XOR<Prisma.PayoutMethodNullableScalarRelationFilter, Prisma.PayoutMethodWhereInput> | null
+  items?: Prisma.PayoutItemListRelationFilter
   instructor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "providerPayoutId">
+}, "id" | "requestKey" | "providerPayoutId">
 
 export type PayoutOrderByWithAggregationInput = {
+  workflowStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  methodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  methodType?: Prisma.SortOrderInput | Prisma.SortOrder
+  encryptedAccountSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestedAt?: Prisma.SortOrder
+  processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  transactionReference?: Prisma.SortOrderInput | Prisma.SortOrder
+  adminNote?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestKey?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -397,6 +524,17 @@ export type PayoutScalarWhereWithAggregatesInput = {
   AND?: Prisma.PayoutScalarWhereWithAggregatesInput | Prisma.PayoutScalarWhereWithAggregatesInput[]
   OR?: Prisma.PayoutScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PayoutScalarWhereWithAggregatesInput | Prisma.PayoutScalarWhereWithAggregatesInput[]
+  workflowStatus?: Prisma.EnumPayoutWorkflowStatusNullableWithAggregatesFilter<"Payout"> | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  methodType?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  encryptedAccountSnapshot?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  accountLastFour?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  requestedAt?: Prisma.DateTimeWithAggregatesFilter<"Payout"> | Date | string
+  processedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payout"> | Date | string | null
+  paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payout"> | Date | string | null
+  transactionReference?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  adminNote?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
+  requestKey?: Prisma.StringNullableWithAggregatesFilter<"Payout"> | string | null
   id?: Prisma.StringWithAggregatesFilter<"Payout"> | string
   instructorId?: Prisma.StringWithAggregatesFilter<"Payout"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -417,6 +555,16 @@ export type PayoutScalarWhereWithAggregatesInput = {
 }
 
 export type PayoutCreateInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -433,10 +581,23 @@ export type PayoutCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  method?: Prisma.PayoutMethodCreateNestedOneWithoutPayoutsInput
+  items?: Prisma.PayoutItemCreateNestedManyWithoutPayoutInput
   instructor: Prisma.UserCreateNestedOneWithoutPayoutsInput
 }
 
 export type PayoutUncheckedCreateInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodId?: string | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
   id?: string
   instructorId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -454,9 +615,20 @@ export type PayoutUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  items?: Prisma.PayoutItemUncheckedCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutUpdateInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -473,10 +645,23 @@ export type PayoutUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  method?: Prisma.PayoutMethodUpdateOneWithoutPayoutsNestedInput
+  items?: Prisma.PayoutItemUpdateManyWithoutPayoutNestedInput
   instructor?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
 }
 
 export type PayoutUncheckedUpdateInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   instructorId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -494,9 +679,21 @@ export type PayoutUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  items?: Prisma.PayoutItemUncheckedUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutCreateManyInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodId?: string | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
   id?: string
   instructorId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -517,6 +714,16 @@ export type PayoutCreateManyInput = {
 }
 
 export type PayoutUpdateManyMutationInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -536,6 +743,17 @@ export type PayoutUpdateManyMutationInput = {
 }
 
 export type PayoutUncheckedUpdateManyInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   instructorId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -566,6 +784,17 @@ export type PayoutOrderByRelationAggregateInput = {
 }
 
 export type PayoutCountOrderByAggregateInput = {
+  workflowStatus?: Prisma.SortOrder
+  methodId?: Prisma.SortOrder
+  methodType?: Prisma.SortOrder
+  encryptedAccountSnapshot?: Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrder
+  requestedAt?: Prisma.SortOrder
+  processedAt?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
+  transactionReference?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
+  requestKey?: Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -592,6 +821,17 @@ export type PayoutAvgOrderByAggregateInput = {
 }
 
 export type PayoutMaxOrderByAggregateInput = {
+  workflowStatus?: Prisma.SortOrder
+  methodId?: Prisma.SortOrder
+  methodType?: Prisma.SortOrder
+  encryptedAccountSnapshot?: Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrder
+  requestedAt?: Prisma.SortOrder
+  processedAt?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
+  transactionReference?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
+  requestKey?: Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -612,6 +852,17 @@ export type PayoutMaxOrderByAggregateInput = {
 }
 
 export type PayoutMinOrderByAggregateInput = {
+  workflowStatus?: Prisma.SortOrder
+  methodId?: Prisma.SortOrder
+  methodType?: Prisma.SortOrder
+  encryptedAccountSnapshot?: Prisma.SortOrder
+  accountLastFour?: Prisma.SortOrder
+  requestedAt?: Prisma.SortOrder
+  processedAt?: Prisma.SortOrder
+  paidAt?: Prisma.SortOrder
+  transactionReference?: Prisma.SortOrder
+  adminNote?: Prisma.SortOrder
+  requestKey?: Prisma.SortOrder
   id?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -635,6 +886,11 @@ export type PayoutSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   fee?: Prisma.SortOrder
   retryCount?: Prisma.SortOrder
+}
+
+export type PayoutScalarRelationFilter = {
+  is?: Prisma.PayoutWhereInput
+  isNot?: Prisma.PayoutWhereInput
 }
 
 export type PayoutCreateNestedManyWithoutInstructorInput = {
@@ -679,11 +935,81 @@ export type PayoutUncheckedUpdateManyWithoutInstructorNestedInput = {
   deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
 }
 
+export type NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PayoutWorkflowStatus | null
+}
+
 export type EnumPaymentStatusFieldUpdateOperationsInput = {
   set?: $Enums.PaymentStatus
 }
 
+export type PayoutCreateNestedManyWithoutMethodInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutMethodInput, Prisma.PayoutUncheckedCreateWithoutMethodInput> | Prisma.PayoutCreateWithoutMethodInput[] | Prisma.PayoutUncheckedCreateWithoutMethodInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutMethodInput | Prisma.PayoutCreateOrConnectWithoutMethodInput[]
+  createMany?: Prisma.PayoutCreateManyMethodInputEnvelope
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+}
+
+export type PayoutUncheckedCreateNestedManyWithoutMethodInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutMethodInput, Prisma.PayoutUncheckedCreateWithoutMethodInput> | Prisma.PayoutCreateWithoutMethodInput[] | Prisma.PayoutUncheckedCreateWithoutMethodInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutMethodInput | Prisma.PayoutCreateOrConnectWithoutMethodInput[]
+  createMany?: Prisma.PayoutCreateManyMethodInputEnvelope
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+}
+
+export type PayoutUpdateManyWithoutMethodNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutMethodInput, Prisma.PayoutUncheckedCreateWithoutMethodInput> | Prisma.PayoutCreateWithoutMethodInput[] | Prisma.PayoutUncheckedCreateWithoutMethodInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutMethodInput | Prisma.PayoutCreateOrConnectWithoutMethodInput[]
+  upsert?: Prisma.PayoutUpsertWithWhereUniqueWithoutMethodInput | Prisma.PayoutUpsertWithWhereUniqueWithoutMethodInput[]
+  createMany?: Prisma.PayoutCreateManyMethodInputEnvelope
+  set?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  disconnect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  delete?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  update?: Prisma.PayoutUpdateWithWhereUniqueWithoutMethodInput | Prisma.PayoutUpdateWithWhereUniqueWithoutMethodInput[]
+  updateMany?: Prisma.PayoutUpdateManyWithWhereWithoutMethodInput | Prisma.PayoutUpdateManyWithWhereWithoutMethodInput[]
+  deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+}
+
+export type PayoutUncheckedUpdateManyWithoutMethodNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutMethodInput, Prisma.PayoutUncheckedCreateWithoutMethodInput> | Prisma.PayoutCreateWithoutMethodInput[] | Prisma.PayoutUncheckedCreateWithoutMethodInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutMethodInput | Prisma.PayoutCreateOrConnectWithoutMethodInput[]
+  upsert?: Prisma.PayoutUpsertWithWhereUniqueWithoutMethodInput | Prisma.PayoutUpsertWithWhereUniqueWithoutMethodInput[]
+  createMany?: Prisma.PayoutCreateManyMethodInputEnvelope
+  set?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  disconnect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  delete?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  update?: Prisma.PayoutUpdateWithWhereUniqueWithoutMethodInput | Prisma.PayoutUpdateWithWhereUniqueWithoutMethodInput[]
+  updateMany?: Prisma.PayoutUpdateManyWithWhereWithoutMethodInput | Prisma.PayoutUpdateManyWithWhereWithoutMethodInput[]
+  deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+}
+
+export type PayoutCreateNestedOneWithoutItemsInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutItemsInput, Prisma.PayoutUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutItemsInput
+  connect?: Prisma.PayoutWhereUniqueInput
+}
+
+export type PayoutUpdateOneRequiredWithoutItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutItemsInput, Prisma.PayoutUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutItemsInput
+  upsert?: Prisma.PayoutUpsertWithoutItemsInput
+  connect?: Prisma.PayoutWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayoutUpdateToOneWithWhereWithoutItemsInput, Prisma.PayoutUpdateWithoutItemsInput>, Prisma.PayoutUncheckedUpdateWithoutItemsInput>
+}
+
 export type PayoutCreateWithoutInstructorInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -700,9 +1026,22 @@ export type PayoutCreateWithoutInstructorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  method?: Prisma.PayoutMethodCreateNestedOneWithoutPayoutsInput
+  items?: Prisma.PayoutItemCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutUncheckedCreateWithoutInstructorInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodId?: string | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -719,6 +1058,7 @@ export type PayoutUncheckedCreateWithoutInstructorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  items?: Prisma.PayoutItemUncheckedCreateNestedManyWithoutPayoutInput
 }
 
 export type PayoutCreateOrConnectWithoutInstructorInput = {
@@ -751,6 +1091,17 @@ export type PayoutScalarWhereInput = {
   AND?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
   OR?: Prisma.PayoutScalarWhereInput[]
   NOT?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+  workflowStatus?: Prisma.EnumPayoutWorkflowStatusNullableFilter<"Payout"> | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.StringNullableFilter<"Payout"> | string | null
+  methodType?: Prisma.StringNullableFilter<"Payout"> | string | null
+  encryptedAccountSnapshot?: Prisma.StringNullableFilter<"Payout"> | string | null
+  accountLastFour?: Prisma.StringNullableFilter<"Payout"> | string | null
+  requestedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
+  processedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  paidAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
+  transactionReference?: Prisma.StringNullableFilter<"Payout"> | string | null
+  adminNote?: Prisma.StringNullableFilter<"Payout"> | string | null
+  requestKey?: Prisma.StringNullableFilter<"Payout"> | string | null
   id?: Prisma.StringFilter<"Payout"> | string
   instructorId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -770,7 +1121,246 @@ export type PayoutScalarWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
 }
 
+export type PayoutCreateWithoutMethodInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
+  id?: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  payoutDate: Date | string
+  providerPayoutId?: string | null
+  status: $Enums.PaymentStatus
+  approvedBy?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  failureReason?: string | null
+  retryCount?: number
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  items?: Prisma.PayoutItemCreateNestedManyWithoutPayoutInput
+  instructor: Prisma.UserCreateNestedOneWithoutPayoutsInput
+}
+
+export type PayoutUncheckedCreateWithoutMethodInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
+  id?: string
+  instructorId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  payoutDate: Date | string
+  providerPayoutId?: string | null
+  status: $Enums.PaymentStatus
+  approvedBy?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  failureReason?: string | null
+  retryCount?: number
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  items?: Prisma.PayoutItemUncheckedCreateNestedManyWithoutPayoutInput
+}
+
+export type PayoutCreateOrConnectWithoutMethodInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutMethodInput, Prisma.PayoutUncheckedCreateWithoutMethodInput>
+}
+
+export type PayoutCreateManyMethodInputEnvelope = {
+  data: Prisma.PayoutCreateManyMethodInput | Prisma.PayoutCreateManyMethodInput[]
+  skipDuplicates?: boolean
+}
+
+export type PayoutUpsertWithWhereUniqueWithoutMethodInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  update: Prisma.XOR<Prisma.PayoutUpdateWithoutMethodInput, Prisma.PayoutUncheckedUpdateWithoutMethodInput>
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutMethodInput, Prisma.PayoutUncheckedCreateWithoutMethodInput>
+}
+
+export type PayoutUpdateWithWhereUniqueWithoutMethodInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  data: Prisma.XOR<Prisma.PayoutUpdateWithoutMethodInput, Prisma.PayoutUncheckedUpdateWithoutMethodInput>
+}
+
+export type PayoutUpdateManyWithWhereWithoutMethodInput = {
+  where: Prisma.PayoutScalarWhereInput
+  data: Prisma.XOR<Prisma.PayoutUpdateManyMutationInput, Prisma.PayoutUncheckedUpdateManyWithoutMethodInput>
+}
+
+export type PayoutCreateWithoutItemsInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
+  id?: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  payoutDate: Date | string
+  providerPayoutId?: string | null
+  status: $Enums.PaymentStatus
+  approvedBy?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  failureReason?: string | null
+  retryCount?: number
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  method?: Prisma.PayoutMethodCreateNestedOneWithoutPayoutsInput
+  instructor: Prisma.UserCreateNestedOneWithoutPayoutsInput
+}
+
+export type PayoutUncheckedCreateWithoutItemsInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodId?: string | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
+  id?: string
+  instructorId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  payoutDate: Date | string
+  providerPayoutId?: string | null
+  status: $Enums.PaymentStatus
+  approvedBy?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  failureReason?: string | null
+  retryCount?: number
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type PayoutCreateOrConnectWithoutItemsInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutItemsInput, Prisma.PayoutUncheckedCreateWithoutItemsInput>
+}
+
+export type PayoutUpsertWithoutItemsInput = {
+  update: Prisma.XOR<Prisma.PayoutUpdateWithoutItemsInput, Prisma.PayoutUncheckedUpdateWithoutItemsInput>
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutItemsInput, Prisma.PayoutUncheckedCreateWithoutItemsInput>
+  where?: Prisma.PayoutWhereInput
+}
+
+export type PayoutUpdateToOneWithWhereWithoutItemsInput = {
+  where?: Prisma.PayoutWhereInput
+  data: Prisma.XOR<Prisma.PayoutUpdateWithoutItemsInput, Prisma.PayoutUncheckedUpdateWithoutItemsInput>
+}
+
+export type PayoutUpdateWithoutItemsInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  retryCount?: Prisma.IntFieldUpdateOperationsInput | number
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  method?: Prisma.PayoutMethodUpdateOneWithoutPayoutsNestedInput
+  instructor?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
+}
+
+export type PayoutUncheckedUpdateWithoutItemsInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  retryCount?: Prisma.IntFieldUpdateOperationsInput | number
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type PayoutCreateManyInstructorInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodId?: string | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -790,6 +1380,16 @@ export type PayoutCreateManyInstructorInput = {
 }
 
 export type PayoutUpdateWithoutInstructorInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -806,9 +1406,22 @@ export type PayoutUpdateWithoutInstructorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  method?: Prisma.PayoutMethodUpdateOneWithoutPayoutsNestedInput
+  items?: Prisma.PayoutItemUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutUncheckedUpdateWithoutInstructorInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -825,9 +1438,21 @@ export type PayoutUncheckedUpdateWithoutInstructorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  items?: Prisma.PayoutItemUncheckedUpdateManyWithoutPayoutNestedInput
 }
 
 export type PayoutUncheckedUpdateManyWithoutInstructorInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -846,9 +1471,171 @@ export type PayoutUncheckedUpdateManyWithoutInstructorInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
+export type PayoutCreateManyMethodInput = {
+  workflowStatus?: $Enums.PayoutWorkflowStatus | null
+  methodType?: string | null
+  encryptedAccountSnapshot?: string | null
+  accountLastFour?: string | null
+  requestedAt?: Date | string
+  processedAt?: Date | string | null
+  paidAt?: Date | string | null
+  transactionReference?: string | null
+  adminNote?: string | null
+  requestKey?: string | null
+  id?: string
+  instructorId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  payoutDate: Date | string
+  providerPayoutId?: string | null
+  status: $Enums.PaymentStatus
+  approvedBy?: string | null
+  approvedAt?: Date | string | null
+  rejectionReason?: string | null
+  failureReason?: string | null
+  retryCount?: number
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type PayoutUpdateWithoutMethodInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  retryCount?: Prisma.IntFieldUpdateOperationsInput | number
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  items?: Prisma.PayoutItemUpdateManyWithoutPayoutNestedInput
+  instructor?: Prisma.UserUpdateOneRequiredWithoutPayoutsNestedInput
+}
+
+export type PayoutUncheckedUpdateWithoutMethodInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  retryCount?: Prisma.IntFieldUpdateOperationsInput | number
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  items?: Prisma.PayoutItemUncheckedUpdateManyWithoutPayoutNestedInput
+}
+
+export type PayoutUncheckedUpdateManyWithoutMethodInput = {
+  workflowStatus?: Prisma.NullableEnumPayoutWorkflowStatusFieldUpdateOperationsInput | $Enums.PayoutWorkflowStatus | null
+  methodType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedAccountSnapshot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountLastFour?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactionReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adminNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  instructorId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  providerPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  retryCount?: Prisma.IntFieldUpdateOperationsInput | number
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+
+/**
+ * Count Type PayoutCountOutputType
+ */
+
+export type PayoutCountOutputType = {
+  items: number
+}
+
+export type PayoutCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  items?: boolean | PayoutCountOutputTypeCountItemsArgs
+}
+
+/**
+ * PayoutCountOutputType without action
+ */
+export type PayoutCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayoutCountOutputType
+   */
+  select?: Prisma.PayoutCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PayoutCountOutputType without action
+ */
+export type PayoutCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayoutItemWhereInput
+}
 
 
 export type PayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  workflowStatus?: boolean
+  methodId?: boolean
+  methodType?: boolean
+  encryptedAccountSnapshot?: boolean
+  accountLastFour?: boolean
+  requestedAt?: boolean
+  processedAt?: boolean
+  paidAt?: boolean
+  transactionReference?: boolean
+  adminNote?: boolean
+  requestKey?: boolean
   id?: boolean
   instructorId?: boolean
   amount?: boolean
@@ -866,10 +1653,24 @@ export type PayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  method?: boolean | Prisma.Payout$methodArgs<ExtArgs>
+  items?: boolean | Prisma.Payout$itemsArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.PayoutCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  workflowStatus?: boolean
+  methodId?: boolean
+  methodType?: boolean
+  encryptedAccountSnapshot?: boolean
+  accountLastFour?: boolean
+  requestedAt?: boolean
+  processedAt?: boolean
+  paidAt?: boolean
+  transactionReference?: boolean
+  adminNote?: boolean
+  requestKey?: boolean
   id?: boolean
   instructorId?: boolean
   amount?: boolean
@@ -887,10 +1688,22 @@ export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  method?: boolean | Prisma.Payout$methodArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  workflowStatus?: boolean
+  methodId?: boolean
+  methodType?: boolean
+  encryptedAccountSnapshot?: boolean
+  accountLastFour?: boolean
+  requestedAt?: boolean
+  processedAt?: boolean
+  paidAt?: boolean
+  transactionReference?: boolean
+  adminNote?: boolean
+  requestKey?: boolean
   id?: boolean
   instructorId?: boolean
   amount?: boolean
@@ -908,10 +1721,22 @@ export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  method?: boolean | Prisma.Payout$methodArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectScalar = {
+  workflowStatus?: boolean
+  methodId?: boolean
+  methodType?: boolean
+  encryptedAccountSnapshot?: boolean
+  accountLastFour?: boolean
+  requestedAt?: boolean
+  processedAt?: boolean
+  paidAt?: boolean
+  transactionReference?: boolean
+  adminNote?: boolean
+  requestKey?: boolean
   id?: boolean
   instructorId?: boolean
   amount?: boolean
@@ -931,23 +1756,41 @@ export type PayoutSelectScalar = {
   deletedAt?: boolean
 }
 
-export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "instructorId" | "amount" | "fee" | "currency" | "payoutDate" | "providerPayoutId" | "status" | "approvedBy" | "approvedAt" | "rejectionReason" | "failureReason" | "retryCount" | "nextRetryAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["payout"]>
+export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"workflowStatus" | "methodId" | "methodType" | "encryptedAccountSnapshot" | "accountLastFour" | "requestedAt" | "processedAt" | "paidAt" | "transactionReference" | "adminNote" | "requestKey" | "id" | "instructorId" | "amount" | "fee" | "currency" | "payoutDate" | "providerPayoutId" | "status" | "approvedBy" | "approvedAt" | "rejectionReason" | "failureReason" | "retryCount" | "nextRetryAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["payout"]>
 export type PayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  method?: boolean | Prisma.Payout$methodArgs<ExtArgs>
+  items?: boolean | Prisma.Payout$itemsArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.PayoutCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  method?: boolean | Prisma.Payout$methodArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  method?: boolean | Prisma.Payout$methodArgs<ExtArgs>
   instructor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $PayoutPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payout"
   objects: {
+    method: Prisma.$PayoutMethodPayload<ExtArgs> | null
+    items: Prisma.$PayoutItemPayload<ExtArgs>[]
     instructor: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    workflowStatus: $Enums.PayoutWorkflowStatus | null
+    methodId: string | null
+    methodType: string | null
+    encryptedAccountSnapshot: string | null
+    accountLastFour: string | null
+    requestedAt: Date
+    processedAt: Date | null
+    paidAt: Date | null
+    transactionReference: string | null
+    adminNote: string | null
+    requestKey: string | null
     id: string
     instructorId: string
     amount: runtime.Decimal
@@ -1048,8 +1891,8 @@ export interface PayoutDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * // Get first 10 Payouts
    * const payouts = await prisma.payout.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const payoutWithIdOnly = await prisma.payout.findMany({ select: { id: true } })
+   * // Only select the `methodId`
+   * const payoutWithMethodIdOnly = await prisma.payout.findMany({ select: { methodId: true } })
    * 
    */
   findMany<T extends PayoutFindManyArgs>(args?: Prisma.SelectSubset<T, PayoutFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1093,9 +1936,9 @@ export interface PayoutDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Create many Payouts and only return the `id`
-   * const payoutWithIdOnly = await prisma.payout.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Payouts and only return the `methodId`
+   * const payoutWithMethodIdOnly = await prisma.payout.createManyAndReturn({
+   *   select: { methodId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -1184,9 +2027,9 @@ export interface PayoutDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Update zero or more Payouts and only return the `id`
-   * const payoutWithIdOnly = await prisma.payout.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Payouts and only return the `methodId`
+   * const payoutWithMethodIdOnly = await prisma.payout.updateManyAndReturn({
+   *   select: { methodId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1359,6 +2202,8 @@ readonly fields: PayoutFieldRefs;
  */
 export interface Prisma__PayoutClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  method<T extends Prisma.Payout$methodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payout$methodArgs<ExtArgs>>): Prisma.Prisma__PayoutMethodClient<runtime.Types.Result.GetResult<Prisma.$PayoutMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  items<T extends Prisma.Payout$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payout$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   instructor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1389,6 +2234,17 @@ export interface Prisma__PayoutClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Payout model
  */
 export interface PayoutFieldRefs {
+  readonly workflowStatus: Prisma.FieldRef<"Payout", 'PayoutWorkflowStatus'>
+  readonly methodId: Prisma.FieldRef<"Payout", 'String'>
+  readonly methodType: Prisma.FieldRef<"Payout", 'String'>
+  readonly encryptedAccountSnapshot: Prisma.FieldRef<"Payout", 'String'>
+  readonly accountLastFour: Prisma.FieldRef<"Payout", 'String'>
+  readonly requestedAt: Prisma.FieldRef<"Payout", 'DateTime'>
+  readonly processedAt: Prisma.FieldRef<"Payout", 'DateTime'>
+  readonly paidAt: Prisma.FieldRef<"Payout", 'DateTime'>
+  readonly transactionReference: Prisma.FieldRef<"Payout", 'String'>
+  readonly adminNote: Prisma.FieldRef<"Payout", 'String'>
+  readonly requestKey: Prisma.FieldRef<"Payout", 'String'>
   readonly id: Prisma.FieldRef<"Payout", 'String'>
   readonly instructorId: Prisma.FieldRef<"Payout", 'String'>
   readonly amount: Prisma.FieldRef<"Payout", 'Decimal'>
@@ -1799,6 +2655,49 @@ export type PayoutDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Payouts to delete.
    */
   limit?: number
+}
+
+/**
+ * Payout.method
+ */
+export type Payout$methodArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayoutMethod
+   */
+  select?: Prisma.PayoutMethodSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayoutMethod
+   */
+  omit?: Prisma.PayoutMethodOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayoutMethodInclude<ExtArgs> | null
+  where?: Prisma.PayoutMethodWhereInput
+}
+
+/**
+ * Payout.items
+ */
+export type Payout$itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayoutItem
+   */
+  select?: Prisma.PayoutItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayoutItem
+   */
+  omit?: Prisma.PayoutItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayoutItemInclude<ExtArgs> | null
+  where?: Prisma.PayoutItemWhereInput
+  orderBy?: Prisma.PayoutItemOrderByWithRelationInput | Prisma.PayoutItemOrderByWithRelationInput[]
+  cursor?: Prisma.PayoutItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayoutItemScalarFieldEnum | Prisma.PayoutItemScalarFieldEnum[]
 }
 
 /**

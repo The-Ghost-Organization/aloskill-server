@@ -97,7 +97,9 @@ export const ModelName = {
   QuestionOption: 'QuestionOption',
   QuizResult: 'QuizResult',
   AuditLog: 'AuditLog',
-  PlatformSettings: 'PlatformSettings'
+  PlatformSettings: 'PlatformSettings',
+  FinancialEntry: 'FinancialEntry',
+  PayoutItem: 'PayoutItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -249,6 +251,8 @@ export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnu
 export const InstructorProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  bookCommissionRate: 'bookCommissionRate',
+  courseCommissionRate: 'courseCommissionRate',
   displayName: 'displayName',
   DOB: 'DOB',
   gender: 'gender',
@@ -310,6 +314,9 @@ export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof
 
 
 export const CourseScalarFieldEnum = {
+  commissionRate: 'commissionRate',
+  commissionSource: 'commissionSource',
+  commissionApprovedAt: 'commissionApprovedAt',
   id: 'id',
   title: 'title',
   slug: 'slug',
@@ -490,6 +497,9 @@ export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof 
 
 
 export const BookScalarFieldEnum = {
+  commissionRate: 'commissionRate',
+  commissionSource: 'commissionSource',
+  commissionApprovedAt: 'commissionApprovedAt',
   id: 'id',
   title: 'title',
   author: 'author',
@@ -585,6 +595,7 @@ export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typ
 
 
 export const OrderScalarFieldEnum = {
+  financeSettledAt: 'financeSettledAt',
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
@@ -668,6 +679,17 @@ export type PaymentTransactionScalarFieldEnum = (typeof PaymentTransactionScalar
 
 
 export const PayoutScalarFieldEnum = {
+  workflowStatus: 'workflowStatus',
+  methodId: 'methodId',
+  methodType: 'methodType',
+  encryptedAccountSnapshot: 'encryptedAccountSnapshot',
+  accountLastFour: 'accountLastFour',
+  requestedAt: 'requestedAt',
+  processedAt: 'processedAt',
+  paidAt: 'paidAt',
+  transactionReference: 'transactionReference',
+  adminNote: 'adminNote',
+  requestKey: 'requestKey',
   id: 'id',
   instructorId: 'instructorId',
   amount: 'amount',
@@ -691,6 +713,8 @@ export type PayoutScalarFieldEnum = (typeof PayoutScalarFieldEnum)[keyof typeof 
 
 
 export const PayoutMethodScalarFieldEnum = {
+  encryptedAccount: 'encryptedAccount',
+  accountLastFour: 'accountLastFour',
   id: 'id',
   instructorId: 'instructorId',
   type: 'type',
@@ -904,6 +928,13 @@ export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typ
 
 
 export const PlatformSettingsScalarFieldEnum = {
+  globalBookCommission: 'globalBookCommission',
+  globalCourseCommission: 'globalCourseCommission',
+  coursePlatformFeeType: 'coursePlatformFeeType',
+  coursePlatformFeeValue: 'coursePlatformFeeValue',
+  holdingPeriodDays: 'holdingPeriodDays',
+  minimumPayout: 'minimumPayout',
+  financeActivatedAt: 'financeActivatedAt',
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -921,6 +952,53 @@ export const PlatformSettingsScalarFieldEnum = {
 } as const
 
 export type PlatformSettingsScalarFieldEnum = (typeof PlatformSettingsScalarFieldEnum)[keyof typeof PlatformSettingsScalarFieldEnum]
+
+
+export const FinancialEntryScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  orderItemId: 'orderItemId',
+  orderId: 'orderId',
+  paymentId: 'paymentId',
+  instructorId: 'instructorId',
+  productId: 'productId',
+  productType: 'productType',
+  productTitle: 'productTitle',
+  quantity: 'quantity',
+  currency: 'currency',
+  grossAmount: 'grossAmount',
+  discountAmount: 'discountAmount',
+  netSaleAmount: 'netSaleAmount',
+  commissionRate: 'commissionRate',
+  commissionSource: 'commissionSource',
+  commissionAmount: 'commissionAmount',
+  platformFeeType: 'platformFeeType',
+  platformFeeValue: 'platformFeeValue',
+  platformFeeAmount: 'platformFeeAmount',
+  instructorEarning: 'instructorEarning',
+  platformRevenue: 'platformRevenue',
+  holdingPeriodDays: 'holdingPeriodDays',
+  status: 'status',
+  availableAt: 'availableAt',
+  reversalOfId: 'reversalOfId',
+  refundReference: 'refundReference',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FinancialEntryScalarFieldEnum = (typeof FinancialEntryScalarFieldEnum)[keyof typeof FinancialEntryScalarFieldEnum]
+
+
+export const PayoutItemScalarFieldEnum = {
+  id: 'id',
+  payoutId: 'payoutId',
+  earningId: 'earningId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type PayoutItemScalarFieldEnum = (typeof PayoutItemScalarFieldEnum)[keyof typeof PayoutItemScalarFieldEnum]
 
 
 export const SortOrder = {

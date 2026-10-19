@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Decimal } from '@prisma/client/runtime/client';
 import { type Request } from 'express';
+import { finalizeCommission } from '../finance/finance.service.js';
 import * as XLSX from 'xlsx';
 import { executeDbOperation } from '../../config/database.js';
 import {
@@ -1682,7 +1683,7 @@ const approveBook = async (req: Request) => {
       }
       const updatedBook = await tx.book.update({
         where: { id: modifiedBookId },
-        data: { status: BookStatus.APPROVED },
+        data: { status: BookStatus.APPROVED, ...await finalizeCommission(tx, 'book', modifiedBookId, req.body?.commissionRate) },
       });
 
       await tx.auditLog.create({

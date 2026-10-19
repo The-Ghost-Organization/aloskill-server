@@ -430,7 +430,9 @@ export const ModelName = {
   QuestionOption: 'QuestionOption',
   QuizResult: 'QuizResult',
   AuditLog: 'AuditLog',
-  PlatformSettings: 'PlatformSettings'
+  PlatformSettings: 'PlatformSettings',
+  FinancialEntry: 'FinancialEntry',
+  PayoutItem: 'PayoutItem'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -446,7 +448,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookAuthor" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "conversation" | "conversationParticipant" | "message" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings"
+    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookAuthor" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "conversation" | "conversationParticipant" | "message" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings" | "financialEntry" | "payoutItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3928,6 +3930,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FinancialEntry: {
+      payload: Prisma.$FinancialEntryPayload<ExtArgs>
+      fields: Prisma.FinancialEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FinancialEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FinancialEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.FinancialEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FinancialEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>
+        }
+        findMany: {
+          args: Prisma.FinancialEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>[]
+        }
+        create: {
+          args: Prisma.FinancialEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>
+        }
+        createMany: {
+          args: Prisma.FinancialEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FinancialEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.FinancialEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>
+        }
+        update: {
+          args: Prisma.FinancialEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.FinancialEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FinancialEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FinancialEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.FinancialEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FinancialEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.FinancialEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFinancialEntry>
+        }
+        groupBy: {
+          args: Prisma.FinancialEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FinancialEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FinancialEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FinancialEntryCountAggregateOutputType> | number
+        }
+      }
+    }
+    PayoutItem: {
+      payload: Prisma.$PayoutItemPayload<ExtArgs>
+      fields: Prisma.PayoutItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PayoutItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PayoutItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>
+        }
+        findFirst: {
+          args: Prisma.PayoutItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PayoutItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>
+        }
+        findMany: {
+          args: Prisma.PayoutItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>[]
+        }
+        create: {
+          args: Prisma.PayoutItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>
+        }
+        createMany: {
+          args: Prisma.PayoutItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PayoutItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>[]
+        }
+        delete: {
+          args: Prisma.PayoutItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>
+        }
+        update: {
+          args: Prisma.PayoutItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.PayoutItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PayoutItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PayoutItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.PayoutItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayoutItemPayload>
+        }
+        aggregate: {
+          args: Prisma.PayoutItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayoutItem>
+        }
+        groupBy: {
+          args: Prisma.PayoutItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PayoutItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PayoutItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PayoutItemCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4100,6 +4250,8 @@ export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnu
 export const InstructorProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  bookCommissionRate: 'bookCommissionRate',
+  courseCommissionRate: 'courseCommissionRate',
   displayName: 'displayName',
   DOB: 'DOB',
   gender: 'gender',
@@ -4161,6 +4313,9 @@ export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof
 
 
 export const CourseScalarFieldEnum = {
+  commissionRate: 'commissionRate',
+  commissionSource: 'commissionSource',
+  commissionApprovedAt: 'commissionApprovedAt',
   id: 'id',
   title: 'title',
   slug: 'slug',
@@ -4341,6 +4496,9 @@ export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof 
 
 
 export const BookScalarFieldEnum = {
+  commissionRate: 'commissionRate',
+  commissionSource: 'commissionSource',
+  commissionApprovedAt: 'commissionApprovedAt',
   id: 'id',
   title: 'title',
   author: 'author',
@@ -4436,6 +4594,7 @@ export type WishlistScalarFieldEnum = (typeof WishlistScalarFieldEnum)[keyof typ
 
 
 export const OrderScalarFieldEnum = {
+  financeSettledAt: 'financeSettledAt',
   id: 'id',
   userId: 'userId',
   totalAmount: 'totalAmount',
@@ -4519,6 +4678,17 @@ export type PaymentTransactionScalarFieldEnum = (typeof PaymentTransactionScalar
 
 
 export const PayoutScalarFieldEnum = {
+  workflowStatus: 'workflowStatus',
+  methodId: 'methodId',
+  methodType: 'methodType',
+  encryptedAccountSnapshot: 'encryptedAccountSnapshot',
+  accountLastFour: 'accountLastFour',
+  requestedAt: 'requestedAt',
+  processedAt: 'processedAt',
+  paidAt: 'paidAt',
+  transactionReference: 'transactionReference',
+  adminNote: 'adminNote',
+  requestKey: 'requestKey',
   id: 'id',
   instructorId: 'instructorId',
   amount: 'amount',
@@ -4542,6 +4712,8 @@ export type PayoutScalarFieldEnum = (typeof PayoutScalarFieldEnum)[keyof typeof 
 
 
 export const PayoutMethodScalarFieldEnum = {
+  encryptedAccount: 'encryptedAccount',
+  accountLastFour: 'accountLastFour',
   id: 'id',
   instructorId: 'instructorId',
   type: 'type',
@@ -4755,6 +4927,13 @@ export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typ
 
 
 export const PlatformSettingsScalarFieldEnum = {
+  globalBookCommission: 'globalBookCommission',
+  globalCourseCommission: 'globalCourseCommission',
+  coursePlatformFeeType: 'coursePlatformFeeType',
+  coursePlatformFeeValue: 'coursePlatformFeeValue',
+  holdingPeriodDays: 'holdingPeriodDays',
+  minimumPayout: 'minimumPayout',
+  financeActivatedAt: 'financeActivatedAt',
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -4772,6 +4951,53 @@ export const PlatformSettingsScalarFieldEnum = {
 } as const
 
 export type PlatformSettingsScalarFieldEnum = (typeof PlatformSettingsScalarFieldEnum)[keyof typeof PlatformSettingsScalarFieldEnum]
+
+
+export const FinancialEntryScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  orderItemId: 'orderItemId',
+  orderId: 'orderId',
+  paymentId: 'paymentId',
+  instructorId: 'instructorId',
+  productId: 'productId',
+  productType: 'productType',
+  productTitle: 'productTitle',
+  quantity: 'quantity',
+  currency: 'currency',
+  grossAmount: 'grossAmount',
+  discountAmount: 'discountAmount',
+  netSaleAmount: 'netSaleAmount',
+  commissionRate: 'commissionRate',
+  commissionSource: 'commissionSource',
+  commissionAmount: 'commissionAmount',
+  platformFeeType: 'platformFeeType',
+  platformFeeValue: 'platformFeeValue',
+  platformFeeAmount: 'platformFeeAmount',
+  instructorEarning: 'instructorEarning',
+  platformRevenue: 'platformRevenue',
+  holdingPeriodDays: 'holdingPeriodDays',
+  status: 'status',
+  availableAt: 'availableAt',
+  reversalOfId: 'reversalOfId',
+  refundReference: 'refundReference',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FinancialEntryScalarFieldEnum = (typeof FinancialEntryScalarFieldEnum)[keyof typeof FinancialEntryScalarFieldEnum]
+
+
+export const PayoutItemScalarFieldEnum = {
+  id: 'id',
+  payoutId: 'payoutId',
+  earningId: 'earningId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type PayoutItemScalarFieldEnum = (typeof PayoutItemScalarFieldEnum)[keyof typeof PayoutItemScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -4941,6 +5167,20 @@ export type ListEnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'CourseLevel'
  */
 export type EnumCourseLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CourseLevel'>
@@ -4965,20 +5205,6 @@ export type EnumCourseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'CourseType[]'
  */
 export type ListEnumCourseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CourseType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -5291,6 +5517,20 @@ export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
+ * Reference to a field of type 'PayoutWorkflowStatus'
+ */
+export type EnumPayoutWorkflowStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutWorkflowStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PayoutWorkflowStatus[]'
+ */
+export type ListEnumPayoutWorkflowStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutWorkflowStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'PaymentStatus'
  */
 export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
@@ -5371,6 +5611,48 @@ export type EnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'QuestionType[]'
  */
 export type ListEnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlatformFeeType'
+ */
+export type EnumPlatformFeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformFeeType'>
+    
+
+
+/**
+ * Reference to a field of type 'PlatformFeeType[]'
+ */
+export type ListEnumPlatformFeeTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformFeeType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FinancialEntryKind'
+ */
+export type EnumFinancialEntryKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FinancialEntryKind'>
+    
+
+
+/**
+ * Reference to a field of type 'FinancialEntryKind[]'
+ */
+export type ListEnumFinancialEntryKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FinancialEntryKind[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EarningStatus'
+ */
+export type EnumEarningStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EarningStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'EarningStatus[]'
+ */
+export type ListEnumEarningStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EarningStatus[]'>
     
 
 
@@ -5529,6 +5811,8 @@ export type GlobalOmitConfig = {
   quizResult?: Prisma.QuizResultOmit
   auditLog?: Prisma.AuditLogOmit
   platformSettings?: Prisma.PlatformSettingsOmit
+  financialEntry?: Prisma.FinancialEntryOmit
+  payoutItem?: Prisma.PayoutItemOmit
 }
 
 /* Types for Logging */

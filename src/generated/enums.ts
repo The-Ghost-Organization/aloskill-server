@@ -349,3 +349,40 @@ export const DeliveryArea = {
 } as const
 
 export type DeliveryArea = (typeof DeliveryArea)[keyof typeof DeliveryArea]
+
+
+export const PlatformFeeType = {
+  NONE: 'NONE',
+  FIXED: 'FIXED',
+  PERCENTAGE: 'PERCENTAGE'
+} as const
+
+export type PlatformFeeType = (typeof PlatformFeeType)[keyof typeof PlatformFeeType]
+
+
+export const FinancialEntryKind = {
+  SALE: 'SALE',
+  REFUND: 'REFUND'
+} as const
+
+export type FinancialEntryKind = (typeof FinancialEntryKind)[keyof typeof FinancialEntryKind]
+
+
+export const EarningStatus = {
+  PENDING: 'PENDING',
+  AVAILABLE: 'AVAILABLE'
+} as const
+
+export type EarningStatus = (typeof EarningStatus)[keyof typeof EarningStatus]
+
+
+export const PayoutWorkflowStatus = {
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'APPROVED',
+  PROCESSING: 'PROCESSING',
+  PAID: 'PAID',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PayoutWorkflowStatus = (typeof PayoutWorkflowStatus)[keyof typeof PayoutWorkflowStatus]

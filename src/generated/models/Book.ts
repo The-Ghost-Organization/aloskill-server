@@ -27,6 +27,7 @@ export type AggregateBook = {
 }
 
 export type BookAvgAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
   publishYear: number | null
   ratings: runtime.Decimal | null
   purchaseCost: runtime.Decimal | null
@@ -42,6 +43,7 @@ export type BookAvgAggregateOutputType = {
 }
 
 export type BookSumAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
   publishYear: number | null
   ratings: runtime.Decimal | null
   purchaseCost: runtime.Decimal | null
@@ -57,6 +59,9 @@ export type BookSumAggregateOutputType = {
 }
 
 export type BookMinAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
+  commissionSource: string | null
+  commissionApprovedAt: Date | null
   id: string | null
   title: string | null
   author: string | null
@@ -94,6 +99,9 @@ export type BookMinAggregateOutputType = {
 }
 
 export type BookMaxAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
+  commissionSource: string | null
+  commissionApprovedAt: Date | null
   id: string | null
   title: string | null
   author: string | null
@@ -131,6 +139,9 @@ export type BookMaxAggregateOutputType = {
 }
 
 export type BookCountAggregateOutputType = {
+  commissionRate: number
+  commissionSource: number
+  commissionApprovedAt: number
   id: number
   title: number
   author: number
@@ -172,6 +183,7 @@ export type BookCountAggregateOutputType = {
 
 
 export type BookAvgAggregateInputType = {
+  commissionRate?: true
   publishYear?: true
   ratings?: true
   purchaseCost?: true
@@ -187,6 +199,7 @@ export type BookAvgAggregateInputType = {
 }
 
 export type BookSumAggregateInputType = {
+  commissionRate?: true
   publishYear?: true
   ratings?: true
   purchaseCost?: true
@@ -202,6 +215,9 @@ export type BookSumAggregateInputType = {
 }
 
 export type BookMinAggregateInputType = {
+  commissionRate?: true
+  commissionSource?: true
+  commissionApprovedAt?: true
   id?: true
   title?: true
   author?: true
@@ -239,6 +255,9 @@ export type BookMinAggregateInputType = {
 }
 
 export type BookMaxAggregateInputType = {
+  commissionRate?: true
+  commissionSource?: true
+  commissionApprovedAt?: true
   id?: true
   title?: true
   author?: true
@@ -276,6 +295,9 @@ export type BookMaxAggregateInputType = {
 }
 
 export type BookCountAggregateInputType = {
+  commissionRate?: true
+  commissionSource?: true
+  commissionApprovedAt?: true
   id?: true
   title?: true
   author?: true
@@ -402,6 +424,9 @@ export type BookGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 export type BookGroupByOutputType = {
+  commissionRate: runtime.Decimal | null
+  commissionSource: string | null
+  commissionApprovedAt: Date | null
   id: string
   title: string
   author: string
@@ -464,6 +489,9 @@ export type BookWhereInput = {
   AND?: Prisma.BookWhereInput | Prisma.BookWhereInput[]
   OR?: Prisma.BookWhereInput[]
   NOT?: Prisma.BookWhereInput | Prisma.BookWhereInput[]
+  commissionRate?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableFilter<"Book"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Book"> | Date | string | null
   id?: Prisma.StringFilter<"Book"> | string
   title?: Prisma.StringFilter<"Book"> | string
   author?: Prisma.StringFilter<"Book"> | string
@@ -511,6 +539,9 @@ export type BookWhereInput = {
 }
 
 export type BookOrderByWithRelationInput = {
+  commissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   author?: Prisma.SortOrder
@@ -563,6 +594,9 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BookWhereInput | Prisma.BookWhereInput[]
   OR?: Prisma.BookWhereInput[]
   NOT?: Prisma.BookWhereInput | Prisma.BookWhereInput[]
+  commissionRate?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableFilter<"Book"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Book"> | Date | string | null
   title?: Prisma.StringFilter<"Book"> | string
   author?: Prisma.StringFilter<"Book"> | string
   authorProfileId?: Prisma.StringNullableFilter<"Book"> | string | null
@@ -608,6 +642,9 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
 }, "id" | "isbn">
 
 export type BookOrderByWithAggregationInput = {
+  commissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   author?: Prisma.SortOrder
@@ -655,6 +692,9 @@ export type BookScalarWhereWithAggregatesInput = {
   AND?: Prisma.BookScalarWhereWithAggregatesInput | Prisma.BookScalarWhereWithAggregatesInput[]
   OR?: Prisma.BookScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BookScalarWhereWithAggregatesInput | Prisma.BookScalarWhereWithAggregatesInput[]
+  commissionRate?: Prisma.DecimalNullableWithAggregatesFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableWithAggregatesFilter<"Book"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Book"> | Date | string | null
   id?: Prisma.StringWithAggregatesFilter<"Book"> | string
   title?: Prisma.StringWithAggregatesFilter<"Book"> | string
   author?: Prisma.StringWithAggregatesFilter<"Book"> | string
@@ -694,6 +734,9 @@ export type BookScalarWhereWithAggregatesInput = {
 }
 
 export type BookCreateInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -738,6 +781,9 @@ export type BookCreateInput = {
 }
 
 export type BookUncheckedCreateInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -782,6 +828,9 @@ export type BookUncheckedCreateInput = {
 }
 
 export type BookUpdateInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -826,6 +875,9 @@ export type BookUpdateInput = {
 }
 
 export type BookUncheckedUpdateInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -870,6 +922,9 @@ export type BookUncheckedUpdateInput = {
 }
 
 export type BookCreateManyInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -909,6 +964,9 @@ export type BookCreateManyInput = {
 }
 
 export type BookUpdateManyMutationInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -945,6 +1003,9 @@ export type BookUpdateManyMutationInput = {
 }
 
 export type BookUncheckedUpdateManyInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1007,6 +1068,9 @@ export type EnumBookFormatNullableListFilter<$PrismaModel = never> = {
 }
 
 export type BookCountOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
+  commissionSource?: Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   author?: Prisma.SortOrder
@@ -1046,6 +1110,7 @@ export type BookCountOrderByAggregateInput = {
 }
 
 export type BookAvgOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
   publishYear?: Prisma.SortOrder
   ratings?: Prisma.SortOrder
   purchaseCost?: Prisma.SortOrder
@@ -1061,6 +1126,9 @@ export type BookAvgOrderByAggregateInput = {
 }
 
 export type BookMaxOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
+  commissionSource?: Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   author?: Prisma.SortOrder
@@ -1098,6 +1166,9 @@ export type BookMaxOrderByAggregateInput = {
 }
 
 export type BookMinOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
+  commissionSource?: Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   author?: Prisma.SortOrder
@@ -1135,6 +1206,7 @@ export type BookMinOrderByAggregateInput = {
 }
 
 export type BookSumOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
   publishYear?: Prisma.SortOrder
   ratings?: Prisma.SortOrder
   purchaseCost?: Prisma.SortOrder
@@ -1372,6 +1444,9 @@ export type BookUncheckedUpdateManyWithoutCategoryNestedInput = {
 }
 
 export type BookCreateWithoutOwnerInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1415,6 +1490,9 @@ export type BookCreateWithoutOwnerInput = {
 }
 
 export type BookUncheckedCreateWithoutOwnerInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1487,6 +1565,9 @@ export type BookScalarWhereInput = {
   AND?: Prisma.BookScalarWhereInput | Prisma.BookScalarWhereInput[]
   OR?: Prisma.BookScalarWhereInput[]
   NOT?: Prisma.BookScalarWhereInput | Prisma.BookScalarWhereInput[]
+  commissionRate?: Prisma.DecimalNullableFilter<"Book"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableFilter<"Book"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Book"> | Date | string | null
   id?: Prisma.StringFilter<"Book"> | string
   title?: Prisma.StringFilter<"Book"> | string
   author?: Prisma.StringFilter<"Book"> | string
@@ -1526,6 +1607,9 @@ export type BookScalarWhereInput = {
 }
 
 export type BookCreateWithoutReviewsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1569,6 +1653,9 @@ export type BookCreateWithoutReviewsInput = {
 }
 
 export type BookUncheckedCreateWithoutReviewsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1628,6 +1715,9 @@ export type BookUpdateToOneWithWhereWithoutReviewsInput = {
 }
 
 export type BookUpdateWithoutReviewsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1671,6 +1761,9 @@ export type BookUpdateWithoutReviewsInput = {
 }
 
 export type BookUncheckedUpdateWithoutReviewsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1714,6 +1807,9 @@ export type BookUncheckedUpdateWithoutReviewsInput = {
 }
 
 export type BookCreateWithoutAuthorProfileInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1757,6 +1853,9 @@ export type BookCreateWithoutAuthorProfileInput = {
 }
 
 export type BookUncheckedCreateWithoutAuthorProfileInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1826,6 +1925,9 @@ export type BookUpdateManyWithWhereWithoutAuthorProfileInput = {
 }
 
 export type BookCreateWithoutFilesInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1869,6 +1971,9 @@ export type BookCreateWithoutFilesInput = {
 }
 
 export type BookUncheckedCreateWithoutFilesInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -1928,6 +2033,9 @@ export type BookUpdateToOneWithWhereWithoutFilesInput = {
 }
 
 export type BookUpdateWithoutFilesInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1971,6 +2079,9 @@ export type BookUpdateWithoutFilesInput = {
 }
 
 export type BookUncheckedUpdateWithoutFilesInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2014,6 +2125,9 @@ export type BookUncheckedUpdateWithoutFilesInput = {
 }
 
 export type BookCreateWithoutWishlistedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2057,6 +2171,9 @@ export type BookCreateWithoutWishlistedByInput = {
 }
 
 export type BookUncheckedCreateWithoutWishlistedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2116,6 +2233,9 @@ export type BookUpdateToOneWithWhereWithoutWishlistedByInput = {
 }
 
 export type BookUpdateWithoutWishlistedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2159,6 +2279,9 @@ export type BookUpdateWithoutWishlistedByInput = {
 }
 
 export type BookUncheckedUpdateWithoutWishlistedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2202,6 +2325,9 @@ export type BookUncheckedUpdateWithoutWishlistedByInput = {
 }
 
 export type BookCreateWithoutOrderItemInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2245,6 +2371,9 @@ export type BookCreateWithoutOrderItemInput = {
 }
 
 export type BookUncheckedCreateWithoutOrderItemInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2304,6 +2433,9 @@ export type BookUpdateToOneWithWhereWithoutOrderItemInput = {
 }
 
 export type BookUpdateWithoutOrderItemInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2347,6 +2479,9 @@ export type BookUpdateWithoutOrderItemInput = {
 }
 
 export type BookUncheckedUpdateWithoutOrderItemInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2390,6 +2525,9 @@ export type BookUncheckedUpdateWithoutOrderItemInput = {
 }
 
 export type BookCreateWithoutPaymentTransactionInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2433,6 +2571,9 @@ export type BookCreateWithoutPaymentTransactionInput = {
 }
 
 export type BookUncheckedCreateWithoutPaymentTransactionInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2492,6 +2633,9 @@ export type BookUpdateToOneWithWhereWithoutPaymentTransactionInput = {
 }
 
 export type BookUpdateWithoutPaymentTransactionInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2535,6 +2679,9 @@ export type BookUpdateWithoutPaymentTransactionInput = {
 }
 
 export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2578,6 +2725,9 @@ export type BookUncheckedUpdateWithoutPaymentTransactionInput = {
 }
 
 export type BookCreateWithoutCategoryInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2621,6 +2771,9 @@ export type BookCreateWithoutCategoryInput = {
 }
 
 export type BookUncheckedCreateWithoutCategoryInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2690,6 +2843,9 @@ export type BookUpdateManyWithWhereWithoutCategoryInput = {
 }
 
 export type BookCreateManyOwnerInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2728,6 +2884,9 @@ export type BookCreateManyOwnerInput = {
 }
 
 export type BookUpdateWithoutOwnerInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2771,6 +2930,9 @@ export type BookUpdateWithoutOwnerInput = {
 }
 
 export type BookUncheckedUpdateWithoutOwnerInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2814,6 +2976,9 @@ export type BookUncheckedUpdateWithoutOwnerInput = {
 }
 
 export type BookUncheckedUpdateManyWithoutOwnerInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2852,6 +3017,9 @@ export type BookUncheckedUpdateManyWithoutOwnerInput = {
 }
 
 export type BookCreateManyAuthorProfileInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -2890,6 +3058,9 @@ export type BookCreateManyAuthorProfileInput = {
 }
 
 export type BookUpdateWithoutAuthorProfileInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2933,6 +3104,9 @@ export type BookUpdateWithoutAuthorProfileInput = {
 }
 
 export type BookUncheckedUpdateWithoutAuthorProfileInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2976,6 +3150,9 @@ export type BookUncheckedUpdateWithoutAuthorProfileInput = {
 }
 
 export type BookUncheckedUpdateManyWithoutAuthorProfileInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3014,6 +3191,9 @@ export type BookUncheckedUpdateManyWithoutAuthorProfileInput = {
 }
 
 export type BookCreateManyCategoryInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   author: string
@@ -3052,6 +3232,9 @@ export type BookCreateManyCategoryInput = {
 }
 
 export type BookUpdateWithoutCategoryInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3095,6 +3278,9 @@ export type BookUpdateWithoutCategoryInput = {
 }
 
 export type BookUncheckedUpdateWithoutCategoryInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3138,6 +3324,9 @@ export type BookUncheckedUpdateWithoutCategoryInput = {
 }
 
 export type BookUncheckedUpdateManyWithoutCategoryInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   author?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3243,6 +3432,9 @@ export type BookCountOutputTypeCountWishlistedByArgs<ExtArgs extends runtime.Typ
 
 
 export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   author?: boolean
@@ -3291,6 +3483,9 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 }, ExtArgs["result"]["book"]>
 
 export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   author?: boolean
@@ -3333,6 +3528,9 @@ export type BookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 }, ExtArgs["result"]["book"]>
 
 export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   author?: boolean
@@ -3375,6 +3573,9 @@ export type BookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 }, ExtArgs["result"]["book"]>
 
 export type BookSelectScalar = {
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   author?: boolean
@@ -3413,7 +3614,7 @@ export type BookSelectScalar = {
   deletedAt?: boolean
 }
 
-export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "author" | "authorProfileId" | "translator" | "editor" | "publisher" | "publishYear" | "ratings" | "description" | "purchaseCost" | "physicalRegularPrice" | "physicalSalePrice" | "digitalRegularPrice" | "digitalSalePrice" | "stock" | "isbn" | "edition" | "pages" | "weight" | "language" | "formats" | "totalEarning" | "viewCount" | "status" | "suspendReason" | "adminNote" | "updatedContent" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["book"]>
+export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"commissionRate" | "commissionSource" | "commissionApprovedAt" | "id" | "title" | "author" | "authorProfileId" | "translator" | "editor" | "publisher" | "publishYear" | "ratings" | "description" | "purchaseCost" | "physicalRegularPrice" | "physicalSalePrice" | "digitalRegularPrice" | "digitalSalePrice" | "stock" | "isbn" | "edition" | "pages" | "weight" | "language" | "formats" | "totalEarning" | "viewCount" | "status" | "suspendReason" | "adminNote" | "updatedContent" | "metaKeywords" | "metaDescription" | "coverImage" | "ownerId" | "categoryId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["book"]>
 export type BookInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authorProfile?: boolean | Prisma.Book$authorProfileArgs<ExtArgs>
   files?: boolean | Prisma.Book$filesArgs<ExtArgs>
@@ -3449,6 +3650,9 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     wishlistedBy: Prisma.$WishlistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    commissionRate: runtime.Decimal | null
+    commissionSource: string | null
+    commissionApprovedAt: Date | null
     id: string
     title: string
     author: string
@@ -3568,8 +3772,8 @@ export interface BookDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
    * // Get first 10 Books
    * const books = await prisma.book.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const bookWithIdOnly = await prisma.book.findMany({ select: { id: true } })
+   * // Only select the `commissionRate`
+   * const bookWithCommissionRateOnly = await prisma.book.findMany({ select: { commissionRate: true } })
    * 
    */
   findMany<T extends BookFindManyArgs>(args?: Prisma.SelectSubset<T, BookFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -3613,9 +3817,9 @@ export interface BookDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
    *   ]
    * })
    * 
-   * // Create many Books and only return the `id`
-   * const bookWithIdOnly = await prisma.book.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Books and only return the `commissionRate`
+   * const bookWithCommissionRateOnly = await prisma.book.createManyAndReturn({
+   *   select: { commissionRate: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -3704,9 +3908,9 @@ export interface BookDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
    *   ]
    * })
    * 
-   * // Update zero or more Books and only return the `id`
-   * const bookWithIdOnly = await prisma.book.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Books and only return the `commissionRate`
+   * const bookWithCommissionRateOnly = await prisma.book.updateManyAndReturn({
+   *   select: { commissionRate: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -3916,6 +4120,9 @@ export interface Prisma__BookClient<T, Null = never, ExtArgs extends runtime.Typ
  * Fields of the Book model
  */
 export interface BookFieldRefs {
+  readonly commissionRate: Prisma.FieldRef<"Book", 'Decimal'>
+  readonly commissionSource: Prisma.FieldRef<"Book", 'String'>
+  readonly commissionApprovedAt: Prisma.FieldRef<"Book", 'DateTime'>
   readonly id: Prisma.FieldRef<"Book", 'String'>
   readonly title: Prisma.FieldRef<"Book", 'String'>
   readonly author: Prisma.FieldRef<"Book", 'String'>

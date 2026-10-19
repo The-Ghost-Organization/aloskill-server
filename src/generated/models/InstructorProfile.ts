@@ -27,6 +27,8 @@ export type AggregateInstructorProfile = {
 }
 
 export type InstructorProfileAvgAggregateOutputType = {
+  bookCommissionRate: runtime.Decimal | null
+  courseCommissionRate: runtime.Decimal | null
   experience: number | null
   teachingExperience: runtime.Decimal | null
   ratingAverage: runtime.Decimal | null
@@ -38,6 +40,8 @@ export type InstructorProfileAvgAggregateOutputType = {
 }
 
 export type InstructorProfileSumAggregateOutputType = {
+  bookCommissionRate: runtime.Decimal | null
+  courseCommissionRate: runtime.Decimal | null
   experience: number | null
   teachingExperience: runtime.Decimal | null
   ratingAverage: runtime.Decimal | null
@@ -51,6 +55,8 @@ export type InstructorProfileSumAggregateOutputType = {
 export type InstructorProfileMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  bookCommissionRate: runtime.Decimal | null
+  courseCommissionRate: runtime.Decimal | null
   displayName: string | null
   DOB: Date | null
   gender: $Enums.Gender | null
@@ -91,6 +97,8 @@ export type InstructorProfileMinAggregateOutputType = {
 export type InstructorProfileMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  bookCommissionRate: runtime.Decimal | null
+  courseCommissionRate: runtime.Decimal | null
   displayName: string | null
   DOB: Date | null
   gender: $Enums.Gender | null
@@ -131,6 +139,8 @@ export type InstructorProfileMaxAggregateOutputType = {
 export type InstructorProfileCountAggregateOutputType = {
   id: number
   userId: number
+  bookCommissionRate: number
+  courseCommissionRate: number
   displayName: number
   DOB: number
   gender: number
@@ -171,6 +181,8 @@ export type InstructorProfileCountAggregateOutputType = {
 
 
 export type InstructorProfileAvgAggregateInputType = {
+  bookCommissionRate?: true
+  courseCommissionRate?: true
   experience?: true
   teachingExperience?: true
   ratingAverage?: true
@@ -182,6 +194,8 @@ export type InstructorProfileAvgAggregateInputType = {
 }
 
 export type InstructorProfileSumAggregateInputType = {
+  bookCommissionRate?: true
+  courseCommissionRate?: true
   experience?: true
   teachingExperience?: true
   ratingAverage?: true
@@ -195,6 +209,8 @@ export type InstructorProfileSumAggregateInputType = {
 export type InstructorProfileMinAggregateInputType = {
   id?: true
   userId?: true
+  bookCommissionRate?: true
+  courseCommissionRate?: true
   displayName?: true
   DOB?: true
   gender?: true
@@ -235,6 +251,8 @@ export type InstructorProfileMinAggregateInputType = {
 export type InstructorProfileMaxAggregateInputType = {
   id?: true
   userId?: true
+  bookCommissionRate?: true
+  courseCommissionRate?: true
   displayName?: true
   DOB?: true
   gender?: true
@@ -275,6 +293,8 @@ export type InstructorProfileMaxAggregateInputType = {
 export type InstructorProfileCountAggregateInputType = {
   id?: true
   userId?: true
+  bookCommissionRate?: true
+  courseCommissionRate?: true
   displayName?: true
   DOB?: true
   gender?: true
@@ -402,6 +422,8 @@ export type InstructorProfileGroupByArgs<ExtArgs extends runtime.Types.Extension
 export type InstructorProfileGroupByOutputType = {
   id: string
   userId: string
+  bookCommissionRate: runtime.Decimal | null
+  courseCommissionRate: runtime.Decimal | null
   displayName: string
   DOB: Date
   gender: $Enums.Gender
@@ -465,6 +487,8 @@ export type InstructorProfileWhereInput = {
   NOT?: Prisma.InstructorProfileWhereInput | Prisma.InstructorProfileWhereInput[]
   id?: Prisma.StringFilter<"InstructorProfile"> | string
   userId?: Prisma.StringFilter<"InstructorProfile"> | string
+  bookCommissionRate?: Prisma.DecimalNullableFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.DecimalNullableFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFilter<"InstructorProfile"> | string
   DOB?: Prisma.DateTimeFilter<"InstructorProfile"> | Date | string
   gender?: Prisma.EnumGenderFilter<"InstructorProfile"> | $Enums.Gender
@@ -511,6 +535,8 @@ export type InstructorProfileWhereInput = {
 export type InstructorProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  bookCommissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
   displayName?: Prisma.SortOrder
   DOB?: Prisma.SortOrder
   gender?: Prisma.SortOrder
@@ -560,6 +586,8 @@ export type InstructorProfileWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.InstructorProfileWhereInput | Prisma.InstructorProfileWhereInput[]
   OR?: Prisma.InstructorProfileWhereInput[]
   NOT?: Prisma.InstructorProfileWhereInput | Prisma.InstructorProfileWhereInput[]
+  bookCommissionRate?: Prisma.DecimalNullableFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.DecimalNullableFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFilter<"InstructorProfile"> | string
   DOB?: Prisma.DateTimeFilter<"InstructorProfile"> | Date | string
   gender?: Prisma.EnumGenderFilter<"InstructorProfile"> | $Enums.Gender
@@ -606,6 +634,8 @@ export type InstructorProfileWhereUniqueInput = Prisma.AtLeast<{
 export type InstructorProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  bookCommissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
   displayName?: Prisma.SortOrder
   DOB?: Prisma.SortOrder
   gender?: Prisma.SortOrder
@@ -654,6 +684,8 @@ export type InstructorProfileScalarWhereWithAggregatesInput = {
   NOT?: Prisma.InstructorProfileScalarWhereWithAggregatesInput | Prisma.InstructorProfileScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"InstructorProfile"> | string
   userId?: Prisma.StringWithAggregatesFilter<"InstructorProfile"> | string
+  bookCommissionRate?: Prisma.DecimalNullableWithAggregatesFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.DecimalNullableWithAggregatesFilter<"InstructorProfile"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringWithAggregatesFilter<"InstructorProfile"> | string
   DOB?: Prisma.DateTimeWithAggregatesFilter<"InstructorProfile"> | Date | string
   gender?: Prisma.EnumGenderWithAggregatesFilter<"InstructorProfile"> | $Enums.Gender
@@ -693,6 +725,8 @@ export type InstructorProfileScalarWhereWithAggregatesInput = {
 
 export type InstructorProfileCreateInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -739,6 +773,8 @@ export type InstructorProfileCreateInput = {
 export type InstructorProfileUncheckedCreateInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -783,6 +819,8 @@ export type InstructorProfileUncheckedCreateInput = {
 
 export type InstructorProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -829,6 +867,8 @@ export type InstructorProfileUpdateInput = {
 export type InstructorProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -874,6 +914,8 @@ export type InstructorProfileUncheckedUpdateInput = {
 export type InstructorProfileCreateManyInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -913,6 +955,8 @@ export type InstructorProfileCreateManyInput = {
 
 export type InstructorProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -953,6 +997,8 @@ export type InstructorProfileUpdateManyMutationInput = {
 export type InstructorProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -998,6 +1044,8 @@ export type InstructorProfileNullableScalarRelationFilter = {
 export type InstructorProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  bookCommissionRate?: Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
   DOB?: Prisma.SortOrder
   gender?: Prisma.SortOrder
@@ -1036,6 +1084,8 @@ export type InstructorProfileCountOrderByAggregateInput = {
 }
 
 export type InstructorProfileAvgOrderByAggregateInput = {
+  bookCommissionRate?: Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrder
   experience?: Prisma.SortOrder
   teachingExperience?: Prisma.SortOrder
   ratingAverage?: Prisma.SortOrder
@@ -1049,6 +1099,8 @@ export type InstructorProfileAvgOrderByAggregateInput = {
 export type InstructorProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  bookCommissionRate?: Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
   DOB?: Prisma.SortOrder
   gender?: Prisma.SortOrder
@@ -1089,6 +1141,8 @@ export type InstructorProfileMaxOrderByAggregateInput = {
 export type InstructorProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  bookCommissionRate?: Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrder
   displayName?: Prisma.SortOrder
   DOB?: Prisma.SortOrder
   gender?: Prisma.SortOrder
@@ -1127,6 +1181,8 @@ export type InstructorProfileMinOrderByAggregateInput = {
 }
 
 export type InstructorProfileSumOrderByAggregateInput = {
+  bookCommissionRate?: Prisma.SortOrder
+  courseCommissionRate?: Prisma.SortOrder
   experience?: Prisma.SortOrder
   teachingExperience?: Prisma.SortOrder
   ratingAverage?: Prisma.SortOrder
@@ -1174,20 +1230,20 @@ export type InstructorProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorProfileUpdateToOneWithWhereWithoutUserInput, Prisma.InstructorProfileUpdateWithoutUserInput>, Prisma.InstructorProfileUncheckedUpdateWithoutUserInput>
 }
 
-export type EnumCourseLevelFieldUpdateOperationsInput = {
-  set?: $Enums.CourseLevel
-}
-
-export type EnumCourseTypeFieldUpdateOperationsInput = {
-  set?: $Enums.CourseType
-}
-
 export type NullableDecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
   decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type EnumCourseLevelFieldUpdateOperationsInput = {
+  set?: $Enums.CourseLevel
+}
+
+export type EnumCourseTypeFieldUpdateOperationsInput = {
+  set?: $Enums.CourseType
 }
 
 export type EnumTeachingApproachFieldUpdateOperationsInput = {
@@ -1286,6 +1342,8 @@ export type InstructorProfileUpdateOneWithoutAuthorProfileNestedInput = {
 
 export type InstructorProfileCreateWithoutUserInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1330,6 +1388,8 @@ export type InstructorProfileCreateWithoutUserInput = {
 
 export type InstructorProfileUncheckedCreateWithoutUserInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1390,6 +1450,8 @@ export type InstructorProfileUpdateToOneWithWhereWithoutUserInput = {
 
 export type InstructorProfileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -1434,6 +1496,8 @@ export type InstructorProfileUpdateWithoutUserInput = {
 
 export type InstructorProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -1478,6 +1542,8 @@ export type InstructorProfileUncheckedUpdateWithoutUserInput = {
 
 export type InstructorProfileCreateWithoutSkillsInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1523,6 +1589,8 @@ export type InstructorProfileCreateWithoutSkillsInput = {
 export type InstructorProfileUncheckedCreateWithoutSkillsInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1582,6 +1650,8 @@ export type InstructorProfileUpdateToOneWithWhereWithoutSkillsInput = {
 
 export type InstructorProfileUpdateWithoutSkillsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -1627,6 +1697,8 @@ export type InstructorProfileUpdateWithoutSkillsInput = {
 export type InstructorProfileUncheckedUpdateWithoutSkillsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -1670,6 +1742,8 @@ export type InstructorProfileUncheckedUpdateWithoutSkillsInput = {
 
 export type InstructorProfileCreateWithoutSocialAccountInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1715,6 +1789,8 @@ export type InstructorProfileCreateWithoutSocialAccountInput = {
 export type InstructorProfileUncheckedCreateWithoutSocialAccountInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1774,6 +1850,8 @@ export type InstructorProfileUpdateToOneWithWhereWithoutSocialAccountInput = {
 
 export type InstructorProfileUpdateWithoutSocialAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -1819,6 +1897,8 @@ export type InstructorProfileUpdateWithoutSocialAccountInput = {
 export type InstructorProfileUncheckedUpdateWithoutSocialAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -1862,6 +1942,8 @@ export type InstructorProfileUncheckedUpdateWithoutSocialAccountInput = {
 
 export type InstructorProfileCreateWithoutOwnedCoursesInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1907,6 +1989,8 @@ export type InstructorProfileCreateWithoutOwnedCoursesInput = {
 export type InstructorProfileUncheckedCreateWithoutOwnedCoursesInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -1966,6 +2050,8 @@ export type InstructorProfileUpdateToOneWithWhereWithoutOwnedCoursesInput = {
 
 export type InstructorProfileUpdateWithoutOwnedCoursesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -2011,6 +2097,8 @@ export type InstructorProfileUpdateWithoutOwnedCoursesInput = {
 export type InstructorProfileUncheckedUpdateWithoutOwnedCoursesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -2054,6 +2142,8 @@ export type InstructorProfileUncheckedUpdateWithoutOwnedCoursesInput = {
 
 export type InstructorProfileCreateWithoutCourseInstructorsInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -2099,6 +2189,8 @@ export type InstructorProfileCreateWithoutCourseInstructorsInput = {
 export type InstructorProfileUncheckedCreateWithoutCourseInstructorsInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -2158,6 +2250,8 @@ export type InstructorProfileUpdateToOneWithWhereWithoutCourseInstructorsInput =
 
 export type InstructorProfileUpdateWithoutCourseInstructorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -2203,6 +2297,8 @@ export type InstructorProfileUpdateWithoutCourseInstructorsInput = {
 export type InstructorProfileUncheckedUpdateWithoutCourseInstructorsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -2246,6 +2342,8 @@ export type InstructorProfileUncheckedUpdateWithoutCourseInstructorsInput = {
 
 export type InstructorProfileCreateWithoutAuthorProfileInput = {
   id?: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -2291,6 +2389,8 @@ export type InstructorProfileCreateWithoutAuthorProfileInput = {
 export type InstructorProfileUncheckedCreateWithoutAuthorProfileInput = {
   id?: string
   userId: string
+  bookCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName: string
   DOB: Date | string
   gender: $Enums.Gender
@@ -2350,6 +2450,8 @@ export type InstructorProfileUpdateToOneWithWhereWithoutAuthorProfileInput = {
 
 export type InstructorProfileUpdateWithoutAuthorProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -2395,6 +2497,8 @@ export type InstructorProfileUpdateWithoutAuthorProfileInput = {
 export type InstructorProfileUncheckedUpdateWithoutAuthorProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  bookCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  courseCommissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   displayName?: Prisma.StringFieldUpdateOperationsInput | string
   DOB?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
@@ -2497,6 +2601,8 @@ export type InstructorProfileCountOutputTypeCountCourseInstructorsArgs<ExtArgs e
 export type InstructorProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  bookCommissionRate?: boolean
+  courseCommissionRate?: boolean
   displayName?: boolean
   DOB?: boolean
   gender?: boolean
@@ -2544,6 +2650,8 @@ export type InstructorProfileSelect<ExtArgs extends runtime.Types.Extensions.Int
 export type InstructorProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  bookCommissionRate?: boolean
+  courseCommissionRate?: boolean
   displayName?: boolean
   DOB?: boolean
   gender?: boolean
@@ -2585,6 +2693,8 @@ export type InstructorProfileSelectCreateManyAndReturn<ExtArgs extends runtime.T
 export type InstructorProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  bookCommissionRate?: boolean
+  courseCommissionRate?: boolean
   displayName?: boolean
   DOB?: boolean
   gender?: boolean
@@ -2626,6 +2736,8 @@ export type InstructorProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.T
 export type InstructorProfileSelectScalar = {
   id?: boolean
   userId?: boolean
+  bookCommissionRate?: boolean
+  courseCommissionRate?: boolean
   displayName?: boolean
   DOB?: boolean
   gender?: boolean
@@ -2663,7 +2775,7 @@ export type InstructorProfileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InstructorProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "displayName" | "DOB" | "gender" | "nationality" | "encryptedPhone" | "phoneLastFour" | "address" | "city" | "qualifications" | "experience" | "expertise" | "currentOrg" | "proposedCourseCategory" | "courseLevel" | "courseType" | "teachingExperience" | "prevTeachingApproach" | "language" | "demoVideo" | "bio" | "website" | "paymentId" | "status" | "suspendReason" | "adminNote" | "ratingAverage" | "ratingCount" | "totalStudents" | "totalCourses" | "totalRevenueAmount" | "totalRefunds" | "deletedAt" | "deletionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["instructorProfile"]>
+export type InstructorProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "bookCommissionRate" | "courseCommissionRate" | "displayName" | "DOB" | "gender" | "nationality" | "encryptedPhone" | "phoneLastFour" | "address" | "city" | "qualifications" | "experience" | "expertise" | "currentOrg" | "proposedCourseCategory" | "courseLevel" | "courseType" | "teachingExperience" | "prevTeachingApproach" | "language" | "demoVideo" | "bio" | "website" | "paymentId" | "status" | "suspendReason" | "adminNote" | "ratingAverage" | "ratingCount" | "totalStudents" | "totalCourses" | "totalRevenueAmount" | "totalRefunds" | "deletedAt" | "deletionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["instructorProfile"]>
 export type InstructorProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   skills?: boolean | Prisma.InstructorProfile$skillsArgs<ExtArgs>
@@ -2693,6 +2805,8 @@ export type $InstructorProfilePayload<ExtArgs extends runtime.Types.Extensions.I
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    bookCommissionRate: runtime.Decimal | null
+    courseCommissionRate: runtime.Decimal | null
     displayName: string
     DOB: Date
     gender: $Enums.Gender
@@ -3159,6 +3273,8 @@ export interface Prisma__InstructorProfileClient<T, Null = never, ExtArgs extend
 export interface InstructorProfileFieldRefs {
   readonly id: Prisma.FieldRef<"InstructorProfile", 'String'>
   readonly userId: Prisma.FieldRef<"InstructorProfile", 'String'>
+  readonly bookCommissionRate: Prisma.FieldRef<"InstructorProfile", 'Decimal'>
+  readonly courseCommissionRate: Prisma.FieldRef<"InstructorProfile", 'Decimal'>
   readonly displayName: Prisma.FieldRef<"InstructorProfile", 'String'>
   readonly DOB: Prisma.FieldRef<"InstructorProfile", 'DateTime'>
   readonly gender: Prisma.FieldRef<"InstructorProfile", 'Gender'>

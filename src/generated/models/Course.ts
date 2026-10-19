@@ -27,6 +27,7 @@ export type AggregateCourse = {
 }
 
 export type CourseAvgAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
   originalPrice: runtime.Decimal | null
   discountPercent: number | null
   discountPrice: runtime.Decimal | null
@@ -40,6 +41,7 @@ export type CourseAvgAggregateOutputType = {
 }
 
 export type CourseSumAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
   originalPrice: runtime.Decimal | null
   discountPercent: number | null
   discountPrice: runtime.Decimal | null
@@ -53,6 +55,9 @@ export type CourseSumAggregateOutputType = {
 }
 
 export type CourseMinAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
+  commissionSource: string | null
+  commissionApprovedAt: Date | null
   id: string | null
   title: string | null
   slug: string | null
@@ -87,6 +92,9 @@ export type CourseMinAggregateOutputType = {
 }
 
 export type CourseMaxAggregateOutputType = {
+  commissionRate: runtime.Decimal | null
+  commissionSource: string | null
+  commissionApprovedAt: Date | null
   id: string | null
   title: string | null
   slug: string | null
@@ -121,6 +129,9 @@ export type CourseMaxAggregateOutputType = {
 }
 
 export type CourseCountAggregateOutputType = {
+  commissionRate: number
+  commissionSource: number
+  commissionApprovedAt: number
   id: number
   title: number
   slug: number
@@ -158,6 +169,7 @@ export type CourseCountAggregateOutputType = {
 
 
 export type CourseAvgAggregateInputType = {
+  commissionRate?: true
   originalPrice?: true
   discountPercent?: true
   discountPrice?: true
@@ -171,6 +183,7 @@ export type CourseAvgAggregateInputType = {
 }
 
 export type CourseSumAggregateInputType = {
+  commissionRate?: true
   originalPrice?: true
   discountPercent?: true
   discountPrice?: true
@@ -184,6 +197,9 @@ export type CourseSumAggregateInputType = {
 }
 
 export type CourseMinAggregateInputType = {
+  commissionRate?: true
+  commissionSource?: true
+  commissionApprovedAt?: true
   id?: true
   title?: true
   slug?: true
@@ -218,6 +234,9 @@ export type CourseMinAggregateInputType = {
 }
 
 export type CourseMaxAggregateInputType = {
+  commissionRate?: true
+  commissionSource?: true
+  commissionApprovedAt?: true
   id?: true
   title?: true
   slug?: true
@@ -252,6 +271,9 @@ export type CourseMaxAggregateInputType = {
 }
 
 export type CourseCountAggregateInputType = {
+  commissionRate?: true
+  commissionSource?: true
+  commissionApprovedAt?: true
   id?: true
   title?: true
   slug?: true
@@ -374,6 +396,9 @@ export type CourseGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 export type CourseGroupByOutputType = {
+  commissionRate: runtime.Decimal | null
+  commissionSource: string | null
+  commissionApprovedAt: Date | null
   id: string
   title: string
   slug: string
@@ -432,6 +457,9 @@ export type CourseWhereInput = {
   AND?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
   OR?: Prisma.CourseWhereInput[]
   NOT?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
+  commissionRate?: Prisma.DecimalNullableFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableFilter<"Course"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   id?: Prisma.StringFilter<"Course"> | string
   title?: Prisma.StringFilter<"Course"> | string
   slug?: Prisma.StringFilter<"Course"> | string
@@ -478,6 +506,9 @@ export type CourseWhereInput = {
 }
 
 export type CourseOrderByWithRelationInput = {
+  commissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -529,6 +560,9 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
   OR?: Prisma.CourseWhereInput[]
   NOT?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
+  commissionRate?: Prisma.DecimalNullableFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableFilter<"Course"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   title?: Prisma.StringFilter<"Course"> | string
   description?: Prisma.StringFilter<"Course"> | string
   welcomeMessage?: Prisma.StringNullableFilter<"Course"> | string | null
@@ -573,6 +607,9 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
 }, "id" | "slug">
 
 export type CourseOrderByWithAggregationInput = {
+  commissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -616,6 +653,9 @@ export type CourseScalarWhereWithAggregatesInput = {
   AND?: Prisma.CourseScalarWhereWithAggregatesInput | Prisma.CourseScalarWhereWithAggregatesInput[]
   OR?: Prisma.CourseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CourseScalarWhereWithAggregatesInput | Prisma.CourseScalarWhereWithAggregatesInput[]
+  commissionRate?: Prisma.DecimalNullableWithAggregatesFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
   id?: Prisma.StringWithAggregatesFilter<"Course"> | string
   title?: Prisma.StringWithAggregatesFilter<"Course"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Course"> | string
@@ -651,6 +691,9 @@ export type CourseScalarWhereWithAggregatesInput = {
 }
 
 export type CourseCreateInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -695,6 +738,9 @@ export type CourseCreateInput = {
 }
 
 export type CourseUncheckedCreateInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -739,6 +785,9 @@ export type CourseUncheckedCreateInput = {
 }
 
 export type CourseUpdateInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -783,6 +832,9 @@ export type CourseUpdateInput = {
 }
 
 export type CourseUncheckedUpdateInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -827,6 +879,9 @@ export type CourseUncheckedUpdateInput = {
 }
 
 export type CourseCreateManyInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -862,6 +917,9 @@ export type CourseCreateManyInput = {
 }
 
 export type CourseUpdateManyMutationInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -895,6 +953,9 @@ export type CourseUpdateManyMutationInput = {
 }
 
 export type CourseUncheckedUpdateManyInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -940,6 +1001,9 @@ export type CourseOrderByRelationAggregateInput = {
 }
 
 export type CourseCountOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
+  commissionSource?: Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -975,6 +1039,7 @@ export type CourseCountOrderByAggregateInput = {
 }
 
 export type CourseAvgOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountPrice?: Prisma.SortOrder
@@ -988,6 +1053,9 @@ export type CourseAvgOrderByAggregateInput = {
 }
 
 export type CourseMaxOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
+  commissionSource?: Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -1022,6 +1090,9 @@ export type CourseMaxOrderByAggregateInput = {
 }
 
 export type CourseMinOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
+  commissionSource?: Prisma.SortOrder
+  commissionApprovedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -1056,6 +1127,7 @@ export type CourseMinOrderByAggregateInput = {
 }
 
 export type CourseSumOrderByAggregateInput = {
+  commissionRate?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountPrice?: Prisma.SortOrder
@@ -1313,6 +1385,9 @@ export type CourseUpdateOneRequiredWithoutTagsNestedInput = {
 }
 
 export type CourseCreateWithoutCreatedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1356,6 +1431,9 @@ export type CourseCreateWithoutCreatedByInput = {
 }
 
 export type CourseUncheckedCreateWithoutCreatedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1428,6 +1506,9 @@ export type CourseScalarWhereInput = {
   AND?: Prisma.CourseScalarWhereInput | Prisma.CourseScalarWhereInput[]
   OR?: Prisma.CourseScalarWhereInput[]
   NOT?: Prisma.CourseScalarWhereInput | Prisma.CourseScalarWhereInput[]
+  commissionRate?: Prisma.DecimalNullableFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.StringNullableFilter<"Course"> | string | null
+  commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   id?: Prisma.StringFilter<"Course"> | string
   title?: Prisma.StringFilter<"Course"> | string
   slug?: Prisma.StringFilter<"Course"> | string
@@ -1463,6 +1544,9 @@ export type CourseScalarWhereInput = {
 }
 
 export type CourseCreateWithoutCourseInstructorsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1506,6 +1590,9 @@ export type CourseCreateWithoutCourseInstructorsInput = {
 }
 
 export type CourseUncheckedCreateWithoutCourseInstructorsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1565,6 +1652,9 @@ export type CourseUpdateToOneWithWhereWithoutCourseInstructorsInput = {
 }
 
 export type CourseUpdateWithoutCourseInstructorsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1608,6 +1698,9 @@ export type CourseUpdateWithoutCourseInstructorsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutCourseInstructorsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1651,6 +1744,9 @@ export type CourseUncheckedUpdateWithoutCourseInstructorsInput = {
 }
 
 export type CourseCreateWithoutModulesInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1694,6 +1790,9 @@ export type CourseCreateWithoutModulesInput = {
 }
 
 export type CourseUncheckedCreateWithoutModulesInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1753,6 +1852,9 @@ export type CourseUpdateToOneWithWhereWithoutModulesInput = {
 }
 
 export type CourseUpdateWithoutModulesInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1796,6 +1898,9 @@ export type CourseUpdateWithoutModulesInput = {
 }
 
 export type CourseUncheckedUpdateWithoutModulesInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1839,6 +1944,9 @@ export type CourseUncheckedUpdateWithoutModulesInput = {
 }
 
 export type CourseCreateWithoutEnrollmentsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1882,6 +1990,9 @@ export type CourseCreateWithoutEnrollmentsInput = {
 }
 
 export type CourseUncheckedCreateWithoutEnrollmentsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -1941,6 +2052,9 @@ export type CourseUpdateToOneWithWhereWithoutEnrollmentsInput = {
 }
 
 export type CourseUpdateWithoutEnrollmentsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1984,6 +2098,9 @@ export type CourseUpdateWithoutEnrollmentsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2027,6 +2144,9 @@ export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
 }
 
 export type CourseCreateWithoutLessonProgressInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2070,6 +2190,9 @@ export type CourseCreateWithoutLessonProgressInput = {
 }
 
 export type CourseUncheckedCreateWithoutLessonProgressInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2129,6 +2252,9 @@ export type CourseUpdateToOneWithWhereWithoutLessonProgressInput = {
 }
 
 export type CourseUpdateWithoutLessonProgressInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2172,6 +2298,9 @@ export type CourseUpdateWithoutLessonProgressInput = {
 }
 
 export type CourseUncheckedUpdateWithoutLessonProgressInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2215,6 +2344,9 @@ export type CourseUncheckedUpdateWithoutLessonProgressInput = {
 }
 
 export type CourseCreateWithoutReviewsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2258,6 +2390,9 @@ export type CourseCreateWithoutReviewsInput = {
 }
 
 export type CourseUncheckedCreateWithoutReviewsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2317,6 +2452,9 @@ export type CourseUpdateToOneWithWhereWithoutReviewsInput = {
 }
 
 export type CourseUpdateWithoutReviewsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2360,6 +2498,9 @@ export type CourseUpdateWithoutReviewsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutReviewsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2403,6 +2544,9 @@ export type CourseUncheckedUpdateWithoutReviewsInput = {
 }
 
 export type CourseCreateWithoutWishlistedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2446,6 +2590,9 @@ export type CourseCreateWithoutWishlistedByInput = {
 }
 
 export type CourseUncheckedCreateWithoutWishlistedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2505,6 +2652,9 @@ export type CourseUpdateToOneWithWhereWithoutWishlistedByInput = {
 }
 
 export type CourseUpdateWithoutWishlistedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2548,6 +2698,9 @@ export type CourseUpdateWithoutWishlistedByInput = {
 }
 
 export type CourseUncheckedUpdateWithoutWishlistedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2591,6 +2744,9 @@ export type CourseUncheckedUpdateWithoutWishlistedByInput = {
 }
 
 export type CourseCreateWithoutOrderItemInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2634,6 +2790,9 @@ export type CourseCreateWithoutOrderItemInput = {
 }
 
 export type CourseUncheckedCreateWithoutOrderItemInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2693,6 +2852,9 @@ export type CourseUpdateToOneWithWhereWithoutOrderItemInput = {
 }
 
 export type CourseUpdateWithoutOrderItemInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2736,6 +2898,9 @@ export type CourseUpdateWithoutOrderItemInput = {
 }
 
 export type CourseUncheckedUpdateWithoutOrderItemInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2779,6 +2944,9 @@ export type CourseUncheckedUpdateWithoutOrderItemInput = {
 }
 
 export type CourseCreateWithoutPaymentTransactionInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2822,6 +2990,9 @@ export type CourseCreateWithoutPaymentTransactionInput = {
 }
 
 export type CourseUncheckedCreateWithoutPaymentTransactionInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -2881,6 +3052,9 @@ export type CourseUpdateToOneWithWhereWithoutPaymentTransactionInput = {
 }
 
 export type CourseUpdateWithoutPaymentTransactionInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2924,6 +3098,9 @@ export type CourseUpdateWithoutPaymentTransactionInput = {
 }
 
 export type CourseUncheckedUpdateWithoutPaymentTransactionInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2967,6 +3144,9 @@ export type CourseUncheckedUpdateWithoutPaymentTransactionInput = {
 }
 
 export type CourseCreateWithoutCategoryInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -3010,6 +3190,9 @@ export type CourseCreateWithoutCategoryInput = {
 }
 
 export type CourseUncheckedCreateWithoutCategoryInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -3079,6 +3262,9 @@ export type CourseUpdateManyWithWhereWithoutCategoryInput = {
 }
 
 export type CourseCreateWithoutTagsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -3122,6 +3308,9 @@ export type CourseCreateWithoutTagsInput = {
 }
 
 export type CourseUncheckedCreateWithoutTagsInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -3181,6 +3370,9 @@ export type CourseUpdateToOneWithWhereWithoutTagsInput = {
 }
 
 export type CourseUpdateWithoutTagsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3224,6 +3416,9 @@ export type CourseUpdateWithoutTagsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutTagsInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3267,6 +3462,9 @@ export type CourseUncheckedUpdateWithoutTagsInput = {
 }
 
 export type CourseCreateManyCreatedByInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -3301,6 +3499,9 @@ export type CourseCreateManyCreatedByInput = {
 }
 
 export type CourseUpdateWithoutCreatedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3344,6 +3545,9 @@ export type CourseUpdateWithoutCreatedByInput = {
 }
 
 export type CourseUncheckedUpdateWithoutCreatedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3387,6 +3591,9 @@ export type CourseUncheckedUpdateWithoutCreatedByInput = {
 }
 
 export type CourseUncheckedUpdateManyWithoutCreatedByInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3421,6 +3628,9 @@ export type CourseUncheckedUpdateManyWithoutCreatedByInput = {
 }
 
 export type CourseCreateManyCategoryInput = {
+  commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: string | null
+  commissionApprovedAt?: Date | string | null
   id?: string
   title: string
   slug: string
@@ -3455,6 +3665,9 @@ export type CourseCreateManyCategoryInput = {
 }
 
 export type CourseUpdateWithoutCategoryInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3498,6 +3711,9 @@ export type CourseUpdateWithoutCategoryInput = {
 }
 
 export type CourseUncheckedUpdateWithoutCategoryInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3541,6 +3757,9 @@ export type CourseUncheckedUpdateWithoutCategoryInput = {
 }
 
 export type CourseUncheckedUpdateManyWithoutCategoryInput = {
+  commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3678,6 +3897,9 @@ export type CourseCountOutputTypeCountWishlistedByArgs<ExtArgs extends runtime.T
 
 
 export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   slug?: boolean
@@ -3725,6 +3947,9 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 }, ExtArgs["result"]["course"]>
 
 export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   slug?: boolean
@@ -3762,6 +3987,9 @@ export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 }, ExtArgs["result"]["course"]>
 
 export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   slug?: boolean
@@ -3799,6 +4027,9 @@ export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 }, ExtArgs["result"]["course"]>
 
 export type CourseSelectScalar = {
+  commissionRate?: boolean
+  commissionSource?: boolean
+  commissionApprovedAt?: boolean
   id?: boolean
   title?: boolean
   slug?: boolean
@@ -3833,7 +4064,7 @@ export type CourseSelectScalar = {
   updatedContent?: boolean
 }
 
-export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "description" | "welcomeMessage" | "congratulationsMessage" | "originalPrice" | "discountPercent" | "discountPrice" | "discountEndDate" | "isDiscountActive" | "currency" | "enrollmentCount" | "reviewCount" | "totalRevenueAmount" | "moduleCount" | "status" | "suspendReason" | "adminNote" | "language" | "level" | "thumbnailUrl" | "trailerUrl" | "categoryId" | "createdById" | "ratingAverage" | "ratingCount" | "views" | "deletedAt" | "createdAt" | "updatedAt" | "updatedContent", ExtArgs["result"]["course"]>
+export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"commissionRate" | "commissionSource" | "commissionApprovedAt" | "id" | "title" | "slug" | "description" | "welcomeMessage" | "congratulationsMessage" | "originalPrice" | "discountPercent" | "discountPrice" | "discountEndDate" | "isDiscountActive" | "currency" | "enrollmentCount" | "reviewCount" | "totalRevenueAmount" | "moduleCount" | "status" | "suspendReason" | "adminNote" | "language" | "level" | "thumbnailUrl" | "trailerUrl" | "categoryId" | "createdById" | "ratingAverage" | "ratingCount" | "views" | "deletedAt" | "createdAt" | "updatedAt" | "updatedContent", ExtArgs["result"]["course"]>
 export type CourseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.Course$categoryArgs<ExtArgs>
   createdBy?: boolean | Prisma.Course$createdByArgs<ExtArgs>
@@ -3873,6 +4104,9 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     wishlistedBy: Prisma.$WishlistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    commissionRate: runtime.Decimal | null
+    commissionSource: string | null
+    commissionApprovedAt: Date | null
     id: string
     title: string
     slug: string
@@ -3988,8 +4222,8 @@ export interface CourseDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * // Get first 10 Courses
    * const courses = await prisma.course.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const courseWithIdOnly = await prisma.course.findMany({ select: { id: true } })
+   * // Only select the `commissionRate`
+   * const courseWithCommissionRateOnly = await prisma.course.findMany({ select: { commissionRate: true } })
    * 
    */
   findMany<T extends CourseFindManyArgs>(args?: Prisma.SelectSubset<T, CourseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -4033,9 +4267,9 @@ export interface CourseDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Create many Courses and only return the `id`
-   * const courseWithIdOnly = await prisma.course.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Courses and only return the `commissionRate`
+   * const courseWithCommissionRateOnly = await prisma.course.createManyAndReturn({
+   *   select: { commissionRate: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -4124,9 +4358,9 @@ export interface CourseDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Update zero or more Courses and only return the `id`
-   * const courseWithIdOnly = await prisma.course.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Courses and only return the `commissionRate`
+   * const courseWithCommissionRateOnly = await prisma.course.updateManyAndReturn({
+   *   select: { commissionRate: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -4339,6 +4573,9 @@ export interface Prisma__CourseClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Course model
  */
 export interface CourseFieldRefs {
+  readonly commissionRate: Prisma.FieldRef<"Course", 'Decimal'>
+  readonly commissionSource: Prisma.FieldRef<"Course", 'String'>
+  readonly commissionApprovedAt: Prisma.FieldRef<"Course", 'DateTime'>
   readonly id: Prisma.FieldRef<"Course", 'String'>
   readonly title: Prisma.FieldRef<"Course", 'String'>
   readonly slug: Prisma.FieldRef<"Course", 'String'>

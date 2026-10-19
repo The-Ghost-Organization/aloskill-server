@@ -1,4 +1,5 @@
 import express from 'express';
+import { FinanceRoutes } from '../modules/finance/finance.routes.js';
 import { AdminRoutes } from '../modules/admin/admin.routes.js';
 import { AuthRoutes } from '../modules/auth/auth.routes.js';
 import { BookRoutes } from '../modules/book/book.routes.js';
@@ -13,6 +14,7 @@ import { UserRoutes } from '../modules/user/user.routes.js';
 const router = express.Router({ caseSensitive: true });
 
 const moduleRoutes = [
+  { path: '/finance', route: FinanceRoutes },
   { path: '/auth', route: AuthRoutes },
   { path: '/user', route: UserRoutes },
   { path: '/course', route: CourseRoutes },

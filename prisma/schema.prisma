@@ -316,6 +316,7 @@ model User {
   QuizResult               QuizResult[]
   AuditLog                 AuditLog[]
   paymentMethod            PayoutMethod[]
+  financialEntries         FinancialEntry[]
   payouts                  Payout[]
 
   @@index([id])
@@ -474,6 +475,9 @@ model InstructorProfile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
+  bookCommissionRate   Decimal? @db.Decimal(5, 2)
+  courseCommissionRate Decimal? @db.Decimal(5, 2)
+
   //==Personnal Info
   displayName String
   DOB         DateTime
@@ -561,6 +565,9 @@ model SocialLink {
 
 /// Courses & content
 model Course {
+  commissionRate Decimal? @db.Decimal(5, 2)
+  commissionSource String?
+  commissionApprovedAt DateTime?
   id                     String  @id @default(uuid())
   title                  String
   slug                   String  @unique
@@ -837,6 +844,9 @@ model Review {
 }
 
 model Book {
+  commissionRate Decimal? @db.Decimal(5, 2)
+  commissionSource String?
+  commissionApprovedAt DateTime?
   id              String      @id @default(uuid())
   title           String
   author          String
@@ -969,6 +979,8 @@ model Wishlist {
 
 //== ORDER ==//
 model Order {
+  financialEntries FinancialEntry[]
+  financeSettledAt DateTime?
   id                        String               @id @default(uuid())
   user                      User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId                    String
@@ -1005,6 +1017,7 @@ model Order {
 }
 
 model OrderItem {
+  financialEntries FinancialEntry[]
   id       String  @id @default(uuid())
   // Relations
   order    Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -1053,6 +1066,7 @@ enum DeliveryArea {
 
 /// Payments & payouts
 model PaymentTransaction {
+  financialEntries FinancialEntry[]
   id       String  @id @default(uuid())
   // Relations
   user     User    @relation(fields: [userId], references: [id], onDelete: Restrict)
@@ -1084,13 +1098,26 @@ model PaymentTransaction {
 }
 
 model Payout {
+  workflowStatus PayoutWorkflowStatus?
+  methodId String?
+  method PayoutMethod? @relation(fields: [methodId], references: [id], onDelete: Restrict)
+  methodType String?
+  encryptedAccountSnapshot String?
+  accountLastFour String?
+  requestedAt DateTime @default(now())
+  processedAt DateTime?
+  paidAt DateTime?
+  transactionReference String?
+  adminNote String?
+  requestKey String? @unique
+  items PayoutItem[]
   id           String @id @default(uuid())
   // Relations
   instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Restrict)
   instructorId String
 
-  amount           Decimal       @db.Decimal(10, 2)
-  fee              Decimal?      @db.Decimal(10, 2)
+  amount           Decimal       @db.Decimal(15, 2)
+  fee              Decimal?      @db.Decimal(15, 2)
   currency         String        @default("BDT")
   payoutDate       DateTime
   providerPayoutId String?       @unique
@@ -1119,6 +1146,9 @@ model Payout {
 }
 
 model PayoutMethod {
+  encryptedAccount String?
+  accountLastFour String?
+  payouts Payout[]
   id           String @id @default(uuid())
   instructorId String
   instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
@@ -1414,6 +1444,13 @@ model AuditLog {
 
 // === BASIC PLATFORM SETTINGS ===
 model PlatformSettings {
+  globalBookCommission Decimal @default(0) @db.Decimal(5, 2)
+  globalCourseCommission Decimal @default(20) @db.Decimal(5, 2)
+  coursePlatformFeeType PlatformFeeType @default(NONE)
+  coursePlatformFeeValue Decimal @default(0) @db.Decimal(15, 2)
+  holdingPeriodDays Int @default(15)
+  minimumPayout Decimal @default(500) @db.Decimal(15, 2)
+  financeActivatedAt DateTime?
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1436,4 +1473,91 @@ model PlatformSettings {
   registrationOpen Boolean @default(true)
 
   @@map("platform_settings")
+}
+
+
+// Immutable sale/refund snapshots; status changes only for maturity.
+enum PlatformFeeType {
+  NONE
+  FIXED
+  PERCENTAGE
+}
+
+enum FinancialEntryKind {
+  SALE
+  REFUND
+}
+
+enum EarningStatus {
+  PENDING
+  AVAILABLE
+}
+
+enum PayoutWorkflowStatus {
+  REQUESTED
+  APPROVED
+  PROCESSING
+  PAID
+  REJECTED
+  CANCELLED
+}
+
+model FinancialEntry {
+  id String @id @default(uuid())
+  kind FinancialEntryKind
+  orderItemId String
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Restrict)
+  orderId String
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  paymentId String
+  payment PaymentTransaction @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  instructorId String?
+  instructor User? @relation(fields: [instructorId], references: [id], onDelete: Restrict)
+  productId String
+  productType String
+  productTitle String
+  quantity Int
+  currency String @default("BDT")
+  grossAmount Decimal @db.Decimal(15, 2)
+  discountAmount Decimal @db.Decimal(15, 2)
+  netSaleAmount Decimal @db.Decimal(15, 2)
+  commissionRate Decimal @db.Decimal(5, 2)
+  commissionSource String
+  commissionAmount Decimal @db.Decimal(15, 2)
+  platformFeeType PlatformFeeType
+  platformFeeValue Decimal @db.Decimal(15, 2)
+  platformFeeAmount Decimal @db.Decimal(15, 2)
+  instructorEarning Decimal @db.Decimal(15, 2)
+  platformRevenue Decimal @db.Decimal(15, 2)
+  holdingPeriodDays Int
+  status EarningStatus @default(PENDING)
+  availableAt DateTime
+  reversalOfId String? @unique
+  reversalOf FinancialEntry? @relation("FinancialReversal", fields: [reversalOfId], references: [id], onDelete: Restrict)
+  reversal FinancialEntry? @relation("FinancialReversal")
+  refundReference String?
+  note String?
+  items PayoutItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([orderItemId, kind])
+  @@index([instructorId, status, availableAt])
+  @@index([createdAt, productType, kind])
+  @@index([orderId])
+  @@map("financial_entries")
+}
+
+model PayoutItem {
+  id String @id @default(uuid())
+  payoutId String
+  payout Payout @relation(fields: [payoutId], references: [id], onDelete: Restrict)
+  earningId String
+  earning FinancialEntry @relation(fields: [earningId], references: [id], onDelete: Restrict)
+  // Signed allocations: negative refund debt offsets positive sale earnings.
+  amount Decimal @db.Decimal(15, 2)
+  createdAt DateTime @default(now())
+  @@unique([payoutId, earningId])
+  @@index([earningId])
+  @@map("payout_items")
 }

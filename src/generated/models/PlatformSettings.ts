@@ -27,14 +27,31 @@ export type AggregatePlatformSettings = {
 }
 
 export type PlatformSettingsAvgAggregateOutputType = {
+  globalBookCommission: runtime.Decimal | null
+  globalCourseCommission: runtime.Decimal | null
+  coursePlatformFeeValue: runtime.Decimal | null
+  holdingPeriodDays: number | null
+  minimumPayout: runtime.Decimal | null
   smtpPort: number | null
 }
 
 export type PlatformSettingsSumAggregateOutputType = {
+  globalBookCommission: runtime.Decimal | null
+  globalCourseCommission: runtime.Decimal | null
+  coursePlatformFeeValue: runtime.Decimal | null
+  holdingPeriodDays: number | null
+  minimumPayout: runtime.Decimal | null
   smtpPort: number | null
 }
 
 export type PlatformSettingsMinAggregateOutputType = {
+  globalBookCommission: runtime.Decimal | null
+  globalCourseCommission: runtime.Decimal | null
+  coursePlatformFeeType: $Enums.PlatformFeeType | null
+  coursePlatformFeeValue: runtime.Decimal | null
+  holdingPeriodDays: number | null
+  minimumPayout: runtime.Decimal | null
+  financeActivatedAt: Date | null
   id: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,6 +69,13 @@ export type PlatformSettingsMinAggregateOutputType = {
 }
 
 export type PlatformSettingsMaxAggregateOutputType = {
+  globalBookCommission: runtime.Decimal | null
+  globalCourseCommission: runtime.Decimal | null
+  coursePlatformFeeType: $Enums.PlatformFeeType | null
+  coursePlatformFeeValue: runtime.Decimal | null
+  holdingPeriodDays: number | null
+  minimumPayout: runtime.Decimal | null
+  financeActivatedAt: Date | null
   id: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -69,6 +93,13 @@ export type PlatformSettingsMaxAggregateOutputType = {
 }
 
 export type PlatformSettingsCountAggregateOutputType = {
+  globalBookCommission: number
+  globalCourseCommission: number
+  coursePlatformFeeType: number
+  coursePlatformFeeValue: number
+  holdingPeriodDays: number
+  minimumPayout: number
+  financeActivatedAt: number
   id: number
   createdAt: number
   updatedAt: number
@@ -88,14 +119,31 @@ export type PlatformSettingsCountAggregateOutputType = {
 
 
 export type PlatformSettingsAvgAggregateInputType = {
+  globalBookCommission?: true
+  globalCourseCommission?: true
+  coursePlatformFeeValue?: true
+  holdingPeriodDays?: true
+  minimumPayout?: true
   smtpPort?: true
 }
 
 export type PlatformSettingsSumAggregateInputType = {
+  globalBookCommission?: true
+  globalCourseCommission?: true
+  coursePlatformFeeValue?: true
+  holdingPeriodDays?: true
+  minimumPayout?: true
   smtpPort?: true
 }
 
 export type PlatformSettingsMinAggregateInputType = {
+  globalBookCommission?: true
+  globalCourseCommission?: true
+  coursePlatformFeeType?: true
+  coursePlatformFeeValue?: true
+  holdingPeriodDays?: true
+  minimumPayout?: true
+  financeActivatedAt?: true
   id?: true
   createdAt?: true
   updatedAt?: true
@@ -113,6 +161,13 @@ export type PlatformSettingsMinAggregateInputType = {
 }
 
 export type PlatformSettingsMaxAggregateInputType = {
+  globalBookCommission?: true
+  globalCourseCommission?: true
+  coursePlatformFeeType?: true
+  coursePlatformFeeValue?: true
+  holdingPeriodDays?: true
+  minimumPayout?: true
+  financeActivatedAt?: true
   id?: true
   createdAt?: true
   updatedAt?: true
@@ -130,6 +185,13 @@ export type PlatformSettingsMaxAggregateInputType = {
 }
 
 export type PlatformSettingsCountAggregateInputType = {
+  globalBookCommission?: true
+  globalCourseCommission?: true
+  coursePlatformFeeType?: true
+  coursePlatformFeeValue?: true
+  holdingPeriodDays?: true
+  minimumPayout?: true
+  financeActivatedAt?: true
   id?: true
   createdAt?: true
   updatedAt?: true
@@ -234,6 +296,13 @@ export type PlatformSettingsGroupByArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 export type PlatformSettingsGroupByOutputType = {
+  globalBookCommission: runtime.Decimal
+  globalCourseCommission: runtime.Decimal
+  coursePlatformFeeType: $Enums.PlatformFeeType
+  coursePlatformFeeValue: runtime.Decimal
+  holdingPeriodDays: number
+  minimumPayout: runtime.Decimal
+  financeActivatedAt: Date | null
   id: string
   createdAt: Date
   updatedAt: Date
@@ -274,6 +343,13 @@ export type PlatformSettingsWhereInput = {
   AND?: Prisma.PlatformSettingsWhereInput | Prisma.PlatformSettingsWhereInput[]
   OR?: Prisma.PlatformSettingsWhereInput[]
   NOT?: Prisma.PlatformSettingsWhereInput | Prisma.PlatformSettingsWhereInput[]
+  globalBookCommission?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeFilter<"PlatformSettings"> | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntFilter<"PlatformSettings"> | number
+  minimumPayout?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.DateTimeNullableFilter<"PlatformSettings"> | Date | string | null
   id?: Prisma.StringFilter<"PlatformSettings"> | string
   createdAt?: Prisma.DateTimeFilter<"PlatformSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PlatformSettings"> | Date | string
@@ -291,6 +367,13 @@ export type PlatformSettingsWhereInput = {
 }
 
 export type PlatformSettingsOrderByWithRelationInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeType?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
+  financeActivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -312,6 +395,13 @@ export type PlatformSettingsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PlatformSettingsWhereInput | Prisma.PlatformSettingsWhereInput[]
   OR?: Prisma.PlatformSettingsWhereInput[]
   NOT?: Prisma.PlatformSettingsWhereInput | Prisma.PlatformSettingsWhereInput[]
+  globalBookCommission?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeFilter<"PlatformSettings"> | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntFilter<"PlatformSettings"> | number
+  minimumPayout?: Prisma.DecimalFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.DateTimeNullableFilter<"PlatformSettings"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PlatformSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PlatformSettings"> | Date | string
   platformName?: Prisma.StringFilter<"PlatformSettings"> | string
@@ -328,6 +418,13 @@ export type PlatformSettingsWhereUniqueInput = Prisma.AtLeast<{
 }, "id">
 
 export type PlatformSettingsOrderByWithAggregationInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeType?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
+  financeActivatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -353,6 +450,13 @@ export type PlatformSettingsScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlatformSettingsScalarWhereWithAggregatesInput | Prisma.PlatformSettingsScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlatformSettingsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlatformSettingsScalarWhereWithAggregatesInput | Prisma.PlatformSettingsScalarWhereWithAggregatesInput[]
+  globalBookCommission?: Prisma.DecimalWithAggregatesFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalWithAggregatesFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeWithAggregatesFilter<"PlatformSettings"> | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalWithAggregatesFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntWithAggregatesFilter<"PlatformSettings"> | number
+  minimumPayout?: Prisma.DecimalWithAggregatesFilter<"PlatformSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PlatformSettings"> | Date | string | null
   id?: Prisma.StringWithAggregatesFilter<"PlatformSettings"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PlatformSettings"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PlatformSettings"> | Date | string
@@ -370,6 +474,13 @@ export type PlatformSettingsScalarWhereWithAggregatesInput = {
 }
 
 export type PlatformSettingsCreateInput = {
+  globalBookCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: $Enums.PlatformFeeType
+  coursePlatformFeeValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: number
+  minimumPayout?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Date | string | null
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -387,6 +498,13 @@ export type PlatformSettingsCreateInput = {
 }
 
 export type PlatformSettingsUncheckedCreateInput = {
+  globalBookCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: $Enums.PlatformFeeType
+  coursePlatformFeeValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: number
+  minimumPayout?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Date | string | null
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -404,6 +522,13 @@ export type PlatformSettingsUncheckedCreateInput = {
 }
 
 export type PlatformSettingsUpdateInput = {
+  globalBookCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeFieldUpdateOperationsInput | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -421,6 +546,13 @@ export type PlatformSettingsUpdateInput = {
 }
 
 export type PlatformSettingsUncheckedUpdateInput = {
+  globalBookCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeFieldUpdateOperationsInput | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,6 +570,13 @@ export type PlatformSettingsUncheckedUpdateInput = {
 }
 
 export type PlatformSettingsCreateManyInput = {
+  globalBookCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: $Enums.PlatformFeeType
+  coursePlatformFeeValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: number
+  minimumPayout?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Date | string | null
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -455,6 +594,13 @@ export type PlatformSettingsCreateManyInput = {
 }
 
 export type PlatformSettingsUpdateManyMutationInput = {
+  globalBookCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeFieldUpdateOperationsInput | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -472,6 +618,13 @@ export type PlatformSettingsUpdateManyMutationInput = {
 }
 
 export type PlatformSettingsUncheckedUpdateManyInput = {
+  globalBookCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  globalCourseCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coursePlatformFeeType?: Prisma.EnumPlatformFeeTypeFieldUpdateOperationsInput | $Enums.PlatformFeeType
+  coursePlatformFeeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  holdingPeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumPayout?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  financeActivatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,6 +642,13 @@ export type PlatformSettingsUncheckedUpdateManyInput = {
 }
 
 export type PlatformSettingsCountOrderByAggregateInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeType?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
+  financeActivatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -506,10 +666,22 @@ export type PlatformSettingsCountOrderByAggregateInput = {
 }
 
 export type PlatformSettingsAvgOrderByAggregateInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
   smtpPort?: Prisma.SortOrder
 }
 
 export type PlatformSettingsMaxOrderByAggregateInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeType?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
+  financeActivatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -527,6 +699,13 @@ export type PlatformSettingsMaxOrderByAggregateInput = {
 }
 
 export type PlatformSettingsMinOrderByAggregateInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeType?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
+  financeActivatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -544,12 +723,28 @@ export type PlatformSettingsMinOrderByAggregateInput = {
 }
 
 export type PlatformSettingsSumOrderByAggregateInput = {
+  globalBookCommission?: Prisma.SortOrder
+  globalCourseCommission?: Prisma.SortOrder
+  coursePlatformFeeValue?: Prisma.SortOrder
+  holdingPeriodDays?: Prisma.SortOrder
+  minimumPayout?: Prisma.SortOrder
   smtpPort?: Prisma.SortOrder
+}
+
+export type EnumPlatformFeeTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PlatformFeeType
 }
 
 
 
 export type PlatformSettingsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  globalBookCommission?: boolean
+  globalCourseCommission?: boolean
+  coursePlatformFeeType?: boolean
+  coursePlatformFeeValue?: boolean
+  holdingPeriodDays?: boolean
+  minimumPayout?: boolean
+  financeActivatedAt?: boolean
   id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -567,6 +762,13 @@ export type PlatformSettingsSelect<ExtArgs extends runtime.Types.Extensions.Inte
 }, ExtArgs["result"]["platformSettings"]>
 
 export type PlatformSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  globalBookCommission?: boolean
+  globalCourseCommission?: boolean
+  coursePlatformFeeType?: boolean
+  coursePlatformFeeValue?: boolean
+  holdingPeriodDays?: boolean
+  minimumPayout?: boolean
+  financeActivatedAt?: boolean
   id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -584,6 +786,13 @@ export type PlatformSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
 }, ExtArgs["result"]["platformSettings"]>
 
 export type PlatformSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  globalBookCommission?: boolean
+  globalCourseCommission?: boolean
+  coursePlatformFeeType?: boolean
+  coursePlatformFeeValue?: boolean
+  holdingPeriodDays?: boolean
+  minimumPayout?: boolean
+  financeActivatedAt?: boolean
   id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -601,6 +810,13 @@ export type PlatformSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
 }, ExtArgs["result"]["platformSettings"]>
 
 export type PlatformSettingsSelectScalar = {
+  globalBookCommission?: boolean
+  globalCourseCommission?: boolean
+  coursePlatformFeeType?: boolean
+  coursePlatformFeeValue?: boolean
+  holdingPeriodDays?: boolean
+  minimumPayout?: boolean
+  financeActivatedAt?: boolean
   id?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -617,12 +833,19 @@ export type PlatformSettingsSelectScalar = {
   registrationOpen?: boolean
 }
 
-export type PlatformSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "platformName" | "logo" | "favicon" | "contactEmail" | "supportPhone" | "smtpHost" | "smtpPort" | "smtpUser" | "smtpPassword" | "maintenanceMode" | "registrationOpen", ExtArgs["result"]["platformSettings"]>
+export type PlatformSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"globalBookCommission" | "globalCourseCommission" | "coursePlatformFeeType" | "coursePlatformFeeValue" | "holdingPeriodDays" | "minimumPayout" | "financeActivatedAt" | "id" | "createdAt" | "updatedAt" | "platformName" | "logo" | "favicon" | "contactEmail" | "supportPhone" | "smtpHost" | "smtpPort" | "smtpUser" | "smtpPassword" | "maintenanceMode" | "registrationOpen", ExtArgs["result"]["platformSettings"]>
 
 export type $PlatformSettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PlatformSettings"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    globalBookCommission: runtime.Decimal
+    globalCourseCommission: runtime.Decimal
+    coursePlatformFeeType: $Enums.PlatformFeeType
+    coursePlatformFeeValue: runtime.Decimal
+    holdingPeriodDays: number
+    minimumPayout: runtime.Decimal
+    financeActivatedAt: Date | null
     id: string
     createdAt: Date
     updatedAt: Date
@@ -720,8 +943,8 @@ export interface PlatformSettingsDelegate<ExtArgs extends runtime.Types.Extensio
    * // Get first 10 PlatformSettings
    * const platformSettings = await prisma.platformSettings.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const platformSettingsWithIdOnly = await prisma.platformSettings.findMany({ select: { id: true } })
+   * // Only select the `globalBookCommission`
+   * const platformSettingsWithGlobalBookCommissionOnly = await prisma.platformSettings.findMany({ select: { globalBookCommission: true } })
    * 
    */
   findMany<T extends PlatformSettingsFindManyArgs>(args?: Prisma.SelectSubset<T, PlatformSettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlatformSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -765,9 +988,9 @@ export interface PlatformSettingsDelegate<ExtArgs extends runtime.Types.Extensio
    *   ]
    * })
    * 
-   * // Create many PlatformSettings and only return the `id`
-   * const platformSettingsWithIdOnly = await prisma.platformSettings.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many PlatformSettings and only return the `globalBookCommission`
+   * const platformSettingsWithGlobalBookCommissionOnly = await prisma.platformSettings.createManyAndReturn({
+   *   select: { globalBookCommission: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -856,9 +1079,9 @@ export interface PlatformSettingsDelegate<ExtArgs extends runtime.Types.Extensio
    *   ]
    * })
    * 
-   * // Update zero or more PlatformSettings and only return the `id`
-   * const platformSettingsWithIdOnly = await prisma.platformSettings.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more PlatformSettings and only return the `globalBookCommission`
+   * const platformSettingsWithGlobalBookCommissionOnly = await prisma.platformSettings.updateManyAndReturn({
+   *   select: { globalBookCommission: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1060,6 +1283,13 @@ export interface Prisma__PlatformSettingsClient<T, Null = never, ExtArgs extends
  * Fields of the PlatformSettings model
  */
 export interface PlatformSettingsFieldRefs {
+  readonly globalBookCommission: Prisma.FieldRef<"PlatformSettings", 'Decimal'>
+  readonly globalCourseCommission: Prisma.FieldRef<"PlatformSettings", 'Decimal'>
+  readonly coursePlatformFeeType: Prisma.FieldRef<"PlatformSettings", 'PlatformFeeType'>
+  readonly coursePlatformFeeValue: Prisma.FieldRef<"PlatformSettings", 'Decimal'>
+  readonly holdingPeriodDays: Prisma.FieldRef<"PlatformSettings", 'Int'>
+  readonly minimumPayout: Prisma.FieldRef<"PlatformSettings", 'Decimal'>
+  readonly financeActivatedAt: Prisma.FieldRef<"PlatformSettings", 'DateTime'>
   readonly id: Prisma.FieldRef<"PlatformSettings", 'String'>
   readonly createdAt: Prisma.FieldRef<"PlatformSettings", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PlatformSettings", 'DateTime'>

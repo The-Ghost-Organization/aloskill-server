@@ -252,3 +252,13 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type PlatformSettings = Prisma.PlatformSettingsModel
+/**
+ * Model FinancialEntry
+ * 
+ */
+export type FinancialEntry = Prisma.FinancialEntryModel
+/**
+ * Model PayoutItem
+ * 
+ */
+export type PayoutItem = Prisma.PayoutItemModel

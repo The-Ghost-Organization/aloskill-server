@@ -1,4 +1,5 @@
 import { type Request } from 'express';
+import { finalizeCommission } from '../finance/finance.service.js';
 import { executeDbOperation } from '../../config/database.js';
 import { notificationService } from '../notification/notification.service.js';
 
@@ -45,13 +46,13 @@ const decideApproval = async (req: Request) => {
       if (!book) throw new Error('Book is no longer pending.');
       recipientId = book.ownerId;
       subject = book.title;
-      await tx.book.update({ where: { id: key }, data: { status: decision === 'APPROVE' ? 'APPROVED' : 'DRAFT', adminNote: note?.trim() || null } });
+      await tx.book.update({ where: { id: key }, data: { ...(decision === 'APPROVE' ? await finalizeCommission(tx, 'book', key, req.body.commissionRate) : {}), status: decision === 'APPROVE' ? 'APPROVED' : 'DRAFT', adminNote: note?.trim() || null } });
     } else if (approvalType === 'course') {
       const course = await tx.course.findFirst({ where: { id: key, status: 'PENDING', deletedAt: null }, select: { title: true, createdBy: { select: { userId: true } } } });
       if (!course?.createdBy) throw new Error('Course is no longer pending.');
       recipientId = course.createdBy.userId;
       subject = course.title;
-      await tx.course.update({ where: { id: key }, data: { status: decision === 'APPROVE' ? 'PUBLISHED' : 'DRAFT', adminNote: note?.trim() || null } });
+      await tx.course.update({ where: { id: key }, data: { ...(decision === 'APPROVE' ? await finalizeCommission(tx, 'course', key, req.body.commissionRate) : {}), status: decision === 'APPROVE' ? 'PUBLISHED' : 'DRAFT', adminNote: note?.trim() || null } });
     } else {
       const profile = await tx.instructorProfile.findFirst({ where: { id: key, status: 'PENDING', deletedAt: null } });
       if (!profile) throw new Error('Instructor is no longer pending.');
@@ -60,7 +61,7 @@ const decideApproval = async (req: Request) => {
       await tx.instructorProfile.update({ where: { id: key }, data: { status: decision === 'APPROVE' ? 'APPROVED' : 'REJECTED', adminNote: note?.trim() || null } });
       if (decision === 'APPROVE') await tx.userRoleAssignment.createMany({ data: [{ userId: profile.userId, role: 'INSTRUCTOR', grantedById: admin.id }], skipDuplicates: true });
     }
-    await tx.auditLog.create({ data: { userId: admin.id, action: `${approvalType.toUpperCase()}_${decision}`, entityType: approvalType.toUpperCase(), entityId: key, changesAfter: { decision, note: note?.trim() || null }, ipAddress: req.ip, userAgent: req.get('user-agent') } });
+    await tx.auditLog.create({ data: { userId: admin.id, action: `${approvalType.toUpperCase()}_${decision}`, entityType: approvalType.toUpperCase(), entityId: key, changesAfter: { decision, ...(req.body.commissionRate !== undefined ? {commissionRate: req.body.commissionRate} : {}), note: note?.trim() || null }, ipAddress: req.ip, userAgent: req.get('user-agent') } });
     return { id: key, type: approvalType, decision, recipientId, subject, adminId: admin.id, note: note?.trim() || null };
   }), 'Decide Approval');
   await notificationService.create({
@@ -81,175 +82,6 @@ const startOfDay = (value: Date) => {
   const date = new Date(value);
   date.setHours(0, 0, 0, 0);
   return date;
-};
-
-const adminCourses = async (req: Request) => executeDbOperation(async prisma => {
-  await requireAdmin(prisma, req.user.email);
-
-  const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
-  const requestedStatus = typeof req.query.status === 'string' ? req.query.status.toUpperCase() : 'ALL';
-  const page = Math.max(1, Number(req.query.page) || 1);
-  const limit = Math.min(50, Math.max(1, Number(req.query.limit) || 10));
-  const validStatuses = ['DRAFT', 'PENDING', 'PUBLISHED'];
-  const status = validStatuses.includes(requestedStatus) ? requestedStatus as 'DRAFT' | 'PENDING' | 'PUBLISHED' : undefined;
-  const now = new Date();
-  const currentWeek = startOfDay(new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000));
-  const previousWeek = startOfDay(new Date(now.getTime() - 13 * 24 * 60 * 60 * 1000));
-  const paidStatuses = ['PAID', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY', 'DELIVERED'] as const;
-
-  const where = {
-    deletedAt: null,
-    ...(status ? { status } : {}),
-    ...(requestedStatus === 'DRAFT' ? { suspendReason: null } : {}),
-    ...(requestedStatus === 'SUSPENDED' ? { status: 'DRAFT' as const, suspendReason: { not: null } } : {}),
-    ...(search ? {
-      OR: [
-        { title: { contains: search, mode: 'insensitive' as const } },
-        { createdBy: { displayName: { contains: search, mode: 'insensitive' as const } } },
-        { category: { name: { contains: search, mode: 'insensitive' as const } } },
-      ],
-    } : {}),
-  };
-
-  const [courses, total, statusGroups] = await Promise.all([
-    prisma.course.findMany({
-      where,
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: [{ enrollmentCount: 'desc' }, { createdAt: 'desc' }],
-      select: {
-        id: true, title: true, slug: true, status: true, suspendReason: true, adminNote: true,
-        originalPrice: true, discountPrice: true, currency: true, thumbnailUrl: true,
-        ratingAverage: true, ratingCount: true, enrollmentCount: true, views: true,
-        totalRevenueAmount: true, createdAt: true, updatedAt: true, level: true, language: true,
-        category: { select: { name: true } },
-        createdBy: { select: { id: true, displayName: true, user: { select: { email: true, avatarUrl: true } } } },
-        _count: { select: { modules: true, reviews: true, wishlistedBy: true } },
-        modules: {
-          where: { deletedAt: null },
-          select: { lessons: { where: { deletedAt: null }, select: { duration: true } } },
-        },
-        enrollments: {
-          where: { deletedAt: null },
-          select: { status: true, progress: true, pricePaid: true, startedAt: true, completedAt: true },
-        },
-        OrderItem: {
-          where: { order: { status: { in: [...paidStatuses] } } },
-          select: { price: true, quantity: true, createdAt: true },
-        },
-      },
-    }),
-    prisma.course.count({ where }),
-    prisma.course.groupBy({ by: ['status'], where: { deletedAt: null }, _count: { id: true } }),
-  ]);
-
-  const items = courses.map(course => {
-    const activeEnrollments = course.enrollments.filter(item => item.status === 'ACTIVE' || item.status === 'COMPLETED');
-    const completed = activeEnrollments.filter(item => item.status === 'COMPLETED').length;
-    const thisWeek = activeEnrollments.filter(item => item.startedAt >= currentWeek).length;
-    const previous = activeEnrollments.filter(item => item.startedAt >= previousWeek && item.startedAt < currentWeek).length;
-    const sales = course.OrderItem.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
-    const unitsSold = course.OrderItem.reduce((sum, item) => sum + item.quantity, 0);
-    const durationSeconds = course.modules.reduce((sum, module) => sum + module.lessons.reduce((lessonSum, lesson) => lessonSum + Number(lesson.duration ?? 0), 0), 0);
-    const lessons = course.modules.reduce((sum, module) => sum + module.lessons.length, 0);
-    return {
-      id: course.id,
-      title: course.title,
-      slug: course.slug,
-      status: course.suspendReason ? 'SUSPENDED' : course.status,
-      databaseStatus: course.status,
-      suspendReason: course.suspendReason,
-      adminNote: course.adminNote,
-      originalPrice: Number(course.originalPrice),
-      discountPrice: course.discountPrice === null ? null : Number(course.discountPrice),
-      currency: course.currency ?? 'BDT',
-      thumbnailUrl: course.thumbnailUrl,
-      ratingAverage: Number(course.ratingAverage ?? 0),
-      ratingCount: course.ratingCount,
-      enrollments: activeEnrollments.length,
-      completed,
-      completionRate: activeEnrollments.length ? Number(((completed / activeEnrollments.length) * 100).toFixed(1)) : 0,
-      averageProgress: activeEnrollments.length ? Number((activeEnrollments.reduce((sum, item) => sum + Number(item.progress ?? 0), 0) / activeEnrollments.length).toFixed(1)) : 0,
-      enrolledThisWeek: thisWeek,
-      enrollmentTrend: previous ? Number((((thisWeek - previous) / previous) * 100).toFixed(1)) : thisWeek ? 100 : 0,
-      revenue: sales,
-      unitsSold,
-      views: course.views,
-      wishlists: course._count.wishlistedBy,
-      modules: course._count.modules,
-      lessons,
-      durationMinutes: Math.ceil(durationSeconds / 60),
-      level: course.level,
-      language: course.language,
-      category: course.category?.name ?? 'Uncategorised',
-      instructor: course.createdBy ? {
-        id: course.createdBy.id,
-        name: course.createdBy.displayName,
-        email: course.createdBy.user.email,
-        avatarUrl: course.createdBy.user.avatarUrl,
-      } : null,
-      createdAt: course.createdAt,
-      updatedAt: course.updatedAt,
-    };
-  });
-
-  const counts = Object.fromEntries(statusGroups.map(item => [item.status, item._count.id]));
-  const suspended = await prisma.course.count({ where: { deletedAt: null, status: 'DRAFT', suspendReason: { not: null } } });
-
-  return {
-    items,
-    pagination: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
-    counts: {
-      all: Object.values(counts).reduce((sum, count) => sum + Number(count), 0),
-      published: Number(counts.PUBLISHED ?? 0),
-      pending: Number(counts.PENDING ?? 0),
-      draft: Math.max(0, Number(counts.DRAFT ?? 0) - suspended),
-      suspended,
-    },
-  };
-}, 'Fetch Admin Courses');
-
-const adminCourseAction = async (req: Request) => {
-  const courseId = String(req.params.courseId ?? '');
-  const { action, note } = req.body as { action?: 'PUBLISH' | 'DRAFT' | 'SUSPEND' | 'DELETE'; note?: string };
-  if (!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(courseId)) throw new Error('Invalid course ID.');
-  if (!action || !['PUBLISH', 'DRAFT', 'SUSPEND', 'DELETE'].includes(action)) throw new Error('Invalid course action.');
-  if ((action === 'SUSPEND' || action === 'DELETE') && (!note?.trim() || note.trim().length < 5)) {
-    throw new Error('A reason of at least 5 characters is required.');
-  }
-
-  const result = await executeDbOperation(async prisma => prisma.$transaction(async tx => {
-    const admin = await requireAdmin(tx, req.user.email);
-    const course = await tx.course.findFirst({
-      where: { id: courseId, deletedAt: null },
-      select: { title: true, createdBy: { select: { userId: true } } },
-    });
-    if (!course) throw new Error('Course not found.');
-    const updated = await tx.course.update({
-      where: { id: courseId },
-      data: action === 'DELETE'
-        ? { deletedAt: new Date(), adminNote: note?.trim() }
-        : action === 'PUBLISH'
-          ? { status: 'PUBLISHED', suspendReason: null, adminNote: note?.trim() || null }
-          : action === 'SUSPEND'
-            ? { status: 'DRAFT', suspendReason: note!.trim(), adminNote: note!.trim() }
-            : { status: 'DRAFT', suspendReason: null, adminNote: note?.trim() || null },
-      select: { id: true, status: true, suspendReason: true, deletedAt: true },
-    });
-    await tx.auditLog.create({ data: {
-      userId: admin.id, action: `COURSE_${action}`, entityType: 'COURSE', entityId: courseId,
-      changesAfter: { action, note: note?.trim() || null }, ipAddress: req.ip, userAgent: req.get('user-agent'),
-    } });
-    return { ...updated, title: course.title, recipientId: course.createdBy?.userId, adminId: admin.id };
-  }), 'Admin Course Action');
-
-  if (result.recipientId) await notificationService.create({
-    userId: result.recipientId, actorId: result.adminId, type: 'APPROVAL_UPDATE',
-    title: `${result.title}: ${action.toLowerCase()}`,
-    message: note?.trim() || null, entityType: 'COURSE', entityId: courseId,
-    actionUrl: '/dashboard/instructor/course',
-  });
-  return { id: result.id, status: result.suspendReason ? 'SUSPENDED' : result.status, deleted: Boolean(result.deletedAt) };
 };
 
 const adminDashboard = async (req: Request) => executeDbOperation(async prisma => {
@@ -440,6 +272,7 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
 
   const courseRevenue = Number(courseRevenueTotal._sum.price ?? 0);
   const bookRevenue = Number(bookRevenueTotal._sum.price ?? 0);
+  const ledgerRevenue = await prisma.financialEntry.aggregate({ _sum: { platformRevenue: true } });
   const courseMap = new Map(topCourses.map(item => [item.id, item]));
   const bookMap = new Map(topBooks.map(item => [item.id, item]));
 
@@ -479,6 +312,7 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
       pendingPayoutAmount: Number(pendingPayouts._sum.amount ?? 0),
       pendingPayoutCount: pendingPayouts._count.id,
       providerFees,
+      platformRevenue: String(ledgerRevenue._sum.platformRevenue ?? 0),
     },
     revenueTrend: Array.from(weeklyMap.entries()).map(([week, values]) => ({ week, ...values })),
     revenueSplit: [
@@ -524,4 +358,4 @@ const adminDashboard = async (req: Request) => executeDbOperation(async prisma =
   };
 }, 'Fetch Admin Dashboard');
 
-export const adminService = { allApprovals, approvalDetail, decideApproval, adminDashboard, adminCourses, adminCourseAction };
+export const adminService = { allApprovals, approvalDetail, decideApproval, adminDashboard };

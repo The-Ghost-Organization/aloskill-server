@@ -1,3 +1,4 @@
+import { financeService } from '../finance/finance.service.js';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import crypto from 'crypto';
@@ -162,7 +163,7 @@ const getCourseTags = async (req: Request) => {
 
 const createCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  const selectedPrimaryInstructorId = data.courseInstructors?.find(item => item.role === 'PRIMARY')?.instructorId;
+  const instructorEmail = req.query.user as string;
 
   if (data.modules.length === 0) {
     throw new Error('Invalid course data provided');
@@ -170,28 +171,26 @@ const createCourse = async (req: Request) => {
   if (data.modules[0]?.lessons.length === 0) {
     throw new Error('Lessons not provided');
   }
-  const courseActor = await executeDbOperation(async prisma => {
-    const requester = await prisma.user.findUnique({
-      where: { email: req.user.email, status: UserStatus.ACTIVE },
-      select: { assignedRole: { select: { role: true } }, instructorProfile: { select: { id: true, status: true, deletedAt: true } } },
+  if (!instructorEmail) {
+    throw new Error('No instructor found in request');
+  }
+
+  const instructorExists = await executeDbOperation(async prisma => {
+    return await prisma.user.findUnique({
+      where: {
+        email: instructorEmail,
+        status: UserStatus.ACTIVE,
+        instructorProfile: { status: ApplicationStatus.APPROVED },
+      },
+      select: { instructorProfile: { select: { id: true } } },
     });
-    if (!requester) {throw new Error('Authenticated user not found');}
-    const isAdmin = requester.assignedRole.some(item => item.role === 'ADMIN');
-    if (isAdmin) {
-      if (!selectedPrimaryInstructorId) {throw new Error('Select an approved primary instructor for this course');}
-      const profile = await prisma.instructorProfile.findFirst({
-        where: { id: selectedPrimaryInstructorId, status: ApplicationStatus.APPROVED, deletedAt: null },
-        select: { id: true },
-      });
-      if (!profile) {throw new Error('Selected primary instructor is not approved');}
-      return { isAdmin, primaryInstructorId: profile.id };
-    }
-    if (requester.instructorProfile?.status !== ApplicationStatus.APPROVED || requester.instructorProfile.deletedAt) {
-      throw new Error('Instructor profile not found or not approved');
-    }
-    return { isAdmin, primaryInstructorId: requester.instructorProfile.id };
   });
-  const { isAdmin, primaryInstructorId } = courseActor;
+
+  if (!instructorExists?.instructorProfile) {
+    throw new Error(`Instructor profile not found or not approvedAt`);
+  }
+
+  const primaryInstructorId = instructorExists.instructorProfile.id;
 
   const { id: _id, modules, courseInstructors, ...restData } = data;
   const { category, subCategory, tags, ...courseData } = restData;
@@ -251,7 +250,7 @@ const createCourse = async (req: Request) => {
         moduleCount: modules.length,
         slug: slugify(data.slug),
         categoryId: categoryData.id,
-        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : isAdmin ? CourseStatus.PUBLISHED : CourseStatus.PENDING,
+        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : CourseStatus.PENDING,
         createdById: primaryInstructorId,
 
         courseInstructors: {
@@ -347,7 +346,7 @@ const createCourse = async (req: Request) => {
 
 const updateCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  const selectedPrimaryInstructorId = data.courseInstructors?.find(item => item.role === 'PRIMARY')?.instructorId;
+  const instructorEmail = req.query.user as string;
 
   if (!data.id) {
     throw new Error('Course ID Not found');
@@ -359,29 +358,22 @@ const updateCourse = async (req: Request) => {
     throw new Error('Lessons not provided');
   }
 
-  const courseActor = await executeDbOperation(async prisma => {
-    const requester = await prisma.user.findUnique({
-      where: { email: req.user.email, status: UserStatus.ACTIVE },
-      select: { assignedRole: { select: { role: true } }, instructorProfile: { select: { id: true, status: true, deletedAt: true } } },
+  const instructorExists = await executeDbOperation(async prisma => {
+    return await prisma.user.findUnique({
+      where: {
+        email: instructorEmail,
+        status: UserStatus.ACTIVE,
+        instructorProfile: { status: ApplicationStatus.APPROVED },
+      },
+      select: { instructorProfile: { select: { id: true } } },
     });
-    if (!requester) {throw new Error('Authenticated user not found');}
-    const isAdmin = requester.assignedRole.some(item => item.role === 'ADMIN');
-    if (isAdmin) {
-      const existing = await prisma.course.findUnique({ where: { id: data.id as string }, select: { createdById: true } });
-      const profileId = selectedPrimaryInstructorId ?? existing?.createdById;
-      const profile = await prisma.instructorProfile.findFirst({
-        where: { id: profileId ?? undefined, status: ApplicationStatus.APPROVED, deletedAt: null },
-        select: { id: true },
-      });
-      if (!profile) {throw new Error('Select an approved primary instructor for this course');}
-      return { isAdmin, primaryInstructorId: profile.id };
-    }
-    if (requester.instructorProfile?.status !== ApplicationStatus.APPROVED || requester.instructorProfile.deletedAt) {
-      throw new Error('Instructor profile not found or not approved');
-    }
-    return { isAdmin, primaryInstructorId: requester.instructorProfile.id };
   });
-  const { isAdmin, primaryInstructorId } = courseActor;
+
+  if (!instructorExists?.instructorProfile) {
+    throw new Error(`Instructor profile not found for Editing the course`);
+  }
+
+  const primaryInstructorId = instructorExists.instructorProfile.id;
 
   const { id, modules, courseInstructors, ...restData } = data;
   const { category, subCategory, tags, ...courseData } = restData;
@@ -447,7 +439,7 @@ const updateCourse = async (req: Request) => {
           title: data.title,
           slug: slugify(data.slug),
           description: data.description,
-          status: data.status === 'DRAFT' ? CourseStatus.DRAFT : isAdmin ? CourseStatus.PUBLISHED : CourseStatus.PENDING,
+          status: CourseStatus.PENDING,
           welcomeMessage: data.welcomeMessage,
           congratulationsMessage: data.congratulationsMessage,
           originalPrice: data.originalPrice,
@@ -2089,277 +2081,7 @@ const getSingleCourseForCheckout = async (req: Request) => {
   };
 };
 
-const getInstructorEarnings = async (req: Request) => {
-  const userId = await getAuthenticatedUserId(req);
-
-  return await executeDbOperation(async prisma => {
-    const instructor = await prisma.instructorProfile.findFirst({
-      where: {
-        userId,
-        deletedAt: null,
-      },
-      select: {
-        id: true,
-        userId: true,
-        displayName: true,
-        authorProfile: { select: { id: true } },
-      },
-    });
-
-    if (!instructor) {
-      throw new Error('Instructor profile not found');
-    }
-
-    // Revenue belongs to content owned by this instructor. Co-instructor revenue sharing is
-    // intentionally not guessed here because the current schema has no commission/split rule.
-    const instructorContentFilter: Prisma.OrderItemWhereInput = {
-      OR: [
-        { course: { is: { createdById: instructor.id, deletedAt: null } } },
-        {
-          book: {
-            is: {
-              deletedAt: null,
-              OR: [
-                { ownerId: instructor.userId },
-                ...(instructor.authorProfile?.id
-                  ? [{ authorProfileId: instructor.authorProfile.id }]
-                  : []),
-              ],
-            },
-          },
-        },
-      ],
-    };
-
-    // Do not rely only on Order.status === PAID. A successfully paid physical order can later
-    // move to PROCESSING/SHIPPED/DELIVERED. COD is only treated as paid once it is delivered.
-    const paidSaleFilter: Prisma.OrderItemWhereInput = {
-      status: { not: OrderItemStatus.REFUNDED },
-      price: { gt: 0 },
-      ...instructorContentFilter,
-      order: {
-        status: { not: OrderStatus.REFUNDED },
-        OR: [
-          { status: OrderStatus.PAID },
-          { status: OrderStatus.DELIVERED },
-          {
-            AND: [
-              { paymentMethod: { not: PaymentMethod.CASH_ON_DELIVERY } },
-              {
-                status: {
-                  in: [OrderStatus.PROCESSING, OrderStatus.SHIPPED, OrderStatus.OUT_FOR_DELIVERY],
-                },
-              },
-            ],
-          },
-          {
-            paymentTransactions: {
-              some: {
-                status: TransactionStatus.SUCCEEDED,
-                type: TransactionType.PURCHASE,
-                deletedAt: null,
-              },
-            },
-          },
-        ],
-      },
-    };
-
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5, 1);
-    sixMonthsAgo.setHours(0, 0, 0, 0);
-
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-
-    const [paidItems, payoutHistory, payoutMethods] = await Promise.all([
-      prisma.orderItem.findMany({
-        where: paidSaleFilter,
-        select: {
-          id: true,
-          price: true,
-          quantity: true,
-          createdAt: true,
-          course: { select: { id: true, title: true } },
-          book: { select: { id: true, title: true, coverImage: true } },
-          order: {
-            select: {
-              id: true,
-              currency: true,
-              status: true,
-              createdAt: true,
-              updatedAt: true,
-              paymentTransactions: {
-                where: {
-                  status: TransactionStatus.SUCCEEDED,
-                  type: TransactionType.PURCHASE,
-                  deletedAt: null,
-                },
-                select: { createdAt: true },
-                orderBy: { createdAt: 'desc' },
-                take: 1,
-              },
-            },
-          },
-        },
-        orderBy: { createdAt: 'desc' },
-      }),
-      prisma.payout.findMany({
-        where: { instructorId: userId, deletedAt: null },
-        select: {
-          id: true,
-          amount: true,
-          fee: true,
-          currency: true,
-          payoutDate: true,
-          status: true,
-          failureReason: true,
-          rejectionReason: true,
-          createdAt: true,
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 20,
-      }),
-      prisma.payoutMethod.findMany({
-        where: { instructorId: userId },
-        select: {
-          id: true,
-          type: true,
-          bankName: true,
-          mobileBankingName: true,
-          accHolderName: true,
-          accountNumber: true,
-          branchName: true,
-          routingNumber: true,
-          isDefault: true,
-          createdAt: true,
-        },
-        orderBy: [{ isDefault: 'desc' }, { createdAt: 'desc' }],
-      }),
-    ]);
-
-    // Summary totals must use all payouts, not only the 20 rows returned as history.
-    const [paidPayouts, pendingPayouts] = await Promise.all([
-      prisma.payout.aggregate({
-        where: { instructorId: userId, deletedAt: null, status: PaymentStatus.PAID },
-        _sum: { amount: true },
-      }),
-      prisma.payout.aggregate({
-        where: { instructorId: userId, deletedAt: null, status: PaymentStatus.PENDING },
-        _sum: { amount: true },
-      }),
-    ]);
-
-    // OrderItem.price is stored as the line total in the current checkout flows.
-    // quantity is still used for units sold, but must not be multiplied into revenue again.
-    const amountForItem = (item: { price: unknown }) => Number(item.price);
-
-    const paidAtForItem = (item: (typeof paidItems)[number]) =>
-      item.order.paymentTransactions[0]?.createdAt ??
-      (item.order.status === OrderStatus.DELIVERED ? item.order.updatedAt : item.order.createdAt);
-
-    const totalRevenue = paidItems.reduce((sum, item) => sum + amountForItem(item), 0);
-    const todayRevenue = paidItems
-      .filter(item => paidAtForItem(item) >= todayStart)
-      .reduce((sum, item) => sum + amountForItem(item), 0);
-
-    const totalWithdrawn = Number(paidPayouts._sum.amount ?? 0);
-    const pendingPayout = Number(pendingPayouts._sum.amount ?? 0);
-    const availableBalance = Math.max(0, totalRevenue - totalWithdrawn - pendingPayout);
-
-    const monthKeys: { key: string; label: string }[] = [];
-    for (let offset = 5; offset >= 0; offset -= 1) {
-      const date = new Date();
-      date.setMonth(date.getMonth() - offset, 1);
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      monthKeys.push({
-        key,
-        label: date.toLocaleString('en-US', { month: 'short' }),
-      });
-    }
-
-    const monthlyTotals = new Map(monthKeys.map(month => [month.key, 0]));
-    for (const item of paidItems) {
-      const paidAt = paidAtForItem(item);
-      if (paidAt < sixMonthsAgo) {
-        continue;
-      }
-      const key = `${paidAt.getFullYear()}-${String(paidAt.getMonth() + 1).padStart(2, '0')}`;
-      if (monthlyTotals.has(key)) {
-        monthlyTotals.set(key, (monthlyTotals.get(key) ?? 0) + amountForItem(item));
-      }
-    }
-
-    const productMap = new Map<
-      string,
-      { id: string; title: string; type: 'COURSE' | 'BOOK'; sales: number; revenue: number }
-    >();
-    for (const item of paidItems) {
-      const product = item.course
-        ? { id: item.course.id, title: item.course.title, type: 'COURSE' as const }
-        : item.book
-          ? { id: item.book.id, title: item.book.title, type: 'BOOK' as const }
-          : null;
-      if (!product) {
-        continue;
-      }
-      const key = `${product.type}:${product.id}`;
-      const current = productMap.get(key) ?? { ...product, sales: 0, revenue: 0 };
-      current.sales += item.quantity;
-      current.revenue += amountForItem(item);
-      productMap.set(key, current);
-    }
-
-    const maskAccountNumber = (value: string) => {
-      const clean = value.trim();
-      if (clean.length <= 4) {
-        return clean;
-      }
-      return `${'*'.repeat(Math.max(4, clean.length - 4))}${clean.slice(-4)}`;
-    };
-
-    const sortedPaidItems = [...paidItems].sort(
-      (a, b) => paidAtForItem(b).getTime() - paidAtForItem(a).getTime()
-    );
-
-    return {
-      currency: paidItems[0]?.order.currency ?? payoutHistory[0]?.currency ?? 'BDT',
-      instructorName: instructor.displayName,
-      summary: {
-        totalRevenue,
-        availableBalance,
-        totalWithdrawn,
-        pendingPayout,
-        todayRevenue,
-        totalSales: paidItems.reduce((sum, item) => sum + item.quantity, 0),
-      },
-      monthlyRevenue: monthKeys.map(month => ({
-        month: month.label,
-        amount: monthlyTotals.get(month.key) ?? 0,
-      })),
-      topProducts: [...productMap.values()].sort((a, b) => b.revenue - a.revenue).slice(0, 8),
-      recentSales: sortedPaidItems.slice(0, 10).map(item => ({
-        id: item.id,
-        orderId: item.order.id,
-        productId: item.course?.id ?? item.book?.id ?? '',
-        productTitle: item.course?.title ?? item.book?.title ?? 'Unknown item',
-        type: item.course ? ('COURSE' as const) : ('BOOK' as const),
-        amount: amountForItem(item),
-        quantity: item.quantity,
-        createdAt: paidAtForItem(item),
-      })),
-      payouts: payoutHistory.map(payout => ({
-        ...payout,
-        amount: Number(payout.amount),
-        fee: payout.fee ? Number(payout.fee) : 0,
-      })),
-      payoutMethods: payoutMethods.map(method => ({
-        ...method,
-        accountNumber: maskAccountNumber(method.accountNumber),
-      })),
-    };
-  }, 'Get Instructor Earnings');
-};
+const getInstructorEarnings = async (req: Request) => financeService.myOverview(req);
 
 const getInstructorDashboardData = async (req: Request) => {
   const userId = await getAuthenticatedUserId(req);

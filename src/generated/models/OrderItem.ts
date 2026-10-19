@@ -292,6 +292,7 @@ export type OrderItemWhereInput = {
   shippedAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   deliveredAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
+  financialEntries?: Prisma.FinancialEntryListRelationFilter
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
@@ -312,6 +313,7 @@ export type OrderItemOrderByWithRelationInput = {
   shippedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  financialEntries?: Prisma.FinancialEntryOrderByRelationAggregateInput
   order?: Prisma.OrderOrderByWithRelationInput
   course?: Prisma.CourseOrderByWithRelationInput
   book?: Prisma.BookOrderByWithRelationInput
@@ -335,6 +337,7 @@ export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
   shippedAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   deliveredAt?: Prisma.DateTimeNullableFilter<"OrderItem"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"OrderItem"> | Date | string
+  financialEntries?: Prisma.FinancialEntryListRelationFilter
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   book?: Prisma.XOR<Prisma.BookNullableScalarRelationFilter, Prisma.BookWhereInput> | null
@@ -394,6 +397,7 @@ export type OrderItemCreateInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryCreateNestedManyWithoutOrderItemInput
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
   book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
@@ -414,6 +418,7 @@ export type OrderItemUncheckedCreateInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemUpdateInput = {
@@ -428,6 +433,7 @@ export type OrderItemUpdateInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUpdateManyWithoutOrderItemNestedInput
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
   book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
@@ -448,6 +454,7 @@ export type OrderItemUncheckedUpdateInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemCreateManyInput = {
@@ -567,6 +574,11 @@ export type OrderItemMinOrderByAggregateInput = {
 export type OrderItemSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+}
+
+export type OrderItemScalarRelationFilter = {
+  is?: Prisma.OrderItemWhereInput
+  isNot?: Prisma.OrderItemWhereInput
 }
 
 export type OrderItemCreateNestedManyWithoutCourseInput = {
@@ -703,6 +715,20 @@ export type EnumOrderItemStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderItemStatus
 }
 
+export type OrderItemCreateNestedOneWithoutFinancialEntriesInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutFinancialEntriesInput, Prisma.OrderItemUncheckedCreateWithoutFinancialEntriesInput>
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutFinancialEntriesInput
+  connect?: Prisma.OrderItemWhereUniqueInput
+}
+
+export type OrderItemUpdateOneRequiredWithoutFinancialEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutFinancialEntriesInput, Prisma.OrderItemUncheckedCreateWithoutFinancialEntriesInput>
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutFinancialEntriesInput
+  upsert?: Prisma.OrderItemUpsertWithoutFinancialEntriesInput
+  connect?: Prisma.OrderItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderItemUpdateToOneWithWhereWithoutFinancialEntriesInput, Prisma.OrderItemUpdateWithoutFinancialEntriesInput>, Prisma.OrderItemUncheckedUpdateWithoutFinancialEntriesInput>
+}
+
 export type OrderItemCreateWithoutCourseInput = {
   id?: string
   format?: $Enums.PurchaseFormat
@@ -715,6 +741,7 @@ export type OrderItemCreateWithoutCourseInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryCreateNestedManyWithoutOrderItemInput
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
 }
@@ -733,6 +760,7 @@ export type OrderItemUncheckedCreateWithoutCourseInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemCreateOrConnectWithoutCourseInput = {
@@ -793,6 +821,7 @@ export type OrderItemCreateWithoutBookInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryCreateNestedManyWithoutOrderItemInput
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
 }
@@ -811,6 +840,7 @@ export type OrderItemUncheckedCreateWithoutBookInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemCreateOrConnectWithoutBookInput = {
@@ -851,6 +881,7 @@ export type OrderItemCreateWithoutOrderInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryCreateNestedManyWithoutOrderItemInput
   course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
   book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
 }
@@ -869,6 +900,7 @@ export type OrderItemUncheckedCreateWithoutOrderInput = {
   shippedAt?: Date | string | null
   deliveredAt?: Date | string | null
   createdAt?: Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemCreateOrConnectWithoutOrderInput = {
@@ -895,6 +927,90 @@ export type OrderItemUpdateWithWhereUniqueWithoutOrderInput = {
 export type OrderItemUpdateManyWithWhereWithoutOrderInput = {
   where: Prisma.OrderItemScalarWhereInput
   data: Prisma.XOR<Prisma.OrderItemUpdateManyMutationInput, Prisma.OrderItemUncheckedUpdateManyWithoutOrderInput>
+}
+
+export type OrderItemCreateWithoutFinancialEntriesInput = {
+  id?: string
+  format?: $Enums.PurchaseFormat
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: number
+  currency?: string | null
+  status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  createdAt?: Date | string
+  order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
+  course?: Prisma.CourseCreateNestedOneWithoutOrderItemInput
+  book?: Prisma.BookCreateNestedOneWithoutOrderItemInput
+}
+
+export type OrderItemUncheckedCreateWithoutFinancialEntriesInput = {
+  id?: string
+  orderId: string
+  courseId?: string | null
+  bookId?: string | null
+  format?: $Enums.PurchaseFormat
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: number
+  currency?: string | null
+  status?: $Enums.OrderItemStatus
+  courierName?: $Enums.Courier | null
+  trackingNumber?: string | null
+  shippedAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type OrderItemCreateOrConnectWithoutFinancialEntriesInput = {
+  where: Prisma.OrderItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderItemCreateWithoutFinancialEntriesInput, Prisma.OrderItemUncheckedCreateWithoutFinancialEntriesInput>
+}
+
+export type OrderItemUpsertWithoutFinancialEntriesInput = {
+  update: Prisma.XOR<Prisma.OrderItemUpdateWithoutFinancialEntriesInput, Prisma.OrderItemUncheckedUpdateWithoutFinancialEntriesInput>
+  create: Prisma.XOR<Prisma.OrderItemCreateWithoutFinancialEntriesInput, Prisma.OrderItemUncheckedCreateWithoutFinancialEntriesInput>
+  where?: Prisma.OrderItemWhereInput
+}
+
+export type OrderItemUpdateToOneWithWhereWithoutFinancialEntriesInput = {
+  where?: Prisma.OrderItemWhereInput
+  data: Prisma.XOR<Prisma.OrderItemUpdateWithoutFinancialEntriesInput, Prisma.OrderItemUncheckedUpdateWithoutFinancialEntriesInput>
+}
+
+export type OrderItemUpdateWithoutFinancialEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  format?: Prisma.EnumPurchaseFormatFieldUpdateOperationsInput | $Enums.PurchaseFormat
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
+  course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
+  book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
+}
+
+export type OrderItemUncheckedUpdateWithoutFinancialEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.EnumPurchaseFormatFieldUpdateOperationsInput | $Enums.PurchaseFormat
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumOrderItemStatusFieldUpdateOperationsInput | $Enums.OrderItemStatus
+  courierName?: Prisma.NullableEnumCourierFieldUpdateOperationsInput | $Enums.Courier | null
+  trackingNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type OrderItemCreateManyCourseInput = {
@@ -925,6 +1041,7 @@ export type OrderItemUpdateWithoutCourseInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUpdateManyWithoutOrderItemNestedInput
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
 }
@@ -943,6 +1060,7 @@ export type OrderItemUncheckedUpdateWithoutCourseInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateManyWithoutCourseInput = {
@@ -989,6 +1107,7 @@ export type OrderItemUpdateWithoutBookInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUpdateManyWithoutOrderItemNestedInput
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
 }
@@ -1007,6 +1126,7 @@ export type OrderItemUncheckedUpdateWithoutBookInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateManyWithoutBookInput = {
@@ -1053,6 +1173,7 @@ export type OrderItemUpdateWithoutOrderInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUpdateManyWithoutOrderItemNestedInput
   course?: Prisma.CourseUpdateOneWithoutOrderItemNestedInput
   book?: Prisma.BookUpdateOneWithoutOrderItemNestedInput
 }
@@ -1071,6 +1192,7 @@ export type OrderItemUncheckedUpdateWithoutOrderInput = {
   shippedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  financialEntries?: Prisma.FinancialEntryUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
@@ -1090,6 +1212,35 @@ export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
 }
 
 
+/**
+ * Count Type OrderItemCountOutputType
+ */
+
+export type OrderItemCountOutputType = {
+  financialEntries: number
+}
+
+export type OrderItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  financialEntries?: boolean | OrderItemCountOutputTypeCountFinancialEntriesArgs
+}
+
+/**
+ * OrderItemCountOutputType without action
+ */
+export type OrderItemCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderItemCountOutputType
+   */
+  select?: Prisma.OrderItemCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OrderItemCountOutputType without action
+ */
+export type OrderItemCountOutputTypeCountFinancialEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FinancialEntryWhereInput
+}
+
 
 export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1106,9 +1257,11 @@ export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   shippedAt?: boolean
   deliveredAt?: boolean
   createdAt?: boolean
+  financialEntries?: boolean | Prisma.OrderItem$financialEntriesArgs<ExtArgs>
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
   book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
+  _count?: boolean | Prisma.OrderItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
 
 export type OrderItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1170,9 +1323,11 @@ export type OrderItemSelectScalar = {
 
 export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "courseId" | "bookId" | "format" | "price" | "quantity" | "currency" | "status" | "courierName" | "trackingNumber" | "shippedAt" | "deliveredAt" | "createdAt", ExtArgs["result"]["orderItem"]>
 export type OrderItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  financialEntries?: boolean | Prisma.OrderItem$financialEntriesArgs<ExtArgs>
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   course?: boolean | Prisma.OrderItem$courseArgs<ExtArgs>
   book?: boolean | Prisma.OrderItem$bookArgs<ExtArgs>
+  _count?: boolean | Prisma.OrderItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrderItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
@@ -1188,6 +1343,7 @@ export type OrderItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type $OrderItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OrderItem"
   objects: {
+    financialEntries: Prisma.$FinancialEntryPayload<ExtArgs>[]
     order: Prisma.$OrderPayload<ExtArgs>
     course: Prisma.$CoursePayload<ExtArgs> | null
     book: Prisma.$BookPayload<ExtArgs> | null
@@ -1601,6 +1757,7 @@ readonly fields: OrderItemFieldRefs;
  */
 export interface Prisma__OrderItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  financialEntries<T extends Prisma.OrderItem$financialEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderItem$financialEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FinancialEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   course<T extends Prisma.OrderItem$courseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderItem$courseArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   book<T extends Prisma.OrderItem$bookArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderItem$bookArgs<ExtArgs>>): Prisma.Prisma__BookClient<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2040,6 +2197,30 @@ export type OrderItemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many OrderItems to delete.
    */
   limit?: number
+}
+
+/**
+ * OrderItem.financialEntries
+ */
+export type OrderItem$financialEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FinancialEntry
+   */
+  select?: Prisma.FinancialEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FinancialEntry
+   */
+  omit?: Prisma.FinancialEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FinancialEntryInclude<ExtArgs> | null
+  where?: Prisma.FinancialEntryWhereInput
+  orderBy?: Prisma.FinancialEntryOrderByWithRelationInput | Prisma.FinancialEntryOrderByWithRelationInput[]
+  cursor?: Prisma.FinancialEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FinancialEntryScalarFieldEnum | Prisma.FinancialEntryScalarFieldEnum[]
 }
 
 /**
