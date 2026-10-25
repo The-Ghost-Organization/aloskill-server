@@ -21,11 +21,22 @@ export const adminInstructorActionSchema = z.object({
   params: z.object({ id: z.uuid() }),
   body: z.object({
     action: z.enum(['APPROVE', 'REJECT', 'SUSPEND', 'REACTIVATE']),
-    note: z.string().trim().min(5).max(500).regex(/^[^<>]*$/),
+    note: z
+      .string()
+      .trim()
+      .min(5)
+      .max(500)
+      .regex(/^[^<>]*$/),
   }),
 });
 
-const safeText = (min = 1, max = 500) => z.string().trim().min(min).max(max).regex(/^[^<>]*$/);
+const safeText = (min = 1, max = 500) =>
+  z
+    .string()
+    .trim()
+    .min(min)
+    .max(max)
+    .regex(/^[^<>]*$/);
 
 export const adminUserIdSchema = z.object({
   params: z.object({ id: z.uuid() }),
@@ -78,12 +89,59 @@ export const adminCreateUserSchema = z.object({
 
 export const adminUserActionSchema = z.object({
   params: z.object({ id: z.uuid() }),
+  body: z
+    .object({
+      action: z.enum([
+        'VERIFY_EMAIL',
+        'SUSPEND',
+        'REACTIVATE',
+        'APPROVE_INSTRUCTOR',
+        'REJECT_INSTRUCTOR',
+      ]),
+      note: z
+        .string()
+        .trim()
+        .max(500)
+        .regex(/^[^<>]*$/)
+        .optional()
+        .default(''),
+    })
+    .superRefine((value, ctx) => {
+      if (['SUSPEND', 'REJECT_INSTRUCTOR'].includes(value.action) && value.note.length < 5) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['note'],
+          message: 'A reason of at least 5 characters is required.',
+        });
+      }
+    }),
+});
+export const updateInstructorSettingsSchema = z.object({
   body: z.object({
-    action: z.enum(['VERIFY_EMAIL', 'SUSPEND', 'REACTIVATE', 'APPROVE_INSTRUCTOR', 'REJECT_INSTRUCTOR']),
-    note: z.string().trim().max(500).regex(/^[^<>]*$/).optional().default(''),
-  }).superRefine((value, ctx) => {
-    if (['SUSPEND', 'REJECT_INSTRUCTOR'].includes(value.action) && value.note.length < 5) {
-      ctx.addIssue({ code: 'custom', path: ['note'], message: 'A reason of at least 5 characters is required.' });
-    }
+    displayName: z.string().min(3).max(60).optional(),
+    phoneNumber: z
+      .string()
+      .min(11)
+      .max(14)
+      .regex(/^[0-9+]+$/)
+      .optional(),
+    expertise: z.string().max(100).nullable().optional(),
+    bio: z.string().min(10).max(4000).optional(),
+    website: z.string().url().nullable().optional(),
+    avatarUrl: z.string().url().nullable().optional(),
+    qualifications: z.string().max(100).optional(),
+    currentOrg: z.string().max(60).nullable().optional(),
+    experience: z.number().min(0).max(50).optional(),
+    address: z.string().max(255).optional(),
+    city: z.string().max(50).optional(),
+    nationality: z.string().max(50).optional(),
+    socialAccounts: z
+      .array(
+        z.object({
+          platform: z.enum(['FACEBOOK', 'TWITTER', 'INSTAGRAM', 'LINKEDIN', 'YOUTUBE']),
+          url: z.string().url(),
+        })
+      )
+      .optional(),
   }),
 });

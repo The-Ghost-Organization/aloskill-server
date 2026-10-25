@@ -73,6 +73,17 @@ const updateAdminInstructor = catchAsync(async (req, res): Promise<void> => {
   ResponseHandler.ok(res, 'Instructor updated successfully', result);
 });
 
+const getInstructorSettings = catchAsync(async (req, res): Promise<void> => {
+  const result = await userService.getInstructorSettings(req);
+  ResponseHandler.ok(res, 'Instructor settings fetched successfully', result);
+});
+
+const updateInstructorSettings = catchAsync(async (req, res): Promise<void> => {
+  await userService.updateInstructorSettings(req);
+  const result = await userService.getInstructorSettings(req);
+  ResponseHandler.ok(res, 'Instructor profile updated successfully', result);
+});
+
 export const userController = {
   getUserByEmail,
   getAllInstructors,
@@ -87,4 +98,6 @@ export const userController = {
   getAdminUserDetails,
   createAdminUser,
   updateAdminUser,
+  getInstructorSettings,
+  updateInstructorSettings,
 };

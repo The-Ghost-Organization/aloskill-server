@@ -12,7 +12,6 @@ import {
   OrderItemStatus,
   OrderStatus,
   PaymentMethod,
-  PaymentStatus,
   QuestionType,
   TransactionStatus,
   TransactionType,
@@ -346,7 +345,7 @@ const createCourse = async (req: Request) => {
 
 const updateCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  const instructorEmail = req.query.user as string;
+  const instructorEmail = req.user.email;
 
   if (!data.id) {
     throw new Error('Course ID Not found');
@@ -2081,7 +2080,7 @@ const getSingleCourseForCheckout = async (req: Request) => {
   };
 };
 
-const getInstructorEarnings = async (req: Request) => financeService.myOverview(req);
+const getInstructorEarnings = (req: Request) => financeService.myOverview(req);
 
 const getInstructorDashboardData = async (req: Request) => {
   const userId = await getAuthenticatedUserId(req);

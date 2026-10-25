@@ -1,5 +1,5 @@
 import express from 'express';
-import { requireAdmin, requireStudent } from '../../middleware/auth.js';
+import { requireAdmin, requireInstructor, requireStudent } from '../../middleware/auth.js';
 import { generalLimiter } from '../../middleware/security.js';
 import { validate } from '../../middleware/validation.js';
 import { userController } from './user.controller.js';
@@ -11,6 +11,7 @@ import {
   adminUserIdSchema,
   getSingleInstructorSchema,
   getSingleUserSchema,
+  updateInstructorSettingsSchema,
 } from './user.validation.js';
 
 const router = express.Router({ caseSensitive: true });
@@ -65,6 +66,14 @@ router.patch(
   requireAdmin,
   validate(adminInstructorActionSchema),
   userController.updateAdminInstructor
+);
+
+router.get('/instructor/me/settings', requireInstructor, userController.getInstructorSettings);
+router.patch(
+  '/instructor/me/settings',
+  requireInstructor,
+  validate(updateInstructorSettingsSchema),
+  userController.updateInstructorSettings
 );
 
 export const UserRoutes = router;
