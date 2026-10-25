@@ -594,8 +594,10 @@ model VideoUploadJob {
   status VideoJobStatus @default(STAGING)
   fileName String
   mimeType String
-  fileSize Int
-  receivedBytes Int @default(0)
+  fileSize BigInt
+  receivedBytes BigInt @default(0)
+  transferredBytes BigInt @default(0)
+  processingProgress Int?
   title String
   description String @default("")
   acknowledged Boolean @default(false)
@@ -619,7 +621,7 @@ model VideoHostingSettings {
   allowFreePaid Boolean @default(true)
   freeEnabled Boolean @default(false)
   premiumEnabled Boolean @default(true)
-  maxUploadBytes Int @default(1073741824)
+  maxUploadBytes BigInt @default(10737418240)
   allowedMimeTypes String[] @default(["video/mp4", "video/quicktime", "video/webm"])
   encryptedRefreshToken String?
   channelId String?

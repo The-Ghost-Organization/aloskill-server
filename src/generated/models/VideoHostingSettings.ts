@@ -31,7 +31,7 @@ export type VideoHostingSettingsAvgAggregateOutputType = {
 }
 
 export type VideoHostingSettingsSumAggregateOutputType = {
-  maxUploadBytes: number | null
+  maxUploadBytes: bigint | null
 }
 
 export type VideoHostingSettingsMinAggregateOutputType = {
@@ -40,7 +40,7 @@ export type VideoHostingSettingsMinAggregateOutputType = {
   allowFreePaid: boolean | null
   freeEnabled: boolean | null
   premiumEnabled: boolean | null
-  maxUploadBytes: number | null
+  maxUploadBytes: bigint | null
   encryptedRefreshToken: string | null
   channelId: string | null
   channelTitle: string | null
@@ -54,7 +54,7 @@ export type VideoHostingSettingsMaxAggregateOutputType = {
   allowFreePaid: boolean | null
   freeEnabled: boolean | null
   premiumEnabled: boolean | null
-  maxUploadBytes: number | null
+  maxUploadBytes: bigint | null
   encryptedRefreshToken: string | null
   channelId: string | null
   channelTitle: string | null
@@ -223,7 +223,7 @@ export type VideoHostingSettingsGroupByOutputType = {
   allowFreePaid: boolean
   freeEnabled: boolean
   premiumEnabled: boolean
-  maxUploadBytes: number
+  maxUploadBytes: bigint
   allowedMimeTypes: string[]
   encryptedRefreshToken: string | null
   channelId: string | null
@@ -261,7 +261,7 @@ export type VideoHostingSettingsWhereInput = {
   allowFreePaid?: Prisma.BoolFilter<"VideoHostingSettings"> | boolean
   freeEnabled?: Prisma.BoolFilter<"VideoHostingSettings"> | boolean
   premiumEnabled?: Prisma.BoolFilter<"VideoHostingSettings"> | boolean
-  maxUploadBytes?: Prisma.IntFilter<"VideoHostingSettings"> | number
+  maxUploadBytes?: Prisma.BigIntFilter<"VideoHostingSettings"> | bigint | number
   allowedMimeTypes?: Prisma.StringNullableListFilter<"VideoHostingSettings">
   encryptedRefreshToken?: Prisma.StringNullableFilter<"VideoHostingSettings"> | string | null
   channelId?: Prisma.StringNullableFilter<"VideoHostingSettings"> | string | null
@@ -294,7 +294,7 @@ export type VideoHostingSettingsWhereUniqueInput = Prisma.AtLeast<{
   allowFreePaid?: Prisma.BoolFilter<"VideoHostingSettings"> | boolean
   freeEnabled?: Prisma.BoolFilter<"VideoHostingSettings"> | boolean
   premiumEnabled?: Prisma.BoolFilter<"VideoHostingSettings"> | boolean
-  maxUploadBytes?: Prisma.IntFilter<"VideoHostingSettings"> | number
+  maxUploadBytes?: Prisma.BigIntFilter<"VideoHostingSettings"> | bigint | number
   allowedMimeTypes?: Prisma.StringNullableListFilter<"VideoHostingSettings">
   encryptedRefreshToken?: Prisma.StringNullableFilter<"VideoHostingSettings"> | string | null
   channelId?: Prisma.StringNullableFilter<"VideoHostingSettings"> | string | null
@@ -332,7 +332,7 @@ export type VideoHostingSettingsScalarWhereWithAggregatesInput = {
   allowFreePaid?: Prisma.BoolWithAggregatesFilter<"VideoHostingSettings"> | boolean
   freeEnabled?: Prisma.BoolWithAggregatesFilter<"VideoHostingSettings"> | boolean
   premiumEnabled?: Prisma.BoolWithAggregatesFilter<"VideoHostingSettings"> | boolean
-  maxUploadBytes?: Prisma.IntWithAggregatesFilter<"VideoHostingSettings"> | number
+  maxUploadBytes?: Prisma.BigIntWithAggregatesFilter<"VideoHostingSettings"> | bigint | number
   allowedMimeTypes?: Prisma.StringNullableListFilter<"VideoHostingSettings">
   encryptedRefreshToken?: Prisma.StringNullableWithAggregatesFilter<"VideoHostingSettings"> | string | null
   channelId?: Prisma.StringNullableWithAggregatesFilter<"VideoHostingSettings"> | string | null
@@ -347,7 +347,7 @@ export type VideoHostingSettingsCreateInput = {
   allowFreePaid?: boolean
   freeEnabled?: boolean
   premiumEnabled?: boolean
-  maxUploadBytes?: number
+  maxUploadBytes?: bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsCreateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: string | null
   channelId?: string | null
@@ -362,7 +362,7 @@ export type VideoHostingSettingsUncheckedCreateInput = {
   allowFreePaid?: boolean
   freeEnabled?: boolean
   premiumEnabled?: boolean
-  maxUploadBytes?: number
+  maxUploadBytes?: bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsCreateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: string | null
   channelId?: string | null
@@ -377,7 +377,7 @@ export type VideoHostingSettingsUpdateInput = {
   allowFreePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   freeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  maxUploadBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUploadBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsUpdateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -392,7 +392,7 @@ export type VideoHostingSettingsUncheckedUpdateInput = {
   allowFreePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   freeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  maxUploadBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUploadBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsUpdateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -407,7 +407,7 @@ export type VideoHostingSettingsCreateManyInput = {
   allowFreePaid?: boolean
   freeEnabled?: boolean
   premiumEnabled?: boolean
-  maxUploadBytes?: number
+  maxUploadBytes?: bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsCreateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: string | null
   channelId?: string | null
@@ -422,7 +422,7 @@ export type VideoHostingSettingsUpdateManyMutationInput = {
   allowFreePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   freeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  maxUploadBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUploadBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsUpdateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -437,7 +437,7 @@ export type VideoHostingSettingsUncheckedUpdateManyInput = {
   allowFreePaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   freeEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   premiumEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  maxUploadBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxUploadBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   allowedMimeTypes?: Prisma.VideoHostingSettingsUpdateallowedMimeTypesInput | string[]
   encryptedRefreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -591,7 +591,7 @@ export type $VideoHostingSettingsPayload<ExtArgs extends runtime.Types.Extension
     allowFreePaid: boolean
     freeEnabled: boolean
     premiumEnabled: boolean
-    maxUploadBytes: number
+    maxUploadBytes: bigint
     allowedMimeTypes: string[]
     encryptedRefreshToken: string | null
     channelId: string | null
@@ -1026,7 +1026,7 @@ export interface VideoHostingSettingsFieldRefs {
   readonly allowFreePaid: Prisma.FieldRef<"VideoHostingSettings", 'Boolean'>
   readonly freeEnabled: Prisma.FieldRef<"VideoHostingSettings", 'Boolean'>
   readonly premiumEnabled: Prisma.FieldRef<"VideoHostingSettings", 'Boolean'>
-  readonly maxUploadBytes: Prisma.FieldRef<"VideoHostingSettings", 'Int'>
+  readonly maxUploadBytes: Prisma.FieldRef<"VideoHostingSettings", 'BigInt'>
   readonly allowedMimeTypes: Prisma.FieldRef<"VideoHostingSettings", 'String[]'>
   readonly encryptedRefreshToken: Prisma.FieldRef<"VideoHostingSettings", 'String'>
   readonly channelId: Prisma.FieldRef<"VideoHostingSettings", 'String'>

@@ -4472,6 +4472,8 @@ export const VideoUploadJobScalarFieldEnum = {
   mimeType: 'mimeType',
   fileSize: 'fileSize',
   receivedBytes: 'receivedBytes',
+  transferredBytes: 'transferredBytes',
+  processingProgress: 'processingProgress',
   title: 'title',
   description: 'description',
   acknowledged: 'acknowledged',
@@ -5495,6 +5497,20 @@ export type EnumVideoJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'VideoJobStatus[]'
  */
 export type ListEnumVideoJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoJobStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 

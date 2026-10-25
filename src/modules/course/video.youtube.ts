@@ -79,7 +79,7 @@ interface Video {
   id: string;
   snippet: { channelId: string; title: string };
   status: { uploadStatus: string; privacyStatus: string; embeddable: boolean; failureReason?: string; rejectionReason?: string };
-  processingDetails?: { processingStatus: string };
+  processingDetails?: { processingStatus: string; processingProgress?: { partsTotal?: string | number; partsProcessed?: string | number } };
   contentDetails?: { duration: string };
 }
 export async function inspectVideo(id: string): Promise<Video> {
@@ -105,6 +105,7 @@ export function sessionAddress(value: string): string {
 // this also recovers the video ID when the final PUT response was lost.
 export async function transfer(job: VideoUploadJob, filePath: string): Promise<void> {
   await verifyChannel();
+  const fileSize = Number(job.fileSize);
   let session = job.sessionUrl;
   if (!session) {
     const response = await checked(await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status', {
@@ -116,7 +117,7 @@ export async function transfer(job: VideoUploadJob, filePath: string): Promise<v
       body: JSON.stringify({ snippet: { title: job.title.slice(0, 100), description: job.description.slice(0, 5000), categoryId: '27' }, status: { privacyStatus: 'unlisted', embeddable: true } }),
     }));
     session = sessionAddress(response.headers.get('location') ?? '');
-    await db().videoUploadJob.update({ where: { id: job.id }, data: { sessionUrl: session, status: 'UPLOADING' } });
+    await db().videoUploadJob.update({ where: { id: job.id }, data: { sessionUrl: session, status: 'UPLOADING', lastSyncedAt: new Date() } });
   }
   const headers = { Authorization: `Bearer ${await accessToken()}`, 'Content-Type': job.mimeType };
   const probe = await fetch(sessionAddress(session), {
@@ -130,17 +131,18 @@ export async function transfer(job: VideoUploadJob, filePath: string): Promise<v
     const data = await response.json() as { id: string };
     if (!data.id) throw new Error('Upload did not return an asset identifier.');
     await db().videoUploadJob.update({ where: { id: job.id }, data: {
-      externalVideoId: data.id, contentUrl: `https://www.youtube.com/watch?v=${data.id}`, status: 'PROCESSING', uploadError: null,
+      transferredBytes: BigInt(fileSize), lastSyncedAt: new Date(), externalVideoId: data.id, contentUrl: `https://www.youtube.com/watch?v=${data.id}`, status: 'PROCESSING', uploadError: null,
     } });
   };
   if (probe.status !== 308) return complete(probe);
   let offset = Number(probe.headers.get('range')?.match(/-(\d+)$/)?.[1] ?? -1) + 1;
+  await db().videoUploadJob.update({ where: { id: job.id }, data: { status: 'UPLOADING', transferredBytes: BigInt(offset), lastSyncedAt: new Date() } });
   const file = await open(filePath, 'r');
   try {
-    while (offset < job.fileSize) {
+    while (offset < fileSize) {
       const current = await db().videoUploadJob.findUniqueOrThrow({ where: { id: job.id } });
       if (current.status === 'CANCELLED') return;
-      const buffer = Buffer.alloc(Math.min(8 * 1024 * 1024, job.fileSize - offset));
+      const buffer = Buffer.alloc(Math.min(8 * 1024 * 1024, fileSize - offset));
       const { bytesRead } = await file.read(buffer, 0, buffer.length, offset);
       if (bytesRead !== buffer.length) throw new Error('Temporary source file is incomplete.');
       const response = await checked(await fetch(sessionAddress(session), {
@@ -152,6 +154,7 @@ export async function transfer(job: VideoUploadJob, filePath: string): Promise<v
       const next = Number(response.headers.get('range')?.match(/-(\d+)$/)?.[1] ?? -1) + 1;
       if (next <= offset) throw new Error('Upload made no progress. Retry to resume.');
       offset = next;
+      await db().videoUploadJob.update({ where: { id: job.id }, data: { transferredBytes: BigInt(offset), lastSyncedAt: new Date() } });
     }
     throw new Error('Upload completion could not be confirmed. Retry to verify the session.');
   } finally { await file.close(); }

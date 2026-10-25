@@ -13,13 +13,13 @@
     "prepare": "husky install",
     "dev": "tsx watch src/server.ts",
     "worker": "npx tsx src/emails/worker.ts",
-    "dev:worker": "run-p dev worker",
+    "dev:worker": "run-p dev worker worker:video",
     "clean": "rimraf dist",
     "postinstall": "prisma generate",
     "build": "npm run clean && tsc",
     "server:prod": "node dist/server.js",
     "worker:prod": "node dist/emails/worker.js",
-    "start": "run-p server:prod worker:prod",
+    "start": "run-p server:prod worker:prod worker:video:prod",
     "typecheck": "tsc --noEmit",
     "lint:check": "eslint --ext .js,.ts src .",
     "lint:fix": "eslint --ext .js,.ts src --fix",
@@ -36,7 +36,9 @@
     "logs:clear": "rimraf logs/*.log",
     "check-lint-prettier": "run-p lint:check prettier:check",
     "check-all": "run-p typecheck lint:check prettier:check security:audit",
-    "format-all": "run-p lint:fix prettier:fix"
+    "format-all": "run-p lint:fix prettier:fix",
+    "worker:video": "tsx src/modules/course/video.worker.ts",
+    "worker:video:prod": "node dist/modules/course/video.worker.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",

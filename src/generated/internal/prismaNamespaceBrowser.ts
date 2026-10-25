@@ -325,6 +325,8 @@ export const VideoUploadJobScalarFieldEnum = {
   mimeType: 'mimeType',
   fileSize: 'fileSize',
   receivedBytes: 'receivedBytes',
+  transferredBytes: 'transferredBytes',
+  processingProgress: 'processingProgress',
   title: 'title',
   description: 'description',
   acknowledged: 'acknowledged',

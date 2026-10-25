@@ -38,8 +38,22 @@ export async function ownedJob(req: Request, id: string): Promise<VideoUploadJob
   if (job.courseId) await assertCourseEditor(req, job.courseId);
   return job;
 }
-export function publicJob(job: VideoUploadJob) {
-  return { id: job.id, status: job.status, receivedBytes: job.receivedBytes, fileSize: job.fileSize,
+export function publicJob(job: VideoUploadJob, workerAvailable = true) {
+  let statusMessage: string;
+  if (job.status === 'READY') statusMessage = 'Video ready';
+  else if (job.status === 'FAILED') statusMessage = job.uploadError ?? 'Upload failed. Retry the upload.';
+  else if (job.status === 'STAGING') statusMessage = 'Uploading source file to ALOSKILL';
+  else if (!workerAvailable) statusMessage = 'Video worker is offline. Ask the administrator to start the video worker. Your uploaded file is saved.';
+  else if (job.status === 'QUEUED') statusMessage = 'Upload received. Waiting for an available transfer worker.';
+  else if (job.status === 'UPLOADING') statusMessage = 'Transferring video to hosting';
+  else if (job.status === 'PROCESSING') statusMessage = 'Upload complete. Hosting service is processing the video.';
+  else statusMessage = 'Upload is no longer active.';
+  if (workerAvailable && job.uploadError && ['QUEUED', 'UPLOADING', 'PROCESSING'].includes(job.status)) {
+    statusMessage = `A hosting request failed and will be retried: ${job.uploadError}`;
+  }
+  return { id: job.id, status: job.status, receivedBytes: Number(job.receivedBytes), fileSize: Number(job.fileSize),
+    transferredBytes: Number(job.transferredBytes ?? 0), processingProgress: job.processingProgress ?? null,
+    workerAvailable, statusMessage, lastSyncedAt: job.lastSyncedAt,
     uploadError: job.uploadError, contentUrl: job.status === 'READY' ? job.contentUrl : null,
     duration: job.duration, fileName: job.fileName, providerStatus: job.providerStatus };
 }
@@ -52,7 +66,7 @@ export async function stageChunk(req: Request, id: string, offset: number, chunk
   await db().$transaction(async tx => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`upload:${id}`}))`;
     const job = await tx.videoUploadJob.findUniqueOrThrow({ where: { id } });
-    if (job.provider !== 'YOUTUBE' || job.status !== 'STAGING' || offset !== job.receivedBytes || offset + chunk.length > job.fileSize || !chunk.length) {
+    if (job.provider !== 'YOUTUBE' || job.status !== 'STAGING' || offset !== Number(job.receivedBytes) || offset + chunk.length > Number(job.fileSize) || !chunk.length) {
       throw new AppError('Upload offset changed. Resume from the saved offset.', 409);
     }
     // Validate common container magic as well as the declared MIME type.
@@ -72,7 +86,7 @@ export async function stageChunk(req: Request, id: string, offset: number, chunk
       }
       await file.sync();
     } finally { await file.close(); }
-    await tx.videoUploadJob.update({ where: { id }, data: { receivedBytes: offset + chunk.length } });
+    await tx.videoUploadJob.update({ where: { id }, data: { receivedBytes: BigInt(offset + chunk.length) } });
   });
 }
 

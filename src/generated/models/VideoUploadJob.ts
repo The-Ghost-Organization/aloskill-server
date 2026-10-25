@@ -29,12 +29,16 @@ export type AggregateVideoUploadJob = {
 export type VideoUploadJobAvgAggregateOutputType = {
   fileSize: number | null
   receivedBytes: number | null
+  transferredBytes: number | null
+  processingProgress: number | null
   duration: number | null
 }
 
 export type VideoUploadJobSumAggregateOutputType = {
-  fileSize: number | null
-  receivedBytes: number | null
+  fileSize: bigint | null
+  receivedBytes: bigint | null
+  transferredBytes: bigint | null
+  processingProgress: number | null
   duration: number | null
 }
 
@@ -46,8 +50,10 @@ export type VideoUploadJobMinAggregateOutputType = {
   status: $Enums.VideoJobStatus | null
   fileName: string | null
   mimeType: string | null
-  fileSize: number | null
-  receivedBytes: number | null
+  fileSize: bigint | null
+  receivedBytes: bigint | null
+  transferredBytes: bigint | null
+  processingProgress: number | null
   title: string | null
   description: string | null
   acknowledged: boolean | null
@@ -70,8 +76,10 @@ export type VideoUploadJobMaxAggregateOutputType = {
   status: $Enums.VideoJobStatus | null
   fileName: string | null
   mimeType: string | null
-  fileSize: number | null
-  receivedBytes: number | null
+  fileSize: bigint | null
+  receivedBytes: bigint | null
+  transferredBytes: bigint | null
+  processingProgress: number | null
   title: string | null
   description: string | null
   acknowledged: boolean | null
@@ -96,6 +104,8 @@ export type VideoUploadJobCountAggregateOutputType = {
   mimeType: number
   fileSize: number
   receivedBytes: number
+  transferredBytes: number
+  processingProgress: number
   title: number
   description: number
   acknowledged: number
@@ -115,12 +125,16 @@ export type VideoUploadJobCountAggregateOutputType = {
 export type VideoUploadJobAvgAggregateInputType = {
   fileSize?: true
   receivedBytes?: true
+  transferredBytes?: true
+  processingProgress?: true
   duration?: true
 }
 
 export type VideoUploadJobSumAggregateInputType = {
   fileSize?: true
   receivedBytes?: true
+  transferredBytes?: true
+  processingProgress?: true
   duration?: true
 }
 
@@ -134,6 +148,8 @@ export type VideoUploadJobMinAggregateInputType = {
   mimeType?: true
   fileSize?: true
   receivedBytes?: true
+  transferredBytes?: true
+  processingProgress?: true
   title?: true
   description?: true
   acknowledged?: true
@@ -158,6 +174,8 @@ export type VideoUploadJobMaxAggregateInputType = {
   mimeType?: true
   fileSize?: true
   receivedBytes?: true
+  transferredBytes?: true
+  processingProgress?: true
   title?: true
   description?: true
   acknowledged?: true
@@ -182,6 +200,8 @@ export type VideoUploadJobCountAggregateInputType = {
   mimeType?: true
   fileSize?: true
   receivedBytes?: true
+  transferredBytes?: true
+  processingProgress?: true
   title?: true
   description?: true
   acknowledged?: true
@@ -291,8 +311,10 @@ export type VideoUploadJobGroupByOutputType = {
   status: $Enums.VideoJobStatus
   fileName: string
   mimeType: string
-  fileSize: number
-  receivedBytes: number
+  fileSize: bigint
+  receivedBytes: bigint
+  transferredBytes: bigint
+  processingProgress: number | null
   title: string
   description: string
   acknowledged: boolean
@@ -338,8 +360,10 @@ export type VideoUploadJobWhereInput = {
   status?: Prisma.EnumVideoJobStatusFilter<"VideoUploadJob"> | $Enums.VideoJobStatus
   fileName?: Prisma.StringFilter<"VideoUploadJob"> | string
   mimeType?: Prisma.StringFilter<"VideoUploadJob"> | string
-  fileSize?: Prisma.IntFilter<"VideoUploadJob"> | number
-  receivedBytes?: Prisma.IntFilter<"VideoUploadJob"> | number
+  fileSize?: Prisma.BigIntFilter<"VideoUploadJob"> | bigint | number
+  receivedBytes?: Prisma.BigIntFilter<"VideoUploadJob"> | bigint | number
+  transferredBytes?: Prisma.BigIntFilter<"VideoUploadJob"> | bigint | number
+  processingProgress?: Prisma.IntNullableFilter<"VideoUploadJob"> | number | null
   title?: Prisma.StringFilter<"VideoUploadJob"> | string
   description?: Prisma.StringFilter<"VideoUploadJob"> | string
   acknowledged?: Prisma.BoolFilter<"VideoUploadJob"> | boolean
@@ -364,6 +388,8 @@ export type VideoUploadJobOrderByWithRelationInput = {
   mimeType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   acknowledged?: Prisma.SortOrder
@@ -389,8 +415,10 @@ export type VideoUploadJobWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumVideoJobStatusFilter<"VideoUploadJob"> | $Enums.VideoJobStatus
   fileName?: Prisma.StringFilter<"VideoUploadJob"> | string
   mimeType?: Prisma.StringFilter<"VideoUploadJob"> | string
-  fileSize?: Prisma.IntFilter<"VideoUploadJob"> | number
-  receivedBytes?: Prisma.IntFilter<"VideoUploadJob"> | number
+  fileSize?: Prisma.BigIntFilter<"VideoUploadJob"> | bigint | number
+  receivedBytes?: Prisma.BigIntFilter<"VideoUploadJob"> | bigint | number
+  transferredBytes?: Prisma.BigIntFilter<"VideoUploadJob"> | bigint | number
+  processingProgress?: Prisma.IntNullableFilter<"VideoUploadJob"> | number | null
   title?: Prisma.StringFilter<"VideoUploadJob"> | string
   description?: Prisma.StringFilter<"VideoUploadJob"> | string
   acknowledged?: Prisma.BoolFilter<"VideoUploadJob"> | boolean
@@ -415,6 +443,8 @@ export type VideoUploadJobOrderByWithAggregationInput = {
   mimeType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   acknowledged?: Prisma.SortOrder
@@ -445,8 +475,10 @@ export type VideoUploadJobScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumVideoJobStatusWithAggregatesFilter<"VideoUploadJob"> | $Enums.VideoJobStatus
   fileName?: Prisma.StringWithAggregatesFilter<"VideoUploadJob"> | string
   mimeType?: Prisma.StringWithAggregatesFilter<"VideoUploadJob"> | string
-  fileSize?: Prisma.IntWithAggregatesFilter<"VideoUploadJob"> | number
-  receivedBytes?: Prisma.IntWithAggregatesFilter<"VideoUploadJob"> | number
+  fileSize?: Prisma.BigIntWithAggregatesFilter<"VideoUploadJob"> | bigint | number
+  receivedBytes?: Prisma.BigIntWithAggregatesFilter<"VideoUploadJob"> | bigint | number
+  transferredBytes?: Prisma.BigIntWithAggregatesFilter<"VideoUploadJob"> | bigint | number
+  processingProgress?: Prisma.IntNullableWithAggregatesFilter<"VideoUploadJob"> | number | null
   title?: Prisma.StringWithAggregatesFilter<"VideoUploadJob"> | string
   description?: Prisma.StringWithAggregatesFilter<"VideoUploadJob"> | string
   acknowledged?: Prisma.BoolWithAggregatesFilter<"VideoUploadJob"> | boolean
@@ -469,8 +501,10 @@ export type VideoUploadJobCreateInput = {
   status?: $Enums.VideoJobStatus
   fileName: string
   mimeType: string
-  fileSize: number
-  receivedBytes?: number
+  fileSize: bigint | number
+  receivedBytes?: bigint | number
+  transferredBytes?: bigint | number
+  processingProgress?: number | null
   title: string
   description?: string
   acknowledged?: boolean
@@ -493,8 +527,10 @@ export type VideoUploadJobUncheckedCreateInput = {
   status?: $Enums.VideoJobStatus
   fileName: string
   mimeType: string
-  fileSize: number
-  receivedBytes?: number
+  fileSize: bigint | number
+  receivedBytes?: bigint | number
+  transferredBytes?: bigint | number
+  processingProgress?: number | null
   title: string
   description?: string
   acknowledged?: boolean
@@ -517,8 +553,10 @@ export type VideoUploadJobUpdateInput = {
   status?: Prisma.EnumVideoJobStatusFieldUpdateOperationsInput | $Enums.VideoJobStatus
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  receivedBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  fileSize?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  receivedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  transferredBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  processingProgress?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   acknowledged?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -541,8 +579,10 @@ export type VideoUploadJobUncheckedUpdateInput = {
   status?: Prisma.EnumVideoJobStatusFieldUpdateOperationsInput | $Enums.VideoJobStatus
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  receivedBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  fileSize?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  receivedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  transferredBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  processingProgress?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   acknowledged?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -565,8 +605,10 @@ export type VideoUploadJobCreateManyInput = {
   status?: $Enums.VideoJobStatus
   fileName: string
   mimeType: string
-  fileSize: number
-  receivedBytes?: number
+  fileSize: bigint | number
+  receivedBytes?: bigint | number
+  transferredBytes?: bigint | number
+  processingProgress?: number | null
   title: string
   description?: string
   acknowledged?: boolean
@@ -589,8 +631,10 @@ export type VideoUploadJobUpdateManyMutationInput = {
   status?: Prisma.EnumVideoJobStatusFieldUpdateOperationsInput | $Enums.VideoJobStatus
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  receivedBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  fileSize?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  receivedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  transferredBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  processingProgress?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   acknowledged?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -613,8 +657,10 @@ export type VideoUploadJobUncheckedUpdateManyInput = {
   status?: Prisma.EnumVideoJobStatusFieldUpdateOperationsInput | $Enums.VideoJobStatus
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileSize?: Prisma.IntFieldUpdateOperationsInput | number
-  receivedBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  fileSize?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  receivedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  transferredBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  processingProgress?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   acknowledged?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -639,6 +685,8 @@ export type VideoUploadJobCountOrderByAggregateInput = {
   mimeType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   acknowledged?: Prisma.SortOrder
@@ -656,6 +704,8 @@ export type VideoUploadJobCountOrderByAggregateInput = {
 export type VideoUploadJobAvgOrderByAggregateInput = {
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrder
   duration?: Prisma.SortOrder
 }
 
@@ -669,6 +719,8 @@ export type VideoUploadJobMaxOrderByAggregateInput = {
   mimeType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   acknowledged?: Prisma.SortOrder
@@ -693,6 +745,8 @@ export type VideoUploadJobMinOrderByAggregateInput = {
   mimeType?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   acknowledged?: Prisma.SortOrder
@@ -710,6 +764,8 @@ export type VideoUploadJobMinOrderByAggregateInput = {
 export type VideoUploadJobSumOrderByAggregateInput = {
   fileSize?: Prisma.SortOrder
   receivedBytes?: Prisma.SortOrder
+  transferredBytes?: Prisma.SortOrder
+  processingProgress?: Prisma.SortOrder
   duration?: Prisma.SortOrder
 }
 
@@ -719,6 +775,14 @@ export type EnumVideoProviderFieldUpdateOperationsInput = {
 
 export type EnumVideoJobStatusFieldUpdateOperationsInput = {
   set?: $Enums.VideoJobStatus
+}
+
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -741,6 +805,8 @@ export type VideoUploadJobSelect<ExtArgs extends runtime.Types.Extensions.Intern
   mimeType?: boolean
   fileSize?: boolean
   receivedBytes?: boolean
+  transferredBytes?: boolean
+  processingProgress?: boolean
   title?: boolean
   description?: boolean
   acknowledged?: boolean
@@ -765,6 +831,8 @@ export type VideoUploadJobSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   mimeType?: boolean
   fileSize?: boolean
   receivedBytes?: boolean
+  transferredBytes?: boolean
+  processingProgress?: boolean
   title?: boolean
   description?: boolean
   acknowledged?: boolean
@@ -789,6 +857,8 @@ export type VideoUploadJobSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   mimeType?: boolean
   fileSize?: boolean
   receivedBytes?: boolean
+  transferredBytes?: boolean
+  processingProgress?: boolean
   title?: boolean
   description?: boolean
   acknowledged?: boolean
@@ -813,6 +883,8 @@ export type VideoUploadJobSelectScalar = {
   mimeType?: boolean
   fileSize?: boolean
   receivedBytes?: boolean
+  transferredBytes?: boolean
+  processingProgress?: boolean
   title?: boolean
   description?: boolean
   acknowledged?: boolean
@@ -827,7 +899,7 @@ export type VideoUploadJobSelectScalar = {
   updatedAt?: boolean
 }
 
-export type VideoUploadJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerUserId" | "courseId" | "provider" | "status" | "fileName" | "mimeType" | "fileSize" | "receivedBytes" | "title" | "description" | "acknowledged" | "sessionUrl" | "externalVideoId" | "contentUrl" | "providerStatus" | "duration" | "uploadError" | "lastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["videoUploadJob"]>
+export type VideoUploadJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerUserId" | "courseId" | "provider" | "status" | "fileName" | "mimeType" | "fileSize" | "receivedBytes" | "transferredBytes" | "processingProgress" | "title" | "description" | "acknowledged" | "sessionUrl" | "externalVideoId" | "contentUrl" | "providerStatus" | "duration" | "uploadError" | "lastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["videoUploadJob"]>
 
 export type $VideoUploadJobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "VideoUploadJob"
@@ -840,8 +912,10 @@ export type $VideoUploadJobPayload<ExtArgs extends runtime.Types.Extensions.Inte
     status: $Enums.VideoJobStatus
     fileName: string
     mimeType: string
-    fileSize: number
-    receivedBytes: number
+    fileSize: bigint
+    receivedBytes: bigint
+    transferredBytes: bigint
+    processingProgress: number | null
     title: string
     description: string
     acknowledged: boolean
@@ -1284,8 +1358,10 @@ export interface VideoUploadJobFieldRefs {
   readonly status: Prisma.FieldRef<"VideoUploadJob", 'VideoJobStatus'>
   readonly fileName: Prisma.FieldRef<"VideoUploadJob", 'String'>
   readonly mimeType: Prisma.FieldRef<"VideoUploadJob", 'String'>
-  readonly fileSize: Prisma.FieldRef<"VideoUploadJob", 'Int'>
-  readonly receivedBytes: Prisma.FieldRef<"VideoUploadJob", 'Int'>
+  readonly fileSize: Prisma.FieldRef<"VideoUploadJob", 'BigInt'>
+  readonly receivedBytes: Prisma.FieldRef<"VideoUploadJob", 'BigInt'>
+  readonly transferredBytes: Prisma.FieldRef<"VideoUploadJob", 'BigInt'>
+  readonly processingProgress: Prisma.FieldRef<"VideoUploadJob", 'Int'>
   readonly title: Prisma.FieldRef<"VideoUploadJob", 'String'>
   readonly description: Prisma.FieldRef<"VideoUploadJob", 'String'>
   readonly acknowledged: Prisma.FieldRef<"VideoUploadJob", 'Boolean'>

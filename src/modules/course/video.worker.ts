@@ -1,16 +1,15 @@
 // Run as a separate process using the same TypeScript runner as emails/worker.ts.
 import 'dotenv/config';
-import { Queue, Worker } from 'bullmq';
+import { Worker } from 'bullmq';
 import { connectDatabase, getDatabaseClient as db } from '../../config/database.js';
 import { config } from '../../config/env.js';
 import redis, { createRedisConnection } from '../../emails/redisConnection.js';
 import { deleteStagedFile, stagingPath } from './video.service.js';
+import { VIDEO_HEARTBEAT_KEY, enqueueVideoUpload, videoQueue, type VideoTask } from './video.queue.js';
 import { checked, durationSeconds, inspectVideo, syncPlaylist, transfer, youtube } from './video.youtube.js';
 
 const connection = createRedisConnection('worker');
-const queue = new Queue<{ id: string; kind: 'upload' | 'playlist' | 'cleanup' }>('videoHosting', {
-  connection: redis, defaultJobOptions: { attempts: 8, backoff: { type: 'exponential', delay: 10_000 }, removeOnComplete: true, removeOnFail: { count: 1000 } },
-});
+const queue = videoQueue;
 
 async function processUpload(id: string): Promise<void> {
   let job = await db().videoUploadJob.findUnique({ where: { id } });
@@ -24,25 +23,29 @@ async function processUpload(id: string): Promise<void> {
   let ready = false;
   let duration = 0;
   let providerStatus = '';
+  let processingProgress: number | null = null;
   if (job.provider === 'YOUTUBE') {
     const video = await inspectVideo(job.externalVideoId);
     providerStatus = video.processingDetails?.processingStatus ?? video.status.uploadStatus;
-    if (['failed', 'rejected', 'deleted'].includes(video.status.uploadStatus) || ['failed', 'terminated'].includes(providerStatus)) throw new Error('Video processing failed. Review the source file and administrator provider diagnostics.');
-    ready = video.status.uploadStatus === 'processed' && video.status.privacyStatus === 'unlisted' && video.status.embeddable && providerStatus === 'succeeded';
+    if (['failed', 'rejected', 'deleted'].includes(video.status.uploadStatus) || providerStatus === 'failed') throw new Error('Video processing failed. Review the source file and administrator provider diagnostics.');
+    ready = video.status.uploadStatus === 'processed' && video.status.privacyStatus === 'unlisted' && video.status.embeddable && providerStatus !== 'processing';
     if (video.status.uploadStatus === 'processed' && !ready) throw new Error('Processing finished but Unlisted embedding is unavailable. Check channel and API project restrictions.');
+    const progress = video.processingDetails?.processingProgress;
+    if (Number(progress?.partsTotal) > 0) processingProgress = Math.max(0, Math.min(100, Math.floor(Number(progress?.partsProcessed ?? 0) / Number(progress?.partsTotal) * 100)));
     duration = durationSeconds(video.contentDetails?.duration);
   } else {
     const response = await checked(await fetch(`https://video.bunnycdn.com/library/${config.BUNNY_STREAM_LIBRARY_ID}/videos/${job.externalVideoId}`, {
       headers: { AccessKey: config.BUNNY_STREAM_API_KEY }, signal: AbortSignal.timeout(30_000),
     }));
-    const video = await response.json() as { status: number; length: number; availableResolutions?: string };
+    const video = await response.json() as { status: number; length: number; availableResolutions?: string; encodeProgress?: number };
     providerStatus = String(video.status);
     if ([5, 6].includes(video.status)) throw new Error('Premium Hosting processing failed. Retry or upload a supported source.');
     ready = video.status === 4 && Boolean(video.availableResolutions);
+    processingProgress = Number.isFinite(video.encodeProgress) ? Math.min(100, Math.max(0, Math.floor(video.encodeProgress!))) : null;
     duration = Math.round(video.length);
   }
   await db().videoUploadJob.update({ where: { id }, data: {
-    status: ready ? 'READY' : 'PROCESSING', providerStatus, duration,
+    status: ready ? 'READY' : 'PROCESSING', providerStatus, duration, processingProgress: ready ? 100 : processingProgress,
     uploadError: null, lastSyncedAt: new Date(),
   } });
   if (ready) await deleteStagedFile(id);
@@ -77,7 +80,7 @@ async function cleanup(id: string): Promise<void> {
 }
 
 await connectDatabase();
-const worker = new Worker<{ id: string; kind: 'upload' | 'playlist' | 'cleanup' }>('videoHosting', async task => {
+const worker = new Worker<VideoTask>('videoHosting', async task => {
   if (task.data.kind === 'playlist') {
     try { await syncPlaylist(task.data.id); }
     catch (error) {
@@ -104,35 +107,41 @@ async function dispatch(): Promise<void> {
   try {
     const pending = await db().videoUploadJob.findMany({ where: { status: { in: ['QUEUED', 'UPLOADING', 'PROCESSING'] } }, take: 200, orderBy: { updatedAt: 'asc' } });
     for (const job of pending) {
-      const jobId = `upload-${job.id}`;
-      const previous = await queue.getJob(jobId);
-      // Explicit retry is represented by the DB status; failed queue entries are
-      // removed before redispatch. Ready/failed records are excluded above.
-      if (previous && await previous.getState() === 'failed') await previous.remove();
-      await queue.add('upload', { id: job.id, kind: 'upload' }, { jobId });
+      await enqueueVideoUpload(job.id);
     }
     const courses = await db().course.findMany({ where: { deletedAt: null, OR: [
       { youtubePlaylistId: { not: null } }, { modules: { some: { lessons: { some: { videoProvider: 'YOUTUBE' } } } } },
     ] }, select: { id: true, updatedAt: true, playlistSyncedAt: true, playlistSyncError: true } });
     for (const course of courses) {
       if (!course.playlistSyncError && course.playlistSyncedAt && course.playlistSyncedAt >= course.updatedAt) continue;
-      await queue.add('playlist', { id: course.id, kind: 'playlist' }, { jobId: `playlist-${course.id}-${Math.floor(Date.now() / 300_000)}` });
+      await queue.add('playlist', { id: course.id, kind: 'playlist' }, { jobId: `playlist-${course.id}-${Math.floor(Date.now() / 300_000)}`, priority: 10 });
     }
     const abandoned = await db().videoUploadJob.findMany({ where: { OR: [
       { status: 'CANCELLED' }, { status: { in: ['STAGING', 'READY', 'FAILED'] }, updatedAt: { lt: new Date(Date.now() - 7 * 86_400_000) } },
     ] }, take: 100, orderBy: { updatedAt: 'asc' } });
-    for (const job of abandoned) await queue.add('cleanup', { id: job.id, kind: 'cleanup' }, { jobId: `cleanup-${job.id}-${Math.floor(Date.now() / 3_600_000)}` });
+    for (const job of abandoned) await queue.add('cleanup', { id: job.id, kind: 'cleanup' }, { jobId: `cleanup-${job.id}-${Math.floor(Date.now() / 3_600_000)}`, priority: 20 });
   } catch { console.error('[video] Dispatch failed; the durable outbox will be retried.'); }
   finally { dispatching = false; }
 }
+await worker.waitUntilReady();
+const heartbeatValue = String(process.pid);
+const heartbeat = async () => {
+  if (!worker.isRunning() || worker.isPaused()) return;
+  await redis.set(VIDEO_HEARTBEAT_KEY, heartbeatValue, 'EX', 45);
+};
+await heartbeat();
+console.info('[video] Worker ready. Uploads and processing verification are active.');
+const heartbeatTimer = setInterval(() => void heartbeat().catch(() => console.error('[video] Heartbeat failed. Check Redis.')), 10_000);
 await dispatch();
-const timer = setInterval(() => void dispatch(), 30_000);
+const timer = setInterval(() => void dispatch(), 10_000);
 let closing = false;
 async function shutdown(): Promise<void> {
   if (closing) return;
   closing = true;
   clearInterval(timer);
+  clearInterval(heartbeatTimer);
   await worker.close();
+  await redis.eval("if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end", 1, VIDEO_HEARTBEAT_KEY, heartbeatValue);
   await queue.close();
   await connection.quit();
   await redis.quit();

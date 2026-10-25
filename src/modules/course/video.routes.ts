@@ -13,17 +13,19 @@ import { courseService } from './course.service.js';
 import { assertCourseEditor, identity, ownedJob, playback, publicJob, stageChunk, videoSettings } from './video.service.js';
 import { clearTokenCache, encryptToken, googleTokenRequest, verifyChannel } from './video.youtube.js';
 
+import { enqueueVideoUpload, videoWorkerAvailable } from './video.queue.js';
+
 export const VideoRoutes = Router();
 const chunkUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024, files: 1, fields: 2 } });
 const initialize = z.object({
   hostingType: z.enum(['FREE', 'PREMIUM']), courseId: z.string().uuid().optional(),
-  fileName: z.string().min(1).max(255), mimeType: z.string().max(100), fileSize: z.number().int().positive(),
+  fileName: z.string().min(1).max(255), mimeType: z.string().max(100), fileSize: z.number().int().positive().max(100 * 1024 ** 3),
   title: z.string().trim().min(1).max(150), description: z.string().max(5000).default(''),
   acknowledged: z.boolean().default(false), youtubeDisclosureAccepted: z.boolean().default(false),
 });
 const policySchema = z.object({
   defaultHosting: z.enum(['FREE', 'PREMIUM']), allowFreePaid: z.boolean(), freeEnabled: z.boolean(), premiumEnabled: z.boolean(),
-  maxUploadBytes: z.number().int().min(1024).max(2_000_000_000),
+  maxUploadBytes: z.number().int().min(1024).max(100 * 1024 ** 3),
   allowedMimeTypes: z.array(z.enum(['video/mp4', 'video/quicktime', 'video/webm'])).min(1),
 }).strict();
 
@@ -34,7 +36,7 @@ VideoRoutes.get('/policy', requireInstructor, catchAsync(async (_req, res) => {
     freeUnavailableReason: !s.encryptedRefreshToken
       ? 'Free Hosting is unavailable until an administrator connects the central video account in Settings → Video Hosting.'
       : !s.freeEnabled ? 'Free Hosting is disabled by the administrator in Settings → Video Hosting.' : null,
-    maxUploadBytes: s.maxUploadBytes, allowedMimeTypes: s.allowedMimeTypes });
+    workerAvailable: await videoWorkerAvailable(), maxUploadBytes: Number(s.maxUploadBytes), allowedMimeTypes: s.allowedMimeTypes });
 }));
 
 VideoRoutes.post('/uploads', requireInstructor, catchAsync(async (req, res) => {
@@ -42,7 +44,8 @@ VideoRoutes.post('/uploads', requireInstructor, catchAsync(async (req, res) => {
   const ownerUserId = await identity(req);
   if (input.courseId) await assertCourseEditor(req, input.courseId);
   const settings = await videoSettings();
-  if (input.fileSize > settings.maxUploadBytes || !settings.allowedMimeTypes.includes(input.mimeType)) throw new AppError('Video format or size is not permitted.', 400);
+  if (!await videoWorkerAvailable()) throw new AppError('Video worker is offline. Start the video worker before uploading. Existing uploads will resume when it is running.', 503);
+  if (input.fileSize > Number(settings.maxUploadBytes) || !settings.allowedMimeTypes.includes(input.mimeType)) throw new AppError(`Video format is not permitted or the file exceeds the configured ${Math.round(Number(settings.maxUploadBytes) / 1024 ** 2)} MB upload limit.`, 400);
   if (input.hostingType === 'FREE') {
     if (!settings.freeEnabled || !settings.encryptedRefreshToken) throw new AppError('Free Hosting is currently unavailable.', 503);
     if (!input.youtubeDisclosureAccepted) throw new AppError('Accept the upload destination and privacy disclosure.', 400);
@@ -56,7 +59,7 @@ VideoRoutes.post('/uploads', requireInstructor, catchAsync(async (req, res) => {
   if (pending >= 20) throw new AppError('Finish or cancel pending uploads first.', 429);
   const job = await db().videoUploadJob.create({ data: {
     ownerUserId, courseId: input.courseId, provider: input.hostingType === 'FREE' ? 'YOUTUBE' : 'BUNNY',
-    fileName: input.fileName, mimeType: input.mimeType, fileSize: input.fileSize, title: input.title,
+    fileName: input.fileName, mimeType: input.mimeType, fileSize: BigInt(input.fileSize), title: input.title,
     description: input.description, acknowledged: input.acknowledged,
   } });
   let signature: Awaited<ReturnType<typeof courseService.getBunnySignature>> | undefined;
@@ -77,7 +80,7 @@ VideoRoutes.post('/uploads', requireInstructor, catchAsync(async (req, res) => {
       contentUrl: `https://video.bunnycdn.com/library/${signature.libraryId}/videos/${signature.videoId}`,
     } });
   }
-  ResponseHandler.ok(res, 'Upload initialized', { ...publicJob(job), signature });
+  ResponseHandler.ok(res, 'Upload initialized', { ...publicJob(job, await videoWorkerAvailable()), signature });
 }));
 
 VideoRoutes.get('/uploads/:id', requireInstructor, catchAsync(async (req, res) => {
@@ -87,7 +90,7 @@ VideoRoutes.get('/uploads/:id', requireInstructor, catchAsync(async (req, res) =
     videoId: job.externalVideoId, libraryId: config.BUNNY_STREAM_LIBRARY_ID, expires,
     token: createHash('sha256').update(`${Number(config.BUNNY_STREAM_LIBRARY_ID)}${config.BUNNY_STREAM_API_KEY}${expires}${job.externalVideoId}`).digest('hex'),
   } : undefined;
-  ResponseHandler.ok(res, 'Upload status', { ...publicJob(job), signature });
+  ResponseHandler.ok(res, 'Upload status', { ...publicJob(job, await videoWorkerAvailable()), signature });
 }));
 VideoRoutes.post('/uploads/:id/chunks', requireInstructor, chunkUpload.single('file'), catchAsync(async (req, res) => {
   if (!req.file) throw new AppError('Video chunk required.', 400);
@@ -102,15 +105,18 @@ VideoRoutes.post('/uploads/:id/complete', requireInstructor, catchAsync(async (r
     if (job.provider === 'BUNNY' && !job.externalVideoId) throw new AppError('Upload has not initialized.', 409);
     await db().videoUploadJob.updateMany({ where: { id: job.id, status: 'STAGING' }, data: { status: job.provider === 'BUNNY' ? 'PROCESSING' : 'QUEUED' } });
   }
-  // PostgreSQL is the queue outbox; the worker dispatcher recovers after restarts.
-  ResponseHandler.ok(res, 'Upload queued', publicJob(await ownedJob(req, job.id)));
+  // Enqueue immediately; the durable DB outbox still recovers Redis failures.
+  await enqueueVideoUpload(job.id).catch(() => console.error('[video] Enqueue failed; dispatch recovery will retry.'));
+  ResponseHandler.ok(res, 'Upload queued', publicJob(await ownedJob(req, job.id), await videoWorkerAvailable()));
 }));
 VideoRoutes.post('/uploads/:id/retry', requireInstructor, catchAsync(async (req, res) => {
   const job = await ownedJob(req, String(req.params.id));
   if (job.status === 'FAILED') await db().videoUploadJob.update({ where: { id: job.id }, data: {
     status: job.externalVideoId ? 'PROCESSING' : job.receivedBytes === job.fileSize ? 'QUEUED' : 'STAGING', uploadError: null,
   } });
-  ResponseHandler.ok(res, 'Upload retry requested', publicJob(await ownedJob(req, job.id)));
+  const updated = await ownedJob(req, job.id);
+  if (['QUEUED', 'UPLOADING', 'PROCESSING'].includes(updated.status)) await enqueueVideoUpload(job.id).catch(() => {});
+  ResponseHandler.ok(res, 'Upload retry requested', publicJob(updated, await videoWorkerAvailable()));
 }));
 VideoRoutes.delete('/uploads/:id', requireInstructor, catchAsync(async (req, res) => {
   const job = await ownedJob(req, String(req.params.id));
@@ -132,14 +138,14 @@ VideoRoutes.get('/admin', requireAdmin, catchAsync(async (_req, res) => {
     db().videoUploadJob.findMany({ where: { status: 'FAILED' }, orderBy: { updatedAt: 'desc' }, take: 20, select: { id: true, fileName: true, uploadError: true } }),
     db().course.findMany({ where: { playlistSyncError: { not: null } }, take: 20, select: { id: true, title: true, playlistSyncError: true } }),
   ]);
-  ResponseHandler.ok(res, 'Video Hosting settings', { ...safe, connected: Boolean(secret), playlistPrivacy: 'private', counts, failed, playlistFailures,
+  ResponseHandler.ok(res, 'Video Hosting settings', { ...safe, maxUploadBytes: Number(safe.maxUploadBytes), workerAvailable: await videoWorkerAvailable(), connected: Boolean(secret), playlistPrivacy: 'private', counts, failed, playlistFailures,
     premiumConfigured: Boolean(config.BUNNY_STREAM_API_KEY && config.BUNNY_STREAM_LIBRARY_ID),
     signedPlaybackConfigured: Boolean(config.BUNNY_STREAM_TOKEN_AUTH_KEY) });
 }));
 VideoRoutes.patch('/admin', requireAdmin, catchAsync(async (req, res) => {
   const policy = policySchema.parse(req.body);
   await videoSettings();
-  await db().videoHostingSettings.update({ where: { id: 'central' }, data: policy });
+  await db().videoHostingSettings.update({ where: { id: 'central' }, data: { ...policy, maxUploadBytes: BigInt(policy.maxUploadBytes) } });
   ResponseHandler.ok(res, 'Hosting policy saved');
 }));
 VideoRoutes.post('/admin/connect', requireAdmin, catchAsync(async (req, res) => {
