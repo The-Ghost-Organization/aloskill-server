@@ -6,6 +6,7 @@ import { BookRoutes } from '../modules/book/book.routes.js';
 import { CartRoutes } from '../modules/cart/cart.routes.js';
 import { ChatRoutes } from '../modules/chat/chat.routes.js';
 import { ContactRoutes } from '../modules/contact/contact.routes.js';
+import { VideoRoutes } from '../modules/course/video.routes.js';
 import { CourseRoutes } from '../modules/course/course.routes.js';
 import { NotificationRoutes } from '../modules/notification/notification.routes.js';
 import { OrderRoutes } from '../modules/order/order.routes.js';
@@ -17,6 +18,7 @@ const moduleRoutes = [
   { path: '/finance', route: FinanceRoutes },
   { path: '/auth', route: AuthRoutes },
   { path: '/user', route: UserRoutes },
+  { path: '/course/video', route: VideoRoutes },
   { path: '/course', route: CourseRoutes },
   { path: '/order', route: OrderRoutes },
   { path: '/book', route: BookRoutes },

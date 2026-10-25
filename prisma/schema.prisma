@@ -564,7 +564,76 @@ model SocialLink {
 }
 
 /// Courses & content
+enum VideoHostingType {
+  FREE
+  PREMIUM
+}
+
+enum VideoProvider {
+  YOUTUBE
+  BUNNY
+}
+
+enum VideoJobStatus {
+  STAGING
+  QUEUED
+  UPLOADING
+  PROCESSING
+  READY
+  FAILED
+  CANCELLED
+  RETIRED
+}
+
+// Jobs also serve as the durable asset ledger, independent of lesson deletion.
+model VideoUploadJob {
+  id String @id @default(uuid())
+  ownerUserId String
+  courseId String?
+  provider VideoProvider
+  status VideoJobStatus @default(STAGING)
+  fileName String
+  mimeType String
+  fileSize Int
+  receivedBytes Int @default(0)
+  title String
+  description String @default("")
+  acknowledged Boolean @default(false)
+  sessionUrl String?
+  externalVideoId String?
+  contentUrl String?
+  providerStatus String?
+  duration Int?
+  uploadError String?
+  lastSyncedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([ownerUserId, status])
+  @@index([status, updatedAt])
+  @@map("video_upload_jobs")
+}
+
+model VideoHostingSettings {
+  id String @id @default("central")
+  defaultHosting VideoHostingType @default(PREMIUM)
+  allowFreePaid Boolean @default(true)
+  freeEnabled Boolean @default(false)
+  premiumEnabled Boolean @default(true)
+  maxUploadBytes Int @default(1073741824)
+  allowedMimeTypes String[] @default(["video/mp4", "video/quicktime", "video/webm"])
+  encryptedRefreshToken String?
+  channelId String?
+  channelTitle String?
+  lastError String?
+  updatedAt DateTime @updatedAt
+  @@map("video_hosting_settings")
+}
+
 model Course {
+  defaultHosting VideoHostingType @default(PREMIUM)
+  youtubePlaylistId String?
+  playlistSyncError String?
+  playlistSyncedAt DateTime?
   commissionRate Decimal? @db.Decimal(5, 2)
   commissionSource String?
   commissionApprovedAt DateTime?
@@ -663,6 +732,13 @@ model Module {
 }
 
 model Lesson {
+  hostingType VideoHostingType @default(PREMIUM)
+  videoProvider VideoProvider @default(BUNNY)
+  externalVideoId String?
+  videoUploadJobId String?
+  providerVideoStatus String?
+  uploadedAt DateTime?
+  lastSyncedAt DateTime?
   id            String       @id @default(uuid())
   module        Module       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   moduleId      String

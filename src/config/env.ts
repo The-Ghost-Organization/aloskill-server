@@ -80,6 +80,14 @@ const envSchema = z.object({
   SHIPPING_BASE_WEIGHT_KG: z.coerce.number().positive().default(.5),
   SHIPPING_EXTRA_PER_KG: z.coerce.number().nonnegative().default(20),
 
+  GOOGLE_CLIENT_ID: z.string().default(''),
+  GOOGLE_CLIENT_SECRET: z.string().default(''),
+  GOOGLE_REDIRECT_URI: z.string().default(''),
+  YOUTUBE_CHANNEL_ID: z.string().default(''),
+  VIDEO_TOKEN_ENCRYPTION_KEY: z.string().default(''),
+  VIDEO_TEMP_DIR: z.string().default('./private-video-uploads'),
+  VIDEO_WORKER_CONCURRENCY: z.coerce.number().int().min(1).max(8).default(2),
+
   // EPS_USERNAME: z.string().default(process.env.EPS_USERNAME as string),
   // EPS_PASSWORD: z.string().default(process.env.EPS_PASSWORD as string),
   // EPS_HASH_KEY: z.string().default(process.env.EPS_HASH_KEY as string),

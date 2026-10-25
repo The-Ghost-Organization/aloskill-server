@@ -1,3 +1,5 @@
+import { assertCourseEditor, bindAssets, identity, playback, validateVideoLessons, videoFields } from './video.service.js';
+import { AppError } from '../../middleware/errorHandler.js';
 import { financeService } from '../finance/finance.service.js';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -162,7 +164,9 @@ const getCourseTags = async (req: Request) => {
 
 const createCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  const instructorEmail = req.query.user as string;
+  if (data.id) await assertCourseEditor(req, data.id);
+  const videoAssets = await validateVideoLessons(req, data.modules.flatMap(m => m.lessons), data.originalPrice ?? 0, data.id ?? undefined);
+  const instructorEmail = req.user.email;
 
   if (data.modules.length === 0) {
     throw new Error('Invalid course data provided');
@@ -239,7 +243,8 @@ const createCourse = async (req: Request) => {
     : false;
 
   const course = await executeDbOperation(async prisma => {
-    return await prisma.course.create({
+    return await prisma.$transaction(async tx => {
+    const created = await tx.course.create({
       data: {
         ...courseData,
         originalPrice,
@@ -284,6 +289,7 @@ const createCourse = async (req: Request) => {
             lessons: {
               create: moduleData.lessons.map(lesson => {
                 const lessonCreateInput: any = {
+                  ...videoFields(lesson, videoAssets),
                   title: lesson.title,
                   position: lesson.position,
                   type: lesson.type,
@@ -338,6 +344,9 @@ const createCourse = async (req: Request) => {
         id: true,
       },
     });
+    await bindAssets(tx, created.id, videoAssets);
+    return created;
+    });
   });
 
   return course;
@@ -345,6 +354,8 @@ const createCourse = async (req: Request) => {
 
 const updateCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
+  if (data.id) await assertCourseEditor(req, data.id);
+  const videoAssets = await validateVideoLessons(req, data.modules.flatMap(m => m.lessons), data.originalPrice ?? 0, data.id ?? undefined);
   const instructorEmail = req.user.email;
 
   if (!data.id) {
@@ -484,65 +495,47 @@ const updateCourse = async (req: Request) => {
         },
       });
 
-      await tx.module.deleteMany({ where: { courseId: id } });
-
-      for (const [_index, module] of modules.entries()) {
-        await tx.module.create({
-          data: {
-            courseId: id,
-            title: module.title,
-            position: module.position,
-            lessons: {
-              create: module.lessons.map((lesson: any) => ({
-                title: lesson.title,
-                position: lesson.position,
-                type: lesson.type,
-                description: lesson.description,
-                notes: lesson.notes,
-                contentUrl: lesson.contentUrl?.url,
-                contentName: lesson.contentUrl?.name,
-                duration: lesson.type === 'QUIZ' ? lesson.quiz?.duration : lesson.duration,
-                files: {
-                  create: lesson.files?.map((file: { url: string; name: string }) => ({
-                    url: file.url,
-                    name: file.name,
-                  })),
-                },
-                quiz: lesson.quiz
-                  ? {
-                      create: {
-                        title: lesson.quiz.title,
-                        description: lesson.quiz.description,
-                        passingScore: lesson.quiz.passingScore,
-                        attemptsAllowed: lesson.quiz.attemptsAllowed,
-                        questions: {
-                          create: lesson.quiz.questions.map((q: any) => ({
-                            text: q.text,
-                            type:
-                              q.type === 'TRUE_FALSE'
-                                ? QuestionType.TRUE_FALSE
-                                : q.type === 'SINGLE_CHOICE'
-                                  ? QuestionType.SINGLE_CHOICE
-                                  : 'MULTIPLE_CHOICE',
-                            points: q.points,
-                            position: q.position,
-                            options: {
-                              create: q.options.map((o: any) => ({
-                                text: o.text,
-                                isCorrect: o.isCorrect,
-                                position: o.position,
-                              })),
-                            },
-                          })),
-                        },
-                      },
-                    }
-                  : undefined,
-              })),
-            },
-          },
-        });
+      const oldModules = await tx.module.findMany({ where: { courseId: id }, include: { lessons: true } });
+      const retainedModules: string[] = [];
+      const retainedLessons: string[] = [];
+      for (const module of modules) {
+        const oldModule = module.id ? oldModules.find(m => m.id === module.id) : undefined;
+        if (module.id && !oldModule) throw new AppError('Module does not belong to this course.', 403);
+        const savedModule = oldModule
+          ? await tx.module.update({ where: { id: oldModule.id }, data: { title: module.title, position: module.position, deletedAt: null } })
+          : await tx.module.create({ data: { courseId: id, title: module.title, position: module.position } });
+        retainedModules.push(savedModule.id);
+        for (const lesson of module.lessons) {
+          const oldLesson = lesson.id ? oldModules.flatMap(m => m.lessons).find(l => l.id === lesson.id) : undefined;
+          if (lesson.id && !oldLesson) throw new AppError('Lesson does not belong to this course.', 403);
+          const asset = videoFields(lesson, videoAssets);
+          const clearAsset = !lesson.contentUrl?.url ? { videoUploadJobId: null, externalVideoId: null, providerVideoStatus: null, hostingType: 'PREMIUM' as const, videoProvider: 'BUNNY' as const } : {};
+          const lessonData = {
+            ...asset, ...clearAsset, moduleId: savedModule.id, title: lesson.title, position: lesson.position,
+            type: lesson.type, description: lesson.description, notes: lesson.notes,
+            contentUrl: lesson.contentUrl?.url ?? null, contentName: lesson.contentUrl?.name ?? null,
+            duration: lesson.type === 'QUIZ' ? lesson.quiz?.duration : lesson.duration,
+            deletedAt: null,
+          };
+          const saved = oldLesson
+            ? await tx.lesson.update({ where: { id: oldLesson.id }, data: lessonData })
+            : await tx.lesson.create({ data: lessonData });
+          retainedLessons.push(saved.id);
+          await tx.lessonFile.deleteMany({ where: { lessonId: saved.id } });
+          if (lesson.files?.length) await tx.lessonFile.createMany({ data: lesson.files.map(file => ({ ...file, lessonId: saved.id })) });
+          if (lesson.quiz) {
+            const q = lesson.quiz;
+            const quizData = { title: q.title, description: q.description, passingScore: q.passingScore, attemptsAllowed: q.attemptsAllowed, duration: q.duration ?? 0 };
+            await tx.quiz.upsert({ where: { lessonId: saved.id },
+              create: { ...quizData, lessonId: saved.id, questions: { create: q.questions.map(question => ({ ...question, options: { create: question.options } })) } },
+              update: { ...quizData, questions: { deleteMany: {}, create: q.questions.map(question => ({ ...question, options: { create: question.options } })) } },
+            });
+          }
+        }
       }
+      await tx.lesson.updateMany({ where: { module: { courseId: id }, id: { notIn: retainedLessons } }, data: { deletedAt: new Date() } });
+      await tx.module.updateMany({ where: { courseId: id, id: { notIn: retainedModules } }, data: { deletedAt: new Date() } });
+      await bindAssets(tx, id, videoAssets);
 
       return updatedCourse;
     });
@@ -634,8 +627,10 @@ const getAllCoursesForInstructor = async (req: Request) => {
           },
         },
         modules: {
+          where: { deletedAt: null },
           select: {
             lessons: {
+              where: { deletedAt: null },
               select: {
                 duration: true,
               },
@@ -851,8 +846,10 @@ const getAllCoursesForPublic = async (req: Request) => {
           },
         },
         modules: {
+          where: { deletedAt: null },
           select: {
             lessons: {
+              where: { deletedAt: null },
               select: {
                 duration: true,
               },
@@ -1004,10 +1001,12 @@ const getSingleCourseForPublicView = async (req: Request) => {
         },
 
         modules: {
+          where: { deletedAt: null },
           select: {
             title: true,
             position: true,
             lessons: {
+              where: { deletedAt: null },
               select: {
                 position: true,
                 contentUrl: true,
@@ -1518,6 +1517,7 @@ const getCourseTestimonials = async (req: Request) => {
 };
 
 const getSingleCourseForPaidView = async (req: Request) => {
+  if (req.params.userId !== await identity(req)) throw new AppError('Access denied.', 403);
   const { courseId, userId } = req.params;
 
   if (!courseId || !userId) {
@@ -1548,11 +1548,13 @@ const getSingleCourseForPaidView = async (req: Request) => {
         updatedAt: true,
 
         modules: {
+          where: { deletedAt: null },
           orderBy: { position: 'asc' },
           select: {
             title: true,
             position: true,
             lessons: {
+              where: { deletedAt: null },
               orderBy: { position: 'asc' },
               select: {
                 id: true,
@@ -1710,8 +1712,10 @@ const getSingleCourseForInstructorView = async (req: Request) => {
         },
 
         modules: {
+          where: { deletedAt: null },
           select: {
             lessons: {
+              where: { deletedAt: null },
               select: {
                 type: true,
                 duration: true,
@@ -1847,6 +1851,7 @@ const getSingleCourseForInstructorView = async (req: Request) => {
 };
 
 const getSingleCourseForInstructorEdit = async (req: Request) => {
+  await assertCourseEditor(req, String(req.params.courseId));
   const { courseId } = req.params;
 
   if (typeof courseId !== 'string') {
@@ -1858,6 +1863,7 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
       where: { id: courseId, deletedAt: null },
       select: {
         id: true,
+        defaultHosting: true,
         title: true,
         slug: true,
         description: true,
@@ -1897,11 +1903,17 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
           },
         },
         modules: {
+          where: { deletedAt: null },
           select: {
+            id: true,
             title: true,
             position: true,
             lessons: {
+              where: { deletedAt: null },
               select: {
+                id: true,
+                hostingType: true,
+                videoUploadJobId: true,
                 title: true,
                 position: true,
                 type: true,
@@ -1966,9 +1978,14 @@ const getSingleCourseForInstructorEdit = async (req: Request) => {
         role: ci.role,
       })),
       modules: course.modules.map(m => ({
+        id: m.id,
         title: m.title,
         position: m.position,
         lessons: m.lessons.map(l => ({
+          id: l.id,
+          hostingType: l.hostingType,
+          videoUploadJobId: l.videoUploadJobId,
+          freeHostingAcknowledged: l.hostingType === 'FREE',
           title: l.title,
           position: l.position,
           notes: l.notes ?? undefined,
@@ -2400,6 +2417,12 @@ const getInstructorDashboardData = async (req: Request) => {
 };
 
 const updateLessonProgress = async (req: Request) => {
+  if (req.params.userId !== await identity(req)) throw new AppError('Access denied.', 403);
+  const access = await executeDbOperation(p => p.lesson.findFirst({ where: {
+    id: String(req.body.lessonId), deletedAt: null, module: { courseId: String(req.body.courseId), deletedAt: null,
+      course: { deletedAt: null, enrollments: { some: { userId: String(req.params.userId), status: 'ACTIVE' } } } },
+  }, select: { id: true } }));
+  if (!access) throw new AppError('Lesson access denied.', 403);
   const userId = req.params.userId as string;
   const { courseId, lessonId, progressValue, lastPosition, isFinished } = req.body as {
     courseId: string;
@@ -2419,6 +2442,8 @@ const updateLessonProgress = async (req: Request) => {
     throw new Error('Lesson Id not found');
   }
 
+  if (!Number.isFinite(progressValue) || progressValue < 0 || progressValue > 100 ||
+    !Number.isFinite(lastPosition) || lastPosition < 0 || typeof isFinished !== 'boolean') throw new AppError('Invalid lesson progress.', 400);
   const updateData = await executeDbOperation(async prisma => {
     return await prisma.lessonProgress.upsert({
       where: {
@@ -2426,6 +2451,7 @@ const updateLessonProgress = async (req: Request) => {
       },
       update: {
         progressValue,
+        lastPosition,
         lastViewedAt: new Date(),
         completed: isFinished,
         completedAt: isFinished ? new Date() : undefined,
@@ -2556,12 +2582,26 @@ const createFileToBunny = async (req: Request) => {
 };
 
 // currently not used in anyother api
+const authorizedBunnyUrl = async (req: Request, value: string) => {
+  const url = new URL(value);
+  const prefix = `/library/${config.BUNNY_STREAM_LIBRARY_ID}/videos/`;
+  if (url.protocol !== 'https:' || url.hostname !== 'video.bunnycdn.com' || !url.pathname.startsWith(prefix) || url.search || url.hash || url.username || url.password || url.port) throw new AppError('Invalid video URL.', 400);
+  const videoId = url.pathname.slice(prefix.length);
+  if (!/^[\w-]+$/.test(videoId)) throw new AppError('Invalid video ID.', 400);
+  const lesson = await executeDbOperation(p => p.lesson.findFirst({ where: { contentUrl: value }, select: { module: { select: { courseId: true } } } }));
+  const trailer = lesson ? null : await executeDbOperation(p => p.course.findFirst({ where: { trailerUrl: value }, select: { id: true } }));
+  const courseId = lesson?.module.courseId ?? trailer?.id;
+  if (!courseId) throw new AppError('Save or remove videos through the course editor.', 403);
+  await assertCourseEditor(req, courseId);
+  return value;
+};
+
 const getVideo = async (req: Request) => {
   const { videoUrl } = req.body as { videoUrl: string };
   if (!videoUrl) {
     throw new Error('Video Url Not Provided');
   }
-  const getVideoResponse = await fetch(videoUrl, {
+  const getVideoResponse = await fetch(await authorizedBunnyUrl(req, videoUrl), {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -2575,27 +2615,8 @@ const getVideo = async (req: Request) => {
   return false;
 };
 
-const getSecureVideoToken = (req: Request) => {
-  const { filePath, duration } = req.body as { filePath: string; duration: number };
-  if (!filePath) {
-    throw new Error('File Path Not Provided');
-  }
-
-  // const path = `/play/${filePath}`;
-  // const userIp = req.ip;
-  const authenticationKey = config.BUNNY_STREAM_TOKEN_AUTH_KEY;
-  const libraryId = config.BUNNY_STREAM_LIBRARY_ID;
-  const expires = Math.floor(new Date().getTime() / 1000) + duration * 60;
-  const hashableBase = authenticationKey + filePath + expires;
-
-  const signature = crypto.createHash('sha256').update(hashableBase).digest('hex');
-
-  return {
-    libraryId,
-    token: signature,
-    videoId: filePath,
-    expiresAt: expires,
-  };
+const getSecureVideoToken = async (req: Request) => {
+  return playback(req, undefined, String(req.body.filePath ?? ''));
 };
 
 const deleteVideo = async (req: Request) => {
@@ -2603,7 +2624,8 @@ const deleteVideo = async (req: Request) => {
   if (!videoUrl) {
     throw new Error('Video Url Not Provided');
   }
-  const deleteVideoResponse = await fetch(videoUrl, {
+  if (await executeDbOperation(p => p.lesson.count({ where: { contentUrl: videoUrl, deletedAt: null } }))) throw new AppError('Remove the video in the course draft and save before retiring the asset.', 409);
+  const deleteVideoResponse = await fetch(await authorizedBunnyUrl(req, videoUrl), {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',

@@ -181,8 +181,8 @@ const getVideo = catchAsync(async (req, res): Promise<void> => {
   }
 });
 
-const getSecureVideoToken = catchAsync((req, res): void => {
-  const result = courseService.getSecureVideoToken(req);
+const getSecureVideoToken = catchAsync(async (req, res): Promise<void> => {
+  const result = await courseService.getSecureVideoToken(req);
   ResponseHandler.ok(res, 'token generated successfully!', result);
 });
 

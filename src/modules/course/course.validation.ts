@@ -93,6 +93,10 @@ const courseQuizSchema = z.object({
 });
 
 const courseLessonSchema = z.object({
+  id: z.string().uuid().optional(),
+  hostingType: z.enum(['FREE', 'PREMIUM']).optional(),
+  videoUploadJobId: z.string().uuid().nullable().optional(),
+  freeHostingAcknowledged: z.boolean().optional(),
   title: z
     .string()
     .trim()
@@ -151,6 +155,7 @@ const courseLessonSchema = z.object({
 });
 
 const courseModuleSchema = z.object({
+  id: z.string().uuid().optional(),
   title: z
     .string()
     .trim()
@@ -165,6 +170,7 @@ export const CreateCourseSchema = z.object({
   body: z
     .object({
       id: z.uuid().nullable().optional(),
+      defaultHosting: z.enum(['FREE', 'PREMIUM']).optional(),
       title: z
         .string()
         .trim()

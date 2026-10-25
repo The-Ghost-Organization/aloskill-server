@@ -342,6 +342,36 @@ export const PurchaseFormat = {
 export type PurchaseFormat = (typeof PurchaseFormat)[keyof typeof PurchaseFormat]
 
 
+export const VideoHostingType = {
+  FREE: 'FREE',
+  PREMIUM: 'PREMIUM'
+} as const
+
+export type VideoHostingType = (typeof VideoHostingType)[keyof typeof VideoHostingType]
+
+
+export const VideoProvider = {
+  YOUTUBE: 'YOUTUBE',
+  BUNNY: 'BUNNY'
+} as const
+
+export type VideoProvider = (typeof VideoProvider)[keyof typeof VideoProvider]
+
+
+export const VideoJobStatus = {
+  STAGING: 'STAGING',
+  QUEUED: 'QUEUED',
+  UPLOADING: 'UPLOADING',
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  RETIRED: 'RETIRED'
+} as const
+
+export type VideoJobStatus = (typeof VideoJobStatus)[keyof typeof VideoJobStatus]
+
+
 export const DeliveryArea = {
   INSIDE_DHAKA: 'INSIDE_DHAKA',
   DHAKA_SUBURBAN: 'DHAKA_SUBURBAN',

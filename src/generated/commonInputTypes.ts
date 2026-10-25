@@ -450,6 +450,20 @@ export type EnumSocialPlatformWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSocialPlatformFilter<$PrismaModel>
 }
 
+export type EnumVideoProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoProvider | Prisma.EnumVideoProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoProviderFilter<$PrismaModel> | $Enums.VideoProvider
+}
+
+export type EnumVideoJobStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoJobStatus | Prisma.EnumVideoJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoJobStatusFilter<$PrismaModel> | $Enums.VideoJobStatus
+}
+
 export type IntNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
@@ -461,18 +475,24 @@ export type IntNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
 }
 
-export type EnumCourseStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.CourseStatus | Prisma.EnumCourseStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumCourseStatusFilter<$PrismaModel> | $Enums.CourseStatus
+export type EnumVideoProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoProvider | Prisma.EnumVideoProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoProviderWithAggregatesFilter<$PrismaModel> | $Enums.VideoProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVideoProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVideoProviderFilter<$PrismaModel>
 }
 
-export type EnumLanguageFilter<$PrismaModel = never> = {
-  equals?: $Enums.Language | Prisma.EnumLanguageFieldRefInput<$PrismaModel>
-  in?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumLanguageFilter<$PrismaModel> | $Enums.Language
+export type EnumVideoJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoJobStatus | Prisma.EnumVideoJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.VideoJobStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVideoJobStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVideoJobStatusFilter<$PrismaModel>
 }
 
 export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -489,6 +509,37 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
+}
+
+export type EnumVideoHostingTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoHostingType | Prisma.EnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoHostingTypeFilter<$PrismaModel> | $Enums.VideoHostingType
+}
+
+export type EnumVideoHostingTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoHostingType | Prisma.EnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoHostingTypeWithAggregatesFilter<$PrismaModel> | $Enums.VideoHostingType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVideoHostingTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVideoHostingTypeFilter<$PrismaModel>
+}
+
+export type EnumCourseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CourseStatus | Prisma.EnumCourseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCourseStatusFilter<$PrismaModel> | $Enums.CourseStatus
+}
+
+export type EnumLanguageFilter<$PrismaModel = never> = {
+  equals?: $Enums.Language | Prisma.EnumLanguageFieldRefInput<$PrismaModel>
+  in?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLanguageFilter<$PrismaModel> | $Enums.Language
 }
 
 export type EnumCourseStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -1392,18 +1443,38 @@ export type NestedEnumSocialPlatformWithAggregatesFilter<$PrismaModel = never> =
   _max?: Prisma.NestedEnumSocialPlatformFilter<$PrismaModel>
 }
 
-export type NestedEnumCourseStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.CourseStatus | Prisma.EnumCourseStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumCourseStatusFilter<$PrismaModel> | $Enums.CourseStatus
+export type NestedEnumVideoProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoProvider | Prisma.EnumVideoProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoProviderFilter<$PrismaModel> | $Enums.VideoProvider
 }
 
-export type NestedEnumLanguageFilter<$PrismaModel = never> = {
-  equals?: $Enums.Language | Prisma.EnumLanguageFieldRefInput<$PrismaModel>
-  in?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
-  notIn?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumLanguageFilter<$PrismaModel> | $Enums.Language
+export type NestedEnumVideoJobStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoJobStatus | Prisma.EnumVideoJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoJobStatusFilter<$PrismaModel> | $Enums.VideoJobStatus
+}
+
+export type NestedEnumVideoProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoProvider | Prisma.EnumVideoProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoProvider[] | Prisma.ListEnumVideoProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoProviderWithAggregatesFilter<$PrismaModel> | $Enums.VideoProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVideoProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVideoProviderFilter<$PrismaModel>
+}
+
+export type NestedEnumVideoJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoJobStatus | Prisma.EnumVideoJobStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoJobStatus[] | Prisma.ListEnumVideoJobStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.VideoJobStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVideoJobStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVideoJobStatusFilter<$PrismaModel>
 }
 
 export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -1431,6 +1502,37 @@ export type NestedFloatNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type NestedEnumVideoHostingTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoHostingType | Prisma.EnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoHostingTypeFilter<$PrismaModel> | $Enums.VideoHostingType
+}
+
+export type NestedEnumVideoHostingTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.VideoHostingType | Prisma.EnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.VideoHostingType[] | Prisma.ListEnumVideoHostingTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumVideoHostingTypeWithAggregatesFilter<$PrismaModel> | $Enums.VideoHostingType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumVideoHostingTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumVideoHostingTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumCourseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CourseStatus | Prisma.EnumCourseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CourseStatus[] | Prisma.ListEnumCourseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCourseStatusFilter<$PrismaModel> | $Enums.CourseStatus
+}
+
+export type NestedEnumLanguageFilter<$PrismaModel = never> = {
+  equals?: $Enums.Language | Prisma.EnumLanguageFieldRefInput<$PrismaModel>
+  in?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Language[] | Prisma.ListEnumLanguageFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumLanguageFilter<$PrismaModel> | $Enums.Language
 }
 
 export type NestedEnumCourseStatusWithAggregatesFilter<$PrismaModel = never> = {

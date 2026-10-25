@@ -61,6 +61,8 @@ export const ModelName = {
   InstructorProfile: 'InstructorProfile',
   InstructorSkill: 'InstructorSkill',
   SocialLink: 'SocialLink',
+  VideoUploadJob: 'VideoUploadJob',
+  VideoHostingSettings: 'VideoHostingSettings',
   Course: 'Course',
   CourseInstructor: 'CourseInstructor',
   Module: 'Module',
@@ -313,7 +315,56 @@ export const SocialLinkScalarFieldEnum = {
 export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof typeof SocialLinkScalarFieldEnum]
 
 
+export const VideoUploadJobScalarFieldEnum = {
+  id: 'id',
+  ownerUserId: 'ownerUserId',
+  courseId: 'courseId',
+  provider: 'provider',
+  status: 'status',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  receivedBytes: 'receivedBytes',
+  title: 'title',
+  description: 'description',
+  acknowledged: 'acknowledged',
+  sessionUrl: 'sessionUrl',
+  externalVideoId: 'externalVideoId',
+  contentUrl: 'contentUrl',
+  providerStatus: 'providerStatus',
+  duration: 'duration',
+  uploadError: 'uploadError',
+  lastSyncedAt: 'lastSyncedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoUploadJobScalarFieldEnum = (typeof VideoUploadJobScalarFieldEnum)[keyof typeof VideoUploadJobScalarFieldEnum]
+
+
+export const VideoHostingSettingsScalarFieldEnum = {
+  id: 'id',
+  defaultHosting: 'defaultHosting',
+  allowFreePaid: 'allowFreePaid',
+  freeEnabled: 'freeEnabled',
+  premiumEnabled: 'premiumEnabled',
+  maxUploadBytes: 'maxUploadBytes',
+  allowedMimeTypes: 'allowedMimeTypes',
+  encryptedRefreshToken: 'encryptedRefreshToken',
+  channelId: 'channelId',
+  channelTitle: 'channelTitle',
+  lastError: 'lastError',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoHostingSettingsScalarFieldEnum = (typeof VideoHostingSettingsScalarFieldEnum)[keyof typeof VideoHostingSettingsScalarFieldEnum]
+
+
 export const CourseScalarFieldEnum = {
+  defaultHosting: 'defaultHosting',
+  youtubePlaylistId: 'youtubePlaylistId',
+  playlistSyncError: 'playlistSyncError',
+  playlistSyncedAt: 'playlistSyncedAt',
   commissionRate: 'commissionRate',
   commissionSource: 'commissionSource',
   commissionApprovedAt: 'commissionApprovedAt',
@@ -379,6 +430,13 @@ export type ModuleScalarFieldEnum = (typeof ModuleScalarFieldEnum)[keyof typeof 
 
 
 export const LessonScalarFieldEnum = {
+  hostingType: 'hostingType',
+  videoProvider: 'videoProvider',
+  externalVideoId: 'externalVideoId',
+  videoUploadJobId: 'videoUploadJobId',
+  providerVideoStatus: 'providerVideoStatus',
+  uploadedAt: 'uploadedAt',
+  lastSyncedAt: 'lastSyncedAt',
   id: 'id',
   moduleId: 'moduleId',
   position: 'position',

@@ -68,8 +68,18 @@ export type InstructorSkill = Prisma.InstructorSkillModel
  */
 export type SocialLink = Prisma.SocialLinkModel
 /**
+ * Model VideoUploadJob
+ * 
+ */
+export type VideoUploadJob = Prisma.VideoUploadJobModel
+/**
+ * Model VideoHostingSettings
+ * 
+ */
+export type VideoHostingSettings = Prisma.VideoHostingSettingsModel
+/**
  * Model Course
- * Courses & content
+ * 
  */
 export type Course = Prisma.CourseModel
 /**

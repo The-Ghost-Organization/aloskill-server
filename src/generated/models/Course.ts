@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model Course
- * Courses & content
+ * 
  */
 export type CourseModel = runtime.Types.Result.DefaultSelection<Prisma.$CoursePayload>
 
@@ -55,6 +55,10 @@ export type CourseSumAggregateOutputType = {
 }
 
 export type CourseMinAggregateOutputType = {
+  defaultHosting: $Enums.VideoHostingType | null
+  youtubePlaylistId: string | null
+  playlistSyncError: string | null
+  playlistSyncedAt: Date | null
   commissionRate: runtime.Decimal | null
   commissionSource: string | null
   commissionApprovedAt: Date | null
@@ -92,6 +96,10 @@ export type CourseMinAggregateOutputType = {
 }
 
 export type CourseMaxAggregateOutputType = {
+  defaultHosting: $Enums.VideoHostingType | null
+  youtubePlaylistId: string | null
+  playlistSyncError: string | null
+  playlistSyncedAt: Date | null
   commissionRate: runtime.Decimal | null
   commissionSource: string | null
   commissionApprovedAt: Date | null
@@ -129,6 +137,10 @@ export type CourseMaxAggregateOutputType = {
 }
 
 export type CourseCountAggregateOutputType = {
+  defaultHosting: number
+  youtubePlaylistId: number
+  playlistSyncError: number
+  playlistSyncedAt: number
   commissionRate: number
   commissionSource: number
   commissionApprovedAt: number
@@ -197,6 +209,10 @@ export type CourseSumAggregateInputType = {
 }
 
 export type CourseMinAggregateInputType = {
+  defaultHosting?: true
+  youtubePlaylistId?: true
+  playlistSyncError?: true
+  playlistSyncedAt?: true
   commissionRate?: true
   commissionSource?: true
   commissionApprovedAt?: true
@@ -234,6 +250,10 @@ export type CourseMinAggregateInputType = {
 }
 
 export type CourseMaxAggregateInputType = {
+  defaultHosting?: true
+  youtubePlaylistId?: true
+  playlistSyncError?: true
+  playlistSyncedAt?: true
   commissionRate?: true
   commissionSource?: true
   commissionApprovedAt?: true
@@ -271,6 +291,10 @@ export type CourseMaxAggregateInputType = {
 }
 
 export type CourseCountAggregateInputType = {
+  defaultHosting?: true
+  youtubePlaylistId?: true
+  playlistSyncError?: true
+  playlistSyncedAt?: true
   commissionRate?: true
   commissionSource?: true
   commissionApprovedAt?: true
@@ -396,6 +420,10 @@ export type CourseGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 export type CourseGroupByOutputType = {
+  defaultHosting: $Enums.VideoHostingType
+  youtubePlaylistId: string | null
+  playlistSyncError: string | null
+  playlistSyncedAt: Date | null
   commissionRate: runtime.Decimal | null
   commissionSource: string | null
   commissionApprovedAt: Date | null
@@ -457,6 +485,10 @@ export type CourseWhereInput = {
   AND?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
   OR?: Prisma.CourseWhereInput[]
   NOT?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
+  defaultHosting?: Prisma.EnumVideoHostingTypeFilter<"Course"> | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.StringNullableFilter<"Course"> | string | null
+  playlistSyncError?: Prisma.StringNullableFilter<"Course"> | string | null
+  playlistSyncedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   commissionRate?: Prisma.DecimalNullableFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.StringNullableFilter<"Course"> | string | null
   commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
@@ -506,6 +538,10 @@ export type CourseWhereInput = {
 }
 
 export type CourseOrderByWithRelationInput = {
+  defaultHosting?: Prisma.SortOrder
+  youtubePlaylistId?: Prisma.SortOrderInput | Prisma.SortOrder
+  playlistSyncError?: Prisma.SortOrderInput | Prisma.SortOrder
+  playlistSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionSource?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionApprovedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -560,6 +596,10 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
   OR?: Prisma.CourseWhereInput[]
   NOT?: Prisma.CourseWhereInput | Prisma.CourseWhereInput[]
+  defaultHosting?: Prisma.EnumVideoHostingTypeFilter<"Course"> | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.StringNullableFilter<"Course"> | string | null
+  playlistSyncError?: Prisma.StringNullableFilter<"Course"> | string | null
+  playlistSyncedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   commissionRate?: Prisma.DecimalNullableFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.StringNullableFilter<"Course"> | string | null
   commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
@@ -607,6 +647,10 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
 }, "id" | "slug">
 
 export type CourseOrderByWithAggregationInput = {
+  defaultHosting?: Prisma.SortOrder
+  youtubePlaylistId?: Prisma.SortOrderInput | Prisma.SortOrder
+  playlistSyncError?: Prisma.SortOrderInput | Prisma.SortOrder
+  playlistSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionRate?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionSource?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionApprovedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -653,6 +697,10 @@ export type CourseScalarWhereWithAggregatesInput = {
   AND?: Prisma.CourseScalarWhereWithAggregatesInput | Prisma.CourseScalarWhereWithAggregatesInput[]
   OR?: Prisma.CourseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CourseScalarWhereWithAggregatesInput | Prisma.CourseScalarWhereWithAggregatesInput[]
+  defaultHosting?: Prisma.EnumVideoHostingTypeWithAggregatesFilter<"Course"> | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
+  playlistSyncError?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
+  playlistSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
   commissionRate?: Prisma.DecimalNullableWithAggregatesFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
   commissionApprovedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
@@ -691,6 +739,10 @@ export type CourseScalarWhereWithAggregatesInput = {
 }
 
 export type CourseCreateInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -738,6 +790,10 @@ export type CourseCreateInput = {
 }
 
 export type CourseUncheckedCreateInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -785,6 +841,10 @@ export type CourseUncheckedCreateInput = {
 }
 
 export type CourseUpdateInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -832,6 +892,10 @@ export type CourseUpdateInput = {
 }
 
 export type CourseUncheckedUpdateInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -879,6 +943,10 @@ export type CourseUncheckedUpdateInput = {
 }
 
 export type CourseCreateManyInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -917,6 +985,10 @@ export type CourseCreateManyInput = {
 }
 
 export type CourseUpdateManyMutationInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -953,6 +1025,10 @@ export type CourseUpdateManyMutationInput = {
 }
 
 export type CourseUncheckedUpdateManyInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1001,6 +1077,10 @@ export type CourseOrderByRelationAggregateInput = {
 }
 
 export type CourseCountOrderByAggregateInput = {
+  defaultHosting?: Prisma.SortOrder
+  youtubePlaylistId?: Prisma.SortOrder
+  playlistSyncError?: Prisma.SortOrder
+  playlistSyncedAt?: Prisma.SortOrder
   commissionRate?: Prisma.SortOrder
   commissionSource?: Prisma.SortOrder
   commissionApprovedAt?: Prisma.SortOrder
@@ -1053,6 +1133,10 @@ export type CourseAvgOrderByAggregateInput = {
 }
 
 export type CourseMaxOrderByAggregateInput = {
+  defaultHosting?: Prisma.SortOrder
+  youtubePlaylistId?: Prisma.SortOrder
+  playlistSyncError?: Prisma.SortOrder
+  playlistSyncedAt?: Prisma.SortOrder
   commissionRate?: Prisma.SortOrder
   commissionSource?: Prisma.SortOrder
   commissionApprovedAt?: Prisma.SortOrder
@@ -1090,6 +1174,10 @@ export type CourseMaxOrderByAggregateInput = {
 }
 
 export type CourseMinOrderByAggregateInput = {
+  defaultHosting?: Prisma.SortOrder
+  youtubePlaylistId?: Prisma.SortOrder
+  playlistSyncError?: Prisma.SortOrder
+  playlistSyncedAt?: Prisma.SortOrder
   commissionRate?: Prisma.SortOrder
   commissionSource?: Prisma.SortOrder
   commissionApprovedAt?: Prisma.SortOrder
@@ -1190,14 +1278,6 @@ export type CourseUncheckedUpdateManyWithoutCreatedByNestedInput = {
   update?: Prisma.CourseUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.CourseUpdateWithWhereUniqueWithoutCreatedByInput[]
   updateMany?: Prisma.CourseUpdateManyWithWhereWithoutCreatedByInput | Prisma.CourseUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.CourseScalarWhereInput | Prisma.CourseScalarWhereInput[]
-}
-
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type EnumCourseStatusFieldUpdateOperationsInput = {
@@ -1385,6 +1465,10 @@ export type CourseUpdateOneRequiredWithoutTagsNestedInput = {
 }
 
 export type CourseCreateWithoutCreatedByInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1431,6 +1515,10 @@ export type CourseCreateWithoutCreatedByInput = {
 }
 
 export type CourseUncheckedCreateWithoutCreatedByInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1506,6 +1594,10 @@ export type CourseScalarWhereInput = {
   AND?: Prisma.CourseScalarWhereInput | Prisma.CourseScalarWhereInput[]
   OR?: Prisma.CourseScalarWhereInput[]
   NOT?: Prisma.CourseScalarWhereInput | Prisma.CourseScalarWhereInput[]
+  defaultHosting?: Prisma.EnumVideoHostingTypeFilter<"Course"> | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.StringNullableFilter<"Course"> | string | null
+  playlistSyncError?: Prisma.StringNullableFilter<"Course"> | string | null
+  playlistSyncedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
   commissionRate?: Prisma.DecimalNullableFilter<"Course"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.StringNullableFilter<"Course"> | string | null
   commissionApprovedAt?: Prisma.DateTimeNullableFilter<"Course"> | Date | string | null
@@ -1544,6 +1636,10 @@ export type CourseScalarWhereInput = {
 }
 
 export type CourseCreateWithoutCourseInstructorsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1590,6 +1686,10 @@ export type CourseCreateWithoutCourseInstructorsInput = {
 }
 
 export type CourseUncheckedCreateWithoutCourseInstructorsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1652,6 +1752,10 @@ export type CourseUpdateToOneWithWhereWithoutCourseInstructorsInput = {
 }
 
 export type CourseUpdateWithoutCourseInstructorsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1698,6 +1802,10 @@ export type CourseUpdateWithoutCourseInstructorsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutCourseInstructorsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1744,6 +1852,10 @@ export type CourseUncheckedUpdateWithoutCourseInstructorsInput = {
 }
 
 export type CourseCreateWithoutModulesInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1790,6 +1902,10 @@ export type CourseCreateWithoutModulesInput = {
 }
 
 export type CourseUncheckedCreateWithoutModulesInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1852,6 +1968,10 @@ export type CourseUpdateToOneWithWhereWithoutModulesInput = {
 }
 
 export type CourseUpdateWithoutModulesInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1898,6 +2018,10 @@ export type CourseUpdateWithoutModulesInput = {
 }
 
 export type CourseUncheckedUpdateWithoutModulesInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1944,6 +2068,10 @@ export type CourseUncheckedUpdateWithoutModulesInput = {
 }
 
 export type CourseCreateWithoutEnrollmentsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -1990,6 +2118,10 @@ export type CourseCreateWithoutEnrollmentsInput = {
 }
 
 export type CourseUncheckedCreateWithoutEnrollmentsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2052,6 +2184,10 @@ export type CourseUpdateToOneWithWhereWithoutEnrollmentsInput = {
 }
 
 export type CourseUpdateWithoutEnrollmentsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2098,6 +2234,10 @@ export type CourseUpdateWithoutEnrollmentsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2144,6 +2284,10 @@ export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
 }
 
 export type CourseCreateWithoutLessonProgressInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2190,6 +2334,10 @@ export type CourseCreateWithoutLessonProgressInput = {
 }
 
 export type CourseUncheckedCreateWithoutLessonProgressInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2252,6 +2400,10 @@ export type CourseUpdateToOneWithWhereWithoutLessonProgressInput = {
 }
 
 export type CourseUpdateWithoutLessonProgressInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2298,6 +2450,10 @@ export type CourseUpdateWithoutLessonProgressInput = {
 }
 
 export type CourseUncheckedUpdateWithoutLessonProgressInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2344,6 +2500,10 @@ export type CourseUncheckedUpdateWithoutLessonProgressInput = {
 }
 
 export type CourseCreateWithoutReviewsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2390,6 +2550,10 @@ export type CourseCreateWithoutReviewsInput = {
 }
 
 export type CourseUncheckedCreateWithoutReviewsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2452,6 +2616,10 @@ export type CourseUpdateToOneWithWhereWithoutReviewsInput = {
 }
 
 export type CourseUpdateWithoutReviewsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2498,6 +2666,10 @@ export type CourseUpdateWithoutReviewsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutReviewsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2544,6 +2716,10 @@ export type CourseUncheckedUpdateWithoutReviewsInput = {
 }
 
 export type CourseCreateWithoutWishlistedByInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2590,6 +2766,10 @@ export type CourseCreateWithoutWishlistedByInput = {
 }
 
 export type CourseUncheckedCreateWithoutWishlistedByInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2652,6 +2832,10 @@ export type CourseUpdateToOneWithWhereWithoutWishlistedByInput = {
 }
 
 export type CourseUpdateWithoutWishlistedByInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2698,6 +2882,10 @@ export type CourseUpdateWithoutWishlistedByInput = {
 }
 
 export type CourseUncheckedUpdateWithoutWishlistedByInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2744,6 +2932,10 @@ export type CourseUncheckedUpdateWithoutWishlistedByInput = {
 }
 
 export type CourseCreateWithoutOrderItemInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2790,6 +2982,10 @@ export type CourseCreateWithoutOrderItemInput = {
 }
 
 export type CourseUncheckedCreateWithoutOrderItemInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2852,6 +3048,10 @@ export type CourseUpdateToOneWithWhereWithoutOrderItemInput = {
 }
 
 export type CourseUpdateWithoutOrderItemInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2898,6 +3098,10 @@ export type CourseUpdateWithoutOrderItemInput = {
 }
 
 export type CourseUncheckedUpdateWithoutOrderItemInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2944,6 +3148,10 @@ export type CourseUncheckedUpdateWithoutOrderItemInput = {
 }
 
 export type CourseCreateWithoutPaymentTransactionInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -2990,6 +3198,10 @@ export type CourseCreateWithoutPaymentTransactionInput = {
 }
 
 export type CourseUncheckedCreateWithoutPaymentTransactionInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3052,6 +3264,10 @@ export type CourseUpdateToOneWithWhereWithoutPaymentTransactionInput = {
 }
 
 export type CourseUpdateWithoutPaymentTransactionInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3098,6 +3314,10 @@ export type CourseUpdateWithoutPaymentTransactionInput = {
 }
 
 export type CourseUncheckedUpdateWithoutPaymentTransactionInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3144,6 +3364,10 @@ export type CourseUncheckedUpdateWithoutPaymentTransactionInput = {
 }
 
 export type CourseCreateWithoutCategoryInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3190,6 +3414,10 @@ export type CourseCreateWithoutCategoryInput = {
 }
 
 export type CourseUncheckedCreateWithoutCategoryInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3262,6 +3490,10 @@ export type CourseUpdateManyWithWhereWithoutCategoryInput = {
 }
 
 export type CourseCreateWithoutTagsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3308,6 +3540,10 @@ export type CourseCreateWithoutTagsInput = {
 }
 
 export type CourseUncheckedCreateWithoutTagsInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3370,6 +3606,10 @@ export type CourseUpdateToOneWithWhereWithoutTagsInput = {
 }
 
 export type CourseUpdateWithoutTagsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3416,6 +3656,10 @@ export type CourseUpdateWithoutTagsInput = {
 }
 
 export type CourseUncheckedUpdateWithoutTagsInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3462,6 +3706,10 @@ export type CourseUncheckedUpdateWithoutTagsInput = {
 }
 
 export type CourseCreateManyCreatedByInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3499,6 +3747,10 @@ export type CourseCreateManyCreatedByInput = {
 }
 
 export type CourseUpdateWithoutCreatedByInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3545,6 +3797,10 @@ export type CourseUpdateWithoutCreatedByInput = {
 }
 
 export type CourseUncheckedUpdateWithoutCreatedByInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3591,6 +3847,10 @@ export type CourseUncheckedUpdateWithoutCreatedByInput = {
 }
 
 export type CourseUncheckedUpdateManyWithoutCreatedByInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3628,6 +3888,10 @@ export type CourseUncheckedUpdateManyWithoutCreatedByInput = {
 }
 
 export type CourseCreateManyCategoryInput = {
+  defaultHosting?: $Enums.VideoHostingType
+  youtubePlaylistId?: string | null
+  playlistSyncError?: string | null
+  playlistSyncedAt?: Date | string | null
   commissionRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: string | null
   commissionApprovedAt?: Date | string | null
@@ -3665,6 +3929,10 @@ export type CourseCreateManyCategoryInput = {
 }
 
 export type CourseUpdateWithoutCategoryInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3711,6 +3979,10 @@ export type CourseUpdateWithoutCategoryInput = {
 }
 
 export type CourseUncheckedUpdateWithoutCategoryInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3757,6 +4029,10 @@ export type CourseUncheckedUpdateWithoutCategoryInput = {
 }
 
 export type CourseUncheckedUpdateManyWithoutCategoryInput = {
+  defaultHosting?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  youtubePlaylistId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  playlistSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   commissionRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   commissionSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionApprovedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3897,6 +4173,10 @@ export type CourseCountOutputTypeCountWishlistedByArgs<ExtArgs extends runtime.T
 
 
 export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  defaultHosting?: boolean
+  youtubePlaylistId?: boolean
+  playlistSyncError?: boolean
+  playlistSyncedAt?: boolean
   commissionRate?: boolean
   commissionSource?: boolean
   commissionApprovedAt?: boolean
@@ -3947,6 +4227,10 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 }, ExtArgs["result"]["course"]>
 
 export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  defaultHosting?: boolean
+  youtubePlaylistId?: boolean
+  playlistSyncError?: boolean
+  playlistSyncedAt?: boolean
   commissionRate?: boolean
   commissionSource?: boolean
   commissionApprovedAt?: boolean
@@ -3987,6 +4271,10 @@ export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 }, ExtArgs["result"]["course"]>
 
 export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  defaultHosting?: boolean
+  youtubePlaylistId?: boolean
+  playlistSyncError?: boolean
+  playlistSyncedAt?: boolean
   commissionRate?: boolean
   commissionSource?: boolean
   commissionApprovedAt?: boolean
@@ -4027,6 +4315,10 @@ export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 }, ExtArgs["result"]["course"]>
 
 export type CourseSelectScalar = {
+  defaultHosting?: boolean
+  youtubePlaylistId?: boolean
+  playlistSyncError?: boolean
+  playlistSyncedAt?: boolean
   commissionRate?: boolean
   commissionSource?: boolean
   commissionApprovedAt?: boolean
@@ -4064,7 +4356,7 @@ export type CourseSelectScalar = {
   updatedContent?: boolean
 }
 
-export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"commissionRate" | "commissionSource" | "commissionApprovedAt" | "id" | "title" | "slug" | "description" | "welcomeMessage" | "congratulationsMessage" | "originalPrice" | "discountPercent" | "discountPrice" | "discountEndDate" | "isDiscountActive" | "currency" | "enrollmentCount" | "reviewCount" | "totalRevenueAmount" | "moduleCount" | "status" | "suspendReason" | "adminNote" | "language" | "level" | "thumbnailUrl" | "trailerUrl" | "categoryId" | "createdById" | "ratingAverage" | "ratingCount" | "views" | "deletedAt" | "createdAt" | "updatedAt" | "updatedContent", ExtArgs["result"]["course"]>
+export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"defaultHosting" | "youtubePlaylistId" | "playlistSyncError" | "playlistSyncedAt" | "commissionRate" | "commissionSource" | "commissionApprovedAt" | "id" | "title" | "slug" | "description" | "welcomeMessage" | "congratulationsMessage" | "originalPrice" | "discountPercent" | "discountPrice" | "discountEndDate" | "isDiscountActive" | "currency" | "enrollmentCount" | "reviewCount" | "totalRevenueAmount" | "moduleCount" | "status" | "suspendReason" | "adminNote" | "language" | "level" | "thumbnailUrl" | "trailerUrl" | "categoryId" | "createdById" | "ratingAverage" | "ratingCount" | "views" | "deletedAt" | "createdAt" | "updatedAt" | "updatedContent", ExtArgs["result"]["course"]>
 export type CourseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.Course$categoryArgs<ExtArgs>
   createdBy?: boolean | Prisma.Course$createdByArgs<ExtArgs>
@@ -4104,6 +4396,10 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     wishlistedBy: Prisma.$WishlistPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    defaultHosting: $Enums.VideoHostingType
+    youtubePlaylistId: string | null
+    playlistSyncError: string | null
+    playlistSyncedAt: Date | null
     commissionRate: runtime.Decimal | null
     commissionSource: string | null
     commissionApprovedAt: Date | null
@@ -4222,8 +4518,8 @@ export interface CourseDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * // Get first 10 Courses
    * const courses = await prisma.course.findMany({ take: 10 })
    * 
-   * // Only select the `commissionRate`
-   * const courseWithCommissionRateOnly = await prisma.course.findMany({ select: { commissionRate: true } })
+   * // Only select the `youtubePlaylistId`
+   * const courseWithYoutubePlaylistIdOnly = await prisma.course.findMany({ select: { youtubePlaylistId: true } })
    * 
    */
   findMany<T extends CourseFindManyArgs>(args?: Prisma.SelectSubset<T, CourseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -4267,9 +4563,9 @@ export interface CourseDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Create many Courses and only return the `commissionRate`
-   * const courseWithCommissionRateOnly = await prisma.course.createManyAndReturn({
-   *   select: { commissionRate: true },
+   * // Create many Courses and only return the `youtubePlaylistId`
+   * const courseWithYoutubePlaylistIdOnly = await prisma.course.createManyAndReturn({
+   *   select: { youtubePlaylistId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -4358,9 +4654,9 @@ export interface CourseDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Update zero or more Courses and only return the `commissionRate`
-   * const courseWithCommissionRateOnly = await prisma.course.updateManyAndReturn({
-   *   select: { commissionRate: true },
+   * // Update zero or more Courses and only return the `youtubePlaylistId`
+   * const courseWithYoutubePlaylistIdOnly = await prisma.course.updateManyAndReturn({
+   *   select: { youtubePlaylistId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -4573,6 +4869,10 @@ export interface Prisma__CourseClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Course model
  */
 export interface CourseFieldRefs {
+  readonly defaultHosting: Prisma.FieldRef<"Course", 'VideoHostingType'>
+  readonly youtubePlaylistId: Prisma.FieldRef<"Course", 'String'>
+  readonly playlistSyncError: Prisma.FieldRef<"Course", 'String'>
+  readonly playlistSyncedAt: Prisma.FieldRef<"Course", 'DateTime'>
   readonly commissionRate: Prisma.FieldRef<"Course", 'Decimal'>
   readonly commissionSource: Prisma.FieldRef<"Course", 'String'>
   readonly commissionApprovedAt: Prisma.FieldRef<"Course", 'DateTime'>

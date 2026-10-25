@@ -37,6 +37,13 @@ export type LessonSumAggregateOutputType = {
 }
 
 export type LessonMinAggregateOutputType = {
+  hostingType: $Enums.VideoHostingType | null
+  videoProvider: $Enums.VideoProvider | null
+  externalVideoId: string | null
+  videoUploadJobId: string | null
+  providerVideoStatus: string | null
+  uploadedAt: Date | null
+  lastSyncedAt: Date | null
   id: string | null
   moduleId: string | null
   position: number | null
@@ -57,6 +64,13 @@ export type LessonMinAggregateOutputType = {
 }
 
 export type LessonMaxAggregateOutputType = {
+  hostingType: $Enums.VideoHostingType | null
+  videoProvider: $Enums.VideoProvider | null
+  externalVideoId: string | null
+  videoUploadJobId: string | null
+  providerVideoStatus: string | null
+  uploadedAt: Date | null
+  lastSyncedAt: Date | null
   id: string | null
   moduleId: string | null
   position: number | null
@@ -77,6 +91,13 @@ export type LessonMaxAggregateOutputType = {
 }
 
 export type LessonCountAggregateOutputType = {
+  hostingType: number
+  videoProvider: number
+  externalVideoId: number
+  videoUploadJobId: number
+  providerVideoStatus: number
+  uploadedAt: number
+  lastSyncedAt: number
   id: number
   moduleId: number
   position: number
@@ -109,6 +130,13 @@ export type LessonSumAggregateInputType = {
 }
 
 export type LessonMinAggregateInputType = {
+  hostingType?: true
+  videoProvider?: true
+  externalVideoId?: true
+  videoUploadJobId?: true
+  providerVideoStatus?: true
+  uploadedAt?: true
+  lastSyncedAt?: true
   id?: true
   moduleId?: true
   position?: true
@@ -129,6 +157,13 @@ export type LessonMinAggregateInputType = {
 }
 
 export type LessonMaxAggregateInputType = {
+  hostingType?: true
+  videoProvider?: true
+  externalVideoId?: true
+  videoUploadJobId?: true
+  providerVideoStatus?: true
+  uploadedAt?: true
+  lastSyncedAt?: true
   id?: true
   moduleId?: true
   position?: true
@@ -149,6 +184,13 @@ export type LessonMaxAggregateInputType = {
 }
 
 export type LessonCountAggregateInputType = {
+  hostingType?: true
+  videoProvider?: true
+  externalVideoId?: true
+  videoUploadJobId?: true
+  providerVideoStatus?: true
+  uploadedAt?: true
+  lastSyncedAt?: true
   id?: true
   moduleId?: true
   position?: true
@@ -256,6 +298,13 @@ export type LessonGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 export type LessonGroupByOutputType = {
+  hostingType: $Enums.VideoHostingType
+  videoProvider: $Enums.VideoProvider
+  externalVideoId: string | null
+  videoUploadJobId: string | null
+  providerVideoStatus: string | null
+  uploadedAt: Date | null
+  lastSyncedAt: Date | null
   id: string
   moduleId: string
   position: number
@@ -299,6 +348,13 @@ export type LessonWhereInput = {
   AND?: Prisma.LessonWhereInput | Prisma.LessonWhereInput[]
   OR?: Prisma.LessonWhereInput[]
   NOT?: Prisma.LessonWhereInput | Prisma.LessonWhereInput[]
+  hostingType?: Prisma.EnumVideoHostingTypeFilter<"Lesson"> | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFilter<"Lesson"> | $Enums.VideoProvider
+  externalVideoId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  videoUploadJobId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  providerVideoStatus?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
+  lastSyncedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
   id?: Prisma.StringFilter<"Lesson"> | string
   moduleId?: Prisma.StringFilter<"Lesson"> | string
   position?: Prisma.IntFilter<"Lesson"> | number
@@ -324,6 +380,13 @@ export type LessonWhereInput = {
 }
 
 export type LessonOrderByWithRelationInput = {
+  hostingType?: Prisma.SortOrder
+  videoProvider?: Prisma.SortOrder
+  externalVideoId?: Prisma.SortOrderInput | Prisma.SortOrder
+  videoUploadJobId?: Prisma.SortOrderInput | Prisma.SortOrder
+  providerVideoStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   position?: Prisma.SortOrder
@@ -353,6 +416,13 @@ export type LessonWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.LessonWhereInput | Prisma.LessonWhereInput[]
   OR?: Prisma.LessonWhereInput[]
   NOT?: Prisma.LessonWhereInput | Prisma.LessonWhereInput[]
+  hostingType?: Prisma.EnumVideoHostingTypeFilter<"Lesson"> | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFilter<"Lesson"> | $Enums.VideoProvider
+  externalVideoId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  videoUploadJobId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  providerVideoStatus?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
+  lastSyncedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
   moduleId?: Prisma.StringFilter<"Lesson"> | string
   position?: Prisma.IntFilter<"Lesson"> | number
   title?: Prisma.StringFilter<"Lesson"> | string
@@ -377,6 +447,13 @@ export type LessonWhereUniqueInput = Prisma.AtLeast<{
 }, "id">
 
 export type LessonOrderByWithAggregationInput = {
+  hostingType?: Prisma.SortOrder
+  videoProvider?: Prisma.SortOrder
+  externalVideoId?: Prisma.SortOrderInput | Prisma.SortOrder
+  videoUploadJobId?: Prisma.SortOrderInput | Prisma.SortOrder
+  providerVideoStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   position?: Prisma.SortOrder
@@ -405,6 +482,13 @@ export type LessonScalarWhereWithAggregatesInput = {
   AND?: Prisma.LessonScalarWhereWithAggregatesInput | Prisma.LessonScalarWhereWithAggregatesInput[]
   OR?: Prisma.LessonScalarWhereWithAggregatesInput[]
   NOT?: Prisma.LessonScalarWhereWithAggregatesInput | Prisma.LessonScalarWhereWithAggregatesInput[]
+  hostingType?: Prisma.EnumVideoHostingTypeWithAggregatesFilter<"Lesson"> | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderWithAggregatesFilter<"Lesson"> | $Enums.VideoProvider
+  externalVideoId?: Prisma.StringNullableWithAggregatesFilter<"Lesson"> | string | null
+  videoUploadJobId?: Prisma.StringNullableWithAggregatesFilter<"Lesson"> | string | null
+  providerVideoStatus?: Prisma.StringNullableWithAggregatesFilter<"Lesson"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Lesson"> | Date | string | null
+  lastSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Lesson"> | Date | string | null
   id?: Prisma.StringWithAggregatesFilter<"Lesson"> | string
   moduleId?: Prisma.StringWithAggregatesFilter<"Lesson"> | string
   position?: Prisma.IntWithAggregatesFilter<"Lesson"> | number
@@ -425,6 +509,13 @@ export type LessonScalarWhereWithAggregatesInput = {
 }
 
 export type LessonCreateInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -449,6 +540,13 @@ export type LessonCreateInput = {
 }
 
 export type LessonUncheckedCreateInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   moduleId: string
   position: number
@@ -473,6 +571,13 @@ export type LessonUncheckedCreateInput = {
 }
 
 export type LessonUpdateInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -497,6 +602,13 @@ export type LessonUpdateInput = {
 }
 
 export type LessonUncheckedUpdateInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -521,6 +633,13 @@ export type LessonUncheckedUpdateInput = {
 }
 
 export type LessonCreateManyInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   moduleId: string
   position: number
@@ -541,6 +660,13 @@ export type LessonCreateManyInput = {
 }
 
 export type LessonUpdateManyMutationInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -560,6 +686,13 @@ export type LessonUpdateManyMutationInput = {
 }
 
 export type LessonUncheckedUpdateManyInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -590,6 +723,13 @@ export type LessonOrderByRelationAggregateInput = {
 }
 
 export type LessonCountOrderByAggregateInput = {
+  hostingType?: Prisma.SortOrder
+  videoProvider?: Prisma.SortOrder
+  externalVideoId?: Prisma.SortOrder
+  videoUploadJobId?: Prisma.SortOrder
+  providerVideoStatus?: Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrder
+  lastSyncedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   position?: Prisma.SortOrder
@@ -615,6 +755,13 @@ export type LessonAvgOrderByAggregateInput = {
 }
 
 export type LessonMaxOrderByAggregateInput = {
+  hostingType?: Prisma.SortOrder
+  videoProvider?: Prisma.SortOrder
+  externalVideoId?: Prisma.SortOrder
+  videoUploadJobId?: Prisma.SortOrder
+  providerVideoStatus?: Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrder
+  lastSyncedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   position?: Prisma.SortOrder
@@ -635,6 +782,13 @@ export type LessonMaxOrderByAggregateInput = {
 }
 
 export type LessonMinOrderByAggregateInput = {
+  hostingType?: Prisma.SortOrder
+  videoProvider?: Prisma.SortOrder
+  externalVideoId?: Prisma.SortOrder
+  videoUploadJobId?: Prisma.SortOrder
+  providerVideoStatus?: Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrder
+  lastSyncedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   position?: Prisma.SortOrder
@@ -774,6 +928,13 @@ export type LessonUpdateOneWithoutQuizNestedInput = {
 }
 
 export type LessonCreateWithoutModuleInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -797,6 +958,13 @@ export type LessonCreateWithoutModuleInput = {
 }
 
 export type LessonUncheckedCreateWithoutModuleInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -849,6 +1017,13 @@ export type LessonScalarWhereInput = {
   AND?: Prisma.LessonScalarWhereInput | Prisma.LessonScalarWhereInput[]
   OR?: Prisma.LessonScalarWhereInput[]
   NOT?: Prisma.LessonScalarWhereInput | Prisma.LessonScalarWhereInput[]
+  hostingType?: Prisma.EnumVideoHostingTypeFilter<"Lesson"> | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFilter<"Lesson"> | $Enums.VideoProvider
+  externalVideoId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  videoUploadJobId?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  providerVideoStatus?: Prisma.StringNullableFilter<"Lesson"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
+  lastSyncedAt?: Prisma.DateTimeNullableFilter<"Lesson"> | Date | string | null
   id?: Prisma.StringFilter<"Lesson"> | string
   moduleId?: Prisma.StringFilter<"Lesson"> | string
   position?: Prisma.IntFilter<"Lesson"> | number
@@ -869,6 +1044,13 @@ export type LessonScalarWhereInput = {
 }
 
 export type LessonCreateWithoutFilesInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -892,6 +1074,13 @@ export type LessonCreateWithoutFilesInput = {
 }
 
 export type LessonUncheckedCreateWithoutFilesInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   moduleId: string
   position: number
@@ -931,6 +1120,13 @@ export type LessonUpdateToOneWithWhereWithoutFilesInput = {
 }
 
 export type LessonUpdateWithoutFilesInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -954,6 +1150,13 @@ export type LessonUpdateWithoutFilesInput = {
 }
 
 export type LessonUncheckedUpdateWithoutFilesInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -977,6 +1180,13 @@ export type LessonUncheckedUpdateWithoutFilesInput = {
 }
 
 export type LessonCreateWithoutDiscussionsInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -1000,6 +1210,13 @@ export type LessonCreateWithoutDiscussionsInput = {
 }
 
 export type LessonUncheckedCreateWithoutDiscussionsInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   moduleId: string
   position: number
@@ -1039,6 +1256,13 @@ export type LessonUpdateToOneWithWhereWithoutDiscussionsInput = {
 }
 
 export type LessonUpdateWithoutDiscussionsInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1062,6 +1286,13 @@ export type LessonUpdateWithoutDiscussionsInput = {
 }
 
 export type LessonUncheckedUpdateWithoutDiscussionsInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1085,6 +1316,13 @@ export type LessonUncheckedUpdateWithoutDiscussionsInput = {
 }
 
 export type LessonCreateWithoutProgressRecordsInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -1108,6 +1346,13 @@ export type LessonCreateWithoutProgressRecordsInput = {
 }
 
 export type LessonUncheckedCreateWithoutProgressRecordsInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   moduleId: string
   position: number
@@ -1147,6 +1392,13 @@ export type LessonUpdateToOneWithWhereWithoutProgressRecordsInput = {
 }
 
 export type LessonUpdateWithoutProgressRecordsInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1170,6 +1422,13 @@ export type LessonUpdateWithoutProgressRecordsInput = {
 }
 
 export type LessonUncheckedUpdateWithoutProgressRecordsInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1193,6 +1452,13 @@ export type LessonUncheckedUpdateWithoutProgressRecordsInput = {
 }
 
 export type LessonCreateWithoutQuizInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -1216,6 +1482,13 @@ export type LessonCreateWithoutQuizInput = {
 }
 
 export type LessonUncheckedCreateWithoutQuizInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   moduleId: string
   position: number
@@ -1255,6 +1528,13 @@ export type LessonUpdateToOneWithWhereWithoutQuizInput = {
 }
 
 export type LessonUpdateWithoutQuizInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1278,6 +1558,13 @@ export type LessonUpdateWithoutQuizInput = {
 }
 
 export type LessonUncheckedUpdateWithoutQuizInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1301,6 +1588,13 @@ export type LessonUncheckedUpdateWithoutQuizInput = {
 }
 
 export type LessonCreateManyModuleInput = {
+  hostingType?: $Enums.VideoHostingType
+  videoProvider?: $Enums.VideoProvider
+  externalVideoId?: string | null
+  videoUploadJobId?: string | null
+  providerVideoStatus?: string | null
+  uploadedAt?: Date | string | null
+  lastSyncedAt?: Date | string | null
   id?: string
   position: number
   title: string
@@ -1320,6 +1614,13 @@ export type LessonCreateManyModuleInput = {
 }
 
 export type LessonUpdateWithoutModuleInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1343,6 +1644,13 @@ export type LessonUpdateWithoutModuleInput = {
 }
 
 export type LessonUncheckedUpdateWithoutModuleInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1366,6 +1674,13 @@ export type LessonUncheckedUpdateWithoutModuleInput = {
 }
 
 export type LessonUncheckedUpdateManyWithoutModuleInput = {
+  hostingType?: Prisma.EnumVideoHostingTypeFieldUpdateOperationsInput | $Enums.VideoHostingType
+  videoProvider?: Prisma.EnumVideoProviderFieldUpdateOperationsInput | $Enums.VideoProvider
+  externalVideoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUploadJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerVideoStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   position?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1434,6 +1749,13 @@ export type LessonCountOutputTypeCountDiscussionsArgs<ExtArgs extends runtime.Ty
 
 
 export type LessonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  hostingType?: boolean
+  videoProvider?: boolean
+  externalVideoId?: boolean
+  videoUploadJobId?: boolean
+  providerVideoStatus?: boolean
+  uploadedAt?: boolean
+  lastSyncedAt?: boolean
   id?: boolean
   moduleId?: boolean
   position?: boolean
@@ -1460,6 +1782,13 @@ export type LessonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 }, ExtArgs["result"]["lesson"]>
 
 export type LessonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  hostingType?: boolean
+  videoProvider?: boolean
+  externalVideoId?: boolean
+  videoUploadJobId?: boolean
+  providerVideoStatus?: boolean
+  uploadedAt?: boolean
+  lastSyncedAt?: boolean
   id?: boolean
   moduleId?: boolean
   position?: boolean
@@ -1481,6 +1810,13 @@ export type LessonSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 }, ExtArgs["result"]["lesson"]>
 
 export type LessonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  hostingType?: boolean
+  videoProvider?: boolean
+  externalVideoId?: boolean
+  videoUploadJobId?: boolean
+  providerVideoStatus?: boolean
+  uploadedAt?: boolean
+  lastSyncedAt?: boolean
   id?: boolean
   moduleId?: boolean
   position?: boolean
@@ -1502,6 +1838,13 @@ export type LessonSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 }, ExtArgs["result"]["lesson"]>
 
 export type LessonSelectScalar = {
+  hostingType?: boolean
+  videoProvider?: boolean
+  externalVideoId?: boolean
+  videoUploadJobId?: boolean
+  providerVideoStatus?: boolean
+  uploadedAt?: boolean
+  lastSyncedAt?: boolean
   id?: boolean
   moduleId?: boolean
   position?: boolean
@@ -1521,7 +1864,7 @@ export type LessonSelectScalar = {
   adminNote?: boolean
 }
 
-export type LessonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "moduleId" | "position" | "title" | "description" | "notes" | "type" | "contentUrl" | "contentName" | "duration" | "deletedAt" | "createdAt" | "updatedAt" | "isNew" | "isUpdated" | "suspendReason" | "adminNote", ExtArgs["result"]["lesson"]>
+export type LessonOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"hostingType" | "videoProvider" | "externalVideoId" | "videoUploadJobId" | "providerVideoStatus" | "uploadedAt" | "lastSyncedAt" | "id" | "moduleId" | "position" | "title" | "description" | "notes" | "type" | "contentUrl" | "contentName" | "duration" | "deletedAt" | "createdAt" | "updatedAt" | "isNew" | "isUpdated" | "suspendReason" | "adminNote", ExtArgs["result"]["lesson"]>
 export type LessonInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
   files?: boolean | Prisma.Lesson$filesArgs<ExtArgs>
@@ -1547,6 +1890,13 @@ export type $LessonPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     quiz: Prisma.$QuizPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    hostingType: $Enums.VideoHostingType
+    videoProvider: $Enums.VideoProvider
+    externalVideoId: string | null
+    videoUploadJobId: string | null
+    providerVideoStatus: string | null
+    uploadedAt: Date | null
+    lastSyncedAt: Date | null
     id: string
     moduleId: string
     position: number
@@ -1647,8 +1997,8 @@ export interface LessonDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * // Get first 10 Lessons
    * const lessons = await prisma.lesson.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const lessonWithIdOnly = await prisma.lesson.findMany({ select: { id: true } })
+   * // Only select the `externalVideoId`
+   * const lessonWithExternalVideoIdOnly = await prisma.lesson.findMany({ select: { externalVideoId: true } })
    * 
    */
   findMany<T extends LessonFindManyArgs>(args?: Prisma.SelectSubset<T, LessonFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1692,9 +2042,9 @@ export interface LessonDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Create many Lessons and only return the `id`
-   * const lessonWithIdOnly = await prisma.lesson.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Lessons and only return the `externalVideoId`
+   * const lessonWithExternalVideoIdOnly = await prisma.lesson.createManyAndReturn({
+   *   select: { externalVideoId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -1783,9 +2133,9 @@ export interface LessonDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    *   ]
    * })
    * 
-   * // Update zero or more Lessons and only return the `id`
-   * const lessonWithIdOnly = await prisma.lesson.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Lessons and only return the `externalVideoId`
+   * const lessonWithExternalVideoIdOnly = await prisma.lesson.updateManyAndReturn({
+   *   select: { externalVideoId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1992,6 +2342,13 @@ export interface Prisma__LessonClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Lesson model
  */
 export interface LessonFieldRefs {
+  readonly hostingType: Prisma.FieldRef<"Lesson", 'VideoHostingType'>
+  readonly videoProvider: Prisma.FieldRef<"Lesson", 'VideoProvider'>
+  readonly externalVideoId: Prisma.FieldRef<"Lesson", 'String'>
+  readonly videoUploadJobId: Prisma.FieldRef<"Lesson", 'String'>
+  readonly providerVideoStatus: Prisma.FieldRef<"Lesson", 'String'>
+  readonly uploadedAt: Prisma.FieldRef<"Lesson", 'DateTime'>
+  readonly lastSyncedAt: Prisma.FieldRef<"Lesson", 'DateTime'>
   readonly id: Prisma.FieldRef<"Lesson", 'String'>
   readonly moduleId: Prisma.FieldRef<"Lesson", 'String'>
   readonly position: Prisma.FieldRef<"Lesson", 'Int'>

@@ -394,6 +394,8 @@ export const ModelName = {
   InstructorProfile: 'InstructorProfile',
   InstructorSkill: 'InstructorSkill',
   SocialLink: 'SocialLink',
+  VideoUploadJob: 'VideoUploadJob',
+  VideoHostingSettings: 'VideoHostingSettings',
   Course: 'Course',
   CourseInstructor: 'CourseInstructor',
   Module: 'Module',
@@ -448,7 +450,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookAuthor" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "conversation" | "conversationParticipant" | "message" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings" | "financialEntry" | "payoutItem"
+    modelProps: "user" | "userSession" | "refreshToken" | "userRoleAssignment" | "permission" | "rolePermission" | "studentProfile" | "instructorProfile" | "instructorSkill" | "socialLink" | "videoUploadJob" | "videoHostingSettings" | "course" | "courseInstructor" | "module" | "lesson" | "lessonFile" | "lessonDiscussion" | "lessonComment" | "enrollment" | "lessonProgress" | "review" | "book" | "bookAuthor" | "bookFile" | "viewLog" | "wishlist" | "order" | "orderItem" | "shippingAddress" | "paymentTransaction" | "payout" | "payoutMethod" | "bankName" | "category" | "bookCategory" | "tag" | "courseTag" | "certificate" | "notification" | "conversation" | "conversationParticipant" | "message" | "quiz" | "quizQuestion" | "questionOption" | "quizResult" | "auditLog" | "platformSettings" | "financialEntry" | "payoutItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1189,6 +1191,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SocialLinkCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SocialLinkCountAggregateOutputType> | number
+        }
+      }
+    }
+    VideoUploadJob: {
+      payload: Prisma.$VideoUploadJobPayload<ExtArgs>
+      fields: Prisma.VideoUploadJobFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VideoUploadJobFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VideoUploadJobFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>
+        }
+        findFirst: {
+          args: Prisma.VideoUploadJobFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VideoUploadJobFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>
+        }
+        findMany: {
+          args: Prisma.VideoUploadJobFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>[]
+        }
+        create: {
+          args: Prisma.VideoUploadJobCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>
+        }
+        createMany: {
+          args: Prisma.VideoUploadJobCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VideoUploadJobCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>[]
+        }
+        delete: {
+          args: Prisma.VideoUploadJobDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>
+        }
+        update: {
+          args: Prisma.VideoUploadJobUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>
+        }
+        deleteMany: {
+          args: Prisma.VideoUploadJobDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VideoUploadJobUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VideoUploadJobUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>[]
+        }
+        upsert: {
+          args: Prisma.VideoUploadJobUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoUploadJobPayload>
+        }
+        aggregate: {
+          args: Prisma.VideoUploadJobAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVideoUploadJob>
+        }
+        groupBy: {
+          args: Prisma.VideoUploadJobGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VideoUploadJobGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VideoUploadJobCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VideoUploadJobCountAggregateOutputType> | number
+        }
+      }
+    }
+    VideoHostingSettings: {
+      payload: Prisma.$VideoHostingSettingsPayload<ExtArgs>
+      fields: Prisma.VideoHostingSettingsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VideoHostingSettingsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VideoHostingSettingsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>
+        }
+        findFirst: {
+          args: Prisma.VideoHostingSettingsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VideoHostingSettingsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>
+        }
+        findMany: {
+          args: Prisma.VideoHostingSettingsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>[]
+        }
+        create: {
+          args: Prisma.VideoHostingSettingsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>
+        }
+        createMany: {
+          args: Prisma.VideoHostingSettingsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VideoHostingSettingsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>[]
+        }
+        delete: {
+          args: Prisma.VideoHostingSettingsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>
+        }
+        update: {
+          args: Prisma.VideoHostingSettingsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>
+        }
+        deleteMany: {
+          args: Prisma.VideoHostingSettingsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VideoHostingSettingsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VideoHostingSettingsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>[]
+        }
+        upsert: {
+          args: Prisma.VideoHostingSettingsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VideoHostingSettingsPayload>
+        }
+        aggregate: {
+          args: Prisma.VideoHostingSettingsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVideoHostingSettings>
+        }
+        groupBy: {
+          args: Prisma.VideoHostingSettingsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VideoHostingSettingsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VideoHostingSettingsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VideoHostingSettingsCountAggregateOutputType> | number
         }
       }
     }
@@ -4312,7 +4462,56 @@ export const SocialLinkScalarFieldEnum = {
 export type SocialLinkScalarFieldEnum = (typeof SocialLinkScalarFieldEnum)[keyof typeof SocialLinkScalarFieldEnum]
 
 
+export const VideoUploadJobScalarFieldEnum = {
+  id: 'id',
+  ownerUserId: 'ownerUserId',
+  courseId: 'courseId',
+  provider: 'provider',
+  status: 'status',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  receivedBytes: 'receivedBytes',
+  title: 'title',
+  description: 'description',
+  acknowledged: 'acknowledged',
+  sessionUrl: 'sessionUrl',
+  externalVideoId: 'externalVideoId',
+  contentUrl: 'contentUrl',
+  providerStatus: 'providerStatus',
+  duration: 'duration',
+  uploadError: 'uploadError',
+  lastSyncedAt: 'lastSyncedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoUploadJobScalarFieldEnum = (typeof VideoUploadJobScalarFieldEnum)[keyof typeof VideoUploadJobScalarFieldEnum]
+
+
+export const VideoHostingSettingsScalarFieldEnum = {
+  id: 'id',
+  defaultHosting: 'defaultHosting',
+  allowFreePaid: 'allowFreePaid',
+  freeEnabled: 'freeEnabled',
+  premiumEnabled: 'premiumEnabled',
+  maxUploadBytes: 'maxUploadBytes',
+  allowedMimeTypes: 'allowedMimeTypes',
+  encryptedRefreshToken: 'encryptedRefreshToken',
+  channelId: 'channelId',
+  channelTitle: 'channelTitle',
+  lastError: 'lastError',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VideoHostingSettingsScalarFieldEnum = (typeof VideoHostingSettingsScalarFieldEnum)[keyof typeof VideoHostingSettingsScalarFieldEnum]
+
+
 export const CourseScalarFieldEnum = {
+  defaultHosting: 'defaultHosting',
+  youtubePlaylistId: 'youtubePlaylistId',
+  playlistSyncError: 'playlistSyncError',
+  playlistSyncedAt: 'playlistSyncedAt',
   commissionRate: 'commissionRate',
   commissionSource: 'commissionSource',
   commissionApprovedAt: 'commissionApprovedAt',
@@ -4378,6 +4577,13 @@ export type ModuleScalarFieldEnum = (typeof ModuleScalarFieldEnum)[keyof typeof 
 
 
 export const LessonScalarFieldEnum = {
+  hostingType: 'hostingType',
+  videoProvider: 'videoProvider',
+  externalVideoId: 'externalVideoId',
+  videoUploadJobId: 'videoUploadJobId',
+  providerVideoStatus: 'providerVideoStatus',
+  uploadedAt: 'uploadedAt',
+  lastSyncedAt: 'lastSyncedAt',
   id: 'id',
   moduleId: 'moduleId',
   position: 'position',
@@ -5265,6 +5471,48 @@ export type ListEnumSocialPlatformFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'VideoProvider'
+ */
+export type EnumVideoProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoProvider[]'
+ */
+export type ListEnumVideoProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoJobStatus'
+ */
+export type EnumVideoJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoJobStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoJobStatus[]'
+ */
+export type ListEnumVideoJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoJobStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoHostingType'
+ */
+export type EnumVideoHostingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoHostingType'>
+    
+
+
+/**
+ * Reference to a field of type 'VideoHostingType[]'
+ */
+export type ListEnumVideoHostingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VideoHostingType[]'>
+    
+
+
+/**
  * Reference to a field of type 'CourseStatus'
  */
 export type EnumCourseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CourseStatus'>
@@ -5774,6 +6022,8 @@ export type GlobalOmitConfig = {
   instructorProfile?: Prisma.InstructorProfileOmit
   instructorSkill?: Prisma.InstructorSkillOmit
   socialLink?: Prisma.SocialLinkOmit
+  videoUploadJob?: Prisma.VideoUploadJobOmit
+  videoHostingSettings?: Prisma.VideoHostingSettingsOmit
   course?: Prisma.CourseOmit
   courseInstructor?: Prisma.CourseInstructorOmit
   module?: Prisma.ModuleOmit
