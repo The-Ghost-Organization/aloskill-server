@@ -2475,8 +2475,19 @@ const updateLessonProgress = async (req: Request) => {
   return lessonId;
 };
 
-const getBunnySignature = async (req: Request) => {
-  const { collectionName, fileName } = req.query as { collectionName: string; fileName: string };
+const getBunnySignature = async (
+  req: Request,
+  upload?: { collectionName: string; fileName: string }
+) => {
+  // Express 5 reparses req.query through a getter. Internal callers must pass
+  // upload metadata directly rather than assigning properties to req.query.
+  const values = upload ?? req.query;
+  const collectionName = typeof values.collectionName === 'string' ? values.collectionName.trim() : '';
+  const fileName = typeof values.fileName === 'string' ? values.fileName.trim() : '';
+  if (!collectionName || collectionName.length > 255) {
+    throw new AppError('A valid upload collection name is required (1–255 characters).', 400);
+  }
+  if (!fileName) throw new AppError('A video title is required.', 400);
   const apiKey = config.BUNNY_STREAM_API_KEY;
   const videoLibraryId = config.BUNNY_STREAM_LIBRARY_ID;
   const expires = Math.floor(Date.now() / 1000) + 900;

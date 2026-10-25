@@ -31,6 +31,9 @@ VideoRoutes.get('/policy', requireInstructor, catchAsync(async (_req, res) => {
   const s = await videoSettings();
   ResponseHandler.ok(res, 'Hosting policy', { defaultHosting: s.defaultHosting, allowFreePaid: s.allowFreePaid,
     freeEnabled: s.freeEnabled && Boolean(s.encryptedRefreshToken), premiumEnabled: s.premiumEnabled,
+    freeUnavailableReason: !s.encryptedRefreshToken
+      ? 'Free Hosting is unavailable until an administrator connects the central video account in Settings → Video Hosting.'
+      : !s.freeEnabled ? 'Free Hosting is disabled by the administrator in Settings → Video Hosting.' : null,
     maxUploadBytes: s.maxUploadBytes, allowedMimeTypes: s.allowedMimeTypes });
 }));
 
@@ -58,9 +61,17 @@ VideoRoutes.post('/uploads', requireInstructor, catchAsync(async (req, res) => {
   } });
   let signature: Awaited<ReturnType<typeof courseService.getBunnySignature>> | undefined;
   if (job.provider === 'BUNNY') {
-    req.query.fileName = input.title;
-    req.query.collectionName = ownerUserId;
-    signature = await courseService.getBunnySignature(req);
+    try {
+      signature = await courseService.getBunnySignature(req, {
+        fileName: input.title,
+        collectionName: ownerUserId,
+      });
+    } catch (error) {
+      await db().videoUploadJob.update({ where: { id: job.id }, data: {
+        status: 'FAILED', uploadError: 'Premium Hosting upload could not be initialized. Please try again.',
+      } });
+      throw error;
+    }
     await db().videoUploadJob.update({ where: { id: job.id }, data: {
       externalVideoId: signature.videoId,
       contentUrl: `https://video.bunnycdn.com/library/${signature.libraryId}/videos/${signature.videoId}`,
