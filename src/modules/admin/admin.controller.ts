@@ -2,10 +2,29 @@ import catchAsync from '../../utils/asyncHandler.js';
 import ResponseHandler from '../../utils/response.js';
 import { adminService } from './admin.service.js';
 
-const allApprovals = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Pending approvals retrieved', await adminService.allApprovals(req)); });
-const approvalDetail = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Approval details retrieved', await adminService.approvalDetail(req)); });
-const decideApproval = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Approval decision saved', await adminService.decideApproval(req)); });
-const adminDashboard = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Admin dashboard retrieved', await adminService.adminDashboard(req)); });
-const adminCourses = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Admin courses retrieved', await adminService.adminCourses(req)); });
-const adminCourseAction = catchAsync(async (req, res): Promise<void> => { ResponseHandler.ok(res, 'Course action completed', await adminService.adminCourseAction(req)); });
-export const adminController = { allApprovals, approvalDetail, decideApproval, adminDashboard, adminCourses, adminCourseAction };
+const allApprovals = catchAsync(async (req, res): Promise<void> => {
+  ResponseHandler.ok(res, 'Pending approvals retrieved', await adminService.allApprovals(req));
+});
+const approvalDetail = catchAsync(async (req, res): Promise<void> => {
+  ResponseHandler.ok(res, 'Approval details retrieved', await adminService.approvalDetail(req));
+});
+const decideApproval = catchAsync(async (req, res): Promise<void> => {
+  ResponseHandler.ok(res, 'Approval decision saved', await adminService.decideApproval(req));
+});
+const adminDashboard = catchAsync(async (req, res): Promise<void> => {
+  ResponseHandler.ok(res, 'Admin dashboard retrieved', await adminService.adminDashboard(req));
+});
+const adminCourses = catchAsync(async (req, res): Promise<void> => {
+  ResponseHandler.ok(res, 'Admin courses retrieved', await adminService.adminCourses(req));
+});
+const adminCourseAction = catchAsync(async (req, res): Promise<void> => {
+  ResponseHandler.ok(res, 'Course action completed', await adminService.adminCourseAction(req));
+});
+export const adminController = {
+  allApprovals,
+  approvalDetail,
+  decideApproval,
+  adminDashboard,
+  adminCourses,
+  adminCourseAction,
+};

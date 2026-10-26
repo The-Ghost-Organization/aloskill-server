@@ -1,6 +1,14 @@
-import { assertCourseEditor, bindAssets, identity, playback, validateVideoLessons, videoFields } from './video.service.js';
+/* eslint-disable require-await */
 import { AppError } from '../../middleware/errorHandler.js';
 import { financeService } from '../finance/finance.service.js';
+import {
+  assertCourseEditor,
+  bindAssets,
+  identity,
+  playback,
+  validateVideoLessons,
+  videoFields,
+} from './video.service.js';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import crypto from 'crypto';
@@ -164,8 +172,15 @@ const getCourseTags = async (req: Request) => {
 
 const createCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  if (data.id) await assertCourseEditor(req, data.id);
-  const videoAssets = await validateVideoLessons(req, data.modules.flatMap(m => m.lessons), data.originalPrice ?? 0, data.id ?? undefined);
+  if (data.id) {
+    await assertCourseEditor(req, data.id);
+  }
+  const videoAssets = await validateVideoLessons(
+    req,
+    data.modules.flatMap(m => m.lessons),
+    data.originalPrice ?? 0,
+    data.id ?? undefined
+  );
   const instructorEmail = req.user.email;
 
   if (data.modules.length === 0) {
@@ -244,108 +259,108 @@ const createCourse = async (req: Request) => {
 
   const course = await executeDbOperation(async prisma => {
     return await prisma.$transaction(async tx => {
-    const created = await tx.course.create({
-      data: {
-        ...courseData,
-        originalPrice,
-        discountPrice,
-        discountPercent,
-        isDiscountActive,
-        moduleCount: modules.length,
-        slug: slugify(data.slug),
-        categoryId: categoryData.id,
-        status: data.status === 'DRAFT' ? CourseStatus.DRAFT : CourseStatus.PENDING,
-        createdById: primaryInstructorId,
+      const created = await tx.course.create({
+        data: {
+          ...courseData,
+          originalPrice,
+          discountPrice,
+          discountPercent,
+          isDiscountActive,
+          moduleCount: modules.length,
+          slug: slugify(data.slug),
+          categoryId: categoryData.id,
+          status: data.status === 'DRAFT' ? CourseStatus.DRAFT : CourseStatus.PENDING,
+          createdById: primaryInstructorId,
 
-        courseInstructors: {
-          createMany: {
-            data: [
-              { instructorId: primaryInstructorId, role: 'PRIMARY' },
-              ...(courseInstructors
-                ?.filter(inst => inst.instructorId !== primaryInstructorId)
-                .map(inst => ({
-                  instructorId: inst.instructorId,
-                  role: 'CO_INSTRUCTOR' as const,
-                })) ?? []),
-            ],
-          },
-        },
-
-        tags: {
-          create: tags.map((tagName: string) => ({
-            tag: {
-              connectOrCreate: {
-                where: { name: tagName.trim() },
-                create: { name: tagName.trim(), slug: slugify(tagName) },
-              },
+          courseInstructors: {
+            createMany: {
+              data: [
+                { instructorId: primaryInstructorId, role: 'PRIMARY' },
+                ...(courseInstructors
+                  ?.filter(inst => inst.instructorId !== primaryInstructorId)
+                  .map(inst => ({
+                    instructorId: inst.instructorId,
+                    role: 'CO_INSTRUCTOR' as const,
+                  })) ?? []),
+              ],
             },
-          })),
-        },
+          },
 
-        modules: {
-          create: modules.map(moduleData => ({
-            title: moduleData.title,
-            position: moduleData.position,
-            lessons: {
-              create: moduleData.lessons.map(lesson => {
-                const lessonCreateInput: any = {
-                  ...videoFields(lesson, videoAssets),
-                  title: lesson.title,
-                  position: lesson.position,
-                  type: lesson.type,
-                  description: lesson.description,
-                  contentUrl: lesson.contentUrl?.url,
-                  contentName: lesson.contentUrl?.name,
-                  notes: lesson.notes,
-                  duration: lesson.type === 'QUIZ' ? lesson.quiz?.duration : lesson.duration,
-                  files: {
-                    create: lesson.files?.map(file => ({ url: file.url, name: file.name })),
-                  },
-                };
+          tags: {
+            create: tags.map((tagName: string) => ({
+              tag: {
+                connectOrCreate: {
+                  where: { name: tagName.trim() },
+                  create: { name: tagName.trim(), slug: slugify(tagName) },
+                },
+              },
+            })),
+          },
 
-                if (lesson.quiz) {
-                  lessonCreateInput.quiz = {
-                    create: {
-                      title: lesson.quiz.title,
-                      description: lesson.quiz.description,
-                      passingScore: lesson.quiz.passingScore,
-                      attemptsAllowed: lesson.quiz.attemptsAllowed,
-                      duration: lesson.quiz.duration ?? 0,
-                      questions: {
-                        create: lesson.quiz.questions.map((q: any) => ({
-                          text: q.text,
-                          position: q.position,
-                          points: q.points,
-                          type:
-                            q.type === 'TRUE_FALSE'
-                              ? QuestionType.TRUE_FALSE
-                              : q.type === 'SINGLE_CHOICE'
-                                ? QuestionType.SINGLE_CHOICE
-                                : 'MULTIPLE_CHOICE',
-                          options: {
-                            create: q.options.map((opt: any) => ({
-                              text: opt.text,
-                              isCorrect: opt.isCorrect,
-                              position: opt.position,
-                            })),
-                          },
-                        })),
-                      },
+          modules: {
+            create: modules.map(moduleData => ({
+              title: moduleData.title,
+              position: moduleData.position,
+              lessons: {
+                create: moduleData.lessons.map(lesson => {
+                  const lessonCreateInput: any = {
+                    ...videoFields(lesson, videoAssets),
+                    title: lesson.title,
+                    position: lesson.position,
+                    type: lesson.type,
+                    description: lesson.description,
+                    contentUrl: lesson.contentUrl?.url,
+                    contentName: lesson.contentUrl?.name,
+                    notes: lesson.notes,
+                    duration: lesson.type === 'QUIZ' ? lesson.quiz?.duration : lesson.duration,
+                    files: {
+                      create: lesson.files?.map(file => ({ url: file.url, name: file.name })),
                     },
                   };
-                }
-                return lessonCreateInput;
-              }),
-            },
-          })),
+
+                  if (lesson.quiz) {
+                    lessonCreateInput.quiz = {
+                      create: {
+                        title: lesson.quiz.title,
+                        description: lesson.quiz.description,
+                        passingScore: lesson.quiz.passingScore,
+                        attemptsAllowed: lesson.quiz.attemptsAllowed,
+                        duration: lesson.quiz.duration ?? 0,
+                        questions: {
+                          create: lesson.quiz.questions.map((q: any) => ({
+                            text: q.text,
+                            position: q.position,
+                            points: q.points,
+                            type:
+                              q.type === 'TRUE_FALSE'
+                                ? QuestionType.TRUE_FALSE
+                                : q.type === 'SINGLE_CHOICE'
+                                  ? QuestionType.SINGLE_CHOICE
+                                  : 'MULTIPLE_CHOICE',
+                            options: {
+                              create: q.options.map((opt: any) => ({
+                                text: opt.text,
+                                isCorrect: opt.isCorrect,
+                                position: opt.position,
+                              })),
+                            },
+                          })),
+                        },
+                      },
+                    };
+                  }
+                  return lessonCreateInput;
+                }),
+              },
+            })),
+          },
         },
-      },
-      select: {
-        id: true,
-      },
-    });
-    await bindAssets(tx, created.id, videoAssets);
-    return created;
+        select: {
+          id: true,
+        },
+      });
+      await bindAssets(tx, created.id, videoAssets);
+      return created;
     });
   });
 
@@ -354,8 +369,15 @@ const createCourse = async (req: Request) => {
 
 const updateCourse = async (req: Request) => {
   const data = req.body as CreateCoursePayload['body'];
-  if (data.id) await assertCourseEditor(req, data.id);
-  const videoAssets = await validateVideoLessons(req, data.modules.flatMap(m => m.lessons), data.originalPrice ?? 0, data.id ?? undefined);
+  if (data.id) {
+    await assertCourseEditor(req, data.id);
+  }
+  const videoAssets = await validateVideoLessons(
+    req,
+    data.modules.flatMap(m => m.lessons),
+    data.originalPrice ?? 0,
+    data.id ?? undefined
+  );
   const instructorEmail = req.user.email;
 
   if (!data.id) {
@@ -495,25 +517,54 @@ const updateCourse = async (req: Request) => {
         },
       });
 
-      const oldModules = await tx.module.findMany({ where: { courseId: id }, include: { lessons: true } });
+      const oldModules = await tx.module.findMany({
+        where: { courseId: id },
+        include: { lessons: true },
+      });
       const retainedModules: string[] = [];
       const retainedLessons: string[] = [];
       for (const module of modules) {
         const oldModule = module.id ? oldModules.find(m => m.id === module.id) : undefined;
-        if (module.id && !oldModule) throw new AppError('Module does not belong to this course.', 403);
+        if (module.id && !oldModule) {
+          throw new AppError('Module does not belong to this course.', 403);
+        }
         const savedModule = oldModule
-          ? await tx.module.update({ where: { id: oldModule.id }, data: { title: module.title, position: module.position, deletedAt: null } })
-          : await tx.module.create({ data: { courseId: id, title: module.title, position: module.position } });
+          ? await tx.module.update({
+              where: { id: oldModule.id },
+              data: { title: module.title, position: module.position, deletedAt: null },
+            })
+          : await tx.module.create({
+              data: { courseId: id, title: module.title, position: module.position },
+            });
         retainedModules.push(savedModule.id);
         for (const lesson of module.lessons) {
-          const oldLesson = lesson.id ? oldModules.flatMap(m => m.lessons).find(l => l.id === lesson.id) : undefined;
-          if (lesson.id && !oldLesson) throw new AppError('Lesson does not belong to this course.', 403);
+          const oldLesson = lesson.id
+            ? oldModules.flatMap(m => m.lessons).find(l => l.id === lesson.id)
+            : undefined;
+          if (lesson.id && !oldLesson) {
+            throw new AppError('Lesson does not belong to this course.', 403);
+          }
           const asset = videoFields(lesson, videoAssets);
-          const clearAsset = !lesson.contentUrl?.url ? { videoUploadJobId: null, externalVideoId: null, providerVideoStatus: null, hostingType: 'PREMIUM' as const, videoProvider: 'BUNNY' as const } : {};
+          const clearAsset = !lesson.contentUrl?.url
+            ? {
+                videoUploadJobId: null,
+                externalVideoId: null,
+                providerVideoStatus: null,
+                hostingType: 'PREMIUM' as const,
+                videoProvider: 'BUNNY' as const,
+              }
+            : {};
           const lessonData = {
-            ...asset, ...clearAsset, moduleId: savedModule.id, title: lesson.title, position: lesson.position,
-            type: lesson.type, description: lesson.description, notes: lesson.notes,
-            contentUrl: lesson.contentUrl?.url ?? null, contentName: lesson.contentUrl?.name ?? null,
+            ...asset,
+            ...clearAsset,
+            moduleId: savedModule.id,
+            title: lesson.title,
+            position: lesson.position,
+            type: lesson.type,
+            description: lesson.description,
+            notes: lesson.notes,
+            contentUrl: lesson.contentUrl?.url ?? null,
+            contentName: lesson.contentUrl?.name ?? null,
             duration: lesson.type === 'QUIZ' ? lesson.quiz?.duration : lesson.duration,
             deletedAt: null,
           };
@@ -522,19 +573,54 @@ const updateCourse = async (req: Request) => {
             : await tx.lesson.create({ data: lessonData });
           retainedLessons.push(saved.id);
           await tx.lessonFile.deleteMany({ where: { lessonId: saved.id } });
-          if (lesson.files?.length) await tx.lessonFile.createMany({ data: lesson.files.map(file => ({ ...file, lessonId: saved.id })) });
+          if (lesson.files?.length) {
+            await tx.lessonFile.createMany({
+              data: lesson.files.map(file => ({ ...file, lessonId: saved.id })),
+            });
+          }
           if (lesson.quiz) {
             const q = lesson.quiz;
-            const quizData = { title: q.title, description: q.description, passingScore: q.passingScore, attemptsAllowed: q.attemptsAllowed, duration: q.duration ?? 0 };
-            await tx.quiz.upsert({ where: { lessonId: saved.id },
-              create: { ...quizData, lessonId: saved.id, questions: { create: q.questions.map(question => ({ ...question, options: { create: question.options } })) } },
-              update: { ...quizData, questions: { deleteMany: {}, create: q.questions.map(question => ({ ...question, options: { create: question.options } })) } },
+            const quizData = {
+              title: q.title,
+              description: q.description,
+              passingScore: q.passingScore,
+              attemptsAllowed: q.attemptsAllowed,
+              duration: q.duration ?? 0,
+            };
+            await tx.quiz.upsert({
+              where: { lessonId: saved.id },
+              create: {
+                ...quizData,
+                lessonId: saved.id,
+                questions: {
+                  create: q.questions.map(question => ({
+                    ...question,
+                    options: { create: question.options },
+                  })),
+                },
+              },
+              update: {
+                ...quizData,
+                questions: {
+                  deleteMany: {},
+                  create: q.questions.map(question => ({
+                    ...question,
+                    options: { create: question.options },
+                  })),
+                },
+              },
             });
           }
         }
       }
-      await tx.lesson.updateMany({ where: { module: { courseId: id }, id: { notIn: retainedLessons } }, data: { deletedAt: new Date() } });
-      await tx.module.updateMany({ where: { courseId: id, id: { notIn: retainedModules } }, data: { deletedAt: new Date() } });
+      await tx.lesson.updateMany({
+        where: { module: { courseId: id }, id: { notIn: retainedLessons } },
+        data: { deletedAt: new Date() },
+      });
+      await tx.module.updateMany({
+        where: { courseId: id, id: { notIn: retainedModules } },
+        data: { deletedAt: new Date() },
+      });
       await bindAssets(tx, id, videoAssets);
 
       return updatedCourse;
@@ -1517,7 +1603,9 @@ const getCourseTestimonials = async (req: Request) => {
 };
 
 const getSingleCourseForPaidView = async (req: Request) => {
-  if (req.params.userId !== await identity(req)) throw new AppError('Access denied.', 403);
+  if (req.params.userId !== (await identity(req))) {
+    throw new AppError('Access denied.', 403);
+  }
   const { courseId, userId } = req.params;
 
   if (!courseId || !userId) {
@@ -2417,13 +2505,30 @@ const getInstructorDashboardData = async (req: Request) => {
 };
 
 const updateLessonProgress = async (req: Request) => {
-  if (req.params.userId !== await identity(req)) throw new AppError('Access denied.', 403);
-  const access = await executeDbOperation(p => p.lesson.findFirst({ where: {
-    id: String(req.body.lessonId), deletedAt: null, module: { courseId: String(req.body.courseId), deletedAt: null,
-      course: { deletedAt: null, enrollments: { some: { userId: String(req.params.userId), status: 'ACTIVE' } } } },
-  }, select: { id: true } }));
-  if (!access) throw new AppError('Lesson access denied.', 403);
-  const userId = req.params.userId as string;
+  if (req.params.userId !== (await identity(req))) {
+    throw new AppError('Access denied.', 403);
+  }
+  const access = await executeDbOperation(p =>
+    p.lesson.findFirst({
+      where: {
+        id: String(req.body.lessonId),
+        deletedAt: null,
+        module: {
+          courseId: String(req.body.courseId),
+          deletedAt: null,
+          course: {
+            deletedAt: null,
+            enrollments: { some: { userId: String(req.params.userId), status: 'ACTIVE' } },
+          },
+        },
+      },
+      select: { id: true },
+    })
+  );
+  if (!access) {
+    throw new AppError('Lesson access denied.', 403);
+  }
+  const userId = req.params.userId;
   const { courseId, lessonId, progressValue, lastPosition, isFinished } = req.body as {
     courseId: string;
     lessonId: string;
@@ -2442,8 +2547,16 @@ const updateLessonProgress = async (req: Request) => {
     throw new Error('Lesson Id not found');
   }
 
-  if (!Number.isFinite(progressValue) || progressValue < 0 || progressValue > 100 ||
-    !Number.isFinite(lastPosition) || lastPosition < 0 || typeof isFinished !== 'boolean') throw new AppError('Invalid lesson progress.', 400);
+  if (
+    !Number.isFinite(progressValue) ||
+    progressValue < 0 ||
+    progressValue > 100 ||
+    !Number.isFinite(lastPosition) ||
+    lastPosition < 0 ||
+    typeof isFinished !== 'boolean'
+  ) {
+    throw new AppError('Invalid lesson progress.', 400);
+  }
   const updateData = await executeDbOperation(async prisma => {
     return await prisma.lessonProgress.upsert({
       where: {
@@ -2482,12 +2595,15 @@ const getBunnySignature = async (
   // Express 5 reparses req.query through a getter. Internal callers must pass
   // upload metadata directly rather than assigning properties to req.query.
   const values = upload ?? req.query;
-  const collectionName = typeof values.collectionName === 'string' ? values.collectionName.trim() : '';
+  const collectionName =
+    typeof values.collectionName === 'string' ? values.collectionName.trim() : '';
   const fileName = typeof values.fileName === 'string' ? values.fileName.trim() : '';
   if (!collectionName || collectionName.length > 255) {
     throw new AppError('A valid upload collection name is required (1–255 characters).', 400);
   }
-  if (!fileName) throw new AppError('A video title is required.', 400);
+  if (!fileName) {
+    throw new AppError('A video title is required.', 400);
+  }
   const apiKey = config.BUNNY_STREAM_API_KEY;
   const videoLibraryId = config.BUNNY_STREAM_LIBRARY_ID;
   const expires = Math.floor(Date.now() / 1000) + 900;
@@ -2596,13 +2712,37 @@ const createFileToBunny = async (req: Request) => {
 const authorizedBunnyUrl = async (req: Request, value: string) => {
   const url = new URL(value);
   const prefix = `/library/${config.BUNNY_STREAM_LIBRARY_ID}/videos/`;
-  if (url.protocol !== 'https:' || url.hostname !== 'video.bunnycdn.com' || !url.pathname.startsWith(prefix) || url.search || url.hash || url.username || url.password || url.port) throw new AppError('Invalid video URL.', 400);
+  if (
+    url.protocol !== 'https:' ||
+    url.hostname !== 'video.bunnycdn.com' ||
+    !url.pathname.startsWith(prefix) ||
+    url.search ||
+    url.hash ||
+    url.username ||
+    url.password ||
+    url.port
+  ) {
+    throw new AppError('Invalid video URL.', 400);
+  }
   const videoId = url.pathname.slice(prefix.length);
-  if (!/^[\w-]+$/.test(videoId)) throw new AppError('Invalid video ID.', 400);
-  const lesson = await executeDbOperation(p => p.lesson.findFirst({ where: { contentUrl: value }, select: { module: { select: { courseId: true } } } }));
-  const trailer = lesson ? null : await executeDbOperation(p => p.course.findFirst({ where: { trailerUrl: value }, select: { id: true } }));
+  if (!/^[\w-]+$/.test(videoId)) {
+    throw new AppError('Invalid video ID.', 400);
+  }
+  const lesson = await executeDbOperation(p =>
+    p.lesson.findFirst({
+      where: { contentUrl: value },
+      select: { module: { select: { courseId: true } } },
+    })
+  );
+  const trailer = lesson
+    ? null
+    : await executeDbOperation(p =>
+        p.course.findFirst({ where: { trailerUrl: value }, select: { id: true } })
+      );
   const courseId = lesson?.module.courseId ?? trailer?.id;
-  if (!courseId) throw new AppError('Save or remove videos through the course editor.', 403);
+  if (!courseId) {
+    throw new AppError('Save or remove videos through the course editor.', 403);
+  }
   await assertCourseEditor(req, courseId);
   return value;
 };
@@ -2635,7 +2775,16 @@ const deleteVideo = async (req: Request) => {
   if (!videoUrl) {
     throw new Error('Video Url Not Provided');
   }
-  if (await executeDbOperation(p => p.lesson.count({ where: { contentUrl: videoUrl, deletedAt: null } }))) throw new AppError('Remove the video in the course draft and save before retiring the asset.', 409);
+  if (
+    await executeDbOperation(p =>
+      p.lesson.count({ where: { contentUrl: videoUrl, deletedAt: null } })
+    )
+  ) {
+    throw new AppError(
+      'Remove the video in the course draft and save before retiring the asset.',
+      409
+    );
+  }
   const deleteVideoResponse = await fetch(await authorizedBunnyUrl(req, videoUrl), {
     method: 'DELETE',
     headers: {

@@ -1,4 +1,19 @@
-// import * as z from "zod";
+import { z } from 'zod';
+
+export const AdminCoursesQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).max(1000000).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+  status: z.enum(['ALL', 'PUBLISHED', 'PENDING', 'DRAFT', 'SUSPENDED']).default('ALL'),
+  search: z.string().trim().max(200).default(''),
+});
+
+export const AdminCourseActionSchema = z.object({
+  courseId: z.string().uuid(),
+  action: z.enum(['PUBLISH', 'DRAFT', 'SUSPEND', 'DELETE']),
+  note: z.string().trim().max(500).default(''),
+}).refine(value => !['SUSPEND', 'DELETE'].includes(value.action) || value.note.length >= 5, {
+  path: ['note'], message: 'Enter a reason of at least 5 characters.',
+});
 
 // export const CreateBookSchema = z.object({
 //   body: z
